@@ -89,3 +89,6 @@ capybara-*html
 
 # db.yml
 config/database.yml
+
+#secrets.yml
+config/secrets.yml
