@@ -1,0 +1,6 @@
+
+<p><%= @user.first_name %> <%= @user.last_name %>,</p>
+
+<p>Thank you for registering!</p>
+
+<p><%= link_to 'Change my password', edit_password_url(@user, reset_password_token: @token) %></p>

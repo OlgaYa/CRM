@@ -1,0 +1,26 @@
+<%= form_for :@new_user, :url => {:action => "create", :id => @new_user} do |f| %>    
+  <%= render 'shared/error_messages' %>
+     <div class="first_name">
+      <%= f.label :first_name %><br />
+      <%= f.text_field :first_name %>
+     </div>
+
+     <div class="last_name">
+        <%= f.label :last_name %><br />
+        <%= f.text_field :last_name %>
+      </div>
+      <div class="last_name">
+        <%= f.label :email %><br />
+        <%= f.text_field :email %>
+      </div>
+      <div class="last_name">
+        <%= f.label :password %><br />
+        <%= f.password_field :password %>
+      </div>
+      <div class="last_name">
+        <%= f.label :password_confirmation, "Confirmation" %><br />
+        <%= f.password_field :password_confirmation %>
+      </div>
+
+      <%= f.submit "Create account", class: "btn btn-large btn-primary" %>
+  <% end %>
