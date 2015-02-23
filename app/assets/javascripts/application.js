@@ -50,26 +50,12 @@ $(function(){
           $td_field.empty();
           $td_field.html(str);
           $(this).dialog('close');
-          var values = { 'field': $td.attr('name'), 'value': str};
-
-          $.ajax({
-            type: 'PATCH',
-            url: 'tasks/' + task_id,
-            dataType: 'json',
-            success: function(resp){
-              //тут должна быть адекватная реакция
-              console.log(resp);
-            },
-            error: function(){
-              //тут должна быть адекватная реакция
-              console.log("error");
-            },
-            data: values 
-          });
+          send_ajax(task_id, $td.attr('name'), str)
         }
       }
     ]
   });
+
   $('.editor').dblclick(function() {
     $(this).addClass('info');
     $td = $(this);
@@ -83,8 +69,43 @@ $(function(){
       toolbar: 'link',
       plugins: 'link'
     });
-  }); 
+  });
+
+  $('.user, .status').change(function(){
+    task_id = $(this).parents().eq(1).attr('id');
+    send_ajax(task_id, $(this).attr('name'), $(this).val())
+    if($(this).attr('name')==='status'){ 
+      // debugger;
+      d = new Date();
+      $(this).parents().eq(1).children('.date').text(d.yyyymmdd());
+    } 
+  });
 });
+
+function send_ajax(task_id, field, value){
+  var values = { 'field': field, 'value': value };
+  $.ajax({
+    type: 'PATCH',
+    url: 'tasks/' + task_id,
+    dataType: 'json',
+    success: function(resp){
+      //тут должна быть адекватная реакция
+      console.log(resp);
+    },
+    error: function(){
+      //тут должна быть адекватная реакция
+      console.log("error");
+    },
+    data: values 
+  });
+}
+
+Date.prototype.yyyymmdd = function() {
+  var yyyy = this.getFullYear().toString();
+  var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+  var dd  = this.getDate().toString();
+  return yyyy +'-'+(mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
+};
 
 // Prevent jQuery UI dialog from blocking focusin
 // $(document).on('focusin', function(e) {
