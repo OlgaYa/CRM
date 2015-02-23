@@ -12,5 +12,83 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui/dialog
 //= require turbolinks
+//= require tinymce-jquery
 //= require_tree .
+
+ 
+$(function(){
+  var task_id
+  var $td
+  var $td_field
+
+  $('#dialog').dialog({
+    autoOpen: false,
+    // баг с использованием фокуса
+    // modal: true,
+    close: function(event, ui){
+      $td.removeClass('info');
+    },
+    open: function(event, ui){
+      $input = $(this).children('textarea');
+      str = $td_field.html();
+      $input.val(str); 
+    },
+    buttons: [
+      {
+        text: "Close",
+        click: function() {
+          $(this).dialog('close');
+        }
+      },
+      
+      {
+        text: "Save",
+        click: function() {
+          str = $(this).children('textarea').val();
+          $td_field.empty();
+          $td_field.html(str);
+          $(this).dialog('close');
+          var values = { 'field': $td.attr('name'), 'value': str};
+
+          $.ajax({
+            type: 'PATCH',
+            url: 'tasks/' + task_id,
+            dataType: 'json',
+            success: function(resp){
+              //тут должна быть адекватная реакция
+              console.log(resp);
+            },
+            error: function(){
+              //тут должна быть адекватная реакция
+              console.log("error");
+            },
+            data: values 
+          });
+        }
+      }
+    ]
+  });
+  $('.editor').dblclick(function() {
+    $(this).addClass('info');
+    $td = $(this);
+    $td_field = $(this).children()
+    task_id = $(this).parent().attr('id')
+    
+    //open popup 
+    $('#dialog').dialog('open');
+
+    $('textarea').tinymce({
+      toolbar: 'link',
+      plugins: 'link'
+    });
+  }); 
+});
+
+// Prevent jQuery UI dialog from blocking focusin
+// $(document).on('focusin', function(e) {
+//     if ($(event.target).closest(".mce-window").length) {
+//       e.stopImmediatePropagation();
+//   }
+// });
