@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {
-        password: 'users/passwords'
-  } 
+  devise_for :users  
   
   resources :users
 
@@ -9,7 +7,7 @@ Rails.application.routes.draw do
   match '/home', to: 'static_pages#home', via: 'get'
   
   namespace :admin do
-    resources :registration, only: [:new, :create]
+    resources :registration
   end
 
   # Example of regular route:

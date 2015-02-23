@@ -1,9 +1,9 @@
 class UserMailer < ActionMailer::Base
-	default :from => "avopop.a.c@gmail.com"
+	default :from => "test@gmail.com"
   
-  def registration_confirmation(user, author)
+  def new_password_instructions(user, admin)
     @user = user
-    @author = author
+    @admin = admin
     mail(:to => user.email, :subject => "Registered")
   end
 end
