@@ -57,7 +57,12 @@
                   <div class="comment">
                     <span><%= comment.user.name %></span>
                     <span><%= comment.datetime %></span>
-                    <%= link_to image_tag('remove-red.png'), '#', class: 'pull-right' %> 
+                    <% if comment.user == current_user %>
+                      <%= link_to image_tag('remove-red.png'), comment, class: 'pull-right', data: {
+                          confirm: "Are you sure to destroy comment?"
+                        }, 
+                        method: :delete  %> 
+                    <% end %>
                     <p><%= comment.body %></p>
                   </div>
                 <% end %> 
