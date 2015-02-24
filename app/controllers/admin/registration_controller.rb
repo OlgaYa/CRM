@@ -7,7 +7,7 @@ class Admin::RegistrationController < ApplicationController
 		@user = User.new(user_params_create)
 		@user.password = @user.password_confirmation = Array.new(8) { (rand(122-97) + 97).chr }.join
 	    if @user.save
-	    	@user.send_password_reset
+	    	@user.send_password_reset(current_user)
 	    	redirect_to root_url	
 	    else
 	       render 'new'  
@@ -15,7 +15,8 @@ class Admin::RegistrationController < ApplicationController
 	end
 
 	def edit
-	  	@user = User.find_by_reset_password_token!(params[:id])
+		@user = User.find_by_reset_password_token(params[:id])
+	  	redirect_to root_url unless @user
 	end
 
 	def update
@@ -34,6 +35,6 @@ class Admin::RegistrationController < ApplicationController
 	end
 
 	def user_params_update
-		params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
+		params.require(:user).permit(:password, :password_confirmation)
 	end
 end

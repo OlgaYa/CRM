@@ -13,10 +13,10 @@ class User < ActiveRecord::Base
       end while User.exists?(column => self[column])
     end    
 
-	def send_password_reset
+	def send_password_reset(current_user)
 	  generate_token(:reset_password_token)
 	  self.reset_password_sent_at = Time.zone.now
 	  save!
-	  UserMailer.new_password_instructions(self, self).deliver
+	  UserMailer.new_password_instructions(self, current_user).deliver
 	end
 end

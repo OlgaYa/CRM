@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-	default :from => "test@gmail.com"
+	default :from => "crm.sloboda.studio@gmail.com"
   
   def new_password_instructions(user, admin)
     @user = user
