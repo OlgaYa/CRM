@@ -54,7 +54,7 @@
             <td class='comments' name="comments">
               <div class="comment_list"> 
                 <% task.comments.order(:created_at).each do |comment| %>
-                  <div class="comment">
+                  <div class="comment <%= comment.id %>">
                     <span class="comment_time"><%= comment.datetime.strftime('%e.%m %H:%M') %></span>
                     <span><%= comment.user.first_name %></span>
                     <% if comment.user == current_user %>
