@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+<head>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
@@ -36,55 +37,17 @@
 
     <%= javascript_include_tag "application" %>
   </head>
-  <body>
+</head>
+<body>
+  <div class="content">
+  <%= render 'layouts/header' %>
 
-    <div class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/home">CRM</a>
-        <div class="navbar-collapse collapse navbar-responsive-collapse">
-          <ul class="nav navbar-nav">
-            <% if user_signed_in? %>
-              <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
-              <% if user_admin? %>
-                <li><%= link_to "Add new user",  new_admin_registration_path, :method => :get %></li>
-              <% end %> 
-            <% else %>
-              <li><%= link_to "sign in", new_user_session_path %></li>
-            <% end %>
-          </ul>
-        </div>
-      </div>
-    </div>
+  <%= yield %>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-9">
-          <%= bootstrap_flash %>
-          <%= yield %>
-        </div>
-        <div class="col-lg-3">
-          <div class="well sidebar-nav">
-            <h3>Sidebar</h3>
-            <ul class="nav nav-list">
-              <li class="nav-header">Sidebar</li>
-              <li><%= link_to "Митинги", "#"  %></li>
-              <li><%= link_to "Статистика", "#"  %></li>
-              <li><%= link_to "Настройки", "#"  %></li>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
-      </div><!--/row-->
-
-      <footer>
-        <p>&copy; Company <%= Date.today.year %></p>
-      </footer>
-
-    </div> <!-- /container -->
-
-  </body>
+  </div>
+  <%= render 'layouts/footer' %>
+</body>
 </html>
+
+
+
