@@ -5,11 +5,13 @@
   padding:0;
 }
 
-html, body, .content {
+html, body, #wrapper {
   height: 100%;
+  font-size: 12pt;
 }
 
-body > .content {
+body > #wrapper {
+  position: relative;
   min-height: 100%;
   padding-bottom: 70px;
   height: auto !important;
@@ -17,58 +19,18 @@ body > .content {
 
 /* TASK TABLE */
 
-table {
-  font-size: 10pt;
-}
-
-td {
-  max-width: 200px;
-  max-height: 50px;
-  overflow: auto;
-}
-
-table p {
-  margin: 0;
-}
-
 option {
   color: #333;
   background-color: #fff;
   font-size: 10pt;
 }
 
-.date {
-  min-width: 90px;
-}
-
-.comments div:not(:last-child){
-  display: none;
-}
-
-.active_td {
-  background-color:  #FAEDAB;
-}
-
-td:hover:not(.status):not(.user):not(.date):not(.message):not(.remove):not(.number){
-  background-color: #FAEDAB;
-}
-
 .table>tbody>tr>.remove {  
   vertical-align: middle;
 }
 
-.comments {
-  max-width: 150px;
-  min-width: 150px;
-}
-
-.comment:nth-child(even){
-  margin-left: 20%;
-}
-
-td .comment:last-child{
-  margin-left: 0%;
-  margin-right: 0%;
+.comments div:not(:last-child){
+  display: none;
 }
 
 .comment_list {
@@ -117,8 +79,12 @@ td .comment a {
   display: none;
 }
 
-.remove {
-  text-align: center;
+td .comment:last-child{
+  margin-left: 0%;
+  margin-right: 0%;
+}
+.comment:nth-child(even){
+  margin-left: 20%;
 }
 
 .comment_body {
@@ -130,18 +96,26 @@ td .comment a {
   font-size: 8pt;
 }
 
+td:hover:not(.status):not(.user):not(.date):not(.message):not(.remove):not(.number){
+  background-color: #FAEDAB;
+}
+
+.active_td {
+  background-color:  #FAEDAB;
+}
+
+.remove {
+  text-align: center;
+}
+
 /* FOOTER */
 
 footer {
   position: relative;
-  margin: -70px auto 0;
-  margin-top: -70px;
-  margin-bottom: 0px;
-  min-width: 100%;
+  bottom: 0px;
+  width: 100%;
   height: 70px;
-  text-align: center;
-  background-color: #F8F8F8;
-  border-top: 1px solid #e7e7e7;
-  padding-top: 25px;
+  background-color: #F5F5F5;
+  margin-top: -70px;
 }
 

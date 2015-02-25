@@ -6,8 +6,24 @@
   =require twitter-bootstrap-static/fontawesome
   */
 
+table {
+	border-collapse: initial;
+  font-size: 10pt;
+}
+
+table p {
+  margin: 0;
+}
+
+td {
+  max-width: 200px;
+  max-height: 50px;
+  overflow: auto;
+}
+
 td .btn {
   padding: 6px 0px;
   font-size: 10pt;
 }
+
 

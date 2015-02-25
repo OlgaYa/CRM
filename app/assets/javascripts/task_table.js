@@ -1,5 +1,5 @@
  
-$(function(){
+$(document).on("ready page:load", function(){
   var $td
   var $td_field
 

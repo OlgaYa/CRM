@@ -1,7 +1,6 @@
-
-<div class="col-lg-12">
-  <div class="table-responsive">
-    <table class="table table-striped table-bordered table-condensed">
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <table class="table table-striped table-bordered table-condensed table-responsive">
       <thead>
         <tr class="info">
           <th>№</th>
@@ -43,7 +42,9 @@
               <div> <%= task.links.html_safe %> </div>
             </td>
             <td class="date">
-              <%= task.date %>
+              <div>
+                <%= task.date %>
+              </div>
             </td>
             <td class='user'>
                 <%= select("task", "user_id", User.all.collect {|p| [ p.first_name, p.id ] }, { include_blank: "Not assigned", selected: task.user_id }, class: "btn btn-default user", name: 'user_id') %>
@@ -51,7 +52,7 @@
             <td class='status'>
                 <%= select_tag "Status", options_for_select(Task.status.options, task.status), class: "btn btn-default status", name: 'status' %>
             </td>
-            <td class='comments' name="comments">
+            <td class='comments'>
               <div class="comment_list"> 
                 <% task.comments.order(:created_at).each do |comment| %>
                   <div class="comment <%= comment.id %>">
@@ -75,18 +76,20 @@
           </tr>
         <% end %>
       </tbody>
-    </table> <!-- /table table-striped table-bordered -->
-  </div> <!-- /table-responsive -->
-  <%= link_to "Add new task", new_task_path, class: "btn btn-primary pull-right" %>
-</div> <!-- /col-lg-12 -->
+    </table>
 
-<div id="dialog" title="Field content editor">
-  <textarea class="text_editor"></textarea>
-</div>
+    <%= link_to "Add new task", new_task_path, class: "btn btn-primary pull-right" %>
 
-<div id="comments_dialog" >
-  <textarea class="comment_body"></textarea>
+    <!-- Hidden blocks for popup dialogs -->
+    <div id="dialog" title="Field content editor">
+      <textarea class="text_editor"></textarea>
+    </div>
 
-  <button class="btn btn-primary btn-xs pull-right comment_save", type="button">Add new comment</button>
-</div>
+    <div id="comments_dialog" >
+      <textarea class="comment_body"></textarea>
+      <button class="btn btn-primary btn-xs pull-right comment_save", type="button">Add new comment</button>
+    </div>
+    <!-- End hidden blocks -->
 
+  </div><!-- /main-content col-md-12 -->
+</div> <!-- /row -->

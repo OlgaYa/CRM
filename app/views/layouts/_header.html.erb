@@ -1,25 +1,52 @@
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/home">CRM</a>
-    </div>
+<header>
+  <div id="header" class="row">
+    <nav class="navbar navbar-default" role="navigation">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+          <%= link_to 'CRM', root_url, class: 'navbar-brand' %>
+        </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li ><a href="#"></a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <% if user_signed_in? %>
-          <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
-          <% if user_admin? %>
-            <li><%= link_to "Add new user",  new_admin_registration_path, :method => :get %></li>
-          <% end %> 
-        <% else %>
-          <li><%= link_to "sign in", new_user_session_path %></li>
-        <% end %>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container -->
-</nav>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="main-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <% if user_signed_in? %>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tasks <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><%= link_to 'All tasks', tasks_path %> </li>
+                  <li class="divider"></li>
+                  <li><a href="#">Sold tasks</a></li>
+                  <li><a href="#">Declined tasks</a></li>
+                  <li class="divider"></li>
+                  <li><%= link_to 'New task', new_task_path %> </li>
+                </ul>
+              </li>
+              <li><a href="#">Statistic</a></li>
+              <li><a href="#">Mitings</a></li>
+            <% end %>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+          <% if user_signed_in? %>
+            <li><%= link_to current_user.email, '#' %></li>
+            <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+          <% else %>
+            <li><%= link_to "sign in", new_user_session_path %></li>
+          <% end %>
+        </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+  </div>
+</header>
+    
+    
+     
+     
+        
