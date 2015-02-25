@@ -4,12 +4,17 @@
     <div class="form-ledge  deadlock">
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), class: 'form-signin') do |f| %>
         <h2 class="form-signin-heading"></h2>
+
+        <div class="error" >
+          <span ><%= flash[:alert] %></span>
+        </div>
+        
         <div class="control-field">
-          <%= f.email_field :email, class: 'form-control' %>
+          <%= f.email_field :email, class: 'form-control', placeholder: 'Email' %>
         </div>
 
         <div class="control-field">
-          <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
+          <%= f.password_field :password, autocomplete: "off", class: 'form-control', placeholder: 'Password' %>
         </div>
 
         <% if devise_mapping.rememberable? -%>

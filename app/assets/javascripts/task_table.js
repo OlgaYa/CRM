@@ -50,11 +50,11 @@ $(document).on("ready page:load", function(){
   });
 
   $('.editor').dblclick(function() {
+    $('#dialog').dialog('close');
     $(this).addClass('active_td');
     $td = $(this);
     $td_field = $(this).children()
     task_id = $(this).parent().attr('id')
-    
     $('#dialog').dialog('open');
 
     $('.text_editor').tinymce({
@@ -75,6 +75,7 @@ $(document).on("ready page:load", function(){
   var timer;
   var add_comment_task_id;
   $('.comments').on("dblclick", function(e){
+    $('#dialog').dialog('close');
     $td_comment = $(this)
     add_comment_task_id = $(this).parent().attr('id')
     $('#comments_dialog').dialog('option', 'position', { my: "left-20 top-20",  of: e } );

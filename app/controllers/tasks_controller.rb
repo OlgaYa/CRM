@@ -1,12 +1,7 @@
-class TasksController < ApplicationController
-  before_action :authenticate_user! 
+class TasksController < ApplicationController 
   
   def index
     @tasks = Task.all.order(:created_at)
-  end
-
-  def new 
-    @task = Task.new
   end
 
   def create

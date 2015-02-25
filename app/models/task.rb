@@ -4,9 +4,7 @@ class Task < ActiveRecord::Base
   has_many :task_comments, dependent: :destroy
   has_many :comments, through: :task_comments
 
-
-
   extend Enumerize
 
-  enumerize :status, in: [:negotiations, :assigned_meeting, :waiting_estimate, :waiting_specification]
+  enumerize :status, in: [:negotiations, :assigned_meeting, :waiting_estimate, :waiting_specification, :sold, :declined]
 end

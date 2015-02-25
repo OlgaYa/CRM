@@ -1,23 +1,36 @@
-<%= form_for :@user, url: admin_registration_index_path(@user), html: { method: :post } do |f| %>
-  <%= render 'shared/error_messages' %>
-     <div class="first_name">
-      <%= f.label :first_name %><br />
-      <%= f.text_field :first_name %>
-     </div>
+<div class="row">
+  <div class="col-lg-3 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
+    <div class="text-center  deadlock"> <h2>Add new user</h2> </div>
+    <div class="form-ledge  deadlock">
+      <%= form_for :@user, url: admin_registration_index_path(@user), html: { method: :post } do |f| %>
+        <div class="error" >
+          <%= render 'shared/error_messages' %>
+        </div>
 
-     <div class="last_name">
-        <%= f.label :last_name %><br />
-        <%= f.text_field :last_name %>
-      </div>
-      <div class="last_name">
-        <%= f.label :email %><br />
-        <%= f.text_field :email %>
-      </div>
+        <div class="control-field">
+          <%= f.text_field :first_name, class: 'form-control', placeholder: 'First Name' %>
+        </div>
 
-      <div class="field">
-        <%= f.check_box :admin%>
-        <%= f.label :admin %>
-      </div>
+        <div class="control-field">
+          <%= f.text_field :last_name, class: 'form-control', placeholder: 'Last Name' %>
+        </div>
 
-      <%= f.submit "Create account", class: "btn btn-large btn-primary" %>
-  <% end %>
+        <div class="control-field">
+          <%= f.text_field :email, class: 'form-control', placeholder: 'Email'  %>
+        </div>
+
+        <div class="control-field">
+          <%= f.check_box :admin%>
+          <%= f.label :admin %>
+        </div>
+
+        <div class="control-field">
+          <%= f.submit "Create account", class: "btn btn-large btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+     

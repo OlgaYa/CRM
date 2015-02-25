@@ -39,11 +39,11 @@
               <div> <%=  %> </div>
             </td>
             <td class='editor links' name='links'>
-              <div> <%= task.links.html_safe %> </div>
+              <div> <%= task.links.html_safe if task.links %> </div>
             </td>
             <td class="date">
               <div>
-                <%= task.date %>
+                <%= task.date if task.date %>
               </div>
             </td>
             <td class='user'>
@@ -69,7 +69,7 @@
             </td>
             <td class="remove"> 
               <%= link_to image_tag('remove.png'), task, data: {
-                  confirm: "Are you sure to destroy  task #{task.name}?"
+                  confirm: "Are you sure to destroy task №#{i-1}?"
                 }, 
                 method: :delete %> 
             </td>
@@ -78,7 +78,10 @@
       </tbody>
     </table>
 
-    <%= link_to "Add new task", new_task_path, class: "btn btn-primary pull-right" %>
+    <%= form_for Task.new do |f| %>
+      <%= f.text_field :name, hidden: true %> 
+      <%= f.submit "Add new task", class: "btn btn-primary btn-lg pull-right" %>
+    <% end %>
 
     <!-- Hidden blocks for popup dialogs -->
     <div id="dialog" title="Field content editor">
@@ -88,7 +91,7 @@
     <div id="comments_dialog" >
       <textarea class="comment_body"></textarea>
       <button class="btn btn-primary btn-xs pull-right comment_save", type="button">Add new comment</button>
-    </div>
+    </div>   
     <!-- End hidden blocks -->
 
   </div><!-- /main-content col-md-12 -->
