@@ -15,7 +15,12 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
-gem 'capistrano', '~> 3.3.0'
+gem 'capistrano'
+gem 'unicorn'
+gem "sshkit", "~> 1.3.0"
+
+# Use Capistrano for deployment
+# gem 'capistrano-rails', group: :development
 gem 'pg'
 gem 'simple_form'
 gem 'enumerize'
@@ -23,7 +28,6 @@ gem 'jquery-ui-rails'
 gem 'tinymce-rails'
 gem "therubyracer"
 gem "less-rails"
-
   # Access an IRB console on exception pages or by using <%= console %> in views
   #gem 'web-console', '~> 2.0'
 
