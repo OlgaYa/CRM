@@ -4,8 +4,8 @@ rails_env = ENV['RAILS_ENV'] || 'development'
 worker_processes (rails_env == 'staging' || rails_env == 'production' ? 8 : 2)
 logger Logger.new($stdout) if rails_env == 'development'
 if rails_env == 'staging' || rails_env == 'production'
-  stderr_path '/var/log/unicorn.mp.err.log'
-  stderr_path '/var/log/unicorn.mp.out.log'
+  stderr_path '/home/crmuser/crmuser_app/shared/log/unicorn.mp.err.log'
+  stderr_path '/home/crmuser/crmuser_app/shared/log/unicorn.mp.out.log'
   pid_path =  '/home/crmuser/crmuser_app/pids/unicorn.master.pid'
   pid         '/home/crmuser/crmuser_app/shared/pids/unicorn.master.pid'
   listen      '/home/crmuser/crmuser_app/shared/sockets/unicorn.sock';

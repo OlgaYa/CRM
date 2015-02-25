@@ -5,9 +5,8 @@ lock '3.3.5'
 set :repo_url, 'https://github.com/Anastasiya09/CRM'
 set :deploy_via, :remote_cache 
 set :application, "crm"
-set :linked_files, %w{config/database.yml}
-set :linked_files, %w{config/secrets.yml}
-
+set :linked_files, %w{config/database.yml config/secrets.yml}
+unicorn_options = '-c config/unicorn.rb -D'
  
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
