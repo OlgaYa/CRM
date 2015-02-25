@@ -35,6 +35,28 @@ set :ssh_options, {
 #    forward_agent: false,
 #    auth_methods: %w(password)
 #  }
+# namespace :deploy do
+
+#   desc "Start the application server"
+#   task :start, roles: :app do
+#     run "ln -nfs #{shared_path}/config/unicorn_staging.rb #{current_release}/config/unicorn.rb"
+#   end
+
+#   desc "Stop the application server"
+#   task :stop, roles: :app do
+#     run "kill -s QUIT `cat #{pid}`"
+#   end
+
+#   desc "Restart the application server"
+#   task :restart, roles: :app do
+#     if remote_file_exists.call(pid)
+#       deploy.stop
+#       deploy.start
+#     else
+#       deploy.start
+#     end
+#   end
+# end
 #
 # And/or per server (overrides global)
 # ------------------------------------
