@@ -13,5 +13,11 @@
         <%= f.label :email %><br />
         <%= f.text_field :email %>
       </div>
+
+      <div class="field">
+        <%= f.check_box :admin%>
+        <%= f.label :admin %>
+      </div>
+
       <%= f.submit "Create account", class: "btn btn-large btn-primary" %>
   <% end %>

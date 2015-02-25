@@ -17,6 +17,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'pg'
 gem 'capistrano', '~> 3.3.0'
+gem 'unicorn'
+gem "sshkit", "~> 1.3.0"
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
