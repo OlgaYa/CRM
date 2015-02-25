@@ -59,7 +59,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
-    colorize (0.7.5)
     commonjs (0.2.7)
     debug_inspector (0.0.2)
     devise (3.4.1)
@@ -221,7 +220,7 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   binding_of_caller
-  capistrano (~> 3.3.0)
+  capistrano
   coffee-rails (~> 4.1.0)
   devise
   enumerize

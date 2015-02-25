@@ -48,12 +48,16 @@
 # after_fork do |server, worker|
 #   ActiveRecord::Base.establish_connection
 # end
+user = "crmuser"
 deploy_to  = "/home/crmuser/crmuser_app/"
-rails_root = "#{deploy_to}/current"
-pid_file   = "#{deploy_to}/shared/pids/unicorn.pid"
-socket_file= "#{deploy_to}/shared/unicorn.sock"
-log_file   = "#{rails_root}/log/unicorn.log"
-err_log    = "#{rails_root}/log/unicorn_error.log"
+
+stderr_path = "#{deploy_to}/shared/log/unicorn.stderr.log"
+stdout_path = "#{deploy_to}/shared/log/unicorn.stdout.log"
+
+pid_path =  '#{deploy_to}/shared/pids/unicorn.master.pid'
+pid     =    '#{deploy_to}/shared/pids/unicorn.master.pid'
+listen  =    '#{deploy_to}/shared/sockets/unicorn.sock';
+working_directory ='#{deploy_to}/current'
 old_pid    = pid_file + '.oldbin'
 
 timeout 30
@@ -65,18 +69,19 @@ stdout_path log_file
 
 preload_app true # Мастер процесс загружает приложение, перед тем, как плодить рабочие процессы.
 
-GC.copy_on_write_friendly = true if GC.respond_to?(:copy_on_write_friendly=) # Решительно не уверен, что значит эта строка, но я решил ее оставить.
-
-before_exec do |server|
-  ENV["BUNDLE_GEMFILE"] = "#{rails_root}/Gemfile"
-end
-
 before_fork do |server, worker|
-  # Перед тем, как создать первый рабочий процесс, мастер отсоединяется от базы.
-  defined?(ActiveRecord::Base) and
-  ActiveRecord::Base.connection.disconnect!
+  ##
+  # When sent a USR2, Unicorn will suffix its pidfile with .oldbin and
+  # immediately start loading up a new version of itself (loaded with a new
+  # version of our app). When this new Unicorn is completely loaded
+  # it will begin spawning workers. The first worker spawned will check to
+  # see if an .oldbin pidfile exists. If so, this means we've just booted up
+  # a new Unicorn and need to tell the old one that it can now die. To do so
+  # we send it a QUIT.
+  #
+  # Using this method we get 0 downtime deploys.
 
-  # Ниже идет магия, связанная с 0 downtime deploy.
+  old_pid = pid_path + '.oldbin'
   if File.exists?(old_pid) && server.pid != old_pid
     begin
       Process.kill("QUIT", File.read(old_pid).to_i)
@@ -87,7 +92,5 @@ before_fork do |server, worker|
 end
 
 after_fork do |server, worker|
-  # После того как рабочий процесс создан, он устанавливает соединение с базой.
-  defined?(ActiveRecord::Base) and
   ActiveRecord::Base.establish_connection
 end
