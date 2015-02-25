@@ -6,10 +6,10 @@ logger Logger.new($stdout) if rails_env == 'development'
 if rails_env == 'staging' || rails_env == 'production'
   stderr_path '/var/log/unicorn.mp.err.log'
   stderr_path '/var/log/unicorn.mp.out.log'
-  pid_path =  '/home/deployer/projects/crm/shared/pids/unicorn.master.pid'
-  pid         '/home/deployer/projects/crm/shared/pids/unicorn.master.pid'
-  listen      '/home/deployer/projects/crm/shared/sockets/unicorn.sock';
-  working_directory '/home/deployer/projects/crm/current'
+  pid_path =  '/home/crmuser/crmuser_app/pids/unicorn.master.pid'
+  pid         '/home/crmuser/crmuser_app/shared/pids/unicorn.master.pid'
+  listen      '/home/crmuser/crmuser_app/shared/sockets/unicorn.sock';
+  working_directory '/home/crmuser/crmuser_app/current'
 else
   current_path = File.expand_path(File.dirname(__FILE__))
   pid_path = current_path + '/../tmp/pids/unicorn_master.pid'
