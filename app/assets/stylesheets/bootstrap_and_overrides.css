@@ -7,6 +7,7 @@
   */
 
 table {
+  margin-top: 50px;
 	border-collapse: initial;
   font-size: 10pt;
 }
@@ -24,6 +25,10 @@ td {
 td .btn {
   padding: 6px 4px;
   font-size: 10pt;
+}
+
+.navbar {
+  margin-bottom: 15px;
 }
 
 

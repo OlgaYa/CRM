@@ -112,6 +112,18 @@ td:hover:not(.status):not(.user):not(.message):not(.remove):not(.number){
   width: 90px;
 }
 
+.date-input {
+  width: 90px; 
+}
+
+.status {
+  width: 150px;
+}
+
+.user_name {
+  width: 150px;
+}
+
 /* FOOTER */
 
 footer {
@@ -155,3 +167,40 @@ footer {
 .foter-info {
   margin-top: 25px;
 }
+
+/* NOTICE */
+
+.notifier {
+  right: 15px;
+  top: -5px;
+  border-radius: 3px;
+  display: none;
+  position: absolute;
+}
+
+.notifier-init {
+  padding: 6px;
+  margin-bottom: 10px;
+  height: 50px;
+  border: 3px solid #D9EDF7;
+}
+
+.notice-mess {
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.helper {
+  vertical-align: middle;
+  display: inline-block;
+  height: 100%;
+}
+
+.notice-error {
+  background-color: #F2DEDE;
+}
+
+.notice-success {
+  background-color: #dff0d8!important;
+}
+

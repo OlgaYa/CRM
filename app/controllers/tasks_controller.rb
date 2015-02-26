@@ -1,7 +1,14 @@
 class TasksController < ApplicationController 
   
   def index
-    @tasks = Task.all.order(:created_at)
+    case params[:only] 
+    when 'sold'
+      @tasks = Task.all.where("status = 'sold'").order("created_at DESC")
+    when 'declined'
+      @tasks = Task.all.where("status = 'declined'").order("created_at DESC")
+    else
+      @tasks = Task.all.where("status != 'sold' AND status != 'declined' OR status IS NULL").order("created_at DESC")
+    end
   end
 
   def create
@@ -19,18 +26,18 @@ class TasksController < ApplicationController
     else
       flash[:error] = "Task was not deleted"
     end
-    redirect_to tasks_path
+    redirect_to :back
   end
 
   def update
     task = Task.find(params[:id])
     if params[:field] == 'status'
-      task.update_attribute(params[:field].to_sym, params[:value])
+      task.update_attributes(params[:field].to_sym, params[:value])
       task.update_attribute(:date, Date.current())
     else    
       task.update_attribute(params[:field].to_sym, params[:value])
     end
-    resp = "Success".to_json
+    resp = "success".to_json
     render :json => resp    
   end
 
