@@ -96,7 +96,7 @@ td .comment:last-child{
   font-size: 8pt;
 }
 
-td:hover:not(.status):not(.user):not(.date):not(.message):not(.remove):not(.number){
+td:hover:not(.status):not(.user):not(.message):not(.remove):not(.number){
   background-color: #FAEDAB;
 }
 
@@ -106,6 +106,10 @@ td:hover:not(.status):not(.user):not(.date):not(.message):not(.remove):not(.numb
 
 .remove {
   text-align: center;
+}
+
+.date {
+  width: 90px;
 }
 
 /* FOOTER */

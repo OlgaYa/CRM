@@ -52,7 +52,7 @@ $(document).on("ready page:load", function(){
     }
   });
 
-  $('.editor').dblclick(function() {
+  $('.editor').on('dblclick', function() {
     $('#dialog').dialog('close');
     $(this).addClass('active_td');
     $td = $(this);
@@ -72,7 +72,7 @@ $(document).on("ready page:load", function(){
       send_ajax(task_id, $(this).attr('name'), $(this).val())
       if($(this).attr('name')==='status'){ 
         d = new Date();
-        $(this).parents().eq(1).children('.date').text(d.yyyymmdd());
+        $(this).parents().eq(1).children('.date').children('.date-input').val(d.yyyymmdd());
       }
     } 
   });
@@ -118,7 +118,13 @@ $(document).on("ready page:load", function(){
     }
   });
   
-  $( 'input' ).datepicker();
+  $('.date-input').datepicker({
+    dateFormat: "yy-mm-dd",
+    onClose: function(date, obj){
+      task_id = obj.input.parents().eq(1).attr('id');
+      send_ajax(task_id, 'date', date);
+    }
+  });
 });
 
 function send_ajax(task_id, field, value){

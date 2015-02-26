@@ -42,9 +42,7 @@
               <div> <%= task.links.html_safe if task.links %> </div>
             </td>
             <td class="date">
-              <div>
-                <%= task.date if task.date %>
-              </div>
+              <input class="date-input" value='<%= task.date  %>'/> 
             </td>
             <td class='user'>
                 <%= select("task", "user_id", User.all.collect {|p| [ p.first_name, p.id ] }, { include_blank: "Not assigned", selected: task.user_id }, class: "btn btn-default user", name: 'user_id') %>
