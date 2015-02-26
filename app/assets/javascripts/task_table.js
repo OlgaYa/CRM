@@ -1,7 +1,9 @@
- 
+
+
 $(document).on("ready page:load", function(){
   var $td
   var $td_field
+  var $td_comment
 
   $('#dialog').dialog({
     autoOpen: false,
@@ -45,6 +47,7 @@ $(document).on("ready page:load", function(){
       $(this).children('div').remove();      
     },
     open: function(event, ui){
+      $td_comment.addClass('active_td');
       $(".ui-dialog-titlebar").hide();
     }
   });
@@ -63,12 +66,14 @@ $(document).on("ready page:load", function(){
     });
   });
 
-  $('.user, .status').change(function(){
+  $('.user, .status').on('change', function(){
     task_id = $(this).parents().eq(1).attr('id');
-    send_ajax(task_id, $(this).attr('name'), $(this).val())
-    if($(this).attr('name')==='status'){ 
-      d = new Date();
-      $(this).parents().eq(1).children('.date').text(d.yyyymmdd());
+    if(task_id) {
+      send_ajax(task_id, $(this).attr('name'), $(this).val())
+      if($(this).attr('name')==='status'){ 
+        d = new Date();
+        $(this).parents().eq(1).children('.date').text(d.yyyymmdd());
+      }
     } 
   });
 
@@ -77,15 +82,16 @@ $(document).on("ready page:load", function(){
   $('.comments').on("dblclick", function(e){
     $('#dialog').dialog('close');
     $td_comment = $(this)
-    add_comment_task_id = $(this).parent().attr('id')
+    add_comment_task_id = $td_comment.parent().attr('id')
     $('#comments_dialog').dialog('option', 'position', { my: "left-20 top-20",  of: e } );
     $('#comments_dialog').dialog('open');
-    $('#comments_dialog').prepend($(this).children().clone())
+    $('#comments_dialog').prepend($td_comment.children().clone())
   });
 
   $('#comments_dialog').on("mouseleave", function(){
     timer = setTimeout(function () {
       $('#comments_dialog').dialog('close');
+      $td_comment.removeClass('active_td');
     }, 500);
   }).on("mouseenter", function(){
     clearTimeout(timer);
@@ -100,7 +106,6 @@ $(document).on("ready page:load", function(){
         url: 'comments',
         dataType: 'html',
         success: function(resp){
-          debugger;
           $('#comments_dialog').children('.comment_list').append($.parseHTML(resp));
           $('#'+add_comment_task_id).children('.comments').children('.comment_list').append($.parseHTML(resp));
           $('.comment_body').val("");
@@ -112,6 +117,8 @@ $(document).on("ready page:load", function(){
       });
     }
   });
+  
+  $( 'input' ).datepicker();
 });
 
 function send_ajax(task_id, field, value){
@@ -136,5 +143,4 @@ Date.prototype.yyyymmdd = function() {
   var dd  = this.getDate().toString();
   return yyyy +'-'+(mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
 };
-
 
