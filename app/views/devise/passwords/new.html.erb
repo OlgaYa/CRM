@@ -1,16 +1,21 @@
-<h2>Forgot your password?</h2>
+<div class="row">
+  <div class="col-lg-3 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
+    <div class="text-center  deadlock"> <h2>Forgot your password?</h2> </div>
+    <div class="form-ledge  deadlock">
+		<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, class: 'form-signin') do |f| %>
+			<h2 class="form-signin-heading"></h2>
+			<%= devise_error_messages! %>
+		<div class="control-field">
+          <%= f.email_field :email, class: 'form-control', placeholder: 'Email' %>
+        </div>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+        <div class="control-field">
+          <%= f.submit "Reset password", class: "btn btn-large btn-primary btn-block" %>
+        </div>
+        <div>
+          <%= render "devise/shared/links" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions", class: "btn btn-large btn-primary" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

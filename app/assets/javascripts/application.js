@@ -15,7 +15,6 @@
 //= require twitter/bootstrap
 //= require jquery-ui/dialog
 //= require jquery-ui/datepicker
-//= require turbolinks
 //= require tinymce-jquery
 //= require_tree .
 

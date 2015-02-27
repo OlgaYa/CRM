@@ -34,7 +34,10 @@ class TasksController < ApplicationController
     if params[:field] == 'status'
       task.update_attribute(params[:field].to_sym, params[:value])
       task.update_attribute(:date, Date.current())
-    else    
+    else
+      if (params[:field] == "user_id" and params[:value].to_i != current_user.id)
+        UserMailer.new_assign_user_instructions(task, current_user, params[:value]).deliver
+      end
       task.update_attribute(params[:field].to_sym, params[:value])
     end
     resp = "success".to_json

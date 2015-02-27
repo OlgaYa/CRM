@@ -22,4 +22,11 @@ class User < ActiveRecord::Base
     save!
     UserMailer.new_password_instructions(self, current_user).deliver
   end
+
+  def self.reminder
+    tasks = Task.where("updated_at < ?", 2.day.ago)
+    tasks.each do |t|
+      UserMailer.reminder_instructions(t).deliver
+    end
+  end
 end

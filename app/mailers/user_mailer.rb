@@ -6,4 +6,17 @@ class UserMailer < ActionMailer::Base
     @admin = admin
     mail(:to => user.email, :subject => "Registered")
   end
+
+  def new_assign_user_instructions(task, current_user, user_id)
+  	@user = User.find(user_id)
+  	@task = task
+  	@current_user = current_user
+  	mail(:to => @user.email, :subject => "New task")
+  end
+
+  def reminder_instructions(task)
+  	@task = task
+  	@user = task.user
+  	mail(:to => @user.email, :subject => "Reminder task")
+  end
 end
