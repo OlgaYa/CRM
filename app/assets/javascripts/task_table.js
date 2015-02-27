@@ -80,6 +80,38 @@ $(document).ready(function(){
     }
   });
 
+  $('#declined-comment').dialog({
+    autoOpen: false,
+    modal: true,
+    title: 'Please describe the reason of refusal',
+    open: function(event, ui){
+      $('.ui-dialog-titlebar').show();
+    },
+    buttons: 
+      [ 
+        { 
+          text: 'Close',
+          click: function(){
+            $(this).dialog('close');
+            location.reload();
+          }
+        },
+
+        {
+          text: 'Save',
+          click: function(){
+            task_id = $(this).data('task_id');
+            body = $('#declined_comment_body').val();
+            if(body.length > 0){
+              addComment(task_id, body);
+              changeStatus(task_id, $(this).data('field_name'), $(this).data('field_value'), $(this).data('$field'));
+              $(this).dialog('close');
+            } 
+          }
+        }
+      ]
+  });
+
 // =========================== open text editor EVENT ================================== //
   $('.editor').on('dblclick', function() {
     $('#dialog').dialog('close');
@@ -123,69 +155,90 @@ $(document).ready(function(){
 
   // save comment
   $('.comment_save').on("click", function(){
-    var body = $('.comment_body').val()
+    var body = $('#comment_body').val()
     if(body.length > 0) {
-      var values = { 'task_id': add_comment_task_id, 'body': body }; // add_comment_task_id == Task.id
+      addComment(add_comment_task_id, body);
+    }
+  });
+
+  function addComment(task_id, body){
+    var values = { 'task_id': task_id, 'body': body }; // add_comment_task_id == Task.id
       $.ajax({
         type: 'POST',
         url: 'comments',
         dataType: 'html',
         success: function(resp){
           $('#comments_dialog').children('.comment_list').append($.parseHTML(resp));
-          $('#'+add_comment_task_id).children('.comments').children('.comment_list').append($.parseHTML(resp));
-          $('.comment_body').val("");
+          $('#'+task_id).children('.comments').children('.comment_list').append($.parseHTML(resp));
+          $('#comment_body').val("");
         },
         data: values 
       });
-    }
-  });
+  }
 
 // ================ change assign_to and status EVENTS ==================== //
   $('.user, .status').on('change', function(){
     var task_id = $(this).parents().eq(1).attr('id');
     
     // КОСТЫЛЬ
-    if(task_id) {       
-      var field_value = $(this).val();
+    if(task_id) {
+      var $field = $(this);       
       var field_name = $(this).attr('name');
-
-      // replace it
-      d = new Date();
-      $(this).parents().eq(1).children('.date').children('.date-input').val(d.yyyymmdd());
-
-      $.when(send_ajax(task_id, field_name, field_value)).always(function(data){
-        if(data == 'success'){
-          if(field_name == 'status'){         
-            // check at what page happend this event            
-            switch(getParameterByName('only')){
-              case 'sold': {
-                  moveTo(task_id, field_value);                  
-                }
-                break;
-              case 'declined': {
-                  moveTo(task_id, field_value);       
-                }
-                break;
-              default: {
-                  if(field_value == 'declined'){
-                    console.log('opent tasks => declined')
-                    moveTo(task_id, field_value);
-                  }
-                  if(field_value == 'sold'){
-                    moveTo(task_id, field_value); 
-                  }
-                  notifie('Task status was successful changed')
-                }
-            }             
-          } else{
-            notifie('Task was successfully reassigned')
-          }
-        } else {
-          error();
-        }      
-      });      
+      var field_value = $(this).val();
+      if(field_name == 'status'){
+        if(field_value == 'declined'){
+          $('#declined-comment').data('field_name', field_name);
+          $('#declined-comment').data('task_id', task_id);
+          $('#declined-comment').data('field_value', field_value);
+          $('#declined-comment').data('$field', $field);
+          $('#declined-comment').dialog('open');
+        } else {       
+          changeStatus(task_id, field_name, field_value, $field);
+        }
+      } else {
+        changeUser(task_id, field_name, field_value, $field);
+      }      
     } 
   });
+
+  function changeStatus(task_id, field_name, field_value, $field){    
+    $.when(send_ajax(task_id, field_name, field_value)).always(function(data){
+      if(data == 'success'){
+        d = new Date();
+        $field.parents().eq(1).children('.date').children('.date-input').val(d.yyyymmdd());   
+        // check at what page happend this event            
+        switch(getParameterByName('only')){
+          case 'sold': {
+              moveTo(task_id, field_value);                  
+            }
+            break;
+          case 'declined': {
+              moveTo(task_id, field_value);       
+            }
+            break;
+          default: {
+              if(field_value == 'declined' || field_value == 'sold'){                   
+                moveTo(task_id, field_value);
+              } else {
+                notifie('Task status was successful changed')
+              }
+            }
+        }           
+      } else {
+        error();
+      }      
+    });
+  }
+
+  function changeUser(task_id, $field, field_name, field_value){
+    $.when(send_ajax(task_id, field_name, field_value)).always(function(data){
+      if(data == 'success') { 
+          notifie('Task status was successful reassigned')      
+      } else {
+        error();
+      }      
+    });
+  }
   
   function send_ajax(task_id, field, value){
     var values = { 'field': field, 'value': value };
@@ -259,5 +312,5 @@ $(document).ready(function(){
     notifierTimer = setTimeout(function(){
       $notifier.fadeOut('slow');
     },2000);    
-  }
+  }  
 });
