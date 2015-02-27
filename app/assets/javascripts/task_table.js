@@ -1,4 +1,5 @@
-$(document).on('ready page:load', function(){
+// $(document).on('ready page:load', function(){
+$(document).ready(function(){
   var $notifier = $('.notifier');
   var notifierTimer;
 
@@ -38,7 +39,13 @@ $(document).on('ready page:load', function(){
           $td_field.empty();
           $td_field.html(str);
           $(this).dialog('close');
-          send_ajax(task_id, $td_editor.attr('name'), str)
+          $.when(send_ajax(task_id, $td_editor.attr('name'), str)).always(function(data, textStatus, jqXHR){
+            if(textStatus == 'success'){
+              notifie('Field has been successfully updated!');
+            } else {
+              error();
+            }
+          });
         }
       }
     ]
@@ -63,7 +70,13 @@ $(document).on('ready page:load', function(){
     dateFormat: 'yy-mm-dd',
     onClose: function(date, obj){
       task_id = obj.input.parents().eq(1).attr('id');
-      send_ajax(task_id, 'date', date);
+      $.when(send_ajax(task_id, 'date', date)).always(function(data, textStatus, jqXHR){
+        if(textStatus == 'success'){
+          notifie('Date has been successfully updated!');
+        } else {
+          error();
+        }
+      });
     }
   });
 
@@ -122,9 +135,6 @@ $(document).on('ready page:load', function(){
           $('#'+add_comment_task_id).children('.comments').children('.comment_list').append($.parseHTML(resp));
           $('.comment_body').val("");
         },
-        error: function(){
-          console.log("error");
-        },
         data: values 
       });
     }
@@ -143,28 +153,35 @@ $(document).on('ready page:load', function(){
       d = new Date();
       $(this).parents().eq(1).children('.date').children('.date-input').val(d.yyyymmdd());
 
-      $.when(send_ajax(task_id, field_name, field_value), error()).then(function(){
-        if(field_name == 'status'){         
-          // check at what page happend this event            
-          switch(getParameterByName('only')){
-            case 'sold': {
-                
-                
-              }
-              break;
-            case 'declined': {
-                         
-              }
-              break;
-            default: {
-                if(field_value == 'declined'){
-                  console.log('opent tasks => declined')
-                  // here must be popup
-
+      $.when(send_ajax(task_id, field_name, field_value)).always(function(data){
+        if(data == 'success'){
+          if(field_name == 'status'){         
+            // check at what page happend this event            
+            switch(getParameterByName('only')){
+              case 'sold': {
+                  moveTo(task_id, field_value);                  
                 }
-              }
+                break;
+              case 'declined': {
+                  moveTo(task_id, field_value);       
+                }
+                break;
+              default: {
+                  if(field_value == 'declined'){
+                    console.log('opent tasks => declined')
+                    moveTo(task_id, field_value);
+                  }
+                  if(field_value == 'sold'){
+                    moveTo(task_id, field_value); 
+                  }
+                  notifie('Task status was successful changed')
+                }
+            }             
+          } else{
+            notifie('Task was successfully reassigned')
           }
-          moveTo(task_id, field_value); 
+        } else {
+          error();
         }      
       });      
     } 
