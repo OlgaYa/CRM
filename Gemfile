@@ -27,7 +27,7 @@ gem 'jquery-ui-rails'
 gem 'tinymce-rails'
 # gem "therubyracer"
 # gem "less-rails"
-gem "rufus-scheduler"
+gem "rufus-scheduler", '~> 2.0.24'
 # gem 'daemons'
   # Access an IRB console on exception pages or by using <%= console %> in views
   #gem 'web-console', '~> 2.0'
