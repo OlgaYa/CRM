@@ -90,6 +90,7 @@ td .comment:last-child{
 .comment_body {
   margin-top: 15px;
   width: 260px;
+  max-width: 260px;
 }
 
 .comment_time {

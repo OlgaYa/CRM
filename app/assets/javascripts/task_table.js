@@ -1,5 +1,7 @@
-$(document).on('ready page:load', function(){
+// $(document).on('ready page:load', function(){
+$(document).ready(function(){
   var $notifier = $('.notifier');
+  var notifierTimer;
 
 // ==== $(#dialog) vars === //
   var $td_editor; // cell 
@@ -37,7 +39,13 @@ $(document).on('ready page:load', function(){
           $td_field.empty();
           $td_field.html(str);
           $(this).dialog('close');
-          send_ajax(task_id, $td_editor.attr('name'), str)
+          $.when(send_ajax(task_id, $td_editor.attr('name'), str)).always(function(data, textStatus, jqXHR){
+            if(textStatus == 'success'){
+              notifie('Field has been successfully updated!');
+            } else {
+              error();
+            }
+          });
         }
       }
     ]
@@ -49,7 +57,6 @@ $(document).on('ready page:load', function(){
     draggable: false,
     modal: true,
     width: 300,
-    draggable: true,
     close: function(event, ui){
       $(this).children('div').remove();      
     },
@@ -63,7 +70,13 @@ $(document).on('ready page:load', function(){
     dateFormat: 'yy-mm-dd',
     onClose: function(date, obj){
       task_id = obj.input.parents().eq(1).attr('id');
-      send_ajax(task_id, 'date', date);
+      $.when(send_ajax(task_id, 'date', date)).always(function(data, textStatus, jqXHR){
+        if(textStatus == 'success'){
+          notifie('Date has been successfully updated!');
+        } else {
+          error();
+        }
+      });
     }
   });
 
@@ -122,9 +135,6 @@ $(document).on('ready page:load', function(){
           $('#'+add_comment_task_id).children('.comments').children('.comment_list').append($.parseHTML(resp));
           $('.comment_body').val("");
         },
-        error: function(){
-          console.log("error");
-        },
         data: values 
       });
     }
@@ -134,7 +144,8 @@ $(document).on('ready page:load', function(){
   $('.user, .status').on('change', function(){
     var task_id = $(this).parents().eq(1).attr('id');
     
-    if(task_id) {      
+    // КОСТЫЛЬ
+    if(task_id) {       
       var field_value = $(this).val();
       var field_name = $(this).attr('name');
 
@@ -142,30 +153,36 @@ $(document).on('ready page:load', function(){
       d = new Date();
       $(this).parents().eq(1).children('.date').children('.date-input').val(d.yyyymmdd());
 
-      $.when(send_ajax(task_id, field_name, field_value)).then(function(data, textStatus, jqXHR){
-        if(data == 'success'){ // check for server errors 
+      $.when(send_ajax(task_id, field_name, field_value)).always(function(data){
+        if(data == 'success'){
           if(field_name == 'status'){         
             // check at what page happend this event            
-              switch(getParameterByName('only')){
-                case 'sold': {
-                    //here mast me aaded logic to add price and terms to comments
-                    
+            switch(getParameterByName('only')){
+              case 'sold': {
+                  moveTo(task_id, field_value);                  
+                }
+                break;
+              case 'declined': {
+                  moveTo(task_id, field_value);       
+                }
+                break;
+              default: {
+                  if(field_value == 'declined'){
+                    console.log('opent tasks => declined')
+                    moveTo(task_id, field_value);
                   }
-                  break;
-                case 'declined': {
-                             
+                  if(field_value == 'sold'){
+                    moveTo(task_id, field_value); 
                   }
-                  break;
-                default: {
-                                  
-                  }
-              }
-              moveTo(field_value);
-              $('#'+task_id).remove(); 
+                  notifie('Task status was successful changed')
+                }
+            }             
+          } else{
+            notifie('Task was successfully reassigned')
           }
         } else {
           error();
-        }
+        }      
       });      
     } 
   });
@@ -176,12 +193,6 @@ $(document).on('ready page:load', function(){
             type: 'PATCH',
             url: 'tasks/' + task_id,
             dataType: 'json',
-            success: function(){
-
-            },
-            error: function(){
-              console.log("error");
-            },
             data: values 
           });
   }
@@ -200,7 +211,8 @@ $(document).on('ready page:load', function(){
       return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
   }  
 
-  function moveTo(path){
+  function moveTo(task_id, path){
+    $('#'+task_id).remove();
     switch(path) {
       case 'declined': {
           notifie('Task was successful moved to "Declined tasks"')
@@ -220,12 +232,14 @@ $(document).on('ready page:load', function(){
   }
 
   function notifie(message){
+    clearTimeout(notifierTimer);
     initNotifierSuccess();
     $notifier.children('.notice-mess').html(message);
     destroyNotifier();
   }
 
   function error() {
+    clearTimeout(notifierTimer);
     initNotifierError();
     $notifier.children('.notice-mess').html('Something went wrong, please repeat the action later!');
     destroyNotifier();
@@ -241,7 +255,6 @@ $(document).on('ready page:load', function(){
     $notifier.fadeIn('fast');
   }
 
-  var notifierTimer;
   function destroyNotifier(){
     notifierTimer = setTimeout(function(){
       $notifier.fadeOut('slow');
