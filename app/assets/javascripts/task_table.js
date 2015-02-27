@@ -93,7 +93,7 @@ $(document).ready(function(){
           text: 'Close',
           click: function(){
             $(this).dialog('close');
-            location.reload();
+            location.reload(true);
           }
         },
 
