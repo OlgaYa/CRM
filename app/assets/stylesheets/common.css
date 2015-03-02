@@ -125,6 +125,14 @@ td:hover:not(.status):not(.user):not(.message):not(.remove):not(.number){
   width: 150px;
 }
 
+.terms {
+  width: 150px;
+}
+
+#price  {
+  width: 250px;
+}
+
 /* FOOTER */
 
 footer {

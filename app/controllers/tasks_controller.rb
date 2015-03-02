@@ -34,6 +34,18 @@ class TasksController < ApplicationController
     if params[:field] == 'status'
       task.update_attribute(params[:field].to_sym, params[:value])
       task.update_attribute(:date, Date.current())
+      if params[:value] == 'sold'
+        sold_task = current_user.sold_tasks.create(task_id: task.id)
+        task.sold_task = sold_task
+      else
+        if SoldTask.exists?(task_id: task.id)
+          sold_task = current_user.sold_tasks.find_by(task_id: task.id)
+          time = DateTime.current()
+          comment = "Price: #{sold_task.price} <br> Terms: #{sold_task.date_start} - #{sold_task.date_end}"
+          task.comments.create(user_id: current_user.id , body: comment, datetime: time)
+          sold_task.destroy
+        end 
+      end 
     else
       if (params[:field] == "user_id" and params[:value].to_i != current_user.id)
         UserMailer.new_assign_user_instructions(task, current_user, params[:value]).deliver

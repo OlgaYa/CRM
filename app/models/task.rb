@@ -4,7 +4,7 @@ class Task < ActiveRecord::Base
   has_many :task_comments, dependent: :destroy
   has_many :comments, through: :task_comments
   
-  belongs_to :sold_task, dependent: :destroy
+  has_one :sold_task,  dependent: :destroy
 
   extend Enumerize
 

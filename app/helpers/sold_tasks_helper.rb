@@ -1,0 +1,2 @@
+module SoldTasksHelper
+end

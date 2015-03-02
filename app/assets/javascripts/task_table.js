@@ -66,17 +66,36 @@ $(document).ready(function(){
     }
   });
 
+  var flag = false;
   $('.date-input').datepicker({
     dateFormat: 'yy-mm-dd',
+    onSelect: function(date, obj){
+      flag = true;
+    },
     onClose: function(date, obj){
-      task_id = obj.input.parents().eq(1).attr('id');
-      $.when(send_ajax(task_id, 'date', date)).always(function(data, textStatus, jqXHR){
-        if(textStatus == 'success'){
-          notifie('Date has been successfully updated!');
+      if(flag){
+        var task_id = obj.input.parents().eq(1).attr('id');
+        var sold_task_id = $(obj.input).siblings('.id').val();
+        field = obj.input.attr('name');
+        if(field == 'date'){
+          $.when(send_ajax(task_id, field, date)).always(function(data, textStatus, jqXHR){
+            if(textStatus == 'success'){
+              notifie('Date has been successfully updated!');
+            } else {
+              error();
+            }
+          });
         } else {
-          error();
+          $.when(update_sold_task(sold_task_id, field, date)).always(function(data, textStatus, jqXHR){
+            if(textStatus == 'success'){
+              notifie('Date has been successfully updated!');
+            } else {
+              error();
+            }
+          })
         }
-      });
+        flag = false;      
+      }
     }
   });
 
@@ -96,7 +115,6 @@ $(document).ready(function(){
             location.reload(true);
           }
         },
-
         {
           text: 'Save',
           click: function(){
@@ -110,6 +128,53 @@ $(document).ready(function(){
           }
         }
       ]
+  });
+
+  $('#price-dialog').dialog({
+    autoOpen: false,
+    modal: true,
+    open: function(event, ui){
+      $('.ui-dialog-titlebar').show();
+    },
+    buttons: 
+      [ 
+        { 
+          text: 'Close',
+          click: function(){
+            $(this).dialog('close');
+          }
+        },
+        {
+          text: 'Save',
+          click: function(){
+            var task_id = $(this).data('task_id');
+            var price = $('#price').val();
+            var $dialog = $(this)
+            debugger;
+            if(price.length > 0){
+              $.when(update_sold_task($(this).data('sold_task_id'), 'price', price)).always(function(data){
+                if(data == 'success') { 
+                  $td_field.empty();
+                  $td_field.html(price);
+                  $dialog.dialog('close');
+                  notifie('Price was successful updated')      
+                } else {
+                  error();
+                }      
+              });
+            } else {
+              error('Please type only numbers');
+            }
+          }
+        }
+      ]
+  });
+
+  $('.price').on('dblclick', function() {
+    sold_task_id = $(this).children('.id').val();
+    $td_field = $(this).children()
+    $('#price-dialog').data('sold_task_id', sold_task_id);
+    $('#price-dialog').dialog('open');
   });
 
 // =========================== open text editor EVENT ================================== //
@@ -232,9 +297,7 @@ $(document).ready(function(){
   }
 
   function changeUser(task_id, field_name, field_value, $field){
-    debugger;
     $.when(send_ajax(task_id, field_name, field_value)).always(function(data){
-        debugger;
       if(data == 'success') { 
           notifie('Task status was successful reassigned')      
       } else {
@@ -248,6 +311,16 @@ $(document).ready(function(){
     return $.ajax({
             type: 'PATCH',
             url: 'tasks/' + task_id,
+            dataType: 'json',
+            data: values 
+          });
+  }
+
+  function update_sold_task(sold_task_id, field, value){
+    var values = { 'field': field, 'value': value };
+    return $.ajax({
+            type: 'PATCH',
+            url: 'sold_tasks/' + sold_task_id,
             dataType: 'json',
             data: values 
           });
@@ -294,10 +367,14 @@ $(document).ready(function(){
     destroyNotifier();
   }
 
-  function error() {
+  function error(mess) {
     clearTimeout(notifierTimer);
     initNotifierError();
-    $notifier.children('.notice-mess').html('Something went wrong, please repeat the action later!');
+    if(mess){
+      $notifier.children('.notice-mess').html(mess);
+    } else{
+      $notifier.children('.notice-mess').html('Something went wrong, please repeat the action later!');
+    }
     destroyNotifier();
   }
 

@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :users
   resources :tasks, only:[:index, :create, :destroy, :update]
   resources :comments, only: [:create, :destroy]
+  resources :sold_tasks, only: :update
 
   root to: 'static_pages#home'
   match '/home', to: 'static_pages#home', via: 'get'

@@ -21,6 +21,10 @@
           <th>Date</th>
           <th>Assign to</th>
           <th>Status</th>
+          <% if params[:only] == 'sold' %>
+            <th>Price</th>
+            <th>Terms</th>
+          <% end %>
           <th>Comments</th>
         </tr>
       </thead>
@@ -50,7 +54,7 @@
               <div> <%= task.links.html_safe if task.links %> </div>
             </td>
             <td class="date">
-              <input class="date-input" value='<%= task.date  %>'/> 
+              <input class="date-input" name="date" value='<%= task.date  %>'/> 
             </td>
             <td class='user_name'>
                 <%= select("task", "user_id", User.all.collect {|p| [ p.first_name + ' ' + p.last_name , p.id ] }, { include_blank: "Not assigned", selected: task.user_id }, class: "btn btn-default user", name: 'user_id') %>
@@ -58,6 +62,19 @@
             <td class='status'>
                 <%= select_tag "Status", options_for_select(Task.status.options, task.status), class: "btn btn-default status", name: 'status' %>
             </td>
+            <% if params[:only] == 'sold' %>
+              <td class='price' name='price'>
+                <div> <%= task.sold_task.price %> </div>
+                <input hidden="true" class='id' value= <%="#{task.sold_task.id}"%> />
+              </td>
+              <td class='terms'>
+                <label for='date_start'> Start: </label>
+                <input class="date-input pull-right" value="<%= task.sold_task.date_start %> " name='date_start'/>
+                <label for='date_end'> End: </label>
+                <input class="date-input pull-right" value="<%= task.sold_task.date_end %>" name='date_end' />
+                <input hidden="true" class='id' value= <%="#{task.sold_task.id}"%> />
+              </td>
+            <% end %>
             <td class='comments'>
               <div class="comment_list"> 
                 <% task.comments.order(:created_at).each do |comment| %>
@@ -68,7 +85,7 @@
                       <%= link_to image_tag('remove-red.png'), comment, class: 'pull-right', remote: true, 
                         method: :delete  %> 
                     <% end %>
-                    <p><%= comment.body %></p>
+                    <p><%= comment.body.html_safe %></p>
                   </div>
                 <% end %> 
               </div>
@@ -103,6 +120,10 @@
 
     <div id="declined-comment">
       <textarea id="declined_comment_body" class="comment_body"></textarea>
+    </div><!-- /.modal -->
+
+    <div id="price-dialog" title="Price">
+      <input id="price" type="number" class="price"/>
     </div><!-- /.modal -->
 
     <!-- End hidden blocks -->
