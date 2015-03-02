@@ -177,28 +177,29 @@ $(document).ready(function(){
   }
 
 // ================ change assign_to and status EVENTS ==================== //
-  $('.user, .status').on('change', function(){
+  $('.user, .status').on('change', function(event){
+
     var task_id = $(this).parents().eq(1).attr('id');
-    
-    // КОСТЫЛЬ
-    if(task_id) {
-      var $field = $(this);       
-      var field_name = $(this).attr('name');
-      var field_value = $(this).val();
-      if(field_name == 'status'){
-        if(field_value == 'declined'){
-          $('#declined-comment').data('field_name', field_name);
-          $('#declined-comment').data('task_id', task_id);
-          $('#declined-comment').data('field_value', field_value);
-          $('#declined-comment').data('$field', $field);
-          $('#declined-comment').dialog('open');
-        } else {       
-          changeStatus(task_id, field_name, field_value, $field);
-        }
-      } else {
-        changeUser(task_id, field_name, field_value, $field);
-      }      
-    } 
+    var $field = $(this);       
+    var field_name = $(this).attr('name');
+    var field_value = $(this).val();
+
+    if(field_name == 'status'){
+      if(field_value == 'declined'){
+        $declinedComment = $('#declined-comment');
+        $declinedComment.data('field_name', field_name);
+        $declinedComment.data('task_id', task_id);
+        $declinedComment.data('field_value', field_value);
+        $declinedComment.data('$field', $field);
+        $declinedComment.dialog('open');
+      } else {       
+        changeStatus(task_id, field_name, field_value, $field);
+      }
+    } else {
+      changeUser(task_id, field_name, field_value, $field);
+    }
+
+    return false;
   });
 
   function changeStatus(task_id, field_name, field_value, $field){    
@@ -230,8 +231,10 @@ $(document).ready(function(){
     });
   }
 
-  function changeUser(task_id, $field, field_name, field_value){
+  function changeUser(task_id, field_name, field_value, $field){
+    debugger;
     $.when(send_ajax(task_id, field_name, field_value)).always(function(data){
+        debugger;
       if(data == 'success') { 
           notifie('Task status was successful reassigned')      
       } else {
