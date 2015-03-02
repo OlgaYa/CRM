@@ -27,7 +27,9 @@ class User < ActiveRecord::Base
   def self.reminder
     tasks = Task.where("updated_at < ?", 2.day.ago)
     tasks.each do |t|
-      UserMailer.reminder_instructions(t).deliver
+      unless (t.status ==  "sold" || t.status == "declined" || !t.user_id )
+        UserMailer.reminder_instructions(t).deliver
+      end
     end
   end
 end

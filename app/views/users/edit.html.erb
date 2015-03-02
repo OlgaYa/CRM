@@ -1,0 +1,26 @@
+<h1>Update your profile</h1>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for @user, :url => user_path(params[:id]) do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+
+        <%= f.label :first_name %><br/>
+        <%= f.text_field :first_name %><br/>
+
+        <%= f.label :last_name %><br/>
+        <%= f.text_field :last_name %><br/>
+        
+        <%= f.label :email %><br/>
+        <%= f.text_field :email %><br/>
+
+        <%= f.label :password %><br/>
+        <%= f.password_field :password %><br/>
+
+        <%= f.label :password_confirmation, "Confirm Password" %><br/>
+        <%= f.password_field :password_confirmation %><br/>
+
+        <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
+    <% end %>
+      </div>
+</div>
