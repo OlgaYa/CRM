@@ -39,7 +39,7 @@ $(document).ready(function(){
           $td_field.empty();
           $td_field.html(str);
           $(this).dialog('close');
-          $.when(send_ajax(task_id, $td_editor.attr('name'), str)).always(function(data, textStatus, jqXHR){
+          $.when(send_ajax('tasks/', task_id, $td_editor.attr('name'), str)).always(function(data, textStatus, jqXHR){
             if(textStatus == 'success'){
               notifie('Field has been successfully updated!');
             } else {
@@ -66,6 +66,7 @@ $(document).ready(function(){
     }
   });
 
+  //dialog for change date
   var flag = false;
   $('.date-input').datepicker({
     dateFormat: 'yy-mm-dd',
@@ -78,7 +79,7 @@ $(document).ready(function(){
         var sold_task_id = $(obj.input).siblings('.id').val();
         field = obj.input.attr('name');
         if(field == 'date'){
-          $.when(send_ajax(task_id, field, date)).always(function(data, textStatus, jqXHR){
+          $.when(send_ajax('tasks/', task_id, field, date)).always(function(data, textStatus, jqXHR){
             if(textStatus == 'success'){
               notifie('Date has been successfully updated!');
             } else {
@@ -86,9 +87,9 @@ $(document).ready(function(){
             }
           });
         } else {
-          $.when(update_sold_task(sold_task_id, field, date)).always(function(data, textStatus, jqXHR){
+          $.when(send_ajax('sold_tasks/', sold_task_id, field, date)).always(function(data, textStatus, jqXHR){
             if(textStatus == 'success'){
-              notifie('Date has been successfully updated!');
+              notifie('Terms has been successfully updated!');
             } else {
               error();
             }
@@ -99,6 +100,7 @@ $(document).ready(function(){
     }
   });
 
+  // popup after chenge status to "Decline"
   $('#declined-comment').dialog({
     autoOpen: false,
     modal: true,
@@ -130,6 +132,7 @@ $(document).ready(function(){
       ]
   });
 
+  //dialog for price
   $('#price-dialog').dialog({
     autoOpen: false,
     modal: true,
@@ -152,7 +155,7 @@ $(document).ready(function(){
             var $dialog = $(this)
             debugger;
             if(price.length > 0){
-              $.when(update_sold_task($(this).data('sold_task_id'), 'price', price)).always(function(data){
+              $.when(send_ajax('sold_tasks/', $(this).data('sold_task_id'), 'price', price)).always(function(data){
                 if(data == 'success') { 
                   $td_field.empty();
                   $td_field.html(price);
@@ -169,7 +172,8 @@ $(document).ready(function(){
         }
       ]
   });
-
+  
+  // =========================== open price editor EVENT ================================== //
   $('.price').on('dblclick', function() {
     sold_task_id = $(this).children('.id').val();
     $td_field = $(this).children()
@@ -268,7 +272,7 @@ $(document).ready(function(){
   });
 
   function changeStatus(task_id, field_name, field_value, $field){    
-    $.when(send_ajax(task_id, field_name, field_value)).always(function(data){
+    $.when(send_ajax('tasks/', task_id, field_name, field_value)).always(function(data){
       if(data == 'success'){
         d = new Date();
         $field.parents().eq(1).children('.date').children('.date-input').val(d.yyyymmdd());   
@@ -297,7 +301,7 @@ $(document).ready(function(){
   }
 
   function changeUser(task_id, field_name, field_value, $field){
-    $.when(send_ajax(task_id, field_name, field_value)).always(function(data){
+    $.when(send_ajax('tasks/', task_id, field_name, field_value)).always(function(data){
       if(data == 'success') { 
           notifie('Task status was successful reassigned')      
       } else {
@@ -305,40 +309,6 @@ $(document).ready(function(){
       }      
     });
   }
-  
-  function send_ajax(task_id, field, value){
-    var values = { 'field': field, 'value': value };
-    return $.ajax({
-            type: 'PATCH',
-            url: 'tasks/' + task_id,
-            dataType: 'json',
-            data: values 
-          });
-  }
-
-  function update_sold_task(sold_task_id, field, value){
-    var values = { 'field': field, 'value': value };
-    return $.ajax({
-            type: 'PATCH',
-            url: 'sold_tasks/' + sold_task_id,
-            dataType: 'json',
-            data: values 
-          });
-  }
-
-  Date.prototype.yyyymmdd = function() {
-    var yyyy = this.getFullYear().toString();
-    var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-    var dd  = this.getDate().toString();
-    return yyyy +'-'+(mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
-  }
-
-  //function parse value of params with 'name' 
-  function getParameterByName(name) {
-      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-          results = regex.exec(location.search);
-      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-  }  
 
   function moveTo(task_id, path){
     $('#'+task_id).remove();
@@ -359,6 +329,34 @@ $(document).ready(function(){
         break;
     }
   }
+
+  //function parse value of params with 'name' 
+  function getParameterByName(name) {
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+          results = regex.exec(location.search);
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  }   
+  
+  function send_ajax(path, task_id, field, value){
+    var values = { 'field': field, 'value': value };
+    return $.ajax({
+            type: 'PATCH',
+            url: path + task_id,
+            dataType: 'json',
+            data: values 
+          });
+  }
+
+
+// ================ common events ==================== //
+  Date.prototype.yyyymmdd = function() {
+    var yyyy = this.getFullYear().toString();
+    var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+    var dd  = this.getDate().toString();
+    return yyyy +'-'+(mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
+  }
+
+  
 
   function notifie(message){
     clearTimeout(notifierTimer);

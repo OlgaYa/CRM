@@ -97,7 +97,7 @@ td .comment:last-child{
   font-size: 8pt;
 }
 
-td:hover:not(.status):not(.user):not(.message):not(.remove):not(.number){
+td:hover:not(.status):not(.user_name):not(.message):not(.remove):not(.number){
   background-color: #FAEDAB;
 }
 
@@ -131,6 +131,11 @@ td:hover:not(.status):not(.user):not(.message):not(.remove):not(.number){
 
 #price  {
   width: 250px;
+}
+
+.date_end {
+  margin-left: 4%;
+  -moz-margin-start: 3%;
 }
 
 /* FOOTER */

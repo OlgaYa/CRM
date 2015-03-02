@@ -47,8 +47,10 @@ class TasksController < ApplicationController
         end 
       end 
     else
-      if (params[:field] == "user_id" and params[:value].to_i != current_user.id)
-        UserMailer.new_assign_user_instructions(task, current_user, params[:value]).deliver
+      if (params[:field] == "user_id" and params[:value] != "")
+        if current_user.id != params[:value].to_i
+          UserMailer.new_assign_user_instructions(task, current_user, params[:value]).deliver
+        end
       end
       task.update_attribute(params[:field].to_sym, params[:value])
     end
