@@ -9,7 +9,7 @@ class CommentsController < ApplicationController
             " </span><span>" + current_user.first_name +
             " </span> <a class='pull-right' data-remote='true'"+
             " rel='nofollow' data-method='delete' href='"+ comment_path(comment) + 
-            "'><img src='/assets/remove-red.png' ></a> <p>" + params[:body] +
+            "'><img src='#{ActionController::Base.helpers.asset_path("remove-red.png")}' ></a> <p>" + params[:body] +
             "</p></div>"
     task.update_attribute(:date, Date.current())
     render :html => resp.html_safe
