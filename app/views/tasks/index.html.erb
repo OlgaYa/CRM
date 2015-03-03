@@ -36,22 +36,22 @@
               <p> <%= i %> </p>
               <% i += 1 %>
             </td>
-            <td class='editor' name='name'>
-              <div> <%= task.name.html_safe if task.name%> </div>
+            <td class='editable-field' name='name'>
+              <%= task.name.html_safe if task.name%>
             </td>
-            <td class='editor' name='source'>
-              <div> <%= task.source.html_safe if task.source %> </div>
+            <td class='editable-field' name='source'>
+              <%= task.source.html_safe if task.source %>
             </td>
-            <td class='editor' name='skype'>
-              <div> <%= task.skype.html_safe if task.skype %> </div>
-            <td class='editor' name='email'>
-              <div> <%= task.email.html_safe if task.email %> </div>
+            <td class='editable-field' name='skype'>
+              <%= task.skype.html_safe if task.skype %>
+            <td class='editable-field' name='email'>
+              <%= task.email.html_safe if task.email %>
             </td>
             <td class="message">
               <div> <%=  %> </div>
             </td>
-            <td class='editor links' name='links'>
-              <div> <%= task.links.html_safe if task.links %> </div>
+            <td class='links editable-field' name='links'>
+              <%= task.links.html_safe if task.links %>
             </td>
             <td class="date">
               <input class="date-input" name="date" value='<%= task.date  %>'/> 
@@ -109,9 +109,9 @@
     <% end %>
 
     <!-- Hidden blocks for popup dialogs -->
-    <div id="dialog" title="Field content editor">
-      <textarea class="text_editor"></textarea>
-    </div>
+    <div id='common-dialog'> 
+      <textarea id="text-editor"></textarea>
+    </div>   
 
     <div id="comments_dialog" >
       <textarea id="comment_body" class="comment_body"></textarea>
