@@ -9,6 +9,12 @@ class TasksController < ApplicationController
     else
       @tasks = Task.all.where("status != 'sold' AND status != 'declined' OR status IS NULL").order("created_at DESC")
     end
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data Task.all.to_csv }
+      format.xls { send_data Task.all.to_csv(col_sep: "\t") }
+    end
   end
 
   def create

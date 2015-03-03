@@ -9,4 +9,13 @@ class Task < ActiveRecord::Base
   extend Enumerize
 
   enumerize :status, in: [:negotiations, :assigned_meeting, :waiting_estimate, :waiting_specification, :sold, :declined]
+
+    def self.to_csv(options = {})
+		  CSV.generate(options) do |csv|
+		  csv << ["name", "email", "status", "date"]
+	    all.each do |product|
+	      csv << product.attributes.values_at(*["name", "email", "status", "date"])
+  		end
+	  end
+	end
 end

@@ -24,7 +24,6 @@ gem 'pg'
 gem 'simple_form'
 gem 'enumerize'
 gem 'jquery-ui-rails'
-gem 'tinymce-rails'
 # gem "therubyracer"
 # gem "less-rails"
 gem "rufus-scheduler", '~> 2.0.24'

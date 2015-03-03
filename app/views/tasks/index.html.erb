@@ -68,10 +68,10 @@
                 <input hidden="true" class='id' value= <%="#{task.sold_task.id}"%> />
               </td>
               <td class='terms'>
-                <label for='date_start'> Start: </label>
-                <input class="date-input " value="<%= task.sold_task.date_start %> " name='date_start'/>
-                <label for='date_end'> End: </label>
-                <input class="date-input date_end" value="<%= task.sold_task.date_end %>" name='date_end' />
+                <label class='date_start' for='date_start'> Start: </label>
+                <input class='date-input' value="<%= task.sold_task.date_start %> " name='date_start'/>
+                <label class='date_end' for='date_end'> End: </label>
+                <input class="date-input" value="<%= task.sold_task.date_end %>" name='date_end' />
                 <input hidden="true" class='id' value= <%="#{task.sold_task.id}"%> />
               </td>
             <% end %>
