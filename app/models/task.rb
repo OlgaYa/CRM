@@ -12,7 +12,7 @@ class Task < ActiveRecord::Base
 
     def self.to_csv(options = {})
 		  CSV.generate(options) do |csv|
-		  csv << ["name", "email", "status", "date"]
+		  csv << ["Name", "Email", "Status", "Date"]
 	    all.each do |product|
 	      csv << product.attributes.values_at(*["name", "email", "status", "date"])
   		end
