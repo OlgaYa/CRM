@@ -3,65 +3,53 @@ $(document).ready(function(){
   var $notifier = $('.notifier');
   var notifierTimer;
 
-// ==== $(#dialog) vars === //
-  var $td_editor; // cell 
-  var $td_field; // cell children (div)
+  var $commonDialog   = $('#common-dialog');
+  var $commentsDialog = $('#comments_dialog');
+  var $declinedCommentDialog = $('#declined-comment');
+  var $priceDialog = $('#price-dialog');
 
-// ==== $(#comments_dialog) vars === //
-  var $td_comment; // cell 
+  var $textEditor = $('#text-editor');
+  var $commentBody = $('#comment_body');
+  var $priceInput = $('#price');
 
-// =========================== modal dialogs ======================================= //
-  //dialog for text editor
-  $('#dialog').dialog({
+
+// =========================== DIALOGS INIT ======================================= //
+
+  //dialog for fields name, source, skype, email, links
+  $commonDialog.dialog({
     autoOpen: false,
     closeOnEscape: true,
-    close: function(event, ui){
-      $td_editor.removeClass('active_td');
-    },
-    open: function(event, ui){
+    resizable: false,
+    maxHeight: 200,
+    width: 300,
+    closeText: 'close',
+    open: function (event, ui){
       $('.ui-dialog-titlebar').show();
-      $input = $(this).children('textarea');
-      str = $td_field.html();
-      $input.val(str); 
+      $td = $commonDialog.data('$currentTD');
+      $td.active();
+      var tdContent = $td.text();
+      $textEditor.val(tdContent.trim());
     },
-    buttons: [
-      {
-        text: 'Close',
-        click: function() {
-          $(this).dialog('close');
-        }
-      },
-      
-      {
-        text: 'Save',
-        click: function() {
-          str = $(this).children('textarea').val();
-          $td_field.empty();
-          $td_field.html(str);
-          $(this).dialog('close');
-          $.when(send_ajax('tasks/', task_id, $td_editor.attr('name'), str)).always(function(data, textStatus, jqXHR){
-            if(textStatus == 'success'){
-              notifie('Field has been successfully updated!');
-            } else {
-              error();
-            }
-          });
-        }
-      }
-    ]
+    close: function (event, ui){
+      $td = $commonDialog.data('$currentTD');
+      $td.nonActive();
+    }
   });
 
-  // dialog for comments editor
-  $('#comments_dialog').dialog({
+   // dialog for comments editor
+  $commentsDialog.dialog({
     autoOpen: false,
     draggable: false,
     modal: true,
     width: 300,
     close: function(event, ui){
-      $(this).children('div').remove();      
+      $td = $commentsDialog.data('$td')
+      $(this).children('div').remove();
+      $td.nonActive();      
     },
     open: function(event, ui){
-      $td_comment.addClass('active_td');
+      $td = $commentsDialog.data('$td');
+      $td.active();      
       $(".ui-dialog-titlebar").hide();
     }
   });
@@ -77,37 +65,40 @@ $(document).ready(function(){
       if(flag){
         var task_id = obj.input.parents().eq(1).attr('id');
         var sold_task_id = $(obj.input).siblings('.id').val();
-        field = obj.input.attr('name');
-        if(field == 'date'){
-          $.when(send_ajax('tasks/', task_id, field, date)).always(function(data, textStatus, jqXHR){
-            if(textStatus == 'success'){
-              notifie('Date has been successfully updated!');
-            } else {
-              error();
-            }
-          });
+        var filedName = obj.input.attr('name');
+        var path;
+        var values = { 'field': filedName, 'value': date };
+        if(filedName == 'date'){
+          path = 'tasks/' + task_id; 
         } else {
-          $.when(send_ajax('sold_tasks/', sold_task_id, field, date)).always(function(data, textStatus, jqXHR){
-            if(textStatus == 'success'){
-              notifie('Terms has been successfully updated!');
-            } else {
-              error();
-            }
-          })
+          path = 'sold_tasks/' + sold_task_id;
         }
+        $.when(sendARequest(path, values)).always(function(data, textStatus, jqXHR){
+          if(textStatus == 'success'){
+            notifie( capitalize(filedName) + ' has been successfully updated!');
+          } else {
+            error();
+          }
+        })
         flag = false;      
       }
     }
   });
 
   // popup after chenge status to "Decline"
-  $('#declined-comment').dialog({
+  var reload = true;
+  $declinedCommentDialog.dialog({
     autoOpen: false,
     modal: true,
     title: 'Please describe the reason of refusal',
     open: function(event, ui){
       $('.ui-dialog-titlebar').show();
     },
+    close: function(event, ui){
+      if(reload){
+        location.reload(true);
+      }
+    }, 
     buttons: 
       [ 
         { 
@@ -122,101 +113,117 @@ $(document).ready(function(){
           click: function(){
             task_id = $(this).data('task_id');
             body = $('#declined_comment_body').val();
+            $('#declined_comment_body').val("");
             if(body.length > 0){
               addComment(task_id, body);
               changeStatus(task_id, $(this).data('field_name'), $(this).data('field_value'), $(this).data('$field'));
+              reload = false; 
               $(this).dialog('close');
-            } 
+              reload = true;
+            }
           }
         }
       ]
   });
 
   //dialog for price
-  $('#price-dialog').dialog({
+  $priceDialog.dialog({
     autoOpen: false,
-    modal: true,
+    height: 100,
     open: function(event, ui){
       $('.ui-dialog-titlebar').show();
-    },
-    buttons: 
-      [ 
-        { 
-          text: 'Close',
-          click: function(){
-            $(this).dialog('close');
-          }
-        },
-        {
-          text: 'Save',
-          click: function(){
-            var task_id = $(this).data('task_id');
-            var price = $('#price').val();
-            var $dialog = $(this)
-            debugger;
-            if(price.length > 0){
-              $.when(send_ajax('sold_tasks/', $(this).data('sold_task_id'), 'price', price)).always(function(data){
-                if(data == 'success') { 
-                  $td_field.empty();
-                  $td_field.html(price);
-                  $dialog.dialog('close');
-                  notifie('Price was successful updated')      
-                } else {
-                  error();
-                }      
-              });
-            } else {
-              error('Please type only numbers');
-            }
-          }
-        }
-      ]
+      $td = $priceDialog.data('$td');
+      $td.active();
+    }, 
+    close: function(event, ui){
+      $td = $priceDialog.data('$td');
+      $td.nonActive();
+    }
   });
+
+// =========================== EVENTS ======================================= //
   
+  // ======= open  name, source, skype, links, email editor EVENT ========= //
+  $('.editable-field').on('dblclick', function(){    
+    closeAllDialogs();
+    title = $(this).attr('name');    
+    $commonDialog.dialog('option', 'title', capitalize(title));
+    $commonDialog.data('$currentTD', $(this));
+    $commonDialog.dialog('open');
+  });
+
+  // update field after press enter on text editor (common dialog)
+  $textEditor.on('keypress', function(e){
+    if(e.keyCode == 13 ){
+      $td = $commonDialog.data('$currentTD');
+      var editorContent = $textEditor.val();
+      var filedName = $td.attr('name');
+      var taskId = $td.parent().attr('id');
+      $td.html(editorContent);
+      $commonDialog.dialog('close');
+      
+      var path = 'tasks/' + taskId
+      var values = { 'field': filedName, 'value': editorContent };
+      $.when(sendARequest(path, values)).always(function(data, textStatus, jqXHR){
+        if(textStatus == 'success'){
+          notifie(capitalize(filedName) + ' has been successfully updated!');
+        } else {
+          error();
+        }
+      });
+    }
+  });
+
   // =========================== open price editor EVENT ================================== //
   $('.price').on('dblclick', function() {
+    closeAllDialogs();
     sold_task_id = $(this).children('.id').val();
     $td_field = $(this).children()
-    $('#price-dialog').data('sold_task_id', sold_task_id);
-    $('#price-dialog').dialog('open');
+    $priceInput.val($(this).children().text().trim())
+    $priceDialog.data('$td', $(this));
+    $priceDialog.data('sold_task_id', sold_task_id);
+    $priceDialog.dialog('open');
   });
 
-// =========================== open text editor EVENT ================================== //
-  $('.editor').on('dblclick', function() {
-    $('#dialog').dialog('close');
-    $(this).addClass('active_td');
-    $td_editor = $(this);
-    $td_field = $(this).children()
-    task_id = $(this).parent().attr('id')
-    $('#dialog').dialog('open');
-
-    $('.text_editor').tinymce({
-      toolbar: 'link',
-      plugins: 'link'
-    });
+  $priceInput.on('keypress', function(e){
+    if(e.keyCode == 13 ){
+      var price = $priceInput.val();
+      if(price.length > 0){
+        $.when(sendARequest('sold_tasks/' + $priceDialog.data('sold_task_id'), 
+                            {'field': 'price', 'value': price })).always(function(data){
+          if(data == 'success') { 
+            $td_field.empty();
+            $td_field.html(price);
+            $priceDialog.dialog('close');
+            notifie('Price was successful updated')      
+          } else {
+            error();
+          }      
+        });
+      } else {
+        error('Please type only numbers');
+      }
+    }
   });
 
-// ================ comments_dialog EVENTS ==================== //
+  // ============================== COMMENTS ================================== //
   var timer;
-  var add_comment_task_id;
-
   // open comments_dialog
-  $('.comments').on('dblclick', function(e){
-    $('#dialog').dialog('close'); // close dialog if event start and previous dialog was not closed
-    
-    $td_comment = $(this) // cell
-    add_comment_task_id = $td_comment.parent().attr('id') // tr.attr('id') == Task.id
-    
-    $('#comments_dialog').dialog('option', 'position', { my: 'left-20 top-20',  of: e } );
-    $('#comments_dialog').dialog('open'); // open new dialog
-    $('#comments_dialog').prepend($td_comment.children().clone())
+  $('.comments').on('dblclick', function(e){    
+    closeAllDialogs();
+    var $td = $(this) // cell
+    var task_id = $td.parent().attr('id') // tr.attr('id') == Task.id
+    $commentsDialog.data('task_id', task_id);
+    $commentsDialog.data('$td', $td);
+    $commentsDialog.dialog('option', 'position', { my: 'left-20 top-20',  of: e } );
+    $commentsDialog.dialog('open'); // open new dialog
+    $commentsDialog.prepend($td.children().clone())
   });
 
   // close comments_dialog
-  $('#comments_dialog').on('mouseleave', function(){
+  $commentsDialog.on('mouseleave', function(){
     timer = setTimeout(function () {
-      $('#comments_dialog').dialog('close');
-      $td_comment.removeClass('active_td');
+      $commentsDialog.dialog('close');
     }, 500);
   }).on("mouseenter", function(){
     clearTimeout(timer);
@@ -224,9 +231,10 @@ $(document).ready(function(){
 
   // save comment
   $('.comment_save').on("click", function(){
-    var body = $('#comment_body').val()
+    var body = $commentBody.val();
+    var task_id = $commentsDialog.data('task_id');
     if(body.length > 0) {
-      addComment(add_comment_task_id, body);
+      addComment(task_id, body);
     }
   });
 
@@ -237,9 +245,9 @@ $(document).ready(function(){
         url: 'comments',
         dataType: 'html',
         success: function(resp){
-          $('#comments_dialog').children('.comment_list').append($.parseHTML(resp));
+          $commentsDialog.children('.comment_list').append($.parseHTML(resp));
           $('#'+task_id).children('.comments').children('.comment_list').append($.parseHTML(resp));
-          $('#comment_body').val("");
+          $commentBody.val("");
         },
         data: values 
       });
@@ -255,6 +263,7 @@ $(document).ready(function(){
 
     if(field_name == 'status'){
       if(field_value == 'declined'){
+        closeAllDialogs();
         $declinedComment = $('#declined-comment');
         $declinedComment.data('field_name', field_name);
         $declinedComment.data('task_id', task_id);
@@ -272,7 +281,7 @@ $(document).ready(function(){
   });
 
   function changeStatus(task_id, field_name, field_value, $field){    
-    $.when(send_ajax('tasks/', task_id, field_name, field_value)).always(function(data){
+    $.when(sendARequest('tasks/' + task_id, { 'field': field_name, 'value': field_value })).always(function(data){
       if(data == 'success'){
         d = new Date();
         $field.parents().eq(1).children('.date').children('.date-input').val(d.yyyymmdd());   
@@ -301,7 +310,7 @@ $(document).ready(function(){
   }
 
   function changeUser(task_id, field_name, field_value, $field){
-    $.when(send_ajax('tasks/', task_id, field_name, field_value)).always(function(data){
+    $.when(sendARequest('tasks/' + task_id, { 'field': field_name, 'value': field_value })).always(function(data){
       if(data == 'success') { 
           notifie('Task status was successful reassigned')      
       } else {
@@ -332,31 +341,40 @@ $(document).ready(function(){
 
   //function parse value of params with 'name' 
   function getParameterByName(name) {
-      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-          results = regex.exec(location.search);
-      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-  }   
-  
-  function send_ajax(path, task_id, field, value){
-    var values = { 'field': field, 'value': value };
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  }  
+
+// ========================== AJAX ========================================= //
+  function sendARequest(path, values){
     return $.ajax({
             type: 'PATCH',
-            url: path + task_id,
+            url: path,
             dataType: 'json',
             data: values 
           });
   }
 
+//============================ HELPERS ============================================//
+  function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1); 
+  }
 
-// ================ common events ==================== //
+  $.fn.active = function(){
+    this.addClass('active-td');
+  }
+
+  $.fn.nonActive = function(){
+    this.removeClass('active-td');
+  }  
+
   Date.prototype.yyyymmdd = function() {
     var yyyy = this.getFullYear().toString();
     var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
     var dd  = this.getDate().toString();
     return yyyy +'-'+(mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
-  }
-
-  
+  }  
 
   function notifie(message){
     clearTimeout(notifierTimer);
@@ -390,5 +408,10 @@ $(document).ready(function(){
     notifierTimer = setTimeout(function(){
       $notifier.fadeOut('slow');
     },2000);    
+  }
+
+  function closeAllDialogs(){
+    $commonDialog.dialog('close');
+    $priceDialog.dialog('close');
   }  
 });

@@ -17,6 +17,13 @@ body > #wrapper {
   height: auto !important;
 }
 
+/* LOG IN */
+
+.log-in{
+  margin-right: auto;
+  margin-left: auto;
+}
+
 /* TASK TABLE */
 
 option {
@@ -101,7 +108,7 @@ td:hover:not(.status):not(.user_name):not(.message):not(.remove):not(.number){
   background-color: #FAEDAB;
 }
 
-.active_td {
+.active-td {
   background-color:  #FAEDAB;
 }
 
@@ -134,8 +141,14 @@ td:hover:not(.status):not(.user_name):not(.message):not(.remove):not(.number){
 }
 
 .date_end {
-  margin-left: 4%;
-  -moz-margin-start: 3%;
+  padding-right: 4%;
+  -moz-padding-end: 3%;
+}
+
+#text-editor {
+  width: 255px;
+  max-width: 255px;
+  min-height: 80px;
 }
 
 /* FOOTER */
