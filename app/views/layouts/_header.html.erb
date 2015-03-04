@@ -28,7 +28,7 @@
                   <li><%= link_to 'Generate list of e-mails', tasks_path(format: "xls") %></li>
                 </ul>
               </li>
-              <li><a href="#">Statistic</a></li>
+              <li><li><%= link_to "Statistic", statistics_path %></li></li>
               <li><a href="#">Mitings</a></li>
               <% if current_user.admin? %>
               <li class="dropdown">
