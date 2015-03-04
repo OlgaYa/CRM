@@ -1,0 +1,58 @@
+<span> Date from: </span>
+<div class="date">
+    <input class="date-input" name="date" value="<%= @fromDate %>" /> 
+</div>
+<span> to: </span>
+<div class="date">
+    <input class="date-input" name="date" value="<%= @toDate  %>" /> 
+</div>
+<span> Count all task: <%= @allcountTask%> </span><br/>
+<span> Change status: </span><br/>
+<span> all: </span>
+<div><input type="checkbox" id="allStatus" checked="checked" /></div>
+<div>
+	<%= select_tag "Status", options_for_select(Task.status.options), disabled: true, class: "btn btn-default ", name: 'allStatus', id: "status" %>
+</div>
+<span> Assign: </span><br/>
+<span> all: </span>
+<div><input type="checkbox" id="allUser" checked="checked" /></div>
+<div >
+	<%= select("task", "user_id", User.all.collect {|p| [ p.first_name + ' ' + p.last_name , p.id ] }, { include_blank: "Not assigned" }, disabled: true, class: "btn btn-default", id: "user") %>
+</div>
+<div> Count all task for choose creteria: <span id="countTask"><%= @countTask%> (<%= @countTask/@allcountTask*100 %>%)  </span> </div><br/>
+
+<script type="text/javascript">
+  var flag_allStatus = true;
+  // $("#allStatus").change(function(){
+  // 	flag_allStatus = !flag_allStatus;
+  //   $("#status").prop('disabled', flag_allStatus); 
+  // });
+  var flag_allUser = true;
+  // $("#allUser").change(function(){
+  // 	flag_allUser = !flag_allUser;
+  //   $("#user").prop('disabled', flag_allUser);
+  // });
+  $("#status, #user, #allUser, #allStatus").on( 'change', function(e){
+    var target = $(e.target);
+    //alert(target.attr('id'));
+    var current_id = target.attr('id');
+    if(current_id == "allStatus"){
+    	flag_allStatus = !flag_allStatus;
+    	$("#status").prop('disabled', flag_allStatus);
+    }
+    else
+	    if(current_id == "allUser"){
+	    	flag_allUser = !flag_allUser;
+	        $("#user").prop('disabled', flag_allUser);
+	    }
+    	else
+		    $.ajax({
+		      type: "POST",
+		      url: "statistics/change_information",
+		      data: {'status': $('#status').val(), 'user': $('#user').val()},
+		      success: function(data) {
+		      	$("#countTask").html(data);
+		      }
+		    });
+  });
+</script>
