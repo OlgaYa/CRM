@@ -8,7 +8,7 @@ require 'rufus/scheduler'
  	User.reminder
  end 
 
- scheduler.in '2s' do
+ scheduler.in '30s' do
  	Message.check_mailing
  end
 
