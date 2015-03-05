@@ -7,4 +7,12 @@ require 'rufus/scheduler'
  # every day of the week at 11:00 
  	User.reminder
  end 
- #scheduler.join
+
+ scheduler.in '2s' do
+ 	Message.check_mailing
+ end
+
+
+ 
+
+

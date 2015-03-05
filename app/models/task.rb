@@ -5,6 +5,7 @@ class Task < ActiveRecord::Base
   has_many :comments, through: :task_comments
   
   has_one :sold_task,  dependent: :destroy
+  has_many :messages, dependent: :destroy
 
   extend Enumerize
 
@@ -13,8 +14,8 @@ class Task < ActiveRecord::Base
     def self.to_csv(options = {})
 		  CSV.generate(options) do |csv|
 		  csv << ["Name", "Email", "Status", "Date"]
-	    all.each do |product|
-	      csv << product.attributes.values_at(*["name", "email", "status", "date"])
+      all.each do |task|
+	      csv << task.attributes.values_at(*["name", "email", "status", "date"])
   		end
 	  end
 	end

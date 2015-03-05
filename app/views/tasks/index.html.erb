@@ -48,7 +48,7 @@
               <%= task.email.html_safe if task.email %>
             </td>
             <td class="message">
-              <div> <%=  %> </div>
+              <div> <%= task.message.last %> </div>
             </td>
             <td class='links editable-field' name='links'>
               <%= task.links.html_safe if task.links %>
