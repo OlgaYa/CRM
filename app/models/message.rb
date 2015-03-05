@@ -3,6 +3,7 @@ require 'net/http'
 
 class Message < ActiveRecord::Base
 	belongs_to :user
+	belongs_to :task
 
 
 	def self.check_mailing
