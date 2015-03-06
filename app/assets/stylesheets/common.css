@@ -230,4 +230,19 @@ footer {
 .notice-success {
   background-color: #dff0d8!important;
 }
+.datestatistic{
+  margin-bottom: 20px;
+}
+.date-inform {
+  width: 90px; 
+  margin: 5px;
+}
+.statistics{
+  width: 30%;
+  float: left;
+}
+.graphics{
+  width: 70%;
+  float: right;
+}
 
