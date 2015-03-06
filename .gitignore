@@ -91,3 +91,6 @@ config/database.yml
 
 #secrets.yml
 config/secrets.yml
+
+#imap.yml
+config/imap.yml

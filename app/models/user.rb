@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
 
   has_many :tasks
   has_many :comments, dependent: :destroy
-  has_many :sold_tasks 
+  has_many :sold_tasks
+  has_many :messages, dependent: :destroy
 
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :last_name, presence: true, length: { maximum: 50 }

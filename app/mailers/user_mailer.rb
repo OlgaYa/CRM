@@ -13,12 +13,14 @@ class UserMailer < ActionMailer::Base
   	@user = User.find(user_id)
   	@task_name = strip_tags(task.name)
   	@current_user = current_user
-  	mail(:to => @user.email, :subject => "New task")
+    subject = "TASK #{task.id}"
+  	mail(:to => @user.email, :subject => subject )
   end
 
   def reminder_instructions(task)
   	@task_name = strip_tags(task.name)
   	@user = task.user
-  	mail(:to => @user.email, :subject => "Reminder task")
+    subject = "Reminder TASK #{task.id}"
+  	mail(:to => @user.email, :subject => subject )
   end
 end

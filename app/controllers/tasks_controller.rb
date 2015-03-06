@@ -4,16 +4,21 @@ class TasksController < ApplicationController
     case params[:only] 
     when 'sold'
       @tasks = Task.all.where("status = 'sold'").order("created_at DESC")
+      filename = 'sold'
     when 'declined'
       @tasks = Task.all.where("status = 'declined'").order("created_at DESC")
+      filename = 'declined'
+    when 'all' 
+      @tasks = Task.all.order("created_at DESC")
+      filename = 'all'
     else
       @tasks = Task.all.where("status != 'sold' AND status != 'declined' OR status IS NULL").order("created_at DESC")
+      filename = 'open'
     end
-
+    
     respond_to do |format|
       format.html
-      format.csv { send_data Task.all.to_csv }
-      format.xls { send_data Task.all.to_csv(col_sep: "\t") }
+      format.xls { send_data @tasks.to_csv(col_sep: "\t"), :filename =>  filename + ".xls" }
     end
   end
 
