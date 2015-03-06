@@ -37,21 +37,29 @@
               <% i += 1 %>
             </td>
             <td class='editable-field' name='name'>
-              <%= task.name.html_safe if task.name%>
+              <%= task.name %>
             </td>
             <td class='editable-field' name='source'>
-              <%= task.source.html_safe if task.source %>
+              <%= task.source %>
             </td>
             <td class='editable-field' name='skype'>
-              <%= task.skype.html_safe if task.skype %>
+              <%= task.skype %>
             <td class='editable-field' name='email'>
-              <%= task.email.html_safe if task.email %>
+              <%= task.email %>
             </td>
-            <td class="message">
-              <div> <%= task.messages.last.body if task.messages.last %> </div>
+            <td class="messages">
+              <div class="message_list"> 
+                <% task.messages.each do |mess| %>
+                  <div class="message">
+                    <span class="comment_time"><%= mess.datetime.strftime('%e.%m %H:%M') if mess.datetime %></span>
+                    <span><%= mess.user.first_name %></span> 
+                    <p><%= mess.body %></p>    
+                  </div>
+                <% end %>
+              </div>
             </td>
             <td class='links editable-field' name='links'>
-              <%= task.links.html_safe if task.links %>
+              <%= task.links %>
             </td>
             <td class="date">
               <input class="date-input" name="date" value='<%= task.date  %>'/> 
@@ -85,7 +93,7 @@
                       <%= link_to image_tag('remove-red.png'), comment, class: 'pull-right', remote: true, 
                         method: :delete  %> 
                     <% end %>
-                    <p><%= comment.body.html_safe %></p>
+                    <p><%= comment.body %></p>
                   </div>
                 <% end %> 
               </div>

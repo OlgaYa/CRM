@@ -5,6 +5,12 @@ class Message < ActiveRecord::Base
 	belongs_to :user
 	belongs_to :task
 
+	validates :user, presence: true
+	validates :task, presence: true
+	validates :body, presence: true
+  validates :datetime, presence: true
+  validates :user_id, presence: true
+  validates :task_id, presence: true
 
 	def self.check_mailing
 	  config = YAML.load(File.read(File.join(Rails.root, 'config', 'imap.yml')))
@@ -20,7 +26,8 @@ class Message < ActiveRecord::Base
 	    from_email = message.from
 	    task_id = message.subject.scan( /\d+$/ ).first
 	    user_id = User.find_by(email: from_email).id
-	    self.new(user_id: user_id, body: plain_body, datetime: date, task_id: task_id).save
+	    body = plain_body.split(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}/).first;
+	    self.new(user_id: user_id, body: body, datetime: date, task_id: task_id).save
 	    imap.store(mail, "+FLAGS", [:Seen])
 	  end
 	  imap.logout()

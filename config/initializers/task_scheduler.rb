@@ -8,7 +8,7 @@ scheduler.cron '0 11 * * 1-5' do
  	User.reminder
 end 
 
-scheduler.every '30s' do
+scheduler.every '5s' do
  	Message.check_mailing
 end
 
