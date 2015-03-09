@@ -11,7 +11,13 @@ $(document).ready(function(){
 		modal: true,
 		width: 410,
 		resizable: false,
-		title: 'Add new user'
+		title: 'Add new user',
+		close: function(){
+			$('.form-control').each(function(){
+	    			$(this).val("");
+	    		})
+  		$('.check-box-field').prop('checked', false);
+		}
 	});
 
 	// ============= EVENTS ====================== //
@@ -37,10 +43,6 @@ $(document).ready(function(){
 	    											+"<td>"+ userStatus +"</td>"
 	    											+"<td></td>"
 	    											+"</tr>");
-	    		$('.form-control').each(function(){
-	    			$(this).val("");
-	    		})
-	    		$('.check-box-field').prop('checked', false);
 	    		notifie('New user was successfully invited')
 	    		$newUserDialog.dialog('close');
 	    	}	else {
