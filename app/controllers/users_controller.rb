@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
 	skip_before_action :authenticate_user!, only: [:update]
 	before_action :correct_user,   only: [:edit, :update]
+  
   # def index
-  #   @users = User.paginate(page: params[:page])
+  #   @users = User.all.order(:created_at)
   # end
 
   def show
@@ -12,7 +13,6 @@ class UsersController < ApplicationController
   def edit
   	@user = User.find(params[:id])
   end
-
 
   def update
     @user = User.find(params[:id])

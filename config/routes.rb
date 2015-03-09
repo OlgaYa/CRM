@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   root to: 'static_pages#home'
   match '/home', to: 'static_pages#home', via: 'get'
+  match '/all_users', to: 'admin#all_users', via: 'get', as: 'all_users'
   
   namespace :admin do
     resources :registration

@@ -15,4 +15,42 @@
 //= require twitter/bootstrap
 //= require jquery-ui
 //= require_tree .
+$(document).ready(function(){
+var $notifier = $('.notifier');
+var notifierTimer;
 
+	function notifie(message){
+    clearTimeout(notifierTimer);
+    initNotifierSuccess();
+    $notifier.children('.notice-mess').html(message);
+    destroyNotifier();
+  }
+
+  function error(mess) {
+    clearTimeout(notifierTimer);
+    initNotifierError();
+    if(mess){
+      $notifier.children('.notice-mess').html(mess);
+    } else{
+      $notifier.children('.notice-mess').html('Something went wrong, please repeat the action later!');
+    }
+    destroyNotifier();
+  }
+
+  function initNotifierSuccess(){
+    $notifier.addClass('notifier-init notice-success').removeClass('notice-error');
+    $notifier.fadeIn('fast');
+  }
+
+  function initNotifierError(){
+    $notifier.addClass('notifier-init notice-error').removeClass('notice-success');
+    $notifier.fadeIn('fast');
+  }
+
+  function destroyNotifier(){
+    notifierTimer = setTimeout(function(){
+      $notifier.fadeOut('slow');
+    },2000);    
+  }
+
+  })

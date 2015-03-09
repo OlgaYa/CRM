@@ -261,6 +261,8 @@ $(document).ready(function(){
         success: function(resp){
           $commentsDialog.children('.comment_list').append($.parseHTML(resp));
           $('#'+task_id).children('.comments').children('.comment_list').append($.parseHTML(resp));
+           d = new Date();
+          $('#'+task_id).children('.date').children('.date-input').val(d.yyyymmdd());   
           $commentBody.val("");
         },
         data: values 

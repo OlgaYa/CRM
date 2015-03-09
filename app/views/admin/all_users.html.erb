@@ -1,0 +1,64 @@
+<div class='row'>
+	<div class='col-lg-8, col-md-8 col-lg-offset-2 col-md-offset-2'>
+
+		<div class="notifier pull-right">
+	      <div class="notice-mess">       
+	      </div>
+	      <div class="helper">
+	      </div>
+	    </div>
+
+		<table id='users-table' class="table">
+			<thead>
+				<th>First name</th>
+				<th>Last name</th>
+				<th>Email</th>
+				<th>Satus</th>
+				<th>Last sign in at</th>
+			</thead>
+			<tbody>
+				<% @users.each do |user| %>
+					<tr class=<%= user_activity_status(user) %> >
+						<td><%= user.first_name %></td>
+						<td><%= user.last_name %></td>
+						<td><%= user.email %></td>
+						<td><%= user_satus(user) %></td>
+						<td><%=user.current_sign_in_at %></td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+		<button id='add-new-user' class="btn btn-primary pull-right">Send invitation for new user</button>	
+	</div>
+</div>
+
+<div id='new-user-dialog' class="deadlock">
+  <% @user = get_new_user(@user) %>
+  <%= form_for :@user, url: admin_registration_index_path(@user),  html: { id: 'new-user-form' } do |f| %>
+    <div class="error" >
+      <div id="error_explanation">
+      </div>
+    </div>
+
+    <div class="control-field">
+      <%= f.text_field :first_name, class: 'form-control', placeholder: 'First Name' %>
+    </div>
+
+    <div class="control-field">
+      <%= f.text_field :last_name, class: 'form-control', placeholder: 'Last Name' %>
+    </div>
+
+    <div class="control-field">
+      <%= f.text_field :email, class: 'form-control', placeholder: 'Email'  %>
+    </div>
+
+    <div class="control-field">
+      <%= f.check_box :admin, class: 'check-box-field' %>
+      <%= f.label :admin %>
+    </div>
+
+    <div class="control-field">
+      <%= f.submit "Send invite", class: "btn btn-large btn-primary", remote: true %>
+    </div>
+  <% end %>
+</div>

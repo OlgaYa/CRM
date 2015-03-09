@@ -127,7 +127,7 @@ td .message {
   padding-bottom: 0;
 }
 
-td:hover:not(.status):not(.user_name):not(.remove):not(.number){
+#task-table td:hover:not(.status):not(.user_name):not(.remove):not(.number){
   background-color: #FAEDAB;
 }
 

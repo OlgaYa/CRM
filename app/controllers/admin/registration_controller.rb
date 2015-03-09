@@ -1,18 +1,18 @@
 class Admin::RegistrationController < ApplicationController
 	skip_before_action :authenticate_user!, only: [:update, :edit]
 	
-	def new
-		@user = User.new
-	end
+	# def new
+	# 	@user = User.new
+	# end
 
 	def create
 		@user = User.new(user_params_create)
 		@user.password = @user.password_confirmation = Array.new(8) { (rand(122-97) + 97).chr }.join
 	    if @user.save
 	    	@user.send_password_reset(current_user)
-	    	redirect_to root_url	
+	    	render json: @user.to_json	
 	    else
-	       render 'new'  
+	        render json: @user.errors.full_messages.to_json 
 	    end
 	end
 

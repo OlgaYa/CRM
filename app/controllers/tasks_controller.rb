@@ -51,7 +51,7 @@ class TasksController < ApplicationController
       else
         if SoldTask.exists?(task_id: task.id)
           sold_task = current_user.sold_tasks.find_by(task_id: task.id)
-          time = DateTime.current()
+          time = DateTime.now
           comment = "Price: #{sold_task.price} <br> Terms: #{sold_task.date_start} - #{sold_task.date_end}"
           task.comments.create(user_id: current_user.id , body: comment, datetime: time)
           sold_task.destroy

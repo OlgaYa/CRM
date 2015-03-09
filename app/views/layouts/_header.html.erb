@@ -29,13 +29,7 @@
               <li><li><%= link_to "Statistic", statistics_path %></li></li>
               <li><a href="#">Mitings</a></li>
               <% if current_user.admin? %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><%= link_to 'New user', new_admin_registration_path %></li>
-                  <li><a href="#">All users</a></li>                  
-                </ul>
-              </li>
+              <li><%= link_to 'All users', all_users_path %></li>
               <% end %>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Export <b class="caret"></b></a>
