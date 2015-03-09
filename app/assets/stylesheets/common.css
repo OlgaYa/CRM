@@ -108,7 +108,26 @@ td .comment:last-child{
   font-size: 8pt;
 }
 
-td:hover:not(.status):not(.user_name):not(.messages):not(.remove):not(.number){
+.message_list {
+  font-size: 10pt; 
+}
+
+td .message {
+  background-color: rgba(0,0,0,0);
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.message {
+  background-color: rgba(217, 237, 247, 0.5);
+  border: 1px solid #DDD;
+  margin-bottom: 3px;
+  padding: 5px;
+  padding-bottom: 0;
+}
+
+td:hover:not(.status):not(.user_name):not(.remove):not(.number){
   background-color: #FAEDAB;
 }
 
@@ -250,3 +269,6 @@ footer {
   float: right;
 }
 
+.no-close .ui-dialog-titlebar {
+  display: none;
+}

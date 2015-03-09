@@ -12,8 +12,7 @@
  *
  *= require_tree .
  *= require_self
- *= require jquery-ui/dialog
- *= require jquery-ui/datepicker
+ *= require jquery-ui
  */
 
 .ui-dialog .ui-dialog-titlebar {

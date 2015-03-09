@@ -7,6 +7,7 @@ $(document).ready(function(){
   var $commentsDialog = $('#comments_dialog');
   var $declinedCommentDialog = $('#declined-comment');
   var $priceDialog = $('#price-dialog');
+  var $messagesDialog = $('#messages-dialog');
 
   var $textEditor = $('#text-editor');
   var $commentBody = $('#comment_body');
@@ -24,7 +25,6 @@ $(document).ready(function(){
     width: 300,
     closeText: 'close',
     open: function (event, ui){
-      $('.ui-dialog-titlebar').show();
       $td = $commonDialog.data('$currentTD');
       $td.active();
       var tdContent = $td.text();
@@ -40,6 +40,7 @@ $(document).ready(function(){
   $commentsDialog.dialog({
     autoOpen: false,
     draggable: false,
+    dialogClass: 'no-close',
     modal: true,
     width: 300,
     close: function(event, ui){
@@ -50,7 +51,6 @@ $(document).ready(function(){
     open: function(event, ui){
       $td = $commentsDialog.data('$td');
       $td.active();      
-      $(".ui-dialog-titlebar").hide();
     }
   });
 
@@ -91,9 +91,6 @@ $(document).ready(function(){
     autoOpen: false,
     modal: true,
     title: 'Please describe the reason of refusal',
-    open: function(event, ui){
-      $('.ui-dialog-titlebar').show();
-    },
     close: function(event, ui){
       if(reload){
         location.reload(true);
@@ -131,13 +128,28 @@ $(document).ready(function(){
     autoOpen: false,
     height: 100,
     open: function(event, ui){
-      $('.ui-dialog-titlebar').show();
       $td = $priceDialog.data('$td');
       $td.active();
     }, 
     close: function(event, ui){
       $td = $priceDialog.data('$td');
       $td.nonActive();
+    }
+  });
+
+  $messagesDialog.dialog({
+    autoOpen: false,
+    dialogClass: 'no-close',
+    maxHeight: 300,
+    show: {
+      effect: "blind",
+      duration: 300
+    },
+    hide: {
+      effect: "explode",
+      duration: 300
+    },
+    open: function(event, ui){
     }
   });
 
@@ -149,6 +161,7 @@ $(document).ready(function(){
     title = $(this).attr('name');    
     $commonDialog.dialog('option', 'title', capitalize(title));
     $commonDialog.data('$currentTD', $(this));
+    $commonDialog.dialog('option', 'position', { my: 'left top', at: 'left bottom',  of: $(this) } );
     $commonDialog.dialog('open');
   });
 
@@ -182,6 +195,7 @@ $(document).ready(function(){
     $priceInput.val($(this).children().text().trim())
     $priceDialog.data('$td', $(this));
     $priceDialog.data('sold_task_id', sold_task_id);
+    $priceDialog.dialog('option', 'position', { my: 'left top', at: 'left bottom',  of: $(this) } );
     $priceDialog.dialog('open');
   });
 
@@ -215,7 +229,7 @@ $(document).ready(function(){
     var task_id = $td.parent().attr('id') // tr.attr('id') == Task.id
     $commentsDialog.data('task_id', task_id);
     $commentsDialog.data('$td', $td);
-    $commentsDialog.dialog('option', 'position', { my: 'left-20 top-20',  of: e } );
+    $commentsDialog.dialog('option', 'position', { my: 'right top', at: 'right top',  of: $(this) } );
     $commentsDialog.dialog('open'); // open new dialog
     $commentsDialog.prepend($td.children().clone())
   });
@@ -252,6 +266,20 @@ $(document).ready(function(){
         data: values 
       });
   }
+
+// ================ messages EVENTS ====================================== //
+  $('.messages').on('dblclick', function(e){
+    closeAllDialogs();
+    $messagesDialog.dialog('option', 'position', { my: 'left top', at: 'left top', of: $(this)} );
+    $messagesDialog.dialog('option', 'width', $(this).width());
+    $messagesDialog.append($(this).children().clone());
+    $messagesDialog.dialog('open');
+  });
+
+  $messagesDialog.on('mouseleave', function(){
+    $messagesDialog.dialog('close');
+    $messagesDialog.empty();
+  });
 
 // ================ change assign_to and status EVENTS ==================== //
   $('.user, .status').on('change', function(event){
@@ -344,7 +372,7 @@ $(document).ready(function(){
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(location.search);
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-  }  
+  }
 
 // ========================== AJAX ========================================= //
   function sendARequest(path, values){
