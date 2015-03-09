@@ -17,6 +17,7 @@ $(document).ready(function(){
 	    			$(this).val("");
 	    		})
   		$('.check-box-field').prop('checked', false);
+  		$('#error_explanation').empty();
 		}
 	});
 
@@ -46,7 +47,7 @@ $(document).ready(function(){
 	    		notifie('New user was successfully invited')
 	    		$newUserDialog.dialog('close');
 	    	}	else {
-	    		$errors = $('#new-user-form').children('.error').children('#error_explanation');
+	    		$errors = $('#error_explanation');
 	    		$errors.empty();
 	    		for(i = 0; i < data.length; i++ ){
 	    			$errors.append(data[i] + "<br>");
