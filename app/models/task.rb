@@ -15,9 +15,17 @@ class Task < ActiveRecord::Base
 
     def self.to_csv(options = {}, fields = ['name', 'email', 'status', 'date'])
         CSV.generate(options) do |csv|
-  		  csv << fields
+        csv << fields
         all.each do |task|
-  	      csv << task.attributes.values_at(*fields)
+          attributes = task.attributes.values_at(*fields)
+          attributes.map! do |val|
+            if val.is_a? String 
+              val = val.gsub(',',' ')
+            else
+              val
+            end 
+          end
+          csv << attributes
     		end
   	  end
     end
