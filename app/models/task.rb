@@ -17,9 +17,6 @@ class Task < ActiveRecord::Base
         CSV.generate(options) do |csv|
   		  csv << fields
         all.each do |task|
-          unless task.status
-            task.update_attribute(:status, :negotiations)     
-          end
   	      csv << task.attributes.values_at(*fields)
     		end
   	  end
