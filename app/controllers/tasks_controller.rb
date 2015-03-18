@@ -8,18 +8,10 @@ class TasksController < ApplicationController
     when 'declined'
       @tasks = Task.all.where("status = 'declined'").order("created_at DESC")
       filename = 'declined'
-    when 'all' 
-      @tasks = Task.all.order("created_at DESC")
-      filename = 'all'
     else
       @tasks = Task.all.where("status != 'sold' AND status != 'declined' OR status IS NULL").order("created_at DESC")
       filename = 'open'
-    end
-    
-    respond_to do |format|
-      format.html
-      format.xls { send_data @tasks.to_csv(col_sep: "\t"), :filename =>  filename + ".xls" }
-    end
+    end   
   end
 
   def create
@@ -67,6 +59,41 @@ class TasksController < ApplicationController
     end
     resp = "success".to_json
     render :json => resp    
+  end
+
+  def export
+  end
+
+  def download_xls
+    tasks = Task.all
+    tasks = tasks.where("created_at > '#{params[:period][:from]}'") if !params[:period]["from"].empty?
+    tasks = tasks.where("created_at < '#{params[:period][:to]}'") if !params[:period]["to"].empty?
+    file_name = 'custom tasks'
+    if params[:export]
+      case params[:export]
+      when 'sold'
+        tasks = tasks.where(:status => :sold)
+        file_name = 'sold tasks'
+      when 'open'
+        tasks = tasks.where("status <> 'sold' AND status <> 'declined'")
+        file_name = 'open tasks'
+      when 'declined'
+        tasks = tasks.where(:status => :declined)
+        file_name = 'declined tasks'
+      else
+        file_name = 'all tasks'
+      end
+      send_data(tasks.to_csv(col_sep: "\t"), filename: file_name + ".xls")
+    else
+      if params[:fields]
+        tasks = tasks.where(:status => params[:statuses]) if params[:statuses]
+        tasks = tasks.where(:user_id => params[:users]) if params[:users]
+        send_data(tasks.to_csv({ col_sep: "\t" }, params[:fields]), filename: file_name + ".xls")
+      else
+        flash[:error] = "Fields can't be empty!"
+        render "export"
+      end
+    end 
   end
 
   private

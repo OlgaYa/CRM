@@ -28,19 +28,10 @@
               </li>
               <li><li><%= link_to "Statistic", statistics_path %></li></li>
               <li><a href="#">Mitings</a></li>
+              <li><%= link_to 'Export', export_path %> </li>
               <% if current_user.admin? %>
-              <li><%= link_to 'All users', all_users_path %></li>
+                <li><%= link_to 'All users', all_users_path %></li>
               <% end %>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Export <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><%= link_to 'Open tasks', tasks_path(format: "xls") %> </li>
-                  <li><%= link_to 'Sold tasks', tasks_path(format: "xls") + '?only=sold' %></li>
-                  <li><%= link_to 'Declined tasks', tasks_path(format: "xls") + '?only=declined' %></li>
-                  <li class="divider"></li>                  
-                  <li><%= link_to 'All', tasks_path(format: "xls")+ '?only=all' %></li>
-                </ul>
-              </li>
             <% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">

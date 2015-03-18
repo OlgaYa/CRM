@@ -1,0 +1,157 @@
+<div class="row">
+	<div class="col-lg-6 col-md-8 col-lg-offset-3 col-md-offset-2">
+		
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs">
+		  <li class="active"><a href="#simple" data-toggle="tab">Simple</a></li>
+			<li><a href="#advanced" data-toggle="tab">Advanced</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+		  <div class="tab-pane active" id="simple">
+			  <%= form_tag export_path do %>
+			  	<div class="export-radio-group">
+				  	<%= radio_button_tag 'export', 'open' %>
+						<%= label_tag "open tasks" %>	
+				  	<%= radio_button_tag 'export', 'sold' %>
+						<%= label_tag "sold tasks" %>	
+						<%= radio_button_tag 'export', 'declined' %>
+						<%= label_tag "declined tasks" %>
+						<%= radio_button_tag 'export', 'all', true %>
+						<%= label_tag "all tasks" %>
+					</div>
+					<hr>
+					<label for="from">From</label>
+					<input type="text" class="from" name="period[from]">
+					<label for="to">to</label>
+					<input type="text" class="to" name="period[to]">
+					<hr>
+					<%= radio_button_tag 'format', '.xls', true %>
+					<%= label_tag ".xls format" %>	
+					<%= radio_button_tag 'format', '.csv', false, disabled: true %>
+					<%= label_tag ".csv format" %>	
+					<%= radio_button_tag 'format', 'statistic', false, disabled: true %>
+					<%= label_tag "Statistic" %>
+					<%= submit_tag 	"Download", class: "brn btn-primary pull-right" %>	
+				<% end %>
+		  </div>
+		  <div class="tab-pane" id="advanced">
+		  	<%= form_tag export_path do %>
+			  	<table class="table">
+						<thead>
+							<tr>
+								<th> Statuses </th>
+								<th> Users </th>
+								<th> Fields </th>
+								<th> Settings </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td id="statuses">
+									<% Task.status.options.each do |key, value| %>
+										<input type="checkbox" name="statuses[]" id= '<%= value %>' value= '<%= value %>' >
+										<%= label_tag key %>
+										<br>					
+									<% end %>  
+								</td>
+								<td id="users">
+									<% all_users.each do |user| %>
+										<input type="checkbox" name="users[]" id= '<%= user.id %>' value= '<%= user.id %>' >
+										<%= label_tag "#{user.first_name} #{user.last_name}" %>
+										<br>
+									<% end %>
+								</td>
+								<td id="fields">
+									<% Task.column_names.each do |name| %>
+										<input type="checkbox" name="fields[]" id= '<%= name %>' value= '<%= name %>' >
+										<%= label_tag name %>
+										<br>
+									<% end %>
+								</td>
+								<td class="settings">
+									<%= check_box_tag "All statuses", "All statuses" %>
+									<%= label_tag "All statuses" %>
+									<br>
+									<%= check_box_tag "All users", "All users" %>
+									<%= label_tag "All users" %>
+									<br>
+									<%= check_box_tag "All fields", "All fields" %>
+									<%= label_tag "All fields" %>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				  <hr>
+					<label for="from">From</label>
+					<input type="text" class="from" name="period[from]">
+					<label for="to">to</label>
+					<input type="text" class="to" name="period[to]">
+					<hr>
+					<%= radio_button_tag 'format', '.xls', true %>
+					<%= label_tag ".xls format" %>	
+					<%= radio_button_tag 'format', '.csv', false, disabled: true %>
+					<%= label_tag ".csv format" %>	
+					<%= radio_button_tag 'format', 'statistic', false, disabled: true %>
+					<%= label_tag "Statistic" %>
+					<%= submit_tag 	"Download", class: "brn btn-primary pull-right" %>
+				<% end %> <!--/form_tag -->
+			  </div>
+
+		</div>	
+	</div>
+</div>
+<script>
+  $(function() {
+    $( ".from" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: true,
+      numberOfMonths: 3,
+      dateFormat: 'yy-mm-dd',
+      onClose: function( selectedDate ) {
+        $( ".to" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    $( ".to" ).datepicker({
+      defaultDate: "+1w",
+      changeMonth: true,
+      numberOfMonths: 3,
+      dateFormat: 'yy-mm-dd',
+      onClose: function( selectedDate ) {
+        $( ".from" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+  });
+
+  $(document).ready(function(){
+  	var $allStatuses = $('#All_statuses');
+  	var $allFields = $('#All_fields');
+  	var $allUsers = $('#All_users');
+
+  	$allStatuses.on('change', function(){
+  		check(this, $('#statuses'));
+  	});
+
+  	$allFields.on('change', function(){
+  		check(this, $('#fields'));
+  	});
+
+  	$allUsers.on('change', function(){
+  		check(this, $('#users'));
+  	});
+
+	  function check(checkBox, selector){
+	  	if(checkBox.checked){
+	  		selector.checkedAll(true);	
+	  	} else {
+	  		selector.checkedAll(false);
+	  	}
+	  }
+  });
+
+  $.fn.checkedAll = function(bool){
+  	this.children('input').prop('checked', bool);
+  }
+
+  </script>
