@@ -18,6 +18,11 @@ class Task < ActiveRecord::Base
         csv << fields
         all.each do |task|
           attributes = task.attributes.values_at(*fields)
+          if fields.include?('user_id')
+            i = fields.index('user_id')
+            user = User.find(attributes[i].to_i)
+            attributes[i] = "#{user.first_name} #{user.last_name}"
+          end
           attributes.map! do |val|
             if val.is_a? String 
               val = val.gsub(',',' ')
