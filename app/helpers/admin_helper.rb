@@ -12,14 +12,6 @@ module AdminHelper
 		end
 	end
 
-	def user_satus(user)
-		if user.admin?
-			return 'Admin'
-		else
-			return 'User'
-		end
-	end
-
 	def get_new_user(user)
 		if user
 			user
