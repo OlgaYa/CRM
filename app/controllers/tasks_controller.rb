@@ -100,6 +100,7 @@ class TasksController < ApplicationController
   private
 
     def task_params
+      params[:task][:user_id] = current_user.id
       params.require(:task).permit(:name, :source, :skype, :email, :links, :date, :user_id, :status, :comments)
     end
 end
