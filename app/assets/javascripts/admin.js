@@ -30,34 +30,39 @@ $(document).ready(function(){
 	$('#new-user-form').on('submit', function() {  
 	    var valuesToSubmit = $(this).serialize();
 	    $.ajax({
-	        type: "POST",
-	        url: $(this).attr('action'), 
-	        data: valuesToSubmit,
-	        dataType: "JSON" 
-	    }).success(function(data){
-	    	if(data.id){
-	    		userStatus = data.admin ? 'Admin' : 'User';
-	    		$usersTable.append("<tr class='danger'>"
-	    											+"<td>"+ data.first_name +"</td>"
-	    											+"<td>"+ data.last_name +"</td>"
-	    											+"<td>"+ data.email +"</td>"
-	    											+"<td>"+ userStatus +"</td>"
-	    											+"<td></td>"
-	    											+"</tr>");
-	    		notifie('New user was successfully invited')
-	    		$newUserDialog.dialog('close');
-	    	}	else {
-	    		$errors = $('#error_explanation');
-	    		$errors.empty();
-	    		for(i = 0; i < data.length; i++ ){
-	    			$errors.append(data[i] + "<br>");
-	    		}
-	    	}
+        type: "POST",
+        url: $(this).attr('action'), 
+        data: valuesToSubmit,
+        dataType: "JSON",
+        success: function(data){
+		    	if(data.id){
+		    		userStatus = data.admin ? 'Admin' : 'User';
+		    		$usersTable.append("<tr class='danger'>"
+		    											+"<td>"+ data.first_name +"</td>"
+		    											+"<td>"+ data.last_name +"</td>"
+		    											+"<td>"+ data.email +"</td>"
+		    											+"<td>"+ userStatus +"</td>"
+		    											+"<td></td>"
+		    											+"</tr>");
+		    		notifie('New user was successfully invited')
+		    		$newUserDialog.dialog('close');
+		    	}	else {
+		    		$errors = $('#error_explanation');
+		    		$errors.empty();
+		    		for(i = 0; i < data.length; i++ ){
+		    			$errors.append(data[i] + "<br>");
+		    		}
+		    	}
+    		},
+    		error: function() {
+    			error();
+    			$newUserDialog.dialog('close');
+    		} 
 	    });
 	    return false; // prevents normal behaviour
 	});	
 
-
+// need to change, it must be muved to common place for all pages
 	function notifie(message){
     clearTimeout(notifierTimer);
     initNotifierSuccess();

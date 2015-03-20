@@ -39,8 +39,6 @@ $(document).ready(function(){
    // dialog for comments editor
   $commentsDialog.dialog({
     autoOpen: false,
-    draggable: false,
-    dialogClass: 'no-close',
     modal: true,
     width: 300,
     close: function(event, ui){
@@ -230,17 +228,9 @@ $(document).ready(function(){
     $commentsDialog.data('task_id', task_id);
     $commentsDialog.data('$td', $td);
     $commentsDialog.dialog('option', 'position', { my: 'right top', at: 'right top',  of: $(this) } );
+    $commentsDialog.dialog('option', 'title', 'Task - ' + task_id);
     $commentsDialog.dialog('open'); // open new dialog
     $commentsDialog.prepend($td.children().clone())
-  });
-
-  // close comments_dialog
-  $commentsDialog.on('mouseleave', function(){
-    timer = setTimeout(function () {
-      $commentsDialog.dialog('close');
-    }, 500);
-  }).on("mouseenter", function(){
-    clearTimeout(timer);
   });
 
   // save comment

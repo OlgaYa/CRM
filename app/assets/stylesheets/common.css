@@ -2,7 +2,6 @@
 
 * {
   margin:0;
-  padding:0;
 }
 
 html, body, #wrapper {
@@ -310,3 +309,25 @@ footer {
   color: #9F9999;
   text-align: center;
 }
+/* EXPORT PAGE */
+.statuses {
+}
+
+.users {
+}
+
+.export-radio-group {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+.export-radio-group label {
+  margin-right: 10px;
+}
+
+/* HELPERS */
+
+.clear {
+  clear: both;
+}
+
