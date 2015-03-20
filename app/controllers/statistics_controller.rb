@@ -2,8 +2,6 @@ class StatisticsController < ApplicationController
 	respond_to :json
 
 	def index
-		#@fromDate  = '2015-03-02'
-		#@toDate = Date.today
 	end
 
 	def change_information

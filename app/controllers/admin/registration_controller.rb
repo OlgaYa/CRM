@@ -23,8 +23,8 @@ class Admin::RegistrationController < ApplicationController
 
 	def update
 		@user = User.find_by_reset_password_token!(params[:id])
-		if @user.reset_password_sent_at < 2.hours.ago
-			redirect_to new_admin_registration_path, :alert => "Password &crarr;  reset has expired."
+		if @user.reset_password_sent_at < 3.day.ago
+			redirect_to root_url, :alert => "Password &crarr;  reset has expired."
 		elsif @user.update_attributes(user_params_update)
 			sign_in @user, :bypass => true
 			redirect_to root_url, :notice => "Password has been reset."

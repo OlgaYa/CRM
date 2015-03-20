@@ -34,6 +34,7 @@ before "deploy:assets:symlink" do
   run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
   run "ln -nfs #{shared_path}/config/secrets.yml #{release_path}/config/secrets.yml"
   run "ln -nfs #{shared_path}/config/imap.yml #{release_path}/config/imap.yml"
+  run "ln -nfs #{shared_path}/config/calendar.yml #{release_path}/config/calendar.yml"
 end
 
 after 'deploy:start' do

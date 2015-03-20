@@ -1,14 +1,15 @@
 Rails.application.routes.draw do
 
   devise_for :users, :skip => :registration
-  
+
   resources :users
   resources :tasks, only:[:index, :create, :destroy, :update]
   resources :comments, only: [:create, :destroy]
   resources :sold_tasks, only: :update
+  resources :meetings, only: [:index, :create]
   resources :statistics, only: :index do
     collection do
-      post :change_information
+      patch :change_information
     end
   end
 
