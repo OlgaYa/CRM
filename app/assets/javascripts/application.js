@@ -18,9 +18,8 @@
 //= require moment
 //= require bootstrap-datetimepicker
 
+var notifierTimer  
 
-var notifierTimer;
-  
 function notifie(message, $notifier){
   clearTimeout(notifierTimer);
   initNotifierSuccess($notifier);
@@ -48,6 +47,8 @@ function initNotifierError($notifier){
   $notifier.addClass('notifier-init notice-error').removeClass('notice-success');
   $notifier.fadeIn('fast');
 }
+
+
 
 function destroyNotifier($notifier){
   notifierTimer = setTimeout(function(){
