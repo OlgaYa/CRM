@@ -45,7 +45,7 @@ $(document).ready(function(){
 		    											+"<td></td>"
 		    											+"<td></td>"
 		    											+"</tr>");
-		    		notifie('New user was successfully invited')
+		    		notifie('New user was successfully invited', $notifier)
 		    		$newUserDialog.dialog('close');
 		    	}	else {
 		    		$errors = $('#error_explanation');
@@ -56,45 +56,10 @@ $(document).ready(function(){
 		    	}
     		},
     		error: function() {
-    			error();
+    			error('', $notifier);
     			$newUserDialog.dialog('close');
     		} 
 	    });
 	    return false; // prevents normal behaviour
 	});	
-
-// need to change, it must be muved to common place for all pages
-	function notifie(message){
-    clearTimeout(notifierTimer);
-    initNotifierSuccess();
-    $notifier.children('.notice-mess').html(message);
-    destroyNotifier();
-  }
-
-  function error(mess) {
-    clearTimeout(notifierTimer);
-    initNotifierError();
-    if(mess){
-      $notifier.children('.notice-mess').html(mess);
-    } else{
-      $notifier.children('.notice-mess').html('Something went wrong, please repeat the action later!');
-    }
-    destroyNotifier();
-  }
-
-  function initNotifierSuccess(){
-    $notifier.addClass('notifier-init notice-success').removeClass('notice-error');
-    $notifier.fadeIn('fast');
-  }
-
-  function initNotifierError(){
-    $notifier.addClass('notifier-init notice-error').removeClass('notice-success');
-    $notifier.fadeIn('fast');
-  }
-
-  function destroyNotifier(){
-    notifierTimer = setTimeout(function(){
-      $notifier.fadeOut('slow');
-    },2000);    
-  }
 });

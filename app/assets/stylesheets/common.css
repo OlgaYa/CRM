@@ -227,6 +227,13 @@ footer {
   position: absolute;
 }
 
+.table-notifier {
+    top: 190px;
+    left: 10px;
+    right: 600px;
+    /*text-align: right;*/
+}
+
 .notifier-init {
   padding: 6px;
   margin-bottom: 10px;
@@ -302,6 +309,8 @@ footer {
 body > #wrapper>.room>.content-column {
     border-left: 1px solid #DDD; 
     border-right: 1px solid #DDD;
+    border-bottom: 1px solid #DDD;
+
     position: relative;
     min-height: 100%;
 
@@ -397,6 +406,15 @@ body > #wrapper>.room>.content-column {
 .tab-pane {
     margin-top: 50px;
 }
+    
+    .errors-td {
+        width: 230px;
+    }
+
+    .second-form .errors-td {
+        width: 300px;
+    }
+
     .upload-avatar {
         width: 128px;
         height: 128px;
@@ -411,6 +429,7 @@ body > #wrapper>.room>.content-column {
     .tab-pane table {
         width: 100%;
         font-size: 12pt;
+        margin-top: 0;
     }
 
     .first-td {
@@ -436,6 +455,7 @@ body > #wrapper>.room>.content-column {
 
     .second-form .first-td {
         width: 50px;
+        height: 150px;
     }
 
     .second-form .second-td label {
@@ -447,4 +467,22 @@ body > #wrapper>.room>.content-column {
     .btn-block {
         border-radius: 0;
     }
+
+    .form-info {
+        margin-left: 50px;
+    }
+
+    .table-success {
+        border: 8px solid rgba(0, 128, 0, 0.43);
+        border-radius: 20px;
+        background-color: rgba(0,255,0,0.1);
+    }
+
+    .table-error {
+        border: 8px solid rgba(128, 0, 0, 0.43);
+        border-radius: 20px;
+        background-color: rgba(255,0,0,0.1);
+    }
+
+
 

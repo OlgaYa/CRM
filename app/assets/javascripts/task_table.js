@@ -73,9 +73,9 @@ $(document).ready(function(){
         }
         $.when(sendARequest(path, values)).always(function(data, textStatus, jqXHR){
           if(textStatus == 'success'){
-            notifie( capitalize(filedName) + ' has been successfully updated!');
+            notifie( capitalize(filedName) + ' has been successfully updated!', $notifier);
           } else {
-            error();
+            error('', $notifier);
           }
         })
         flag = false;      
@@ -177,9 +177,9 @@ $(document).ready(function(){
       var values = { 'field': filedName, 'value': editorContent };
       $.when(sendARequest(path, values)).always(function(data, textStatus, jqXHR){
         if(textStatus == 'success'){
-          notifie(capitalize(filedName) + ' has been successfully updated!');
+          notifie(capitalize(filedName) + ' has been successfully updated!', $notifier);
         } else {
-          error();
+          error('', $notifier);
         }
       });
     }
@@ -207,13 +207,13 @@ $(document).ready(function(){
             $td_field.empty();
             $td_field.html(price);
             $priceDialog.dialog('close');
-            notifie('Price was successful updated')      
+            notifie('Price was successful updated', $notifier)      
           } else {
-            error();
+            error('', $notifier);
           }      
         });
       } else {
-        error('Please type only numbers');
+        error('Please type only numbers', $notifier);
       }
     }
   });
@@ -319,12 +319,12 @@ $(document).ready(function(){
               if(field_value == 'declined' || field_value == 'sold'){                   
                 moveTo(task_id, field_value);
               } else {
-                notifie('Task status was successful changed')
+                notifie('Task status was successful changed', $notifier)
               }
             }
         }           
       } else {
-        error();
+        error('', $notifier);
       }      
     });
   }
@@ -332,9 +332,9 @@ $(document).ready(function(){
   function changeUser(task_id, field_name, field_value, $field){
     $.when(sendARequest('tasks/' + task_id, { 'field': field_name, 'value': field_value })).always(function(data){
       if(data == 'success') { 
-          notifie('Task status was successful reassigned')      
+          notifie('Task status was successful reassigned', $notifier)      
       } else {
-        error();
+        error('', $notifier);
       }      
     });
   }
@@ -343,17 +343,17 @@ $(document).ready(function(){
     $('#'+task_id).remove();
     switch(path) {
       case 'declined': {
-          notifie('Task was successful moved to "Declined tasks"')
+          notifie('Task was successful moved to "Declined tasks"', $notifier)
         }
         break;
 
       case 'sold': {
-          notifie('Task was successful moved to "Sold tasks"')
+          notifie('Task was successful moved to "Sold tasks"', $notifier)
         }
         break;
 
       default: {
-          notifie('Task was successful moved to "Open tasks"')
+          notifie('Task was successful moved to "Open tasks"', $notifier)
         }
         break;
     }
@@ -395,40 +395,6 @@ $(document).ready(function(){
     var dd  = this.getDate().toString();
     return yyyy +'-'+(mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
   }  
-
-  function notifie(message){
-    clearTimeout(notifierTimer);
-    initNotifierSuccess();
-    $notifier.children('.notice-mess').html(message);
-    destroyNotifier();
-  }
-
-  function error(mess) {
-    clearTimeout(notifierTimer);
-    initNotifierError();
-    if(mess){
-      $notifier.children('.notice-mess').html(mess);
-    } else{
-      $notifier.children('.notice-mess').html('Something went wrong, please repeat the action later!');
-    }
-    destroyNotifier();
-  }
-
-  function initNotifierSuccess(){
-    $notifier.addClass('notifier-init notice-success').removeClass('notice-error');
-    $notifier.fadeIn('fast');
-  }
-
-  function initNotifierError(){
-    $notifier.addClass('notifier-init notice-error').removeClass('notice-success');
-    $notifier.fadeIn('fast');
-  }
-
-  function destroyNotifier(){
-    notifierTimer = setTimeout(function(){
-      $notifier.fadeOut('slow');
-    },2000);    
-  }
 
   function closeAllDialogs(){
     $commonDialog.dialog('close');

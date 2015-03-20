@@ -31,7 +31,7 @@
 		                }, 
 		                method: :delete %>
 				    	<% else %>
-				    		<%= link_to image_tag('edit.png'), '#' %>
+				    		<%= link_to image_tag('edit.png'), user_path(user) + '#settings' %>
 				    	<% end %>
 				    </td>
 					</tr>
