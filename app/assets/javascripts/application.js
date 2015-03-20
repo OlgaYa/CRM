@@ -18,13 +18,9 @@
 //= require moment
 //= require bootstrap-datetimepicker
 
-$(document).ready(function(){
-var $notifier = $('.notifier');
-var notifierTimer;
 
 var notifierTimer;
   
-  // need to change, it must be muved to common place for all pages
 function notifie(message, $notifier){
   clearTimeout(notifierTimer);
   initNotifierSuccess($notifier);

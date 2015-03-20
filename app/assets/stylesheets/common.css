@@ -25,10 +25,7 @@ body > #wrapper {
 
 /* TASK TABLE */
 
-.row {
-    margin-left: 0;
-    margin-right: 0;
-}
+
 
 option {
   color: #333;
@@ -464,13 +461,7 @@ body > #wrapper>.room>.content-column {
     .upload-avatar img {
         width: 100%;
         height: 100%;
-    }
-
-    .tab-pane table {
-        width: 100%;
-        font-size: 12pt;
-        margin-top: 0;
-    }
+    }   
 
     .first-td {
         width: 30%;
@@ -486,12 +477,7 @@ body > #wrapper>.room>.content-column {
         margin-top: 15px;
         width: 100px;
         float: left;
-    }
-
-    .submit-form {
-        margin-top: 50px;
-        margin-bottom: 20px;   
-    }
+    }    
 
     .second-form .first-td {
         width: 50px;

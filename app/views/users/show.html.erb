@@ -39,7 +39,7 @@
           <div class="first-form">
             <%= form_tag(@user, method: :put)  do %> 
               <input hidden='true' value="update-info" name="update" >
-              <span class="form-info"> User info </span>          
+              <!-- <span class="form-info"> User info </span>           -->
                 <table>
                   <tr>
                     <td class="first-td">
@@ -79,7 +79,7 @@
           <div class="second-form">
             <%= form_tag(@user, method: :put)  do %>
               <input hidden='true' value="update-pass" name="update" >
-              <span class="form-info"> Password </span>
+              <!-- <span class="form-info"> Password </span> -->
               <table>
                 <tr>
                   <td class="first-td"></td>
@@ -103,7 +103,7 @@
                 </tr>
               </table>
               <div class="text-center">
-                <%= submit_tag 'Save changes', class: 'btn btn-primary btn-lg submit-form' %>
+                <%= submit_tag 'Save changes', class: 'submit-form btn btn-primary btn-lg' %>
               </div>
             <% end %>
           </div>
