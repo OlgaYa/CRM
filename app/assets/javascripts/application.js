@@ -20,5 +20,5 @@
 
 $(document).ready(function(){
 var $notifier = $('.notifier');
-var notifierTimer;
+var notifierTimer});
 
