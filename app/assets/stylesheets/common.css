@@ -274,3 +274,39 @@ footer {
 .no-close .ui-dialog-titlebar {
   display: none;
 }
+
+#container{
+  width: auto;
+  padding: 0;
+}
+#col-md-5{
+  padding: 0;
+  width: 50%;
+}
+#datetimepicker6{
+  width: auto;
+  padding-right: 4px;
+}
+#datetimepicker7{
+  width: auto;
+  padding-left: 4px;
+}
+#_meeting_start_time{
+  font-size: 13px;
+}
+#_meeting_end_time{
+  font-size: 13px;
+}
+#meeting_dialog{
+  margin: 20px;  
+}
+#user_chosen{
+  width: 100% !important;
+}
+#myModalLabel{
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 16px;
+  line-height: 1.42857;
+  color: #9F9999;
+  text-align: center;
+}

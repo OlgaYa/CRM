@@ -12,6 +12,11 @@ gem 'simple_form'
 gem 'enumerize'
 gem 'jquery-ui-rails'
 gem 'rufus-scheduler', '~> 2.0.24'
+gem 'google-api-client', :require => 'google/api_client'
+gem 'google_calendar'
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.7.14'
+gem 'bootstrap-sass', '~> 3.1.1.0'
 
 group :development do
   gem 'spring'

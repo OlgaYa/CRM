@@ -15,6 +15,9 @@
 //= require twitter/bootstrap
 //= require jquery-ui
 //= require_tree .
+//= require moment
+//= require bootstrap-datetimepicker
+
 $(document).ready(function(){
 var $notifier = $('.notifier');
 var notifierTimer;

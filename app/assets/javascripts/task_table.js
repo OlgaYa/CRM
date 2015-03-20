@@ -286,6 +286,7 @@ $(document).ready(function(){
 // ================ change assign_to and status EVENTS ==================== //
   $('.user, .status').on('change', function(event){
 
+    
     var task_id = $(this).parents().eq(1).attr('id');
     var $field = $(this);       
     var field_name = $(this).attr('name');
@@ -301,6 +302,10 @@ $(document).ready(function(){
         $declinedComment.data('$field', $field);
         $declinedComment.dialog('open');
       } else {       
+        if(field_value == 'assigned_meeting'){
+          $("#user_chosen").attr("data-placeholder","Something");
+          $('#myModal').modal()
+        }
         changeStatus(task_id, field_name, field_value, $field);
       }
     } else {

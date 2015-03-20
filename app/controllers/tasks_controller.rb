@@ -48,14 +48,12 @@ class TasksController < ApplicationController
       if params[:value] == 'sold'
         sold_task = current_user.sold_tasks.create(task_id: task.id)
         task.sold_task = sold_task
-      else
-        if SoldTask.exists?(task_id: task.id)
+      elsif SoldTask.exists?(task_id: task.id)
           sold_task = current_user.sold_tasks.find_by(task_id: task.id)
           time = DateTime.now
           comment = "Price: #{sold_task.price} <br> Terms: #{sold_task.date_start} - #{sold_task.date_end}"
           task.comments.create(user_id: current_user.id , body: comment, datetime: time)
-          sold_task.destroy
-        end 
+          sold_task.destroy 
       end 
     else
       if (params[:field] == "user_id" and params[:value] != "")
@@ -64,9 +62,9 @@ class TasksController < ApplicationController
         end
       end
       task.update_attribute(params[:field].to_sym, params[:value])
-    end
+    end  
     resp = "success".to_json
-    render :json => resp    
+    render :json => resp  
   end
 
   private
