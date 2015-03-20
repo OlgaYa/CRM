@@ -11,7 +11,7 @@ html, body, #wrapper {
 body > #wrapper {
   position: relative;
   min-height: 100%;
-  padding-bottom: 70px;
+  padding-bottom: 50px;
   padding-top: 70px;
   height: 100% !important;
 }
@@ -24,6 +24,11 @@ body > #wrapper {
 }
 
 /* TASK TABLE */
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
 
 option {
   color: #333;
@@ -179,9 +184,9 @@ footer {
   position: relative;
   bottom: 0px;
   width: 100%;
-  height: 70px;
+  height: 50px;
   background-color: #F5F5F5;
-  margin-top: -70px;
+  margin-top: -50px;
 }
 
 /* FORMS */
@@ -214,7 +219,7 @@ footer {
 }
 
 .foter-info {
-  margin-top: 25px;
+  margin-top: 15px;
 }
 
 /* NOTICE */
