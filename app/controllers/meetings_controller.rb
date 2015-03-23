@@ -24,8 +24,13 @@ class MeetingsController < ApplicationController
 		    users = params[:users]
 		    attendees = []
 		    users.each_index do |i|
-		    	user = User.find_by_id(users[i].to_i)
-		    	attendees[i] = {'email' => user.email, 'displayName' => "#{user.first_name} #{user.last_name}", 'responseStatus' => 'tentative'}
+		    	if users[i].include?("task")
+		    		task = Task.find_by_id(users[i].to_i)
+		    		attendees[i] = {'email' => task.email, 'displayName' => task.name, 'responseStatus' => 'tentative'} if task.email
+		    	else
+			    	user = User.find_by_id(users[i].to_i)
+			    	attendees[i] = {'email' => user.email, 'displayName' => "#{user.first_name} #{user.last_name}", 'responseStatus' => 'tentative'}
+		    	end
 		    end
 		    e.attendees = attendees
 			end
