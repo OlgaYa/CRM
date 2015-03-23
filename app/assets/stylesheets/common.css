@@ -5,15 +5,15 @@
 }
 
 html, body, #wrapper {
-  height: 100%;
-  font-size: 12pt;
+   font-size: 12pt;
 }
 
 body > #wrapper {
   position: relative;
   min-height: 100%;
-  padding-bottom: 70px;
-  height: auto !important;
+  padding-bottom: 50px;
+  padding-top: 70px;
+  height: 100% !important;
 }
 
 /* LOG IN */
@@ -24,6 +24,8 @@ body > #wrapper {
 }
 
 /* TASK TABLE */
+
+
 
 option {
   color: #333;
@@ -179,9 +181,9 @@ footer {
   position: relative;
   bottom: 0px;
   width: 100%;
-  height: 70px;
+  height: 50px;
   background-color: #F5F5F5;
-  margin-top: -70px;
+  margin-top: -50px;
 }
 
 /* FORMS */
@@ -214,7 +216,7 @@ footer {
 }
 
 .foter-info {
-  margin-top: 25px;
+  margin-top: 15px;
 }
 
 /* NOTICE */
@@ -225,6 +227,13 @@ footer {
   border-radius: 3px;
   display: none;
   position: absolute;
+}
+
+.table-notifier {
+    top: 190px;
+    left: 10px;
+    right: 600px;
+    /*text-align: right;*/
 }
 
 .notifier-init {
@@ -310,11 +319,6 @@ footer {
   text-align: center;
 }
 /* EXPORT PAGE */
-.statuses {
-}
-
-.users {
-}
 
 .export-radio-group {
   margin-top: 20px;
@@ -331,3 +335,177 @@ footer {
   clear: both;
 }
 
+.inline {
+    display: inline-block;
+}
+
+.circleBase {
+        border-radius: 50%;
+}
+
+body > #wrapper>.room>.content-column {
+    border-left: 1px solid #DDD; 
+    border-right: 1px solid #DDD;
+    border-bottom: 1px solid #DDD;
+
+    position: relative;
+    min-height: 100%;
+
+    background-color: #FCFCFC;
+}
+
+/* ALL USERS */
+
+.table>tbody>tr>td.control-field {
+  width: 20px;
+  border: 0;
+}
+
+.table>tbody>tr.danger>td.control-field{
+  background-color: rgba(0,0,0,0);
+}
+
+/* PRIVATE ROOM */
+
+.room {
+    width: 1000px;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user-info{
+    height: 250px;
+    background-color: rgba(161, 81, 81, 0.52);
+    padding-top: 30px;
+    padding-left: 50px;
+    color: #FCFCFC;
+}
+    .avatar {
+        width: 128px;
+        height: 128px;
+        position: absolute; 
+    }
+    .avatar img {
+        width: 100%;
+        height: 100%;
+    }
+    .user-info-list {
+        list-style: none;
+        font-size: 16pt;
+        position: absolute;
+        margin-left: 100px;
+    }
+        ul.user-info-list>li:first-child {
+            font-size: 22pt;
+            padding-bottom: 10px;       
+        }
+        ul.user-info-list>li:last-child {
+            color: #306161;
+            padding-top: 10px;     
+        }
+    .circle-activity {
+        width: 100px;
+        height: 100px;
+        background: none;
+        border: 8px solid #306161;
+        margin-right: 50px;
+        float: right;
+        padding-top: 15px;
+        text-align: center;
+    }
+    .circle-activity span:first-child {
+        font-size: 26pt;
+        padding-left: 8px;
+        padding-right: 10px;
+        line-height: 26pt;
+    }    
+    .circle-activity span:last-child {
+        line-height: 12pt;
+    }
+
+    .user-room-tabs {
+        position: absolute;
+        top: 199px;
+        right: 40px;
+        font-size: 16pt;
+        border: 0;
+    }
+    .user-room-tabs a {
+        color: #306161;
+    }
+
+    .nav-tabs>li>a:hover{
+        border-color: #FCFCFC;
+        background-color: #FCFCFC;
+    }
+
+.tab-pane {
+    margin-top: 50px;
+}
+    
+    .errors-td {
+        width: 230px;
+    }
+
+    .second-form .errors-td {
+        width: 300px;
+    }
+
+    .upload-avatar {
+        width: 128px;
+        height: 128px;
+        position: relative;
+        margin-left: 50px;
+    }
+    .upload-avatar img {
+        width: 100%;
+        height: 100%;
+    }   
+
+    .first-td {
+        width: 30%;
+        height: 200px;
+    }
+
+    .second-td input {
+        margin-top: 10px;
+        width: 350px;
+    }
+
+    .second-td label {
+        margin-top: 15px;
+        width: 100px;
+        float: left;
+    }    
+
+    .second-form .first-td {
+        width: 50px;
+        height: 150px;
+    }
+
+    .second-form .second-td label {
+        margin-top: 15px;
+        width: 250px;
+        float: left;
+    }
+
+    .btn-block {
+        border-radius: 0;
+    }
+
+    .form-info {
+        margin-left: 50px;
+    }
+
+    .table-success {
+        border: 8px solid rgba(0, 128, 0, 0.43);
+        border-radius: 20px;
+        background-color: rgba(0,255,0,0.1);
+    }
+
+    .table-error {
+        border: 8px solid rgba(128, 0, 0, 0.43);
+        border-radius: 20px;
+        background-color: rgba(255,0,0,0.1);
+    }

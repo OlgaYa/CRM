@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   match '/home', to: 'static_pages#home', via: 'get'
   match '/all_users', to: 'admin#all_users', via: 'get', as: 'all_users'
   match 'export', to: 'tasks#export', via: 'get', as: 'export'
-  match 'export', to: 'tasks#download_xls', via: 'post' 
+  match 'export', to: 'tasks#download_xls', via: 'post'
   
   namespace :admin do
     resources :registration

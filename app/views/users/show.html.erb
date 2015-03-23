@@ -1,9 +1,167 @@
-<div class="row">
-  <aside class="span4">
-    <section>
-      <h1>
-        <%= @user.first_name %> <%= @user.last_name %>
-      </h1>
-    </section>
-  </aside>
+<div class="room">
+  <div class="content-column">
+  	<div class="user-info">
+  		<div class="avatar">
+        <!-- it must be changet to gravatar -->
+  			<%= image_tag('avatar-default.jpg') %>
+  		</div>
+      <ul class="inline user-info-list">
+        <% get_user_info(@user.id) %>
+        <li> <%= "#{@first_name} #{@last_name}" %></li>
+        <li> <%= "#{@email}" %></li>
+        <li> <%= user_status(@user) if @user.admin? %> </li>      
+      </ul>
+      <div class="circleBase circle-activity">
+        <span> <%= @user.tasks.count %> </span>
+        <span> Tasks </span>
+      </div>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs user-room-tabs">
+        <li><a href="#contacts" data-toggle="tab">Contact info</a></li>
+        <li class="<%= 'active' unless current_user?(@user) or current_user.admin?%>"><a href="#statistic" data-toggle="tab">Statistic</a></li>
+        <% if current_user?(@user) or current_user.admin? %>
+          <li class="active"><a href="#settings" data-toggle="tab">Settings</a></li>
+        <% end %>
+      </ul>
+    </div>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="notifier pull-right table-notifier">
+        <div class="notice-mess">       
+        </div>
+        <div class="helper">
+        </div>
+      </div>
+      <% if current_user?(@user) or current_user.admin? %>
+          <div class="tab-pane active" id="settings">
+          <div class="text-center"> <h2>Settings</h2> </div>
+          <div class="first-form">
+            <%= form_tag(@user, method: :put)  do %> 
+              <input hidden='true' value="update-info" name="update" >
+              <!-- <span class="form-info"> User info </span>           -->
+                <table>
+                  <tr>
+                    <td class="first-td">
+                      <div class="upload-avatar">
+                        <%= image_tag('avatar-default.jpg') %>
+                        <a href="#" class="btn btn-primary btn-block"> upload new foto </a>
+                      </div>
+                    </td>
+                    <td class="second-td">
+                      <%= label_tag 'First name:' %>
+                      <%= text_field_tag 'user[first_name]', @user.first_name, class:"form-control" %>
+                      <div class="clear"></div>
+                      <%= label_tag 'Last name:' %>
+                      <%= text_field_tag 'user[last_name]', @user.last_name, class:"form-control"  %>
+                      <div class="clear"></div>
+                      <%= label_tag 'E-mail:' %>
+                      <%= text_field_tag 'user[email]', @user.email, class:"form-control"  %>
+                      <div class="clear"></div>
+                    </td>
+                    <% if info_errors(@user) %>
+                       <td class="errors-td" >
+                        <ul>
+                          <% @user.errors.full_messages.each do |mess| %>
+                          <li><%= mess %></li>
+                          <% end %>
+                        </ul>
+                      </td>
+                    <% end %>
+                  </tr>
+                </table>
+                <div class="text-center">
+                  <%= submit_tag 'Save changes', class: 'btn btn-primary btn-lg submit-form' %>
+                </div>
+            <% end %>
+          </div>
+          <hr>
+          <div class="second-form">
+            <%= form_tag(@user, method: :put)  do %>
+              <input hidden='true' value="update-pass" name="update" >
+              <!-- <span class="form-info"> Password </span> -->
+              <table>
+                <tr>
+                  <td class="first-td"></td>
+                  <td class="second-td">                    
+                    <%= label_tag 'New password:' %>
+                    <%= text_field_tag 'user[password]', '', class:"form-control", type: 'password' %>
+                    <div class="clear"></div>
+                    <%= label_tag 'Password confirmation:' %>
+                    <%= text_field_tag 'user[password_confirmation]', '', class:"form-control", type: 'password'  %>
+                    <div class="clear"></div>
+                  </td>
+                  <% if pass_errors(@user) %>
+                     <td class="errors-td" >
+                      <ul>
+                        <% @user.errors.full_messages.each do |mess| %>
+                        <li><%= mess %></li>
+                        <% end %>
+                      </ul>
+                    </td>
+                  <% end %>
+                </tr>
+              </table>
+              <div class="text-center">
+                <%= submit_tag 'Save changes', class: 'submit-form btn btn-primary btn-lg' %>
+              </div>
+            <% end %>
+          </div>
+        </div>      
+      <% end %>
+      <div class="tab-pane <%= 'active' unless current_user?(@user) or current_user.admin? %>" id="statistic">
+        <h1>Here can be statistic</h1>
+      </div>
+      <div class="tab-pane" id="contacts">
+        <h1>Here can be contacts</h1>
+      </div>
+    </div>  
+  </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    var $tableInfo = $('.first-form table');
+    var $tablePass = $('.second-form table');
+    var $errorsTd = $('.errors-td');
+
+    if('<%= flash[:success] %>' == 'pass'){
+      $tablePass.addClass('table-success')
+      notifieTable($tablePass, 0, 128, 0, 255, 1000, 500);  
+    }    
+    if('<%= flash[:success] %>' == 'info'){
+      $tableInfo.addClass('table-success')
+      notifieTable($tableInfo, 0, 128, 0, 255, 1000, 500);  
+    }
+    if(<%= info_errors(@user) %>){      
+      $tableInfo.addClass('table-error')
+      notifieTable($tableInfo, 128, 0, 255, 0, 2000, 2000);     
+    }
+    if(<%= pass_errors(@user) %>){
+      $tablePass.addClass('table-error')
+      notifieTable($tablePass, 128, 0, 255, 0, 2000, 2000);
+    }
+
+
+    function notifieTable($table, R1, G1, R2, G2, dur, time){
+      setTimeout(function(){
+        $({alpha:0.43}).animate({alpha:0}, {
+          duration: dur,
+          step: function(){
+            $table.css('border-color','rgba('+R1+','+G1+',0,'+this.alpha+')');
+          }
+        });
+        $({alpha:0.1}).animate({alpha:0}, {
+          duration: dur,
+          step: function(){
+            $table.css('background-color','rgba('+R2+','+G2+',0,'+this.alpha+')');
+          }
+        });
+        $errorsTd.fadeOut(dur);
+      }, time);
+    }
+  });
+
+</script>
+
+          

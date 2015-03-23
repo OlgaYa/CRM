@@ -18,7 +18,38 @@
 //= require moment
 //= require bootstrap-datetimepicker
 
-$(document).ready(function(){
-var $notifier = $('.notifier');
-var notifierTimer});
+var notifierTimer  
 
+function notifie(message, $notifier){
+  clearTimeout(notifierTimer);
+  initNotifierSuccess($notifier);
+  $notifier.children('.notice-mess').html(message);
+  destroyNotifier($notifier);
+}
+
+function error(mess, $notifier) {
+  clearTimeout(notifierTimer);
+  initNotifierError();
+  if(mess){
+    $notifier.children('.notice-mess').html(mess);
+  } else{
+    $notifier.children('.notice-mess').html('Something went wrong, please repeat the action later!');
+  }
+  destroyNotifier($notifier);
+}
+
+function initNotifierSuccess($notifier){
+  $notifier.addClass('notifier-init notice-success').removeClass('notice-error');
+  $notifier.fadeIn('fast');
+}
+
+function initNotifierError($notifier){
+  $notifier.addClass('notifier-init notice-error').removeClass('notice-success');
+  $notifier.fadeIn('fast');
+}
+
+function destroyNotifier($notifier){
+  notifierTimer = setTimeout(function(){
+    $notifier.fadeOut('slow');
+  },2000);    
+}

@@ -33,7 +33,7 @@ class Admin::RegistrationController < ApplicationController
 		end
 	end
 
-    def user_params_create
+  def user_params_create
 		params.require(:@user).permit(:first_name, :last_name, :email, :password, :password_confirmation, :admin)
 	end
 

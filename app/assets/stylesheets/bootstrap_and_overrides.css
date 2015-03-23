@@ -5,10 +5,14 @@
   To use Glyphicons sprites instead of Font Awesome, replace with "require twitter-bootstrap-static/sprites"
   =require twitter-bootstrap-static/fontawesome
   */
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
 
 table {
   margin-top: 50px;
-	border-collapse: initial;
+  border-collapse: initial;
   font-size: 10pt;
 }
 
@@ -31,4 +35,21 @@ td .btn {
   margin-bottom: 15px;
 }
 
+.tab-content .btn {
+  margin-bottom: 20px;
+  margin-top: 50px;
+}
 
+.tab-content a.btn {
+  margin-bottom: 0px;
+  margin-top: 0px;
+  border-radius: 0; 
+}
+
+.tab-pane table {
+    width: 100%;
+    font-size: 12pt;
+    margin-top: 0;
+    margin-left: 0;
+    border-collapse: initial;
+}

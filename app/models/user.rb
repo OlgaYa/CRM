@@ -12,6 +12,10 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :last_name, presence: true, length: { maximum: 50 }
 
+  # extend Enumerize
+
+  # enumerize :status, in: [:observer, :locked, :unlocked]
+
   def generate_token(column)
       begin
         self[column] = SecureRandom.urlsafe_base64
