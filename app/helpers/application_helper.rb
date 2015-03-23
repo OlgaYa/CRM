@@ -1,5 +1,10 @@
 module ApplicationHelper
 
+	include ActionView::Helpers::TagHelper
+	include ActionView::Helpers::AssetTagHelper
+	include ActionView::Helpers::UrlHelper
+	attr_accessor :output_buffer
+
 	def get_count_tasks(only = "")
 		case only 
 	    when 'sold'
@@ -22,4 +27,24 @@ module ApplicationHelper
 	def current_user?(user)
 		user == current_user
 	end
+
+	def generate_tr_for_user(user)
+		content_tag(:tr) do			
+			buffer = ActiveSupport::SafeBuffer.new
+			buffer << content_tag(:td, user.first_name)
+			buffer << content_tag(:td, user.last_name)
+			buffer << content_tag(:td, user.email)
+			buffer << content_tag(:td, user_status(user))
+			buffer << content_tag(:td, user.current_sign_in_at)
+			buffer << content_tag(:td) do
+			 	link_to(image_tag(ActionController::Base.helpers.asset_path("remove.png")), user_path(user), data: {
+          confirm: "Are you sure to remove user #{user.first_name} #{user.last_name}?"
+        }, 
+        method: :delete )
+			end
+			buffer
+		end
+	end
 end
+
+
