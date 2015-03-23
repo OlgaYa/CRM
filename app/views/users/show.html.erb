@@ -18,8 +18,8 @@
       <!-- Nav tabs -->
       <ul class="nav nav-tabs user-room-tabs">
         <li><a href="#contacts" data-toggle="tab">Contact info</a></li>
-        <li class="<%= 'active' unless current_user?(@user)%>"><a href="#statistic" data-toggle="tab">Statistic</a></li>
-        <% if current_user?(@user) %>
+        <li class="<%= 'active' unless current_user?(@user) or current_user.admin?%>"><a href="#statistic" data-toggle="tab">Statistic</a></li>
+        <% if current_user?(@user) or current_user.admin? %>
           <li class="active"><a href="#settings" data-toggle="tab">Settings</a></li>
         <% end %>
       </ul>
