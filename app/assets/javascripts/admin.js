@@ -43,7 +43,6 @@ $(document).ready(function(){
 		    											+"<td>"+ data.email +"</td>"
 		    											+"<td>"+ userStatus +"</td>"
 		    											+"<td></td>"
-		    											+"<td></td>"
 		    											+"</tr>");
 		    		notifie('New user was successfully invited', $notifier)
 		    		$newUserDialog.dialog('close');

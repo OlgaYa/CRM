@@ -48,8 +48,6 @@ function initNotifierError($notifier){
   $notifier.fadeIn('fast');
 }
 
-
-
 function destroyNotifier($notifier){
   notifierTimer = setTimeout(function(){
     $notifier.fadeOut('slow');
