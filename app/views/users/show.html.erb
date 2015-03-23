@@ -109,7 +109,7 @@
           </div>
         </div>      
       <% end %>
-      <div class="tab-pane <%= 'active' unless current_user?(@user)%>" id="statistic">
+      <div class="tab-pane <%= 'active' unless current_user?(@user) or current_user.admin? %>" id="statistic">
         <h1>Here can be statistic</h1>
       </div>
       <div class="tab-pane" id="contacts">
