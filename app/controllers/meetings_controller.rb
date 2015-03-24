@@ -35,10 +35,8 @@ class MeetingsController < ApplicationController
 		    e.attendees = attendees
 			end
 			redirect_to root_url
-			flash[:success] = "Meeting was successful add"
 		else
 			redirect_to root_url
-			flash[:success] = "Something was wrong"
 		end
 	end
 	def meeting_params

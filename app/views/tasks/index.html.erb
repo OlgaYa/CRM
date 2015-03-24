@@ -154,11 +154,14 @@
                 <div class="control-field">
                   <%= f.text_area :description, class: 'form-control', placeholder: 'Description' %>
                 </div>
+
+
+
                 <div class="container" id="container">
                   <div class='col-md-5' id='col-md-5' >
                    <div class="form-group">
                       <div class='input-group date' id='datetimepicker6'>
-                        <%= f.time_field :start_time, placeholder: 'Start time', class: "form-control" %>
+                        <%= f.text_field :start_time, placeholder: 'Start time', class: "form-control" %>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                       </div>
                     </div>
@@ -166,12 +169,13 @@
                   <div class='col-md-5' id='col-md-5' >
                     <div class="form-group">
                       <div class='input-group date' id='datetimepicker7'>
-                        <%= f.time_field :end_time, placeholder: 'End time', class: "form-control" %>
+                        <%= f.text_field :end_time, placeholder: 'End time', class: "form-control" %>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                       </div>
                     </div>
                   </div>
                 </div>
+
                 <div class="side-by-side clearfix", id="chosen">
                   <%= select_tag "User", options_for_select(User.all.collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]} + Task.all.collect {|p| [ p.name , p.id.to_s + "task" ]}),multiple: true, style:"width:100% !important;", class: "chosen-select", name: 'users[]', id: 'user', "data-placeholder" => 'Select User ...' %>
                 </div>

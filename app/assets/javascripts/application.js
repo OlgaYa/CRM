@@ -14,9 +14,9 @@
 //= require jquery_ujs
 //= require twitter/bootstrap
 //= require jquery-ui
-//= require_tree .
 //= require moment
 //= require bootstrap-datetimepicker
+//= require_tree .
 
 var notifierTimer  
 

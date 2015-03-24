@@ -509,3 +509,10 @@ body > #wrapper>.room>.content-column {
         border-radius: 20px;
         background-color: rgba(255,0,0,0.1);
     }
+#start_time{
+  z-index:1151 !important;
+}
+.datepicker {
+     z-index: 100000 !important;
+    display: block;
+}
