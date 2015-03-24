@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :meetings, only: [:index, :create]
   resources :statistics, only: :index do
     collection do
-      patch :change_information
+      post :change_information
     end
   end
 
