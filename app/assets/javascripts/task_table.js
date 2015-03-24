@@ -361,7 +361,7 @@ $(document).ready(function(){
   function changeUser(task_id, field_name, field_value, $field){
     $.when(sendARequest('tasks/' + task_id, { 'field': field_name, 'value': field_value })).always(function(data){
       if(data == 'success') { 
-          notifie('Task status was successful reassigned', $notifier)      
+          notifie('Task was successful reassigned', $notifier)      
       } else {
         error('', $notifier);
       }      
