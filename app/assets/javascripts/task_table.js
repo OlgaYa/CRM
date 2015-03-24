@@ -27,8 +27,16 @@ $(document).ready(function(){
     open: function (event, ui){
       $td = $commonDialog.data('$currentTD');
       $td.active();
-      var tdContent = $td.text();
-      $textEditor.val(tdContent.trim());
+      if($td.hasClass('links')){
+        var tdContent = '';
+        $td.children('a').each(function(){ 
+          tdContent += $(this).attr('href') + ' ';
+        });
+        $textEditor.val(tdContent.trim());
+      } else {
+        var tdContent = $td.text();
+        $textEditor.val(tdContent.trim());
+      }
     },
     close: function (event, ui){
       $td = $commonDialog.data('$currentTD');
@@ -170,11 +178,24 @@ $(document).ready(function(){
       var editorContent = $textEditor.val();
       var filedName = $td.attr('name');
       var taskId = $td.parent().attr('id');
-      $td.html(editorContent);
-      $commonDialog.dialog('close');
       
-      var path = 'tasks/' + taskId
-      var values = { 'field': filedName, 'value': editorContent };
+
+      if($td.hasClass('links')){
+        arr = editorContent.split(' ');
+        var $links_result;
+        $td.empty();
+        for(i=0; i<arr.length; i += 1){
+          if(arr[i]){
+            $td.append($(document.createElement('a')).attr('href', arr[i]).text(arr[i].match(/[a-z0-9]*(\.?[a-z0-9]+)\.[a-z]{2,5}(:[0-9]{1,5})?(.\/)?/)[0]));
+            $td.append($(document.createElement('br')));
+          }
+        }
+      } else {
+        $td.html(editorContent);
+      }      
+      $commonDialog.dialog('close');
+      var path = 'tasks/' + taskId;
+      var values = { 'field': filedName, 'value': editorContent }
       $.when(sendARequest(path, values)).always(function(data, textStatus, jqXHR){
         if(textStatus == 'success'){
           notifie(capitalize(filedName) + ' has been successfully updated!', $notifier);

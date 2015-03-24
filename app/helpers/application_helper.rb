@@ -45,6 +45,15 @@ module ApplicationHelper
 			buffer
 		end
 	end
+
+	def header_add_task
+		 if params[:controller] == 'tasks' && params[:action] == 'index' && !params[:only]
+			form_for Task.new do |f|
+				buffer = ActiveSupport::SafeBuffer.new
+        buffer << f.text_field(:name, hidden: true) 
+        buffer << f.submit("Add new task", class: "btn btn-lg new-task")
+        buffer 
+      end 
+    end
+	end
 end
-
-

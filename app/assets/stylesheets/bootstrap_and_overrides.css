@@ -21,19 +21,60 @@ table p {
 }
 
 td {
-  max-width: 200px;
-  max-height: 50px;
-  overflow: auto;
+  max-width: 210px;
+  max-height: 70px;
+  /*overflow-y: hidden;*/
+  /*overflow: auto;*/
 }
 
 td .btn {
-  padding: 6px 4px;
+  padding: 2px 2px;
   font-size: 10pt;
+}
+
+td.links {
+  max-width: 130px;
+}
+
+
+.table-condensed>tbody>tr>td.date{
+  padding-left: 1px;
+  padding-right: 1px;
 }
 
 .navbar {
   margin-bottom: 15px;
 }
+
+.navbar .btn {
+  background-color: rgba(0,0,0,0);
+  color: #777;
+  font-size: 12pt;
+  border: none;
+  margin-top: 5px;
+}
+
+
+.navbar .btn:hover {
+  background-color: rgba(0,0,0,0);
+  color: #333;
+}
+
+.navbar .btn:focus{
+  background-color: rgba(0,0,0,0);
+  color: #333; 
+  outline: none;
+  box-shadow: 0;
+}
+
+.navbar .btn:active{
+  background-color: rgba(0,0,0,0);
+  color: #333; 
+  outline: none;
+  border: 0;
+  box-shadow: 0;
+}
+
 
 .tab-content .btn {
   margin-bottom: 20px;

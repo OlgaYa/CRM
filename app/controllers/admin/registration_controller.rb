@@ -21,7 +21,7 @@ class Admin::RegistrationController < ApplicationController
 
 	def edit
 		@user = User.find_by_reset_password_token(params[:id])
-	  	redirect_to root_url unless @user
+	  redirect_to root_url unless @user
 	end
 
 	def update
@@ -44,6 +44,7 @@ class Admin::RegistrationController < ApplicationController
 		params.require(:user).permit(:password, :password_confirmation)
 	end
 
+	# Generating row of table "All users"
 	def get_tr
 		render html: generate_tr_for_user(@user).html_safe 
 	end
