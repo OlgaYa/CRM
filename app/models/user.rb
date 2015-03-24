@@ -30,11 +30,23 @@ class User < ActiveRecord::Base
   end
 
   def self.reminder
-    tasks = Task.where("updated_at < ?", 2.day.ago)
+    date = 2.days
+    date += 2.days if Date.yesterday.saturday?
+     tasks = Task.where("updated_at < ?", Date.today - date)
+    # tasks = Task.where("updated_at < ?", 1.minute.ago)
+    hash = {}
     tasks.each do |t|
       unless (t.status ==  "sold" || t.status == "declined" || !t.user_id )
-        UserMailer.reminder_instructions(t).deliver
+        if hash.key?(t.user_id)
+          hash[t.user_id]<<t.name
+        else
+          hash[t.user_id] = [t.name]
+        end
+        # UserMailer.reminder_instructions(t).deliver
       end
+    end
+    hash.each_key do |k|
+      UserMailer.reminder_instructions(k, hash[k]).deliver
     end
   end
 end
