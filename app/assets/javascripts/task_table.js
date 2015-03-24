@@ -186,7 +186,10 @@ $(document).ready(function(){
         $td.empty();
         for(i=0; i<arr.length; i += 1){
           if(arr[i]){
-            $td.append($(document.createElement('a')).attr('href', arr[i]).text(arr[i].match(/[a-z0-9]*(\.?[a-z0-9]+)\.[a-z]{2,5}(:[0-9]{1,5})?(.\/)?/)[0]));
+            $a = $(document.createElement('a'));
+            $a.attr('href', arr[i]);
+            $a.attr('target', '_blank');
+            $td.append($a.text(arr[i].match(/[a-z0-9]*(\.?[a-z0-9]+)\.[a-z]{2,5}(:[0-9]{1,5})?(.\/)?/)[0]));
             $td.append($(document.createElement('br')));
           }
         }
