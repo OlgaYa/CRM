@@ -298,7 +298,7 @@ $(document).ready(function(){
   });
 
 // ================ change assign_to and status EVENTS ==================== //
-  $('.user, .status').on('change', function(event){
+  $('.user, .status, .source').on('change', function(event){
 
     
     var task_id = $(this).parents().eq(1).attr('id');

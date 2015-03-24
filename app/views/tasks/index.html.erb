@@ -38,7 +38,7 @@
               <%= task.name %>
             </td>
             <td class='editable-field' name='source'>
-              <%= task.source %>
+              <%= select("task", "source_id", Source.all.collect {|s| [ s.name, s.id ] }, { include_blank: "Not selected", selected: task.source_id }, class: "btn btn-default source", name: 'source_id') %>
             </td>
             <td class='editable-field' name='skype'>
               <%= task.skype %>
