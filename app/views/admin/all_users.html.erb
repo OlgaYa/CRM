@@ -18,21 +18,14 @@
 			</thead>
 			<tbody>
 				<% @users.each do |user| %>
-					<tr class=<%= user_activity_status(user) %> >
+					<tr>
 						<td><%= user.first_name %></td>
 						<td><%= user.last_name %></td>
 						<td><%= user.email %></td>
 						<td><%= user_status(user) %></td>
 						<td><%= user.current_sign_in_at %></td>
 						<td class="control-field">
-							<% if user.sign_in_count == 0 %> 
-								<%= link_to image_tag('remove.png'), user, data: {
-		                  confirm: "Are you sure to remove user #{user.first_name} #{user.last_name}?"
-		                }, 
-		                method: :delete %>
-				    	<% else %>
-				    		<%= link_to image_tag('edit.png'), user_path(user) + '#settings' %>
-				    	<% end %>
+							<%= get_users_control(user) %>
 				    </td>
 					</tr>
 				<% end %>

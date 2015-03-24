@@ -1,5 +1,8 @@
 class Admin::RegistrationController < ApplicationController
 	skip_before_action :authenticate_user!, only: [:update, :edit]
+
+	include ApplicationHelper
+
 	
 	# def new
 	# 	@user = User.new
@@ -10,15 +13,15 @@ class Admin::RegistrationController < ApplicationController
 		@user.password = @user.password_confirmation = Array.new(8) { (rand(122-97) + 97).chr }.join
 	    if @user.save
 	    	@user.send_password_reset(current_user)
-	    	render json: @user.to_json	
+	    	get_tr
 	    else
-	        render json: @user.errors.full_messages.to_json 
+	      render json: @user.errors.full_messages.to_json 
 	    end
 	end
 
 	def edit
 		@user = User.find_by_reset_password_token(params[:id])
-	  	redirect_to root_url unless @user
+	  redirect_to root_url unless @user
 	end
 
 	def update
@@ -39,5 +42,10 @@ class Admin::RegistrationController < ApplicationController
 
 	def user_params_update
 		params.require(:user).permit(:password, :password_confirmation)
+	end
+
+	# Generating row of table "All users"
+	def get_tr
+		render html: generate_tr_for_user(@user).html_safe 
 	end
 end

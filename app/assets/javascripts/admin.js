@@ -27,38 +27,30 @@ $(document).ready(function(){
 		$newUserDialog.dialog('open');
 	});
 
-	$('#new-user-form').on('submit', function() {  
-	    var valuesToSubmit = $(this).serialize();
-	    $.ajax({
+  $('#new-user-form').on('submit', function() {  
+      var valuesToSubmit = $(this).serialize();
+      $.ajax({
         type: "POST",
         url: $(this).attr('action'), 
         data: valuesToSubmit,
-        dataType: "JSON",
         success: function(data){
-		    	if(data.id){
-		    		userStatus = data.admin ? 'Admin' : 'User';
-		    		$usersTable.append("<tr class='danger'>"
-		    											+"<td>"+ data.first_name +"</td>"
-		    											+"<td>"+ data.last_name +"</td>"
-		    											+"<td>"+ data.email +"</td>"
-		    											+"<td>"+ userStatus +"</td>"
-		    											+"<td></td>"
-		    											+"</tr>");
-		    		notifie('New user was successfully invited', $notifier)
-		    		$newUserDialog.dialog('close');
-		    	}	else {
-		    		$errors = $('#error_explanation');
-		    		$errors.empty();
-		    		for(i = 0; i < data.length; i++ ){
-		    			$errors.append(data[i] + "<br>");
-		    		}
-		    	}
-    		},
-    		error: function() {
-    			error('', $notifier);
-    			$newUserDialog.dialog('close');
-    		} 
-	    });
-	    return false; // prevents normal behaviour
-	});	
+          if(typeof data !== 'object'){
+            $usersTable.append(data);
+            notifie('New user was successfully invited', $notifier)
+            $newUserDialog.dialog('close');
+          } else {
+            $errors = $('#error_explanation');
+            $errors.empty();
+            for(i = 0; i < data.length; i++ ){
+              $errors.append(data[i] + "<br>");
+            }
+          }
+        },
+        error: function() {
+          error('', $notifier);
+          $newUserDialog.dialog('close');
+        } 
+      });
+      return false; // prevents normal behaviour
+  });
 });

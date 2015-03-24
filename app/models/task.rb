@@ -9,6 +9,8 @@ class Task < ActiveRecord::Base
   has_one :sold_task,  dependent: :destroy
   has_many :messages, dependent: :destroy
 
+  belongs_to :source
+
   extend Enumerize
 
   enumerize :status, in: [:negotiations, :assigned_meeting, :waiting_estimate, :waiting_specification, :sold, :declined]

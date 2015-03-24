@@ -37,8 +37,8 @@
             <td class='editable-field' name='name'>
               <%= task.name %>
             </td>
-            <td class='editable-field' name='source'>
-              <%= task.source %>
+            <td class='source' name='source'>
+              <%= select("task", "source_id", Source.all.collect {|s| [ s.name, s.id ] }, { include_blank: "Not selected", selected: task.source_id }, class: "btn btn-default source", name: 'source_id') %>
             </td>
             <td class='editable-field' name='skype'>
               <%= task.skype %>
@@ -57,7 +57,9 @@
               </div>
             </td>
             <td class='links editable-field' name='links'>
-              <%= task.links %>
+              <% if task.links %>                
+                <%= get_links(task.links) %>
+              <% end %>
             </td>
             <td class="date">
               <input class="date-input" name="date" value='<%= task.date  %>'/> 
@@ -107,13 +109,6 @@
       </tbody>
     </table>
     
-    <% unless params[:only] %>
-      <%= form_for Task.new do |f| %>
-        <%= f.text_field :name, hidden: true %> 
-        <%= f.submit "Add new task", class: "btn btn-primary btn-lg pull-right" %>
-      <% end %>
-    <% end %>
-
     <!-- Hidden blocks for popup dialogs -->
     <div id='common-dialog'> 
       <textarea id="text-editor"></textarea>
@@ -128,7 +123,7 @@
 
     <div id="declined-comment">
       <textarea id="declined_comment_body" class="comment_body"></textarea>
-    </div><!-- /.modal -->
+    </div>
 
     <div id="price-dialog" title="Price">
       <input id="price" type="number" class="price"/>
