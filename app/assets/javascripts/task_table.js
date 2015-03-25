@@ -166,7 +166,7 @@ $(document).ready(function(){
     buttons: 
       [
         {
-          text: 'Add linck',
+          text: 'Add link',
           click: function(){
             var href = $linkInp.val();
             var task_id = $linksDialog.data('task_id');
