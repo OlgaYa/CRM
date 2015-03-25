@@ -61,10 +61,12 @@ module ApplicationHelper
 		content_tag(:div, class: "comment c_#{comment.id}") do
 			buffer = ActiveSupport::SafeBuffer.new
 			buffer << content_tag(:span, time.strftime("%e.%m %H:%M"), class: 'comment_time')
-			buffer << content_tag(:span, ' ' + current_user.first_name)
-			buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")), 
-												comment_path(comment), class: 'pull-right', 
-												method: :delete, remote: true)
+			buffer << content_tag(:span, ' ' + comment.user.first_name)
+			if current_user == comment.user
+				buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")), 
+													comment_path(comment), class: 'pull-right', 
+													method: :delete, remote: true)
+			end
 			buffer << content_tag(:p, comment.body)
 			buffer
 		end
