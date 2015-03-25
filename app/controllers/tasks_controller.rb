@@ -3,13 +3,13 @@ class TasksController < ApplicationController
   def index
     case params[:only] 
     when 'sold'
-      @tasks = Task.all.where("status = 'sold'").order("created_at DESC")
+      @tasks = Task.all.where("status = 'sold'").order("date DESC")
       filename = 'sold'
     when 'declined'
-      @tasks = Task.all.where("status = 'declined'").order("created_at DESC")
+      @tasks = Task.all.where("status = 'declined'").order("date DESC")
       filename = 'declined'
     else
-      @tasks = Task.all.where("status != 'sold' AND status != 'declined' OR status IS NULL").order("created_at DESC")
+      @tasks = Task.all.where("status != 'sold' AND status != 'declined' OR status IS NULL").order("date DESC")
       filename = 'open'
     end   
   end

@@ -19,9 +19,9 @@
           <th>Email</th>
           <th>Message</th>
           <th>Links</th>
-          <th>Date</th>
-          <th>Assign to</th>
-          <th>Status</th>
+          <th id="date-th" class="sort_desc">Date</th>
+          <th id="assign-th" class="sortable">Assign to</th>
+          <th id="status-th" class="sortable">Status</th>
           <% if params[:only] == 'sold' %>
             <th>Price</th>
             <th>Terms</th>
@@ -42,7 +42,9 @@
               <%= task.topic %>
             </td>
             <td class='source' name='source'>
-              <%= select("task", "source_id", Source.all.collect {|s| [ s.name.capitalize, s.id ] }, { include_blank: "Not selected", selected: task.source_id }, class: "btn btn-default source", name: 'source_id') %>
+              <%= select("task", "source_id", Source.all.collect {|s| [ s.name.capitalize, s.id ] }, 
+                  { include_blank: "Not selected", selected: task.source_id }, 
+                  class: "btn btn-default source", name: 'source_id') %>
             </td>
             <td class='editable-field' name='skype'>
               <%= task.skype %>
@@ -69,10 +71,13 @@
               <input class="date-input" name="date" value='<%= task.date  %>'/> 
             </td>
             <td class='user_name'>
-                <%= select("task", "user_id", User.all.collect {|p| [ p.first_name + ' ' + p.last_name , p.id ] }, { include_blank: "Not assigned", selected: task.user_id }, class: "btn btn-default user", name: 'user_id') %>
+                <%= select("task", "user_id", User.all.collect {|p| [ p.first_name + ' ' + p.last_name , p.id ] }, 
+                            { include_blank: "Not assigned", selected: task.user_id }, 
+                            class: "btn btn-default user", name: 'user_id') %>
             </td>
             <td class='status'>
-                <%= select_tag "Status", options_for_select(Task.status.options, task.status), class: "btn btn-default status", name: 'status' %>
+                <%= select_tag "Status", options_for_select(Task.status.options, task.status), 
+                    class: "btn btn-default status", name: 'status' %>
             </td>
             <% if params[:only] == 'sold' %>
               <td class='price' name='price'>
@@ -148,9 +153,6 @@
                 <div class="control-field">
                   <%= f.text_area :description, class: 'form-control', placeholder: 'Description' %>
                 </div>
-
-
-
                 <div class="container" id="container">
                   <div class='col-md-5' id='col-md-5' >
                    <div class="form-group">
@@ -169,7 +171,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="side-by-side clearfix", id="chosen">
                   <%= select_tag "User", options_for_select(User.all.collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]} + Task.all.collect {|p| [ p.name , p.id.to_s + "task" ]}),multiple: true, style:"width:100% !important;", class: "chosen-select", name: 'users[]', id: 'user', "data-placeholder" => 'Select User ...' %>
                 </div>
@@ -200,4 +201,92 @@ $(function () {
     $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
   }); 
 });
+</script>
+
+
+<script>
+$(document).ready(function(){
+  var both      = 'sortable',
+      asc       = 'sort_asc',
+      desc      = 'sort_desc',
+      $tskTable = $('#task-table'),
+      $date = $('#date-th'),
+      $assign = $('#assign-th'),
+      $status = $('#status-th');
+
+  $date.on('click', function(){
+    clear($assign, $status);
+    $(this).changeSort('date');
+
+  });
+
+  $assign.on('click', function(){
+    clear($status, $date);
+    $(this).changeSort('user_name');
+  });
+
+  $status.on('click', function(){
+    clear($date, $assign);
+    $(this).changeSort('status');
+  });
+
+  function clear($selector1, $selector2){
+    $selector1.clearSort()
+    $selector2.clearSort()
+  }  
+});
+
+$.fn.clearSort = function(){
+  $(this).removeClass('sort_asc sort_desc').addClass('sortable');
+}
+
+$.fn.changeSort = function(field){
+  if($(this).hasClass('sortable')){
+    $(this).removeClass('sortable').addClass('sort_desc');
+    sortTable(field, -1);
+    return;
+  }
+  if($(this).hasClass('sort_desc')){
+    $(this).removeClass('sort_desc').addClass('sort_asc');
+    sortTable(field, 1);
+    return;
+  }
+  if($(this).hasClass('sort_asc')){
+    $(this).removeClass('sort_asc').addClass('sort_desc');
+    sortTable(field, -1);
+    return;
+  }
+}
+
+function sortTable(col, type){
+    var $rows = $('tbody'),
+        $row = $rows.children('tr');
+    $row.sort(function(a,b){
+      var an,
+          bn;
+      switch(col){
+      case 'date': {
+        an = $(a).children('.' + col).children('input').val(),
+        bn = $(b).children('.' + col).children('input').val();
+      }
+      break;
+      default :{
+        an = $(a).children('.' + col).children('select').children(':selected').text(),
+        bn = $(b).children('.' + col).children('select').children(':selected').text();
+      }
+      break;
+      }
+      
+      if(an > bn) {
+        return type;
+      }
+      if(an < bn) {
+        return -type;
+      }
+      return 0;
+    });
+
+    $row.detach().appendTo($rows);
+  }
+
 </script>
