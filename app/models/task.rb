@@ -11,6 +11,8 @@ class Task < ActiveRecord::Base
 
   belongs_to :source
 
+  has_many :links
+
   extend Enumerize
 
   enumerize :status, in: [:negotiations, :assigned_meeting, :waiting_estimate, :waiting_specification, :sold, :declined]

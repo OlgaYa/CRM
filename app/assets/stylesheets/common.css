@@ -18,7 +18,7 @@ body > #wrapper {
 
 /* LOG IN */
 
-.log-in{
+.log-in {
   margin-right: auto;
   margin-left: auto;
 }
@@ -151,6 +151,10 @@ td .message {
   width: 150px;
 }
 
+.source {
+  width: 105px;
+}
+
 .user_name {
   width: 150px;
 }
@@ -159,8 +163,12 @@ td .message {
   width: 150px;
 }
 
-#price  {
+#price {
   width: 250px;
+}
+
+#link-inp {
+  width: 100%;
 }
 
 .date_end {
@@ -172,6 +180,40 @@ td .message {
   width: 255px;
   max-width: 255px;
   min-height: 80px;
+}
+td .link_list {
+  /*background-color: rgba(0,0,0,0);*/
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.link_list {
+  /*background-color: red; */
+  margin-bottom: 20px;
+  padding: 5px 5px 2px 5px;
+}
+
+td .link {
+  background-color: rgba(0,0,0,0);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+td .link .remove-link {
+  display: none;
+}
+
+.link .remove-link {
+  display: inline-block;
+}
+
+.link {
+  padding: 2px;
+  background-color: rgba(248, 252, 254, 0.99);
+  margin-bottom: 4px;
+  border: 1px solid #DDD;
+  border-radius: 5px;
 }
 
 /* FOOTER */

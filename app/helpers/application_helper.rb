@@ -28,6 +28,17 @@ module ApplicationHelper
 		user == current_user
 	end
 
+	def generate_link(link) 
+		content_tag(:div, class: "link l_#{link.id}") do
+      buffer = ActiveSupport::SafeBuffer.new
+      buffer << link_to(link.alt, link.href, target: '_blank')
+      buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")), 
+                      link_path(link), class: 'pull-right remove-link', 
+                      method: :delete, remote: true)
+      buffer
+    end
+	end
+
 	def generate_tr_for_user(user)
 		content_tag(:tr) do			
 			buffer = ActiveSupport::SafeBuffer.new
@@ -42,6 +53,19 @@ module ApplicationHelper
         }, 
         method: :delete )
 			end
+			buffer
+		end
+	end
+
+	def generate_comment(comment, time)
+		content_tag(:div, class: "comment c_#{comment.id}") do
+			buffer = ActiveSupport::SafeBuffer.new
+			buffer << content_tag(:span, time.strftime("%e.%m %H:%M"), class: 'comment_time')
+			buffer << content_tag(:span, ' ' + current_user.first_name)
+			buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")), 
+												comment_path(comment), class: 'pull-right', 
+												method: :delete, remote: true)
+			buffer << content_tag(:p, comment.body)
 			buffer
 		end
 	end

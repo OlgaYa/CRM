@@ -1,17 +1,18 @@
 // $(document).on('ready page:load', function(){
 $(document).ready(function(){
   var $notifier = $('.notifier');
-  var notifierTimer;
 
   var $commonDialog   = $('#common-dialog');
   var $commentsDialog = $('#comments_dialog');
   var $declinedCommentDialog = $('#declined-comment');
   var $priceDialog = $('#price-dialog');
   var $messagesDialog = $('#messages-dialog');
+  var $linksDialog = $('#links-dialog');
 
   var $textEditor = $('#text-editor');
   var $commentBody = $('#comment_body');
   var $priceInput = $('#price');
+  var $linkInp = $('#link-inp');
 
 
 // =========================== DIALOGS INIT ======================================= //
@@ -159,6 +160,45 @@ $(document).ready(function(){
     }
   });
 
+  $linksDialog.dialog({
+    autoOpen: false,
+    title: 'Links',
+    buttons: 
+      [
+        {
+          text: 'Add linck',
+          click: function(){
+            var href = $linkInp.val();
+            var task_id = $linksDialog.data('task_id');
+            if(href.length > 0) {
+              var alt = href.match(/[a-z0-9]*(\.?[a-z0-9]+)\.[a-z]{2,10}(:[0-9]{1,10})?(.\/)?/)[0]
+              var values = { 'task_id': task_id, 'alt': alt, 'href': href }; // add_comment_task_id == Task.id
+              $.ajax({
+                type: 'POST',
+                url: 'links',
+                dataType: 'html',
+                success: function(resp){
+                  $linksDialog.children('.link_list').append($.parseHTML(resp));
+                  $('#'+task_id).children('.links').children('.link_list').append($.parseHTML(resp));
+                  $linkInp.val("");
+                },
+                data: values 
+              });              
+            }
+          }
+        }
+      ],
+    open: function(){
+      $td = $linksDialog.data('$td');
+      $td.active();
+    },
+    close: function(){
+      $td = $linksDialog.data('$td')
+      $(this).children('div').remove();
+      $td.nonActive(); 
+    }
+  });
+
 // =========================== EVENTS ======================================= //
   
   // ======= open  name, source, skype, links, email editor EVENT ========= //
@@ -167,7 +207,7 @@ $(document).ready(function(){
     title = $(this).attr('name');    
     $commonDialog.dialog('option', 'title', capitalize(title));
     $commonDialog.data('$currentTD', $(this));
-    $commonDialog.dialog('option', 'position', { my: 'left top', at: 'left bottom',  of: $(this) } );
+    $commonDialog.dialog('option', 'position', { my: 'left top', at: 'left bottom',  of: $(this) });
     $commonDialog.dialog('open');
   });
 
@@ -242,7 +282,19 @@ $(document).ready(function(){
     }
   });
 
-  // ============================== COMMENTS ================================== //
+  // ============================== LINKS EVENTS ================================== //
+  $('.links').on('dblclick', function(e){
+    closeAllDialogs();
+    var $td = $(this) // cell
+    var task_id = $td.parent().attr('id') // tr.attr('id') == Task.id
+    $linksDialog.data('task_id', task_id);
+    $linksDialog.data('$td', $td);    
+    $linksDialog.dialog('option', 'position', { my: 'left top', at: 'left bottom',  of: $(this) } );;    
+    $linksDialog.dialog('open');
+    $linksDialog.prepend($td.children().clone())
+  });
+
+  // ============================== COMMENTS EVENTS ================================== //
   var timer;
   // open comments_dialog
   $('.comments').on('dblclick', function(e){    
@@ -268,19 +320,19 @@ $(document).ready(function(){
 
   function addComment(task_id, body){
     var values = { 'task_id': task_id, 'body': body }; // add_comment_task_id == Task.id
-      $.ajax({
-        type: 'POST',
-        url: 'comments',
-        dataType: 'html',
-        success: function(resp){
-          $commentsDialog.children('.comment_list').append($.parseHTML(resp));
-          $('#'+task_id).children('.comments').children('.comment_list').append($.parseHTML(resp));
-           d = new Date();
-          $('#'+task_id).children('.date').children('.date-input').val(d.yyyymmdd());   
-          $commentBody.val("");
-        },
-        data: values 
-      });
+    $.ajax({
+      type: 'POST',
+      url: 'comments',
+      dataType: 'html',
+      success: function(resp){
+        $commentsDialog.children('.comment_list').append($.parseHTML(resp));
+        $('#'+task_id).children('.comments').children('.comment_list').append($.parseHTML(resp));
+        d = new Date();
+        $('#'+task_id).children('.date').children('.date-input').val(d.yyyymmdd());   
+        $commentBody.val("");
+      },
+      data: values 
+    });
   }
 
 // ================ messages EVENTS ====================================== //
@@ -297,16 +349,15 @@ $(document).ready(function(){
     $messagesDialog.empty();
   });
 
-// ================ change assign_to and status EVENTS ==================== //
-  $('.user, .status, .source').on('change', function(event){
-
-    
+// ================ change Selct_fields EVENTS ==================== //
+  $('.user, .status, .source').on('change', function(event){  
     var task_id = $(this).parents().eq(1).attr('id');
     var $field = $(this);       
     var field_name = $(this).attr('name');
     var field_value = $(this).val();
 
-    if(field_name == 'status'){
+    switch(field_name){
+    case 'status': {
       if(field_value == 'declined'){
         closeAllDialogs();
         $declinedComment = $('#declined-comment');
@@ -322,10 +373,17 @@ $(document).ready(function(){
         }
         changeStatus(task_id, field_name, field_value, $field);
       }
-    } else {
-      changeUser(task_id, field_name, field_value, $field);
     }
-
+    break; 
+    case 'user_id': {
+      changeSelection(task_id, field_name, field_value, $field, 'Task was successful reassigned');
+    }
+    break;
+    case 'source_id': {
+      changeSelection(task_id, field_name, field_value, $field, 'Source was successful changed');
+    }
+    break;
+    }
     return false;
   });
 
@@ -336,21 +394,21 @@ $(document).ready(function(){
         $field.parents().eq(1).children('.date').children('.date-input').val(d.yyyymmdd());   
         // check at what page happend this event            
         switch(getParameterByName('only')){
-          case 'sold': {
-              moveTo(task_id, field_value);                  
-            }
-            break;
-          case 'declined': {
-              moveTo(task_id, field_value);       
-            }
-            break;
-          default: {
-              if(field_value == 'declined' || field_value == 'sold'){                   
-                moveTo(task_id, field_value);
-              } else {
-                notifie('Task status was successful changed', $notifier)
-              }
-            }
+        case 'sold': {
+          moveTo(task_id, field_value);                  
+        }
+        break;
+        case 'declined': {
+          moveTo(task_id, field_value);       
+        }
+        break;
+        default: {
+          if(field_value == 'declined' || field_value == 'sold'){                   
+            moveTo(task_id, field_value);
+          } else {
+            notifie('Task status was successful changed', $notifier)
+          }
+        }
         }           
       } else {
         error('', $notifier);
@@ -358,10 +416,10 @@ $(document).ready(function(){
     });
   }
 
-  function changeUser(task_id, field_name, field_value, $field){
+  function changeSelection(task_id, field_name, field_value, $field, mess){
     $.when(sendARequest('tasks/' + task_id, { 'field': field_name, 'value': field_value })).always(function(data){
       if(data == 'success') { 
-          notifie('Task was successful reassigned', $notifier)      
+          notifie(mess, $notifier)      
       } else {
         error('', $notifier);
       }      
@@ -371,20 +429,20 @@ $(document).ready(function(){
   function moveTo(task_id, path){
     $('#'+task_id).remove();
     switch(path) {
-      case 'declined': {
-          notifie('Task was successful moved to "Declined tasks"', $notifier)
-        }
-        break;
+    case 'declined': {
+      notifie('Task was successful moved to "Declined tasks"', $notifier)
+    }
+    break;
 
-      case 'sold': {
-          notifie('Task was successful moved to "Sold tasks"', $notifier)
-        }
-        break;
+    case 'sold': {
+      notifie('Task was successful moved to "Sold tasks"', $notifier)
+    }
+    break;
 
-      default: {
-          notifie('Task was successful moved to "Open tasks"', $notifier)
-        }
-        break;
+    default: {
+      notifie('Task was successful moved to "Open tasks"', $notifier)
+    }
+    break;
     }
   }
 
@@ -428,5 +486,7 @@ $(document).ready(function(){
   function closeAllDialogs(){
     $commonDialog.dialog('close');
     $priceDialog.dialog('close');
+    $linksDialog.dialog('close');
+    $messagesDialog.dialog('close');
   }  
 });

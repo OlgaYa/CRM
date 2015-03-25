@@ -4,7 +4,6 @@ $(document).ready(function(){
 	var $newUserDialog = $('#new-user-dialog');
 	var $usersTable = $('#users-table');
 	var $notifier = $('.notifier');
-	var notifierTimer;
 
 	$newUserDialog.dialog({
 		autoOpen: false,

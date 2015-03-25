@@ -13,6 +13,7 @@
         <tr class="info">
           <th>№</th>
           <th>Name</th>
+          <th>Topic</th>
           <th>Source</th>
           <th>Skype</th>
           <th>Email</th>
@@ -37,8 +38,11 @@
             <td class='editable-field' name='name'>
               <%= task.name %>
             </td>
+            <td class="editable-field topic" name="topic">
+              <%= task.topic %>
+            </td>
             <td class='source' name='source'>
-              <%= select("task", "source_id", Source.all.collect {|s| [ s.name, s.id ] }, { include_blank: "Not selected", selected: task.source_id }, class: "btn btn-default source", name: 'source_id') %>
+              <%= select("task", "source_id", Source.all.collect {|s| [ s.name.capitalize, s.id ] }, { include_blank: "Not selected", selected: task.source_id }, class: "btn btn-default source", name: 'source_id') %>
             </td>
             <td class='editable-field' name='skype'>
               <%= task.skype %>
@@ -56,10 +60,10 @@
                 <% end %>
               </div>
             </td>
-            <td class='links editable-field' name='links'>
-              <% if task.links %>                
-                <%= get_links(task.links) %>
-              <% end %>
+            <td class='links' name='links'>
+              <div class="link_list">
+                <%= links_for_table(task.links) %>
+              </div>                
             </td>
             <td class="date">
               <input class="date-input" name="date" value='<%= task.date  %>'/> 
@@ -86,15 +90,7 @@
             <td class='comments'>
               <div class="comment_list"> 
                 <% task.comments.order(:created_at).each do |comment| %>
-                  <div class="comment <%= comment.id %>">
-                    <span class="comment_time"><%= comment.datetime.strftime('%e.%m %H:%M') %></span>
-                    <span><%= comment.user.first_name %></span>
-                    <% if comment.user == current_user %>
-                      <%= link_to image_tag('remove-red.png'), comment, class: 'pull-right', remote: true, 
-                        method: :delete  %> 
-                    <% end %>
-                    <p><%= comment.body %></p>
-                  </div>
+                  <%= generate_comment(comment, comment.datetime) %>
                 <% end %> 
               </div>
             </td>
@@ -121,6 +117,10 @@
 
     <div id="messages-dialog"></div>
 
+    <div id="links-dialog">
+      <input id="link-inp" />
+    </div>
+
     <div id="declined-comment">
       <textarea id="declined_comment_body" class="comment_body"></textarea>
     </div>
@@ -131,7 +131,6 @@
 
 
     <!-- Modal -->
-
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
