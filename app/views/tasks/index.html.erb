@@ -14,14 +14,14 @@
           <th>№</th>
           <th>Name</th>
           <th>Topic</th>
-          <th>Source</th>
+          <th name="source" class="sortable sort">Source</th>
           <th>Skype</th>
           <th>Email</th>
           <th>Message</th>
           <th>Links</th>
-          <th id="date-th" class="sort_desc">Date</th>
-          <th id="assign-th" class="sortable">Assign to</th>
-          <th id="status-th" class="sortable">Status</th>
+          <th name="date" class="sort_desc sort">Date</th>
+          <th name="user_name" class="sortable sort">Assign to</th>
+          <th name="status" class="sortable sort">Status</th>
           <% if params[:only] == 'sold' %>
             <th>Price</th>
             <th>Terms</th>
@@ -209,30 +209,20 @@ $(document).ready(function(){
   var both      = 'sortable',
       asc       = 'sort_asc',
       desc      = 'sort_desc',
-      $tskTable = $('#task-table'),
-      $date = $('#date-th'),
-      $assign = $('#assign-th'),
-      $status = $('#status-th');
+      $tskTable = $('#task-table');
 
-  $date.on('click', function(){
-    clear($assign, $status);
-    $(this).changeSort('date');
+  $('.sort').on('click', function(){
+    clear($('.sort'), $(this));
+    $(this).changeSort($(this).attr('name'));
 
   });
 
-  $assign.on('click', function(){
-    clear($status, $date);
-    $(this).changeSort('user_name');
-  });
-
-  $status.on('click', function(){
-    clear($date, $assign);
-    $(this).changeSort('status');
-  });
-
-  function clear($selector1, $selector2){
-    $selector1.clearSort()
-    $selector2.clearSort()
+  function clear($selectors, $current){
+    $selectors.each(function(){
+      if($(this).attr('name')!== $current.attr('name')){
+        $(this).clearSort()
+      }
+    })
   }  
 });
 

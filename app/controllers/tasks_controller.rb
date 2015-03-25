@@ -75,7 +75,6 @@ class TasksController < ApplicationController
       when 'open'
         tasks = tasks.where("status <> 'sold' AND status <> 'declined'")
         file_name = 'open tasks'
-        binding.pry
       when 'declined'
         tasks = tasks.where(:status => :declined)
         file_name = 'declined tasks'
