@@ -261,6 +261,9 @@ $.fn.changeSort = function(field){
 function sortTable(col, type){
     var $rows = $('tbody'),
         $row = $rows.children('tr');
+    if(col !== 'date'){
+      type = -type;
+    }
     $row.sort(function(a,b){
       var an,
           bn;
@@ -276,7 +279,7 @@ function sortTable(col, type){
       }
       break;
       }
-      
+
       if(an > bn) {
         return type;
       }
@@ -288,5 +291,4 @@ function sortTable(col, type){
 
     $row.detach().appendTo($rows);
   }
-
 </script>
