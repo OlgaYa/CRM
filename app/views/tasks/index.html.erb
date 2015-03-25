@@ -14,14 +14,14 @@
           <th>№</th>
           <th>Name</th>
           <th>Topic</th>
-          <th name="source" class="sortable sort">Source</th>
+          <th value="source" class="sortable sort">Source</th>
           <th>Skype</th>
           <th>Email</th>
           <th>Message</th>
           <th>Links</th>
-          <th name="date" class="sort_desc sort">Date</th>
-          <th name="user_name" class="sortable sort">Assign to</th>
-          <th name="status" class="sortable sort">Status</th>
+          <th value="date" class="sort_desc sort">Date</th>
+          <th value="user_name" class="sortable sort">Assign to</th>
+          <th value="status" class="sortable sort">Status</th>
           <% if params[:only] == 'sold' %>
             <th>Price</th>
             <th>Terms</th>
@@ -29,7 +29,7 @@
           <th>Comments</th>
         </tr>
       </thead>
-      <tbody class="table-responsive">
+      <tbody id="table-body" class="table-responsive">
         <% @tasks.each do |task| %>
           <tr id=<%="#{task.id}"%>>
             <td class="number">
@@ -213,13 +213,13 @@ $(document).ready(function(){
 
   $('.sort').on('click', function(){
     clear($('.sort'), $(this));
-    $(this).changeSort($(this).attr('name'));
+    $(this).changeSort($(this).attr('value'));
 
   });
 
   function clear($selectors, $current){
     $selectors.each(function(){
-      if($(this).attr('name')!== $current.attr('name')){
+      if($(this).attr('value')!== $current.attr('value')){
         $(this).clearSort()
       }
     })
@@ -248,22 +248,27 @@ $.fn.changeSort = function(field){
   }
 }
 
-function sortTable(col, type){
-    var $rows = $('tbody'),
+function sortTable(col, type) {
+    var $rows = $('#table-body'),
         $row = $rows.children('tr');
-    if(col !== 'date'){
+    if(col !== 'date') {
       type = -type;
     }
-    $row.sort(function(a,b){
+    $row.sort(function(a,b) {
       var an,
           bn;
-      switch(col){
+      switch(col) {
       case 'date': {
         an = $(a).children('.' + col).children('input').val(),
         bn = $(b).children('.' + col).children('input').val();
       }
       break;
-      default :{
+      case 'source': {
+        an = $(a).children('.' + col).children('select').val(),
+        bn = $(b).children('.' + col).children('select').val();
+      }
+      break;
+      default: {
         an = $(a).children('.' + col).children('select').children(':selected').text(),
         bn = $(b).children('.' + col).children('select').children(':selected').text();
       }
@@ -278,7 +283,6 @@ function sortTable(col, type){
       }
       return 0;
     });
-
     $row.detach().appendTo($rows);
   }
 </script>
