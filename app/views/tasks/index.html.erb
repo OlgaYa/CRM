@@ -171,8 +171,11 @@
                     </div>
                   </div>
                 </div>
+                <div class="control-field">
+                  <%= f.text_field :email,  class: 'form-control', placeholder: 'Add email'%>
+                </div>
                 <div class="side-by-side clearfix", id="chosen">
-                  <%= select_tag "User", options_for_select(User.all.collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]} + Task.all.collect {|p| [ p.name , p.id.to_s + "task" ]}),multiple: true, style:"width:100% !important;", class: "chosen-select", name: 'users[]', id: 'user', "data-placeholder" => 'Select User ...' %>
+                  <%= select_tag "User", options_for_select(User.all_except(current_user).collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]} + Task.all.collect {|p| [ p.name , p.id.to_s + "task" ]}),multiple: true, style:"width:100% !important;", class: "chosen-select", name: 'users[]', id: 'user', "data-placeholder" => 'Select User ...' %>
                 </div>
               </div>
             </div>
