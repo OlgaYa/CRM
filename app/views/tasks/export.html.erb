@@ -50,9 +50,9 @@
 						<tbody>
 							<tr>
 								<td id="statuses">
-									<% Task.status.options.each do |key, value| %>
-										<input type="checkbox" name="statuses[]" id= '<%= value %>' value= '<%= value %>' >
-										<%= label_tag key %>
+									<% Status.all.each do |status| %>
+										<input type="checkbox" name="statuses[]" id= '<%= "s_#{status.id}" %>' value= '<%= status.id %>' >
+										<%= label_tag status.name %>
 										<br>					
 									<% end %>  
 								</td>

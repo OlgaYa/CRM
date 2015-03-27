@@ -120,7 +120,7 @@ $(document).ready(function(){
             $('#declined_comment_body').val("");
             if(body.length > 0){
               addComment(task_id, body);
-              changeStatus(task_id, $(this).data('field_name'), $(this).data('field_value'), $(this).data('$field'));
+              changeStatus(task_id, $(this).data('field_name'), $(this).data('field_value'), $(this).data('$field'), 'declined');
               reload = false; 
               $(this).dialog('close');
               reload = true;
@@ -139,6 +139,7 @@ $(document).ready(function(){
       $td.active();
     }, 
     close: function(event, ui){
+      $priceInput.val("");
       $td = $priceDialog.data('$td');
       $td.nonActive();
     }
@@ -254,7 +255,8 @@ $(document).ready(function(){
     closeAllDialogs();
     sold_task_id = $(this).children('.id').val();
     $td_field = $(this).children()
-    $priceInput.val($(this).children().text().trim())
+    
+    $priceInput.val($(this).children('div').text().trim())
     $priceDialog.data('$td', $(this));
     $priceDialog.data('sold_task_id', sold_task_id);
     $priceDialog.dialog('option', 'position', { my: 'left top', at: 'left bottom',  of: $(this) } );
@@ -355,10 +357,11 @@ $(document).ready(function(){
     var $field = $(this);       
     var field_name = $(this).attr('name');
     var field_value = $(this).val();
+    var field_text = $(this).children(':selected').text().toLowerCase();
 
     switch(field_name){
-    case 'status': {
-      if(field_value == 'declined'){
+    case 'status_id': {
+      if(field_text == 'declined'){
         closeAllDialogs();
         $declinedComment = $('#declined-comment');
         $declinedComment.data('field_name', field_name);
@@ -367,11 +370,11 @@ $(document).ready(function(){
         $declinedComment.data('$field', $field);
         $declinedComment.dialog('open');
       } else {       
-        if(field_value == 'assigned_meeting'){
+        if(field_text == 'assigned_meeting'){
           $("#user_chosen").attr("data-placeholder","Something");
           $('#myModal').modal()
         }
-        changeStatus(task_id, field_name, field_value, $field);
+        changeStatus(task_id, field_name, field_value, $field, field_text);
       }
     }
     break; 
@@ -387,7 +390,7 @@ $(document).ready(function(){
     return false;
   });
 
-  function changeStatus(task_id, field_name, field_value, $field){    
+  function changeStatus(task_id, field_name, field_value, $field, field_text){
     $.when(sendARequest('tasks/' + task_id, { 'field': field_name, 'value': field_value })).always(function(data){
       if(data == 'success'){
         d = new Date();
@@ -395,16 +398,16 @@ $(document).ready(function(){
         // check at what page happend this event            
         switch(getParameterByName('only')){
         case 'sold': {
-          moveTo(task_id, field_value);                  
+          moveTo(task_id, field_text);                  
         }
         break;
         case 'declined': {
-          moveTo(task_id, field_value);       
+          moveTo(task_id, field_text);       
         }
         break;
         default: {
-          if(field_value == 'declined' || field_value == 'sold'){                   
-            moveTo(task_id, field_value);
+          if(field_text == 'declined' || field_text == 'sold'){                   
+            moveTo(task_id, field_text);
           } else {
             notifie('Task status was successful changed', $notifier)
           }

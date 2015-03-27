@@ -77,7 +77,7 @@ module ApplicationHelper
 			form_for Task.new do |f|
 				buffer = ActiveSupport::SafeBuffer.new
         buffer << f.text_field(:name, hidden: true) 
-        buffer << f.submit("Add new task", class: "btn btn-lg new-task")
+        buffer << f.submit("New task", class: "new btn btn-sm btn-primary")
         buffer 
       end 
     end
