@@ -358,7 +358,6 @@ $(document).ready(function(){
     var field_name = $(this).attr('name');
     var field_value = $(this).val();
     var field_text = $(this).children(':selected').text().toLowerCase();
-
     switch(field_name){
     case 'status_id': {
       if(field_text == 'declined'){
@@ -370,8 +369,7 @@ $(document).ready(function(){
         $declinedComment.data('$field', $field);
         $declinedComment.dialog('open');
       } else {       
-        if(field_text == 'assigned_meeting'){
-          $("#user_chosen").attr("data-placeholder","Something");
+        if(field_value == 2){
           $('#myModal').modal()
         }
         changeStatus(task_id, field_name, field_value, $field, field_text);

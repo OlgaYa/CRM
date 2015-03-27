@@ -5,37 +5,92 @@ class StatisticsController < ApplicationController
 	end
 
 	def change_information
-		allTask = Task.all
-		user = User.find_by_id(params[:user])
-		days = Task.connection.select_all("SELECT distinct date_trunc('day', updated_at) as day FROM tasks order by day asc")
-		if params[:user] == "" &&  params[:status] == ""
-			task = Task.connection.select_all("SELECT date_trunc('day', updated_at)  as day, count(id) FROM tasks group by day  order by day asc")		
-			name = "All"
-		elsif params[:user] == ""
-			#countTask = Task.where("status = ?", params[:status]).count
-			task = Task.connection.select_all("SELECT  date_trunc('day', updated_at) as day, count(id) FROM tasks where status = '#{params[:status]}' group by day order by day asc")
-			name = params[:status]
-		elsif params[:status] == ""
-			task = Task.connection.select_all("SELECT  date_trunc('day', updated_at) as day, count(id) FROM tasks where user_id = '#{params[:user]}' group by day order by day asc")
-			#countTask = Task.where("user_id = ?", params[:user]).count	
-			name = user.first_name + " " + user.last_name
-		else
-			task = Task.connection.select_all("SELECT  date_trunc('day', updated_at) as day, count(id) FROM tasks where status = '#{params[:status]}' and user_id = '#{params[:user]}' group by day order by day asc")
-			#countTask = Task.where("status = ? and user_id = ?", params[:status], params[:user]).count
-			name = params[:status].to_s + ": " + user.first_name + " " + user.last_name
-		end
 		hash = []
-		days.rows.each_index{|d| days.rows[d][0] = days.rows[d][0].to_date}
-		task.rows.each_index{|t| task.rows[t][0] =  task.rows[t][0].to_date}
-		days.rows.each_index{|t| 
-			if t < task.rows.count and task.rows[t][0] == days.rows[t][0]
-				task.rows[t][1] = task.rows[t][1].to_i
-			else
-				task.rows.insert(t, [days.rows[t][0], 0])
+		inform = {}
+		hash[1]=[]
+		allusers = params[:user]
+		allstatus = params[:status]
+		allsources = params[:source]
+		days = Task.connection.select_all("SELECT distinct date_trunc('month', updated_at) as day FROM tasks order by day asc")
+		if allusers.empty? && allstatus.empty? && allsources.empty?
+			hash[1]<<get_information("All", "")
+		elsif allstatus.empty? && allsources.empty?
+			allusers.each do |x|
+				user = User.find_by_id(x)
+				hash[1]<<get_information("#{user.first_name} #{user.last_name}", "where user_id = #{x}")
 			end
-		}
-		hash[0] = days.rows.flatten
-	   	hash[1] =  [{name: name, data: task.rows }]	 
+		elsif allusers.empty? && allsources.empty?
+			allstatus.each do |x|
+				status = Status.find_by_id(x)
+				hash[1]<<get_information(status.name,"where status = '#{x}'")
+			end
+		elsif allusers.empty? && allstatus.empty? 
+			allsources.each do |x|
+				source = Source.find_by_id(x)
+				hash[1]<<get_information(source.name, "where source_id = '#{x}'")
+			end
+		elsif allusers.empty?
+			allstatus.each do |x|
+				allsources.each do |y|
+					source = Source.find_by_id(y)
+					status = Status.find_by_id(x)
+					hash[1]<<get_information("#{source.name}: #{status.name}", "where status = '#{x}' and source_id = #{y}")
+				end
+			end
+		elsif allsources.empty?
+			allstatus.each do |x|
+				allusers.each do |y|
+					status = Status.find_by_id(x)
+					user = User.find_by_id(y)
+					hash[1]<<get_information("#{user.first_name} #{user.last_name}: #{status.name}","where status = '#{x}' and user_id = #{y}")
+				end
+			end
+		elsif allstatus.empty?
+			allsources.each do |x|
+				allusers.each do |y|
+					user = User.find_by_id(y)
+					source = Source.find_by_id(x)
+					hash[1]<<get_information("#{user.first_name} #{user.last_name}: #{source.name}","where source_id = '#{x}' and user_id = #{y}")
+				end
+			end
+		else
+			allsources.each do |x|
+				allusers.each do |y|
+					allstatus.each do |z|
+						user = User.find_by_id(y)
+						source = Source.find_by_id(x)
+						status = Status.find_by_id(z)
+						hash[1]<<get_information("#{user.first_name} #{user.last_name}: #{source.name}: #{status.name}","where source_id = '#{x}' and user_id = #{y} and status='#{z}'")
+					end
+				end
+			end
+		end
+		days.rows.flatten!.map!{ |x| x.to_date}
+		hash[0] = days.rows
+	 	days.rows.each_with_index do |v,i|
+	 		hash[1].each do |h|
+		 		h[:data][i] = [v,0] unless h[:data][i]
+		 			
+		 		h[:data].insert(i, [v,0]) if h[:data][i][0] != v 
+	 		end
+	 	end	
 		render :json => hash.to_json
+	end
+
+	def get_information(name, string)
+		inform = {}
+		inform[:name] = name
+		inform[:data] = find_in_database(string)
+		inform
+	end
+
+	def find_in_database(string)
+		task = Task.connection.select_all("SELECT  date_trunc('month', updated_at) as day, count(id) FROM tasks #{string} group by day order by day asc")
+		task.rows.map! do|x| 
+			x.each_with_index do |v, i|
+				x[i] = i.zero? ? v.to_date : v.to_i
+			end
+		end
+		task.rows
 	end
 end

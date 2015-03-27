@@ -9,10 +9,6 @@ require 'rufus/scheduler'
  end 
 
  # scheduler.every '30s' do
- # 	User.reminder
- # end
-
- # scheduler.every '30s' do
  # 	Message.check_mailing
  # end
 
