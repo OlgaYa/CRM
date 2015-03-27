@@ -25,8 +25,20 @@ body > #wrapper {
 
 /* TASK TABLE */
 
+.tasks-sub-menu{
+  display: flex;
+}
+
+.new {
+  margin-right: 2px;
+}
+
 .sort:hover {
   cursor: pointer;
+}
+
+.tasks-sub-menu {
+  position: absolute;
 }
 
 option {
@@ -148,7 +160,7 @@ td .message {
 }
 
 .active-td {
-  background-color:  #FAEDAB;
+  background-color:  #FAEDAB !important;
 }
 
 .remove {

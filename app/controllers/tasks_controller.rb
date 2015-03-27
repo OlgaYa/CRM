@@ -1,17 +1,11 @@
 class TasksController < ApplicationController 
   
   def index
-    case params[:only] 
-    when 'sold'
-      @tasks = Task.all.where("status = 'sold'").order("date DESC")
-      filename = 'sold'
-    when 'declined'
-      @tasks = Task.all.where("status = 'declined'").order("date DESC")
-      filename = 'declined'
+    if Status.exists?(name: params[:only])
+      @tasks = Task.join_statuses.where("statuses.name = ?", params[:only]).by_date
     else
-      @tasks = Task.all.where("status != 'sold' AND status != 'declined' OR status IS NULL").order("date DESC")
-      filename = 'open'
-    end   
+      @tasks = Task.join_statuses.where_status_not_sold_or_declined.by_date   
+    end       
   end
 
   def create
@@ -34,16 +28,16 @@ class TasksController < ApplicationController
 
   def update
     task = Task.find(params[:id])
-    if params[:field] == 'status'
+    if params[:field] == 'status_id'
       task.update_attribute(params[:field].to_sym, params[:value])
       task.update_attribute(:date, Date.current())
-      if params[:value] == 'sold'
+      if Status.find(params[:value]).name == 'sold'
         sold_task = current_user.sold_tasks.create(task_id: task.id)
         task.sold_task = sold_task
       elsif SoldTask.exists?(task_id: task.id)
         sold_task = current_user.sold_tasks.find_by(task_id: task.id)
         time = DateTime.now
-        comment = "Price: #{sold_task.price} <br> Terms: #{sold_task.date_start} - #{sold_task.date_end}"
+        comment = "Price: #{sold_task.price} Terms: #{sold_task.date_start} - #{sold_task.date_end}"
         task.comments.create(user_id: current_user.id , body: comment, datetime: time)
         sold_task.destroy 
       end 
@@ -63,7 +57,7 @@ class TasksController < ApplicationController
   end
 
   def download_xls
-    tasks = Task.all
+    tasks = Task.join_statuses
     tasks = tasks.where("created_at > '#{params[:period][:from]}'") if !params[:period]["from"].empty?
     tasks = tasks.where("created_at < '#{params[:period][:to]}'") if !params[:period]["to"].empty?
     file_name = 'custom tasks'
@@ -73,7 +67,7 @@ class TasksController < ApplicationController
         tasks = tasks.where(:status => :sold)
         file_name = 'sold tasks'
       when 'open'
-        tasks = tasks.where("status <> 'sold' AND status <> 'declined'")
+        tasks = tasks.where_status_not_sold_or_declined
         file_name = 'open tasks'
       when 'declined'
         tasks = tasks.where(:status => :declined)

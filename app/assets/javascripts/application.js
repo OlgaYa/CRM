@@ -29,7 +29,7 @@ function notifie(message, $notifier){
 
 function error(mess, $notifier) {
   clearTimeout(notifierTimer);
-  initNotifierError();
+  initNotifierError($notifier);
   if(mess){
     $notifier.children('.notice-mess').html(mess);
   } else{

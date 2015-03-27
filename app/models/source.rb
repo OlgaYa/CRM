@@ -1,3 +1,3 @@
 class Source < ActiveRecord::Base
-  has_one :task
+  has_many :task
 end

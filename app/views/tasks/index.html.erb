@@ -19,7 +19,7 @@
           <th>Email</th>
           <th>Message</th>
           <th>Links</th>
-          <th value="date" class="sort_desc sort">Date</th>
+          <th value="date" class="sort_asc sort">Date</th>
           <th value="user_name" class="sortable sort">Assign to</th>
           <th value="status" class="sortable sort">Status</th>
           <% if params[:only] == 'sold' %>
@@ -76,8 +76,10 @@
                             class: "btn btn-default user", name: 'user_id') %>
             </td>
             <td class='status'>
-                <%= select_tag "Status", options_for_select(Task.status.options, task.status), 
-                    class: "btn btn-default status", name: 'status' %>
+
+                <%= select("status", "status_id", Status.all.collect {|s| [ s.name.capitalize, s.id ] }, 
+                  { include_blank: "Not selected", selected: task.status.id }, 
+                  class: "btn btn-default status", name: 'status_id') %>
             </td>
             <% if params[:only] == 'sold' %>
               <td class='price' name='price'>
@@ -256,32 +258,40 @@ function sortTable(col, type) {
     }
     $row.sort(function(a,b) {
       var an,
-          bn;
+          bn,
+          an_v,
+          bn_v;
       switch(col) {
       case 'date': {
         an = $(a).children('.' + col).children('input').val(),
         bn = $(b).children('.' + col).children('input').val();
       }
       break;
-      case 'source': {
-        an = $(a).children('.' + col).children('select').val(),
-        bn = $(b).children('.' + col).children('select').val();
-      }
-      break;
       default: {
+        an_v = $(a).children('.' + col).children('select').val(),
+        bn_v = $(b).children('.' + col).children('select').val();
         an = $(a).children('.' + col).children('select').children(':selected').text(),
         bn = $(b).children('.' + col).children('select').children(':selected').text();
       }
       break;
       }
-
-      if(an > bn) {
-        return type;
+      if((an_v === '' && bn_v !== '') || (an_v !== '' && bn_v === '')){
+        if(an_v > bn_v ) {
+          return type;
+        }
+        if(an_v < bn_v ) {
+          return -type;
+        }
+        return 0;
+      } else {
+        if(an > bn) {
+          return type;
+        }
+        if(an < bn) {
+          return -type;
+        }
+        return 0;
       }
-      if(an < bn) {
-        return -type;
-      }
-      return 0;
     });
     $row.detach().appendTo($rows);
   }

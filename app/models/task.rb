@@ -10,12 +10,16 @@ class Task < ActiveRecord::Base
   has_many :messages, dependent: :destroy
 
   belongs_to :source
-
   has_many :links
+  belongs_to :status
 
-  extend Enumerize
+  scope :join_statuses, -> { joins("INNER JOIN statuses ON tasks.status_id = statuses.id") }
+  scope :where_status_not_sold_or_declined, -> { where("statuses.name <> 'sold' AND statuses.name <> 'declined'") }
+  scope :by_date, -> { order("date ASC NULLS FIRST, created_at DESC") }
 
-  enumerize :status, in: [:negotiations, :assigned_meeting, :waiting_estimate, :waiting_specification, :sold, :declined]
+  # extend Enumerize
+
+  # enumerize :status, in: [:negotiations, :assigned_meeting, :waiting_estimate, :waiting_specification, :sold, :declined]
 
     def self.to_csv(options = {}, fields = ['name', 'email', 'status', 'date'])
         CSV.generate(options) do |csv|
@@ -42,6 +46,7 @@ class Task < ActiveRecord::Base
     private
 
       def update_status
-        self.update_attribute(:status, :negotiations)
+        id = Status.find_by(name: 'negotiations').id
+        self.update_attribute(:status_id, id)
       end
 end
