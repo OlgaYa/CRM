@@ -4,13 +4,10 @@ class TasksController < ApplicationController
     case params[:only] 
     when 'sold'
       @tasks = Task.all.where("status = 'sold'").order("date DESC")
-      filename = 'sold'
     when 'declined'
       @tasks = Task.all.where("status = 'declined'").order("date DESC")
-      filename = 'declined'
     else
-      @tasks = Task.all.where("status != 'sold' AND status != 'declined' OR status IS NULL").order("date DESC")
-      filename = 'open'
+      @tasks = Task.all.where("status != 'sold' AND status != 'declined' OR status IS NULL")
     end   
   end
 

@@ -195,8 +195,8 @@
 <script type="text/javascript">
 $(function () {
   $(".chosen-select").chosen();
-  $('#datetimepicker6').datetimepicker({format: 'MMMM Do YYYY, h:mm'});
-  $('#datetimepicker7').datetimepicker({format: 'MMMM Do YYYY, h:mm'});
+  $('#datetimepicker6').datetimepicker({format: 'MMMM Do YYYY, h:mm', daysOfWeekDisabled: [0,6]});
+  $('#datetimepicker7').datetimepicker({format: 'MMMM Do YYYY, h:mm', daysOfWeekDisabled: [0,6]});
   $("#datetimepicker6").on("dp.change",function (e) {
     $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
   });
