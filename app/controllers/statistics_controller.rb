@@ -22,7 +22,7 @@ class StatisticsController < ApplicationController
 		elsif allusers.empty? && allsources.empty?
 			allstatus.each do |x|
 				status = Status.find_by_id(x)
-				hash[1]<<get_information(status.name,"where status = '#{x}'")
+				hash[1]<<get_information(status.name,"where status_id = '#{x}'")
 			end
 		elsif allusers.empty? && allstatus.empty? 
 			allsources.each do |x|
@@ -34,7 +34,7 @@ class StatisticsController < ApplicationController
 				allsources.each do |y|
 					source = Source.find_by_id(y)
 					status = Status.find_by_id(x)
-					hash[1]<<get_information("#{source.name}: #{status.name}", "where status = '#{x}' and source_id = #{y}")
+					hash[1]<<get_information("#{source.name}: #{status.name}", "where status_id = '#{x}' and source_id = #{y}")
 				end
 			end
 		elsif allsources.empty?
@@ -42,7 +42,7 @@ class StatisticsController < ApplicationController
 				allusers.each do |y|
 					status = Status.find_by_id(x)
 					user = User.find_by_id(y)
-					hash[1]<<get_information("#{user.first_name} #{user.last_name}: #{status.name}","where status = '#{x}' and user_id = #{y}")
+					hash[1]<<get_information("#{user.first_name} #{user.last_name}: #{status.name}","where status_id = '#{x}' and user_id = #{y}")
 				end
 			end
 		elsif allstatus.empty?
@@ -60,7 +60,7 @@ class StatisticsController < ApplicationController
 						user = User.find_by_id(y)
 						source = Source.find_by_id(x)
 						status = Status.find_by_id(z)
-						hash[1]<<get_information("#{user.first_name} #{user.last_name}: #{source.name}: #{status.name}","where source_id = '#{x}' and user_id = #{y} and status='#{z}'")
+						hash[1]<<get_information("#{user.first_name} #{user.last_name}: #{source.name}: #{status.name}","where source_id = '#{x}' and user_id = #{y} and status_id='#{z}'")
 					end
 				end
 			end
