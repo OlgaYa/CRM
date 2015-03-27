@@ -42,11 +42,14 @@ class User < ActiveRecord::Base
         else
           hash[t.user_id] = [t.name]
         end
-        # UserMailer.reminder_instructions(t).deliver
       end
     end
     hash.each_key do |k|
       UserMailer.reminder_instructions(k, hash[k]).deliver
     end
+  end
+
+  def self.all_except(user)
+    where.not(id: user)
   end
 end

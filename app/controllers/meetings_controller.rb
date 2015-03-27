@@ -22,8 +22,8 @@ class MeetingsController < ApplicationController
 		    e.start_time = @meeting.start_time
 		    e.end_time = @meeting.end_time
 		    users = params[:users]
-		    attendees = []
-		    users.each_index do |i|
+		    attendees = [{'email'=> current_user.email, 'displayName' => "#{current_user.first_name} #{current_user.last_name}", 'responseStatus' => 'tentative'}]
+		    (users || []).each_index do |i|
 		    	if users[i].include?("task")
 		    		task = Task.find_by_id(users[i].to_i)
 		    		attendees[i] = {'email' => task.email, 'displayName' => task.name, 'responseStatus' => 'tentative'} if task.email
@@ -32,6 +32,7 @@ class MeetingsController < ApplicationController
 			    	attendees[i] = {'email' => user.email, 'displayName' => "#{user.first_name} #{user.last_name}", 'responseStatus' => 'tentative'}
 		    	end
 		    end
+		    attendees<<{'email'=> params[:@meeting][:email], 'displayName' => "Indefinite", 'responseStatus' => 'tentative'} unless params[:@meeting][:email].empty?
 		    e.attendees = attendees
 			end
 			redirect_to root_url
