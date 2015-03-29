@@ -18,4 +18,17 @@ module AdminHelper
 			link_to(image_tag('edit.png'), user_path(user) + '#settings')
 		end
 	end
+
+	def get_edit_link(path)
+		link_to(image_tag('edit.png'), path)
+	end
+
+	def get_remove_link(path, id, field)
+		unless Task.exists?({field => id})
+			link_to(image_tag('remove.png'), path, 
+	                      method: :delete, remote: true)
+		else
+			image_tag('forbidden-icon.png', alt: "You can't remove it")
+		end
+	end
 end

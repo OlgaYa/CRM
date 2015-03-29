@@ -26,7 +26,7 @@ class Message < ActiveRecord::Base
 	    from_email = message.from
 	    task_id = message.subject.scan( /\d+$/ ).first
 	    user_id = User.find_by(email: from_email).id
-	    split_str = "\n\n(.*) <#{config['username']}>"
+	    split_str = "\n(.*) <#{config['username']}>"
 	    body = plain_body.split(Regexp.new(split_str)).first
 	    self.new(user_id: user_id, body: body, datetime: date, task_id: task_id).save
 	    imap.store(mail, "+FLAGS", [:Seen])

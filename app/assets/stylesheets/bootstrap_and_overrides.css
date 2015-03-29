@@ -23,8 +23,6 @@ table p {
 td {
   max-width: 210px;
   max-height: 70px;
-  /*overflow-y: hidden;*/
-  /*overflow: auto;*/
 }
 
 td .btn {

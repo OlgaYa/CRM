@@ -655,3 +655,17 @@ body > #wrapper>.room>.content-column {
   width: 50%;
   padding-right: 4px;
 }
+
+.table-status{
+  width: 50%
+}
+
+/* TASK CONTROLS */
+
+.edit:hover {
+  cursor: pointer;
+}
+
+#edit-input{
+  width: 100%;
+}

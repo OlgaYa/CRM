@@ -1,0 +1,135 @@
+<div class='row'>
+  <div class='col-lg-8, col-md-8 col-lg-offset-2 col-md-offset-2'>
+
+
+    <div class="notifier pull-right">
+      <div class="notice-mess">       
+      </div>
+      <div class="helper">
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-6">
+      <div class="col-md-12 col-lg-10">
+      <table class="table table-condensed table-hover">
+        <thead >
+          <tr>
+            <th> Statuses </th>
+            <th class="text-center"> Edit </th>
+            <th class="text-center"> Remove </th>
+          </tr>
+        </thead>
+        <tbody id="statuses">
+          <% @statuses.each do |status| %>
+            <tr id='<%= "status_#{status.id}" %>' name="status" value="<%= status.id %>">
+              <td class="editable-name"> <%= status.name %>  </td>
+              <td class="text-center"> <%= image_tag('edit.png', class: 'edit') %> </td>
+              <td class="text-center"> <%= get_remove_link(admin_destroy_status_path(status), status.id, 'status_id') %> </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= form_tag(admin_create_status_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
+        <%= text_field_tag(:name, '' ,class: 'new new-status') %>
+        <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
+      <% end %>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-6">
+      <div class="col-md-12 col-lg-10">
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <th> Sources </th>
+            <th class="text-center"> Edit </th>
+            <th class="text-center"> Remove </th>
+          </tr>
+        </thead>
+        <tbody  id="sources">
+          <% @sources.each do |source| %>
+            <tr id='<%= "source_#{source.id}" %>' value="<%=source.id %>"  name="source">
+              <td class="editable-name"> <%= source.name %>  </td>
+              <td class="text-center"> <%= image_tag('edit.png', class: 'edit') %> </td>
+              <td class="text-center"> <%= get_remove_link(admin_destroy_source_path(source), source.id, 'source_id') %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>  
+      <%= form_tag(admin_create_source_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
+        <%= text_field_tag(:name, '' ,class: 'new new-source') %>
+        <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
+      <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id='edit-dialog'>
+  <input id='edit-input'>  
+</div>
+
+<script>
+  $(document).ready(function(){
+    var $editDialog = $('#edit-dialog'),
+        $editInp    = $('#edit-input'),
+        $notifier   = $('.notifier');
+    
+    $editDialog.dialog({
+      autoOpen: false,
+      buttons: 
+      [
+        {
+          text: 'Close',
+          click: function(e){
+            $editDialog.dialog('close');
+          }
+        },
+        {
+          text: 'Save',
+          click: function(e){
+            var id    = $(this).data('id'),
+                field = $(this).data('field'),
+                path  = $(this).data('path'),
+                entity  = $(this).data('entity'),
+                value = $editInp.val();
+
+            dataForSend = { 'field':field, 'value':value }
+            if(value){
+              $.when($.ajax({
+                type: 'PUT',
+                url: path,
+                data: dataForSend
+              })).always(function(data, textStatus, jqXHR){
+                if(textStatus === 'success'){
+                  $('#' + entity + '_' + id).children('.editable-name').text(value);
+                  $editDialog.dialog('close');
+                } else {
+                  error('', $notifier);    
+                }
+              })
+            } else {
+              error("Input field can't be blank", $notifier);
+            }
+          }
+        }
+      ]
+    })
+
+    $(document).on('click', '.edit', function(){
+      var value  = $(this).parents('tr').children().text().trim(),
+          id     = $(this).parents('tr').attr('value'),
+          entity = $(this).parents('tr').attr('name');
+      $editInp.val(value);
+      if(entity === 'status'){
+        $editDialog.data('path', '/admin/update_status/' + id);
+      } else {
+        $editDialog.data('path', '/admin/update_source/' + id);
+      }
+      $editDialog.data('id', id);
+      $editDialog.data('field', 'name');
+      $editDialog.data('entity', entity);
+      $editDialog.dialog('open');
+    });
+  });
+</script>

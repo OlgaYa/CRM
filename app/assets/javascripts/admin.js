@@ -52,4 +52,12 @@ $(document).ready(function(){
       });
       return false; // prevents normal behaviour
   });
+
+  $('form.task-control').on('submit', function(){
+    var $inp = $(this).children('.new');
+    if($inp.val()===''){
+      error('Field must not be empty', $notifier);
+      return false;
+    }
+  })
 });

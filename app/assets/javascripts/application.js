@@ -53,3 +53,7 @@ function destroyNotifier($notifier){
     $notifier.fadeOut('slow');
   },2000);    
 }
+
+function isInArray(value, array) {
+  return array.indexOf(value) > -1;
+}
