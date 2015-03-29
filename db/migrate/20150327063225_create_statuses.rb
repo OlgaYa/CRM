@@ -12,7 +12,7 @@ class CreateStatuses < ActiveRecord::Migration
 
   def save_status
     status_names = Task.all.pluck(:status)
-    status_names.uniq{|name| Status.new(name: name).save }
+    status_names.each{|name| Status.new(name: name).save }
     Task.all.each do |task|
       status_id = Status.find_by(name: task.status).id
       task.update_attribute(:status_id, status_id)
