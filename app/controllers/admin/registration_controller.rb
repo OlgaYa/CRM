@@ -3,11 +3,6 @@ class Admin::RegistrationController < ApplicationController
 
 	include ApplicationHelper
 
-	
-	# def new
-	# 	@user = User.new
-	# end
-
 	def create
 		@user = User.new(user_params_create)
 		@user.password = @user.password_confirmation = Array.new(8) { (rand(122-97) + 97).chr }.join

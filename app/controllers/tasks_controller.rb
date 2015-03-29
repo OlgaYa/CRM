@@ -1,5 +1,7 @@
 class TasksController < ApplicationController 
   
+  include ApplicationHelper
+
   def index
     if Status.exists?(name: params[:only])
       @tasks = Task.join_statuses.where("statuses.name = ?", params[:only]).by_date
@@ -64,13 +66,13 @@ class TasksController < ApplicationController
     if params[:export]
       case params[:export]
       when 'sold'
-        tasks = tasks.where(:status => :sold)
+        tasks = tasks.where('statuses.name = ?', :sold)
         file_name = 'sold tasks'
       when 'open'
         tasks = tasks.where_status_not_sold_or_declined
         file_name = 'open tasks'
       when 'declined'
-        tasks = tasks.where(:status => :declined)
+        tasks = tasks.where('statuses.name = ?', :declined)
         file_name = 'declined tasks'
       else
         file_name = 'all tasks'
@@ -87,6 +89,15 @@ class TasksController < ApplicationController
       end
     end 
   end
+
+  def create_link
+    link = Link.create(task_id: params[:task_id] , alt: params[:alt], href: params[:href])  
+    render html: generate_link(link).html_safe
+  end
+
+  def destroy_link
+    Link.find(params[:id]).destroy
+  end 
 
   private
 

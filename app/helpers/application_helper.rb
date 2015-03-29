@@ -33,7 +33,7 @@ module ApplicationHelper
       buffer = ActiveSupport::SafeBuffer.new
       buffer << link_to(link.alt, link.href, target: '_blank')
       buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")), 
-                      link_path(link), class: 'pull-right remove-link', 
+                      tasks_destroy_link_path(link), class: 'pull-right remove-link', 
                       method: :delete, remote: true)
       buffer
     end

@@ -176,7 +176,7 @@ $(document).ready(function(){
               var values = { 'task_id': task_id, 'alt': alt, 'href': href }; // add_comment_task_id == Task.id
               $.ajax({
                 type: 'POST',
-                url: 'links',
+                url: '/tasks/create_link',
                 dataType: 'html',
                 success: function(resp){
                   $linksDialog.children('.link_list').append($.parseHTML(resp));

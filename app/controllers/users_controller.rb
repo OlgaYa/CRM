@@ -45,7 +45,7 @@ class UsersController < ApplicationController
     else
       flash[:error] = "You can't remove this user"
     end
-    redirect_to all_users_path
+    redirect_to admin_show_users_path
   end
 
   def user_params

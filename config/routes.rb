@@ -2,26 +2,41 @@ Rails.application.routes.draw do
 
   devise_for :users, :skip => :registration
 
+  root to: 'static_pages#home'
+  
   resources :users
-  resources :tasks, only:[:index, :create, :destroy, :update]
   resources :comments, only: [:create, :destroy]
-  resources :links, only: [:create, :destroy]
   resources :sold_tasks, only: :update
   resources :meetings, only: [:index, :create]
+
+  resources :tasks, only:[:index, :create, :destroy, :update]
+
   resources :statistics, only: :index do
     collection do
       post :change_information
     end
   end
-
-  root to: 'static_pages#home'
-  match '/home', to: 'static_pages#home', via: 'get'
-  match '/all_users', to: 'admin#all_users', via: 'get', as: 'all_users'
-  match 'export', to: 'tasks#export', via: 'get', as: 'export'
-  match 'export', to: 'tasks#download_xls', via: 'post'
+  
+  get 'export', to: 'tasks#export', as: 'export'
+  post 'export', to: 'tasks#download_xls'
+  get 'home', to: 'static_pages#home'
   
   namespace :admin do
     resources :registration
   end
 
+  get 'admin/task_controls', to: 'admin#task_controls', as: 'admin_task_controls'
+
+  get 'admin/show_users', to: 'admin#show_users', as: 'admin_show_users'
+
+  post 'admin/create_source', to: 'admin#create_source', as: 'admin_create_source'
+  delete 'admin/destroy_source/:id', to: 'admin#destroy_source', as: 'admin_destroy_source'  
+  put 'admin/update_source/:id', to: 'admin#update_source', as: 'admin_update_source'
+  
+  post 'admin/create_status', to: 'admin#create_status', as: 'admin_create_status'
+  delete 'admin/destroy_status/:id', to: 'admin#destroy_status', as: 'admin_destroy_status'
+  put 'admin/update_status/:id', to: 'admin#update_status', as: 'admin_update_status'
+
+  post 'tasks/create_link', to: 'tasks#create_link', as: 'tasks_create_link'
+  delete 'tasks/destroy_link/:id', to: 'tasks#destroy_link', as: 'tasks_destroy_link' 
 end
