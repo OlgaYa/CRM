@@ -11,7 +11,7 @@ class Task < ActiveRecord::Base
 
   belongs_to :source
   has_many :links
-  belongs_to :status
+  # belongs_to :status
 
   scope :join_statuses, -> { joins("INNER JOIN statuses ON tasks.status_id = statuses.id") }
   scope :where_status_not_sold_or_declined, -> { where("statuses.name <> 'sold' AND statuses.name <> 'declined'") }
