@@ -8,66 +8,40 @@ class StatisticsController < ApplicationController
 		hash = []
 		inform = {}
 		hash[1]=[]
-		allusers = params[:user]
-		allstatus = params[:status]
-		allsources = params[:source]
-		days = Task.connection.select_all("SELECT distinct date_trunc('month', updated_at) as day FROM tasks order by day asc")
-		if allusers.empty? && allstatus.empty? && allsources.empty?
-			hash[1]<<get_information("All", "")
-		elsif allstatus.empty? && allsources.empty?
-			allusers.each do |x|
-				user = User.find_by_id(x)
-				hash[1]<<get_information("#{user.first_name} #{user.last_name}", "where user_id = #{x}")
-			end
-		elsif allusers.empty? && allsources.empty?
-			allstatus.each do |x|
-				status = Status.find_by_id(x)
-				hash[1]<<get_information(status.name,"where status = '#{x}'")
-			end
-		elsif allusers.empty? && allstatus.empty? 
-			allsources.each do |x|
-				source = Source.find_by_id(x)
-				hash[1]<<get_information(source.name, "where source_id = '#{x}'")
-			end
-		elsif allusers.empty?
-			allstatus.each do |x|
-				allsources.each do |y|
-					source = Source.find_by_id(y)
-					status = Status.find_by_id(x)
-					hash[1]<<get_information("#{source.name}: #{status.name}", "where status = '#{x}' and source_id = #{y}")
-				end
-			end
-		elsif allsources.empty?
-			allstatus.each do |x|
-				allusers.each do |y|
-					status = Status.find_by_id(x)
-					user = User.find_by_id(y)
-					hash[1]<<get_information("#{user.first_name} #{user.last_name}: #{status.name}","where status = '#{x}' and user_id = #{y}")
-				end
-			end
-		elsif allstatus.empty?
-			allsources.each do |x|
-				allusers.each do |y|
-					user = User.find_by_id(y)
-					source = Source.find_by_id(x)
-					hash[1]<<get_information("#{user.first_name} #{user.last_name}: #{source.name}","where source_id = '#{x}' and user_id = #{y}")
-				end
-			end
-		else
-			allsources.each do |x|
+
+		month = Task.connection.select_all("SELECT distinct date_trunc('month', updated_at) as day FROM tasks order by day asc")
+				
+		allusers = params[:user].empty? ? [""] : params[:user]
+		allstatus = params[:status].empty?  ? [""] : params[:status]
+		allsources = params[:source].empty?  ? [""] : params[:source]
+		allsources.each do |x|
 				allusers.each do |y|
 					allstatus.each do |z|
-						user = User.find_by_id(y)
-						source = Source.find_by_id(x)
-						status = Status.find_by_id(z)
-						hash[1]<<get_information("#{user.first_name} #{user.last_name}: #{source.name}: #{status.name}","where source_id = '#{x}' and user_id = #{y} and status='#{z}'")
+						name = y.empty? ? "" : "#{User.find_by_id(y).first_name} #{User.find_by_id(y).last_name}"
+						select = y.empty? ? "" : "where user_id = #{y}"
+						if name.empty?
+							name = x.empty? ? "" : Source.find_by_id(x).name
+							select = x.empty? ? "" : "where source_id = #{x}"
+						else
+							name += x.empty? ? "" : ": #{Source.find_by_id(x).name}"
+							select += x.empty? ? "" : " and source_id = #{x}"
+						end
+						if name.empty?
+							name = z.empty? ? "" : Status.find_by_id(z).name
+							select = z.empty? ? "" : "where status_id = #{z}"
+						else
+							name += z.empty? ? "" : ": #{Status.find_by_id(z).name}"
+							select += z.empty? ? "" : " and status_id = #{z}"
+						end
+						name = "All" if name.empty?
+						hash[1]<<get_information(name, select)
 					end
 				end
 			end
-		end
-		days.rows.flatten!.map!{ |x| x.to_date}
-		hash[0] = days.rows
-	 	days.rows.each_with_index do |v,i|
+
+		month.rows.flatten!.map!{ |x| x.to_date}
+		hash[0] = month.rows
+	 	month.rows.each_with_index do |v,i|
 	 		hash[1].each do |h|
 		 		h[:data][i] = [v,0] unless h[:data][i]
 		 			

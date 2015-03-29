@@ -14,7 +14,7 @@
 	<span> Source: </span><br/>
 	<div class="datestatistic">
 		<div class="side-by-side clearfix">
-          <%= select_tag "Source", options_for_select(Source.all.collect {|p| [p.name , p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-source", name: 'sources[]', id: 'source', "data-placeholder" => 'Select sources ...' %>
+          <%= select_tag "Source", options_for_select(Source.all.collect {|p| [p.name , p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-source", name: 'sources[]', id: 'source', "data-placeholder" => 'Select Sources ...' %>
         </div>
 	</div>
 </div>
