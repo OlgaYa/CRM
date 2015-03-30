@@ -502,6 +502,22 @@ body > #wrapper>.room>.content-column {
   background-color: rgba(0,0,0,0);
 }
 
+.lock {
+  width: 16px;
+  height: 16px;
+  background: asset-data-url('lock-icon.png');
+}
+
+.unlock {
+  width: 16px;
+  height: 16px;
+  background: asset-data-url('unlock-icon.png');
+}
+
+  .lock:hover, .unlock:hover {
+    cursor: pointer;
+  } 
+
 /* PRIVATE ROOM */
 
 .room {

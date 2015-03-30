@@ -1,6 +1,11 @@
 class AdminController < ApplicationController
 	def show_users
-    @users = User.all.order(:created_at)
+    case params[:status]
+    when 'lock'
+      @users = User.all.where(status: :lock).order(:created_at)
+    else
+      @users = User.all.where(status: :unlock).order(:created_at)
+    end
 	end
 
   def task_controls
@@ -8,8 +13,16 @@ class AdminController < ApplicationController
     @sources = Source.all.order('created_at')
   end
 
-  def banning_user
-    
+  def update_user_status
+    user = User.find(params[:id])
+    if user == current_user
+      resp = "You can't ban yourself!".to_json
+      render json: resp
+    else 
+      user.update_attribute(params[:field], params[:value])
+      resp = "success".to_json
+      render json: resp
+    end
   end
 
   def create_source

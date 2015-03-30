@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  devise_for :users, :skip => :registration
+  devise_for :users, :skip => :registration, controllers: { sessions: "users/sessions" }
 
   root to: 'static_pages#home'
   
@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get 'export', to: 'tasks#export', as: 'export'
   post 'export', to: 'tasks#download_xls'
   get 'home', to: 'static_pages#home'
+  get 'baned_user', to: 'static_pages#baned_user' 
   
   namespace :admin do
     resources :registration
@@ -38,5 +39,8 @@ Rails.application.routes.draw do
   put 'admin/update_status/:id', to: 'admin#update_status', as: 'admin_update_status'
 
   post 'tasks/create_link', to: 'tasks#create_link', as: 'tasks_create_link'
-  delete 'tasks/destroy_link/:id', to: 'tasks#destroy_link', as: 'tasks_destroy_link' 
+  delete 'tasks/destroy_link/:id', to: 'tasks#destroy_link', as: 'tasks_destroy_link'
+
+  put 'admin/update_user_status/:id', to: 'admin#update_user_status', as:'admin_update_user_status'
+
 end
