@@ -369,7 +369,7 @@ $(document).ready(function(){
         $declinedComment.data('$field', $field);
         $declinedComment.dialog('open');
       } else {       
-        if(field_value == 2){
+        if(field_text == 'assigned_meeting'){
           $('#myModal').modal()
         }
         changeStatus(task_id, field_name, field_value, $field, field_text);

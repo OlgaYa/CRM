@@ -9,6 +9,7 @@ class AdminController < ApplicationController
   end
 
   def banning_user
+    
   end
 
   def create_source
