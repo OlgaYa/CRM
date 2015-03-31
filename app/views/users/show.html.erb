@@ -3,7 +3,7 @@
   	<div class="user-info">
   		<div class="avatar">
         <!-- it must be changet to gravatar -->
-  			<%= image_tag(@user.avatar.url) %>
+  			<%= image_tag(@user.avatar.url(:medium)) %>
   		</div>
       <ul class="inline user-info-list">
         <% get_user_info(@user.id) %>
@@ -44,7 +44,7 @@
                   <tr>
                     <td class="first-td">
                       <div class="upload-avatar">
-                        <%= image_tag(@user.avatar.url, id: 'i') %>
+                        <%= image_tag(@user.avatar.url(:medium), id: 'i') %>
                         <div class="upload-photo">
                           <%= f.file_field :avatar, id: 'f', class: 'file-load'  %>
                           <a href="#" class="load btn btn-primary btn-block"> upload new foto </a>

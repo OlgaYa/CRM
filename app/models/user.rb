@@ -12,14 +12,8 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :last_name, presence: true, length: { maximum: 50 }
 
-  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>", :small => "36x36" }, 
-                    :url => "/system/vacancies/:id/:updated_at.:extension",
-                    :default_url => "avatar-default.jpg",
-                    # :convert_options => {
-                    #   :resume_preview_header => "-gravity Center -resize 110x141^ -crop 110x141+0+0 +repage -background '#F4F4F3' -flatten -quality 80"
-                    # }
-
-
+  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>", :small => "36x36" }, :default_url => 'avatar-default.jpg'
+  
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
   extend Enumerize
