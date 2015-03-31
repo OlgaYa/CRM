@@ -12,6 +12,9 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :last_name, presence: true, length: { maximum: 50 }
 
+  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>", :small => "36x36" }, :default_url => ActionController::Base.helpers.asset_path("avatar-default.jpg")
+  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+
   extend Enumerize
 
   enumerize :status, in: [:observer, :lock, :unlock]

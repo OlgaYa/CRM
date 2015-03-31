@@ -16,6 +16,14 @@ body > #wrapper {
   height: 100% !important;
 }
 
+/* HEADER */
+
+.avatar-small {
+  width: 36px;
+  height: 36px;
+  margin-top: 7px;
+}
+
 /* LOG IN */
 
 .log-in {
@@ -30,7 +38,13 @@ body > #wrapper {
 }
 
 .new {
-  margin-right: 2px;
+  margin-right: 20px;
+}
+
+.comment-foto {
+  margin-top: 5px;
+  margin-right: 3px;
+  padding-bottom: 5px;
 }
 
 .sort:hover {
@@ -92,7 +106,7 @@ td .comment_list{
   padding-left: 10px;
   border: 1px solid #DDDDDD;
   border-radius: 5px;
-  width:80%;
+  width:100%;
   margin-bottom: 5px;
   background-color: #fff;
 }
@@ -122,10 +136,10 @@ td .comment:last-child{
   margin-left: 0%;
   margin-right: 0%;
 }
-.comment:nth-child(even){
+/*.comment:nth-child(even){
   margin-left: 20%;
 }
-
+*/
 .comment_body {
   margin-top: 15px;
   width: 255px;
