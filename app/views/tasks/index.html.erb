@@ -19,7 +19,7 @@
           <th>Email</th>
           <th>Message</th>
           <th>Links</th>
-          <th value="date" class="sort_asc sort">Date</th>
+          <th value="date" class="sort_desc sort">Date</th>
           <th value="user_name" class="sortable sort">Assign to</th>
           <th value="status" class="sortable sort">Status</th>
           <% if params[:only] == 'sold' %>
@@ -111,7 +111,9 @@
         <% end %>
       </tbody>
     </table>
-    
+    <div class="text-center">
+      <%= will_paginate @tasks %>
+    </div>
     <!-- Hidden blocks for popup dialogs -->
     <div id='common-dialog'> 
       <textarea id="text-editor"></textarea>

@@ -15,7 +15,7 @@ class Task < ActiveRecord::Base
 
   scope :join_statuses, -> { joins("INNER JOIN statuses ON tasks.status_id = statuses.id") }
   scope :where_status_not_sold_or_declined, -> { where("statuses.name <> 'sold' AND statuses.name <> 'declined'") }
-  scope :by_date, -> { order("date ASC NULLS FIRST, created_at DESC") }
+  scope :by_date, -> { order("date DESC NULLS FIRST, created_at DESC") }
 
   def self.to_csv(options = {}, fields = ['name', 'email', 'status', 'date'])
       CSV.generate(options) do |csv|

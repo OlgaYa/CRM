@@ -4,10 +4,11 @@ class TasksController < ApplicationController
 
   def index
     if Status.exists?(name: params[:only])
-      @tasks = Task.join_statuses.where("statuses.name = ?", params[:only]).by_date
+      @tasks = Task.join_statuses.where("statuses.name = ?", params[:only])
     else
-      @tasks = Task.join_statuses.where_status_not_sold_or_declined.by_date   
-    end       
+      @tasks = Task.join_statuses.where_status_not_sold_or_declined   
+    end
+    paginate_tasks       
   end
 
   def create
@@ -106,5 +107,9 @@ class TasksController < ApplicationController
     def task_params
       params[:task][:user_id] = current_user.id
       params.require(:task).permit(:name, :source, :skype, :email, :links, :date, :user_id, :status, :comments)
+    end
+
+    def paginate_tasks
+      @tasks = @tasks.paginate(:page => params[:page], :per_page => 10).order('id DESC').by_date
     end
 end
