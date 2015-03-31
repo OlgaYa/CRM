@@ -1,4 +1,7 @@
 class AdminController < ApplicationController
+
+  UNCHANGEABLESTATUS = ['sold', 'declined', 'negotiations', 'assigned_meeting']
+
 	def show_users
     case params[:status]
     when 'lock'
@@ -17,16 +20,18 @@ class AdminController < ApplicationController
     user = User.find(params[:id])
     if user == current_user
       resp = "You can't ban yourself!".to_json
-      render json: resp
     else 
       user.update_attribute(params[:field], params[:value])
       resp = "success".to_json
-      render json: resp
     end
+      render json: resp
   end
 
   def create_source
-    @source = Source.create(name: params[:name])
+    @source = Source.new(name: params[:name].downcase)
+    unless @source.save
+      @errors = @source.errors.full_messages
+    end
   end
 
   def update_source
@@ -42,18 +47,29 @@ class AdminController < ApplicationController
   end
 
   def create_status
-    @status = Status.create(name: params[:name])
+    @status = Status.new(name: params[:name].downcase)
+    unless @status.save
+      @errors = @status.errors.full_messages
+    end
   end
 
   def update_status
-    Status.find(params[:id]).update_attribute(params[:field].to_s, params[:value])
-    resp = "success".to_json
+    status = Status.find(params[:id])
+    if UNCHANGEABLESTATUS.include? status.name
+      resp = "Sorry but you can't destroy this status".to_json
+    else
+      status.update_attribute(params[:field].to_s, params[:value])
+      resp = "Success".to_json
+    end
     render :json => resp  
   end
 
   def destroy_status
+    status = Status.find(params[:id])
     unless Task.exists?(status_id: params[:id])
-      Status.find(params[:id]).destroy
+      unless UNCHANGEABLESTATUS.include? status.name
+        status.destroy
+      end
     end
   end
 end
