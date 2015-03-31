@@ -181,6 +181,7 @@ $(document).ready(function(){
                 success: function(resp){
                   $linksDialog.children('.link_list').append($.parseHTML(resp));
                   $('#'+task_id).children('.links').children('.link_list').append($.parseHTML(resp));
+                  updateDate(task_id);
                   $linkInp.val("");
                 },
                 data: values 
@@ -240,9 +241,9 @@ $(document).ready(function(){
       $commonDialog.dialog('close');
       var path = 'tasks/' + taskId;
       var values = { 'field': filedName, 'value': editorContent }
-      $.when(sendARequest(path, values)).always(function(data, textStatus, jqXHR){
+      $.when(sendARequest(path, values, taskId)).always(function(data, textStatus, jqXHR){
         if(textStatus == 'success'){
-          notifie(capitalize(filedName) + ' has been successfully updated!', $notifier);
+          notifie(capitalize(filedName) + 'has been successfully updated!', $notifier);
         } else {
           error('', $notifier);
         }
@@ -267,8 +268,9 @@ $(document).ready(function(){
     if(e.keyCode == 13 ){
       var price = $priceInput.val();
       if(price.length > 0){
-        $.when(sendARequest('sold_tasks/' + $priceDialog.data('sold_task_id'), 
-                            {'field': 'price', 'value': price })).always(function(data){
+        var sold_task_id = $priceDialog.data('sold_task_id');
+        $.when(sendARequest('sold_tasks/' + sold_task_id, 
+                            {'field': 'price', 'value': price }, sold_task_id)).always(function(data){
           if(data == 'success') { 
             $td_field.empty();
             $td_field.html(price);
@@ -329,8 +331,7 @@ $(document).ready(function(){
       success: function(resp){
         $commentsDialog.children('.comment_list').append($.parseHTML(resp));
         $('#'+task_id).children('.comments').children('.comment_list').append($.parseHTML(resp));
-        d = new Date();
-        $('#'+task_id).children('.date').children('.date-input').val(d.yyyymmdd());   
+        updateDate(task_id);
         $commentBody.val("");
       },
       data: values 
@@ -389,7 +390,7 @@ $(document).ready(function(){
   });
 
   function changeStatus(task_id, field_name, field_value, $field, field_text){
-    $.when(sendARequest('tasks/' + task_id, { 'field': field_name, 'value': field_value })).always(function(data){
+    $.when(sendARequest('tasks/' + task_id, { 'field': field_name, 'value': field_value }, task_id)).always(function(data){
       if(data == 'success'){
         d = new Date();
         $field.parents().eq(1).children('.date').children('.date-input').val(d.yyyymmdd());   
@@ -418,7 +419,7 @@ $(document).ready(function(){
   }
 
   function changeSelection(task_id, field_name, field_value, $field, mess){
-    $.when(sendARequest('tasks/' + task_id, { 'field': field_name, 'value': field_value })).always(function(data){
+    $.when(sendARequest('tasks/' + task_id, { 'field': field_name, 'value': field_value }, task_id)).always(function(data){
       if(data == 'success') { 
           notifie(mess, $notifier)      
       } else {
@@ -455,7 +456,10 @@ $(document).ready(function(){
   }
 
 // ========================== AJAX ========================================= //
-  function sendARequest(path, values){
+  function sendARequest(path, values, task_id){
+    if( ['topic', 'source_id', 'name'].indexOf(values.field) === -1 ){
+      updateDate(task_id);
+    }
     return $.ajax({
             type: 'PATCH',
             url: path,
@@ -465,6 +469,12 @@ $(document).ready(function(){
   }
 
 //============================ HELPERS ============================================//
+
+  function updateDate(task_id) {
+    d = new Date();
+    $('#'+task_id).children('.date').children('.date-input').val(d.yyyymmdd());   
+  }
+
   function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1); 
   }

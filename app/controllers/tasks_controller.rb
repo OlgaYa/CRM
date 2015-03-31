@@ -30,9 +30,11 @@ class TasksController < ApplicationController
 
   def update
     task = Task.find(params[:id])
+    unless ['topic', 'source_id', 'name'].include? params[:field]   
+      task.update_attribute(:date, Date.current())
+    end
     if params[:field] == 'status_id'
       task.update_attribute(params[:field].to_sym, params[:value])
-      task.update_attribute(:date, Date.current())
       if Status.find(params[:value]).name == 'sold'
         sold_task = current_user.sold_tasks.create(task_id: task.id)
         task.sold_task = sold_task
