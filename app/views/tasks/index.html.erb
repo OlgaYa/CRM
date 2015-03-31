@@ -78,7 +78,7 @@
             <td class='status'>
 
                 <%= select("status", "status_id", Status.all.collect {|s| [ s.name.capitalize, s.id ] }, 
-                  { include_blank: "Not selected", selected: task.status.id }, 
+                  { selected: task.status.id }, 
                   class: "btn btn-default status", name: 'status_id') %>
             </td>
             <% if params[:only] == 'sold' %>
