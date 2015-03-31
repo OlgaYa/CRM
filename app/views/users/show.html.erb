@@ -46,7 +46,8 @@
                       <div class="upload-avatar">
                         <%= image_tag(@user.avatar.url, id: 'i') %>
                         <div class="upload-photo">
-                          <%= f.file_field :avatar, id: 'f' %>
+                          <%= f.file_field :avatar, id: 'f', class: 'file-load'  %>
+                          <a href="#" class="load btn btn-primary btn-block"> upload new foto </a>
                         </div>
                       </div>
                     </td>   
@@ -162,6 +163,11 @@
         $errorsTd.fadeOut(dur);
       }, time);
     }
+
+    $('.load').on('click', function(){
+        $('#f').click();
+        return false;
+    });
 
     $('#f').on('change', function(ev) {
         var f = ev.target.files[0];

@@ -22,7 +22,7 @@ table p {
 
 td {
   max-width: 210px;
-  max-height: 70px;
+  max-height: 75px;
 }
 
 td .btn {
@@ -45,10 +45,6 @@ td.links {
 }
 
 .navbar .btn {
-  /*background-color: rgba(0,0,0,0);*/
-  /*color: #326363;*/
-  /*font-size: 12pt;*/
-  /*border: none;*/
   margin-top: 10px;
 }
 

@@ -22,6 +22,7 @@ body > #wrapper {
   width: 36px;
   height: 36px;
   margin-top: 7px;
+  margin-right: 20px;
 }
 
 /* LOG IN */
@@ -39,12 +40,6 @@ body > #wrapper {
 
 .new {
   margin-right: 20px;
-}
-
-.comment-foto {
-  margin-top: 5px;
-  margin-right: 3px;
-  padding-bottom: 5px;
 }
 
 .sort:hover {
@@ -97,13 +92,21 @@ td .comment_list{
   background-color: rgba(217, 237, 247, 0);
   padding: 0;
   border: 0;
-  max-height: 75px;
+  max-height: 58px;
   overflow-y: hidden;
 }
 
+.comment-foto {
+  padding-top: 3px;
+  padding-right: 3px;
+  padding-bottom: 3px;
+}
+
 .comment {
+  padding: 3px;
   font-size: 10pt;
-  padding-left: 10px;
+  line-height:  14px;
+  padding-left: 5px;
   border: 1px solid #DDDDDD;
   border-radius: 5px;
   width:100%;
@@ -112,7 +115,8 @@ td .comment_list{
 }
 
 .comment p {
-  margin: 0;
+  /*margin-top: 6px;*/
+  margin-bottom: 2px;
 }
 
 .comment a {
@@ -533,6 +537,12 @@ body > #wrapper>.room>.content-column {
   } 
 
 /* PRIVATE ROOM */
+
+.file-load {
+  visibility: hidden;
+  display: none;
+  position: absolute;
+}
 
 .room {
     width: 1000px;

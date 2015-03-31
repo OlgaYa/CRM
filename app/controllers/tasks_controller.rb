@@ -63,8 +63,8 @@ class TasksController < ApplicationController
 
   def download_xls
     tasks = Task.join_statuses
-    tasks = tasks.where("created_at > '#{params[:period][:from]}'") if !params[:period]["from"].empty?
-    tasks = tasks.where("created_at < '#{params[:period][:to]}'") if !params[:period]["to"].empty?
+    tasks = tasks.where("tasks.created_at > '#{params[:period][:from]}'") if !params[:period]["from"].empty?
+    tasks = tasks.where("tasks.created_at < '#{params[:period][:to]}'") if !params[:period]["to"].empty?
     file_name = 'custom tasks'
     if params[:export]
       case params[:export]
