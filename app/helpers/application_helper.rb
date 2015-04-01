@@ -5,17 +5,6 @@ module ApplicationHelper
 	include ActionView::Helpers::UrlHelper
 	attr_accessor :output_buffer
 
-	def get_count_tasks(only = "")
-		case only 
-	    when 'sold'
-	      Task.all.where("status = 'sold'").count.to_s
-	    when 'declined'
-	      Task.all.where("status = 'declined'").count.to_s
-	    else
-	      Task.all.where("status != 'sold' AND status != 'declined' OR status IS NULL").count.to_s
-	    end
-	end
-
 	def user_status(user)
 		if user.admin?
 			return 'Admin'
@@ -76,12 +65,116 @@ module ApplicationHelper
 
 	def header_add_task
 		 if params[:controller] == 'tasks' && params[:action] == 'index' && !params[:only]
-			form_for Task.new do |f|
-				buffer = ActiveSupport::SafeBuffer.new
-        buffer << f.text_field(:name, hidden: true) 
-        buffer << f.submit("New task", class: "new btn btn-sm btn-primary")
-        buffer 
-      end 
+		 	content_tag(:li) do
+				form_for Task.new do |f|
+	        concat f.text_field(:name, hidden: true) 
+	        concat f.submit("New task", class: "new btn btn-sm btn-primary") 
+	      end 
+	    end
     end
+	end
+
+	def generate_header_menu
+		role = current_user.role if current_user
+		content_tag(:nav, class: 'navbar navbar-default navbar-fixed-top', role:'navigation') do
+			content_tag(:div, class: 'container-fluid') do
+				content_tag(:div, class: 'collapse navbar-collapse', id: 'main-navbar-collapse') do
+					concat generate_logo
+					concat generate_left_menu(role)
+					concat generate_right_menu
+				end 
+			end
+		end 
+	end
+
+	def generate_logo
+		content_tag(:div, class: 'navbar-header') do
+			buffer = ActiveSupport::SafeBuffer.new
+			buffer << content_tag(:button, class: 'navbar-toggle', data: { toggle: 'collapse', target:'#main-navbar-collapse' }) do
+				buffer_inner = ActiveSupport::SafeBuffer.new
+				4.times do
+					buffer_inner << content_tag(:span, '', class: 'icon-bar')
+				end
+				buffer_inner
+			end
+ 			buffer << link_to('CRM', root_url, class: 'navbar-brand')
+			buffer
+		end
+	end
+
+	def generate_left_menu(role)
+		menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
+		content_tag(:ul, class: 'nav navbar-nav') do
+			menu[role.to_s]['menu'].each do |sub_menu|
+				concat get_dropdown(sub_menu)
+			end
+		end	
+	end
+
+	def get_dropdown(sub_menu)
+		content_tag(:li, class: 'dropdown') do
+			concat get_toggle_link(sub_menu[1]['name'])
+			concat get_dropdown_menu(sub_menu)
+		end
+	end
+	
+	def get_toggle_link(name)
+		link_to('#', class: 'dropdown-toggle', data: { toggle:'dropdown' }) do
+			concat name
+			concat content_tag(:b, '', class: 'caret')
+		end
+	end
+
+	def get_dropdown_menu(sub_menu)
+		content_tag(:ul, class: 'dropdown-menu') do
+			sub_menu[1].each do |item|
+				topic = item[0]
+				concat get_dropdown_menu_link(item) if topic != 'name' && topic != 'divider'					
+				concat get_divider if topic == 'divider'
+			end							
+		end
+	end
+
+	def get_dropdown_menu_link(item)
+		content_tag(:li) do
+			link_to(item[1]['name'], item[1]['path'])
+		end
+	end
+
+	def get_divider
+		content_tag(:li,'', class: 'divider')
+	end
+
+	def generate_right_menu
+		content_tag(:ul, class: 'nav navbar-nav navbar-right') do
+			generate_log_in unless current_user
+			generate_right_sub_menu if current_user
+		end
+	end
+
+	def generate_right_sub_menu
+		concat header_add_task
+		concat get_dropdown(get_current_user_sub_menu)
+		concat get_avatar
+	end
+
+	def generate_log_in
+		content_tag(:li) do
+			link_to("Log in", new_user_session_path)
+		end
+	end
+
+	def get_current_user_sub_menu
+		show_path = "users/" + current_user.id.to_s
+		result = ['sub menu', { 'name'=>current_user.first_name, 
+													 	"item one"=>{ "name"=>"Profile", "path"=> show_path },
+													 	"divider"=>true,
+													 	"item two"=>{ "name"=>"Sign out", "path"=> destroy_user_session_path } }]
+	end
+
+	def get_avatar
+		content_tag(:li) do
+			image_tag(current_user.avatar.url, class: 'avatar-small')
+		end
 	end
 end

@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   extend Enumerize
 
   enumerize :status, in: [:observer, :lock, :unlock]
+  enumerize :role,   in: [:hh, :hr, :seller]
 
   def generate_token(column)
       begin

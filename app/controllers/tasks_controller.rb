@@ -8,7 +8,7 @@ class TasksController < ApplicationController
     else
       @tasks = Task.join_statuses.where_status_not_sold_or_declined   
     end
-    paginate_tasks       
+    paginate_tasks
   end
 
   def create

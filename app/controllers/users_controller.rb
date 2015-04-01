@@ -17,13 +17,18 @@ class UsersController < ApplicationController
   def update
     case params[:update]
     when 'update-pass'
-      if @user.update_attributes(password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
+      if @user.update_attributes(password: params[:user][:password], 
+                                 password_confirmation: params[:user][:password_confirmation])
         user_successful_updatetd('pass')
       else
         render 'show'
       end
     when 'update-info'
-      if @user.update_attributes(first_name: params[:user][:first_name], last_name: params[:user][:last_name], email: params[:user][:email], avatar: params[:user][:avatar])
+      if @user.update_attributes(first_name: params[:user][:first_name], 
+                                 last_name: params[:user][:last_name], 
+                                 email: params[:user][:email], 
+                                 avatar: params[:user][:avatar])
+      
         user_successful_updatetd('info')
       else
         render 'show'
@@ -49,8 +54,14 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :email, :password,
-                                 :password_confirmation, :reseive_mails, :receive_micropost_mails, :avatar)
+    params.require(:user).permit(:first_name, 
+                                 :last_name, 
+                                 :email, 
+                                 :password,
+                                 :password_confirmation, 
+                                 :reseive_mails, 
+                                 :receive_micropost_mails, 
+                                 :avatar)
   end
 
   def correct_user
