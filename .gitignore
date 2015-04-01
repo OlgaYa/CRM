@@ -37,7 +37,6 @@ public/themes/*
 # Public Cache
 public/javascripts/cache
 public/stylesheets/cache
-public/refinery/*
 
 # Vendor Cache
 

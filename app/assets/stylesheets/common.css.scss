@@ -16,6 +16,15 @@ body > #wrapper {
   height: 100% !important;
 }
 
+/* HEADER */
+
+.avatar-small {
+  width: 36px;
+  height: 36px;
+  margin-top: 7px;
+  margin-right: 20px;
+}
+
 /* LOG IN */
 
 .log-in {
@@ -30,7 +39,7 @@ body > #wrapper {
 }
 
 .new {
-  margin-right: 2px;
+  margin-right: 20px;
 }
 
 .sort:hover {
@@ -83,22 +92,32 @@ td .comment_list{
   background-color: rgba(217, 237, 247, 0);
   padding: 0;
   border: 0;
-  max-height: 75px;
+  max-height: 58px;
   overflow-y: hidden;
 }
 
+.comment-foto {
+  width: 36px;
+  height: 36px;
+  margin-top: 3px;
+  margin-right: 3px;
+}
+
 .comment {
+  padding: 3px;
   font-size: 10pt;
-  padding-left: 10px;
+  line-height:  14px;
+  padding-left: 5px;
   border: 1px solid #DDDDDD;
   border-radius: 5px;
-  width:80%;
+  width:100%;
   margin-bottom: 5px;
   background-color: #fff;
 }
 
 .comment p {
-  margin: 0;
+  /*margin-top: 6px;*/
+  margin-bottom: 2px;
 }
 
 .comment a {
@@ -122,10 +141,10 @@ td .comment:last-child{
   margin-left: 0%;
   margin-right: 0%;
 }
-.comment:nth-child(even){
+/*.comment:nth-child(even){
   margin-left: 20%;
 }
-
+*/
 .comment_body {
   margin-top: 15px;
   width: 255px;
@@ -502,7 +521,29 @@ body > #wrapper>.room>.content-column {
   background-color: rgba(0,0,0,0);
 }
 
+.lock {
+  width: 16px;
+  height: 16px;
+  background: asset-data-url('lock-icon.png');
+}
+
+.unlock {
+  width: 16px;
+  height: 16px;
+  background: asset-data-url('unlock-icon.png');
+}
+
+  .lock:hover, .unlock:hover {
+    cursor: pointer;
+  } 
+
 /* PRIVATE ROOM */
+
+.file-load {
+  visibility: hidden;
+  display: none;
+  position: absolute;
+}
 
 .room {
     width: 1000px;

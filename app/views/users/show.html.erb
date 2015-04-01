@@ -3,7 +3,7 @@
   	<div class="user-info">
   		<div class="avatar">
         <!-- it must be changet to gravatar -->
-  			<%= image_tag('avatar-default.jpg') %>
+  			<%= image_tag(@user.avatar.url(:medium)) %>
   		</div>
       <ul class="inline user-info-list">
         <% get_user_info(@user.id) %>
@@ -37,17 +37,20 @@
           <div class="tab-pane active" id="settings">
           <div class="text-center"> <h2>Settings</h2> </div>
           <div class="first-form">
-            <%= form_tag(@user, method: :put)  do %> 
+            <%= form_for(@user, method: :put)  do |f| %> 
               <input hidden='true' value="update-info" name="update" >
               <!-- <span class="form-info"> User info </span>           -->
                 <table>
                   <tr>
                     <td class="first-td">
                       <div class="upload-avatar">
-                        <%= image_tag('avatar-default.jpg') %>
-                        <a href="#" class="btn btn-primary btn-block"> upload new foto </a>
+                        <%= image_tag(@user.avatar.url(:medium), id: 'i') %>
+                        <div class="upload-photo">
+                          <%= f.file_field :avatar, id: 'f', class: 'file-load'  %>
+                          <a href="#" class="load btn btn-primary btn-block"> upload new foto </a>
+                        </div>
                       </div>
-                    </td>
+                    </td>   
                     <td class="second-td">
                       <%= label_tag 'First name:' %>
                       <%= text_field_tag 'user[first_name]', @user.first_name, class:"form-control" %>
@@ -69,7 +72,7 @@
                       </td>
                     <% end %>
                   </tr>
-                </table>
+                </table>           
                 <div class="text-center">
                   <%= submit_tag 'Save changes', class: 'btn btn-primary btn-lg submit-form' %>
                 </div>
@@ -117,7 +120,7 @@
       </div>
     </div>  
   </div>
-</div>
+</div>  
 
 <script type="text/javascript">
   $(document).ready(function(){
@@ -160,8 +163,22 @@
         $errorsTd.fadeOut(dur);
       }, time);
     }
-  });
 
+    $('.load').on('click', function(){
+        $('#f').click();
+        return false;
+    });
+
+    $('#f').on('change', function(ev) {
+        var f = ev.target.files[0];
+        var fr = new FileReader();
+        fr.onload = function(ev2) {
+            console.dir(ev2);
+            $('#i').attr('src', ev2.target.result);
+        };
+        fr.readAsDataURL(f);
+    })
+  });
 </script>
 
           

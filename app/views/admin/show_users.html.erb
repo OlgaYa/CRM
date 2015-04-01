@@ -2,11 +2,11 @@
 	<div class='col-lg-8, col-md-8 col-lg-offset-2 col-md-offset-2'>
 
 		<div class="notifier pull-right">
-	      <div class="notice-mess">       
-	      </div>
-	      <div class="helper">
-	      </div>
-	    </div>
+      <div class="notice-mess">       
+      </div>
+      <div class="helper">
+      </div>
+    </div>
 
 		<table id='users-table' class="table table-hover">
 			<thead>
@@ -27,41 +27,92 @@
 						<td class="control-field">
 							<%= get_users_control(user) %>
 				    </td>
+            <td class="control-field" value='<%= user.id %>'>
+              <% if user != current_user %>
+                <% if user.status == 'lock' %>
+                  <div class="lock user-status" name='status' value='unlock' >
+                  </div>
+                <% else %>
+                  <div class="unlock user-status" name='status' value='lock'>
+                  </div>
+                <% end %>
+              <% end %>
+            </td>
 					</tr>
 				<% end %>
 			</tbody>
 		</table>
-		<button id='add-new-user' class="btn btn-primary pull-right">Send invitation for new user</button>	
-	</div>
+		<% unless params[:status]=='lock' %>
+      <button id='add-new-user' class="btn btn-primary pull-right">Send invitation for new user</button>	
+	  <% end %> 
+  </div>
 </div>
-
-<div id='new-user-dialog' class="deadlock">
-  <% @user = get_new_user(@user) %>
-  <%= form_for :@user, url: admin_registration_index_path(@user),  html: { id: 'new-user-form' } do |f| %>
-    <div class="error" >
-      <div id="error_explanation">
+<% unless params[:status]=='lock' %>
+  <div id='new-user-dialog' class="deadlock">
+    <% @user = get_new_user(@user) %>
+    <%= form_for :@user, url: admin_registration_index_path(@user),  html: { id: 'new-user-form' } do |f| %>
+      <div class="error" >
+        <div id="error_explanation">
+        </div>
       </div>
-    </div>
 
-    <div class="control-field">
-      <%= f.text_field :first_name, class: 'form-control', placeholder: 'First Name' %>
-    </div>
+      <div class="control-field">
+        <%= f.text_field :first_name, class: 'form-control', placeholder: 'First Name' %>
+      </div>
 
-    <div class="control-field">
-      <%= f.text_field :last_name, class: 'form-control', placeholder: 'Last Name' %>
-    </div>
+      <div class="control-field">
+        <%= f.text_field :last_name, class: 'form-control', placeholder: 'Last Name' %>
+      </div>
 
-    <div class="control-field">
-      <%= f.text_field :email, class: 'form-control', placeholder: 'Email'  %>
-    </div>
+      <div class="control-field">
+        <%= f.text_field :email, class: 'form-control', placeholder: 'Email'  %>
+      </div>
 
-    <div class="control-field">
-      <%= f.check_box :admin, class: 'check-box-field' %>
-      <%= f.label :admin %>
-    </div>
+      <div class="control-field">
+        <%= f.check_box :admin, class: 'check-box-field' %>
+        <%= f.label :admin %>
+      </div>
 
-    <div class="control-field">
-      <%= f.submit "Send invite", class: "btn btn-large btn-primary", remote: true %>
-    </div>
-  <% end %>
-</div>
+      <div class="control-field">
+        <%= f.submit "Send invite", class: "btn btn-large btn-primary", remote: true %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<script>
+$(document).ready(function(){
+  var $notifier = $('.notifier');
+
+  $(document).on('click', '.user-status', function(){
+    var id    = $(this).parent().attr('value'),
+        $cell = $(this);
+
+    $.when(sendAjax('/admin/update_user_status/' + id, 
+                    $cell.attr('name'), 
+                    $cell.attr('value'))).always(function(data, textStatus, jqXHR){
+                      if(textStatus === 'success') {
+                        if($cell.hasClass('lock')){
+                          $cell.removeClass('lock').addClass('unlock');
+                          $cell.attr('value', 'lock');
+                        } else {
+                          $cell.removeClass('unlock').addClass('lock');
+                          $cell.attr('value', 'unlock');
+                        }
+                        notifie('User status was successful updated!', $notifier);
+                      } else {
+                        error('', $notifier);
+                      }
+                    });
+  });
+
+  function sendAjax(path, field, value){
+    dataForSend = { 'field':field, 'value':value }
+    return  $.ajax({
+              type: 'PUT',
+              url: path,
+              data: dataForSend
+            });
+  }
+});
+</script>

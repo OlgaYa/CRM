@@ -60,14 +60,16 @@ module ApplicationHelper
 	def generate_comment(comment, time)
 		content_tag(:div, class: "comment c_#{comment.id}") do
 			buffer = ActiveSupport::SafeBuffer.new
+			buffer << image_tag(comment.user.avatar.url(:small), class: "pull-left comment-foto")
 			buffer << content_tag(:span, time.strftime("%e.%m %H:%M"), class: 'comment_time')
-			buffer << content_tag(:span, ' ' + comment.user.first_name)
+			buffer << content_tag(:span, ' ' + comment.user.first_name, class: 'comment_time')
 			if current_user == comment.user
 				buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")), 
 													comment_path(comment), class: 'pull-right', 
 													method: :delete, remote: true)
 			end
 			buffer << content_tag(:p, comment.body)
+			buffer << content_tag(:div,'', class: 'clear')
 			buffer
 		end
 	end

@@ -1,5 +1,7 @@
 module AdminHelper
 
+	UNCHANGEABLESTATUS = ['sold', 'declined', 'negotiations', 'assigned_meeting']
+
 	def get_new_user(user)
 		if user
 			user
@@ -23,8 +25,17 @@ module AdminHelper
 		link_to(image_tag('edit.png'), path)
 	end
 
+	def get_edit_for_task_controls(id)
+		unless UNCHANGEABLESTATUS.include?(Status.find(id).name)
+			image_tag('edit.png', class: 'edit')
+		else
+			image_tag('forbidden-icon.png', alt: "You can't remove it")
+		end
+	end
+
 	def get_remove_link(path, id, field)
-		unless Task.exists?({field => id})
+		flag = true if field == 'status_id' && UNCHANGEABLESTATUS.include?(Status.find(id).name)
+		unless Task.exists?({field => id}) || flag
 			link_to(image_tag('remove.png'), path, 
 	                      method: :delete, remote: true)
 		else

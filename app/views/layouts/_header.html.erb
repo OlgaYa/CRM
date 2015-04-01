@@ -21,8 +21,8 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tasks <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><%= link_to 'Open tasks', tasks_path %> </li>
-                  <li><%= link_to 'Sold tasks', tasks_path + '?only=sold' %></li>
-                  <li><%= link_to 'Declined tasks', tasks_path + '?only=declined' %></li>
+                  <li><%= link_to 'Sold tasks', tasks_path(only: :sold) %></li>
+                  <li><%= link_to 'Declined tasks', tasks_path(only: :declined) %></li>
                   <li class="divider"></li>
                   <li><%= link_to 'Export', export_path %> </li>
                 </ul>
@@ -43,8 +43,8 @@
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Controls <b class="caret"></b></a>
                   <ul class="dropdown-menu">
-                      <li><%= link_to 'Active users', admin_show_users_path %></li>
-                      <li><%= link_to 'Blocked users', '#' %></li>
+                      <li><%= link_to 'Active users', admin_show_users_path(status: :unlock) %></li>
+                      <li><%= link_to 'Blocked users', admin_show_users_path(status: :lock) %></li>
                       <li class="divider"></li>
                       <li><%= link_to 'Task controls', admin_task_controls_path %></li>
                   </ul>
@@ -55,8 +55,17 @@
           <ul class="nav navbar-nav navbar-right">
           <% if user_signed_in? %>
             <li><%= header_add_task %></li>
-            <li><%= link_to current_user.first_name + " " + current_user.last_name, current_user %></li>
-            <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%=current_user.first_name %> <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><%= link_to('Profile', current_user) %></li>
+                <li class="divider"></li>
+                <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+              </ul>
+            </li>
+            <li>
+              <%= image_tag(current_user.avatar.url, class: 'avatar-small')%>
+            </li>
           <% else %>
             <li><%= link_to "Log in", new_user_session_path %></li>
           <% end %>

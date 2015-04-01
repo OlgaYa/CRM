@@ -1,6 +1,8 @@
-var $statuses = $('#statuses'),
-    $tr = $(document.createElement('tr')),
-    $statusInp = $('.new-status');
+<% unless @errors %>
+  var $statuses = $('#statuses'),
+      $tr = $(document.createElement('tr')),
+      $statusInp = $('.new-status');
+    
   $tdName = $(document.createElement('td'));
   $tdName.text('<%= @status.name %>');
   $tdName.addClass('editable-name');
@@ -16,3 +18,7 @@ var $statuses = $('#statuses'),
   $tr.append($tdRemove);
   $statuses.append($tr);
   $statusInp.val('');
+<% else %>
+  var $notifier = $('.notifier');
+  error('<%= @errors[0] %>', $notifier);
+<% end %>

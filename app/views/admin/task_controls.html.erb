@@ -23,7 +23,7 @@
           <% @statuses.each do |status| %>
             <tr id='<%= "status_#{status.id}" %>' name="status" value="<%= status.id %>">
               <td class="editable-name"> <%= status.name %>  </td>
-              <td class="text-center"> <%= image_tag('edit.png', class: 'edit') %> </td>
+              <td class="text-center"> <%= get_edit_for_task_controls(status.id) %> </td>
               <td class="text-center"> <%= get_remove_link(admin_destroy_status_path(status), status.id, 'status_id') %> </td>
             </tr>
           <% end %>

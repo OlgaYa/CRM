@@ -1,6 +1,8 @@
-var $statuses = $('#sources'),
-    $tr = $(document.createElement('tr')),
-    $statusInp = $('.new-source');
+<% unless @errors %> 
+  var $statuses = $('#sources'),
+      $tr = $(document.createElement('tr')),
+      $statusInp = $('.new-source');
+
   $tdName = $(document.createElement('td'));
   $tdName.text('<%= @source.name %>');
   $tdName.addClass('editable-name');
@@ -16,3 +18,7 @@ var $statuses = $('#sources'),
   $tr.append($tdRemove);
   $statuses.append($tr);
   $statusInp.val('');
+<% else %>
+  var $notifier = $('.notifier');
+  error('<%= @errors[0] %>', $notifier);
+<% end %>

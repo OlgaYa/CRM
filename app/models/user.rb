@@ -12,9 +12,13 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :last_name, presence: true, length: { maximum: 50 }
 
-  # extend Enumerize
+  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>", :small => "36x36" }, :default_url => 'avatar-default.jpg'
+  
+  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
-  # enumerize :status, in: [:observer, :locked, :unlocked]
+  extend Enumerize
+
+  enumerize :status, in: [:observer, :lock, :unlock]
 
   def generate_token(column)
       begin

@@ -4,10 +4,11 @@ class TasksController < ApplicationController
 
   def index
     if Status.exists?(name: params[:only])
-      @tasks = Task.join_statuses.where("statuses.name = ?", params[:only]).by_date
+      @tasks = Task.join_statuses.where("statuses.name = ?", params[:only])
     else
-      @tasks = Task.join_statuses.where_status_not_sold_or_declined.by_date   
-    end       
+      @tasks = Task.join_statuses.where_status_not_sold_or_declined   
+    end
+    paginate_tasks       
   end
 
   def create
@@ -30,9 +31,11 @@ class TasksController < ApplicationController
 
   def update
     task = Task.find(params[:id])
+    unless ['topic', 'source_id', 'name'].include? params[:field]   
+      task.update_attribute(:date, Date.current())
+    end
     if params[:field] == 'status_id'
       task.update_attribute(params[:field].to_sym, params[:value])
-      task.update_attribute(:date, Date.current())
       if Status.find(params[:value]).name == 'sold'
         sold_task = current_user.sold_tasks.create(task_id: task.id)
         task.sold_task = sold_task
@@ -60,8 +63,8 @@ class TasksController < ApplicationController
 
   def download_xls
     tasks = Task.join_statuses
-    tasks = tasks.where("created_at > '#{params[:period][:from]}'") if !params[:period]["from"].empty?
-    tasks = tasks.where("created_at < '#{params[:period][:to]}'") if !params[:period]["to"].empty?
+    tasks = tasks.where("tasks.created_at > '#{params[:period][:from]}'") if !params[:period]["from"].empty?
+    tasks = tasks.where("tasks.created_at < '#{params[:period][:to]}'") if !params[:period]["to"].empty?
     file_name = 'custom tasks'
     if params[:export]
       case params[:export]
@@ -104,5 +107,9 @@ class TasksController < ApplicationController
     def task_params
       params[:task][:user_id] = current_user.id
       params.require(:task).permit(:name, :source, :skype, :email, :links, :date, :user_id, :status, :comments)
+    end
+
+    def paginate_tasks
+      @tasks = @tasks.paginate(:page => params[:page], :per_page => 10).order('id DESC').by_date
     end
 end
