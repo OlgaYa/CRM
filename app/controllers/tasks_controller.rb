@@ -110,6 +110,6 @@ class TasksController < ApplicationController
     end
 
     def paginate_tasks
-      @tasks = @tasks.paginate(:page => params[:page], :per_page => 10).order('id DESC').by_date
+      @tasks = @tasks.paginate(:page => params[:page], :per_page => 10).by_date
     end
 end
