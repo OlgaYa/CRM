@@ -40,7 +40,8 @@ class User < ActiveRecord::Base
     # tasks = Task.where("updated_at < ?", 1.minute.ago)
     hash = {}
     tasks.each do |t|
-      unless (t.status ==  "sold" || t.status == "declined" || !t.user_id )
+      status = t.status
+      unless ( status.name ==  "declined" ||  status.name == "sold" || !t.user_id )
         if hash.key?(t.user_id)
           hash[t.user_id]<<t.name
         else
