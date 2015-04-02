@@ -1,24 +1,24 @@
 module ApplicationHelper
 
-	include ActionView::Helpers::TagHelper
-	include ActionView::Helpers::AssetTagHelper
-	include ActionView::Helpers::UrlHelper
-	attr_accessor :output_buffer
+  include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::AssetTagHelper
+  include ActionView::Helpers::UrlHelper
+  attr_accessor :output_buffer
 
-	def user_status(user)
-		if user.admin?
-			return 'Admin'
-		else
-			return 'User'
-		end
-	end
+  def user_status(user)
+    if user.admin?
+      return 'Admin'
+    else
+      return 'User'
+    end
+  end
 
-	def current_user?(user)
-		user == current_user
-	end
+  def current_user?(user)
+    user == current_user
+  end
 
-	def generate_link(link) 
-		content_tag(:div, class: "link l_#{link.id}") do
+  def generate_link(link) 
+    content_tag(:div, class: "link l_#{link.id}") do
       buffer = ActiveSupport::SafeBuffer.new
       buffer << link_to(link.alt, link.href, target: '_blank')
       buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")), 
@@ -26,157 +26,157 @@ module ApplicationHelper
                       method: :delete, remote: true)
       buffer
     end
-	end
+  end
 
-	def generate_tr_for_user(user)
-		content_tag(:tr) do			
-			buffer = ActiveSupport::SafeBuffer.new
-			buffer << content_tag(:td, user.first_name)
-			buffer << content_tag(:td, user.last_name)
-			buffer << content_tag(:td, user.email)
-			buffer << content_tag(:td, user_status(user))
-			buffer << content_tag(:td, user.current_sign_in_at)
-			buffer << content_tag(:td) do
-			 	link_to(image_tag(ActionController::Base.helpers.asset_path("remove.png")), user_path(user), data: {
+  def generate_tr_for_user(user)
+    content_tag(:tr) do     
+      buffer = ActiveSupport::SafeBuffer.new
+      buffer << content_tag(:td, user.first_name)
+      buffer << content_tag(:td, user.last_name)
+      buffer << content_tag(:td, user.email)
+      buffer << content_tag(:td, user_status(user))
+      buffer << content_tag(:td, user.current_sign_in_at)
+      buffer << content_tag(:td) do
+        link_to(image_tag(ActionController::Base.helpers.asset_path("remove.png")), user_path(user), data: {
           confirm: "Are you sure to remove user #{user.first_name} #{user.last_name}?"
         }, 
         method: :delete )
-			end
-			buffer
-		end
-	end
-
-	def generate_comment(comment, time)
-		content_tag(:div, class: "comment c_#{comment.id}") do
-			buffer = ActiveSupport::SafeBuffer.new
-			buffer << image_tag(comment.user.avatar.url(:small), class: "pull-left comment-foto")
-			buffer << content_tag(:span, time.strftime("%e.%m %H:%M"), class: 'comment_time')
-			buffer << content_tag(:span, ' ' + comment.user.first_name, class: 'comment_time')
-			if current_user == comment.user
-				buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")), 
-													comment_path(comment), class: 'pull-right', 
-													method: :delete, remote: true)
-			end
-			buffer << content_tag(:p, comment.body)
-			buffer << content_tag(:div,'', class: 'clear')
-			buffer
-		end
-	end
-
-	def header_add_task
-		 if params[:controller] == 'tasks' && params[:action] == 'index' && !params[:only]
-		 	content_tag(:li) do
-				form_for Task.new do |f|
-	        concat f.text_field(:name, hidden: true) 
-	        concat f.submit("New task", class: "new btn btn-sm btn-primary") 
-	      end 
-	    end
+      end
+      buffer
     end
-	end
+  end
 
-	def generate_header_menu
-		role = current_user.role if current_user
-		content_tag(:nav, class: 'navbar navbar-default navbar-fixed-top', role:'navigation') do
-			content_tag(:div, class: 'container-fluid') do
-				buffer = ActiveSupport::SafeBuffer.new
-				buffer << generate_logo
-				buffer << content_tag(:div, class: 'collapse navbar-collapse', id: 'main-navbar-collapse') do
-					concat generate_left_menu(role)
-					concat generate_right_menu
-				end 
-				buffer
-			end
-		end 
-	end
+  def generate_comment(comment, time)
+    content_tag(:div, class: "comment c_#{comment.id}") do
+      buffer = ActiveSupport::SafeBuffer.new
+      buffer << image_tag(comment.user.avatar.url(:small), class: "pull-left comment-foto")
+      buffer << content_tag(:span, time.strftime("%e.%m %H:%M"), class: 'comment_time')
+      buffer << content_tag(:span, ' ' + comment.user.first_name, class: 'comment_time')
+      if current_user == comment.user
+        buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")), 
+                          comment_path(comment), class: 'pull-right', 
+                          method: :delete, remote: true)
+      end
+      buffer << content_tag(:p, comment.body)
+      buffer << content_tag(:div,'', class: 'clear')
+      buffer
+    end
+  end
 
-	def generate_logo
-		content_tag(:div, class: 'navbar-header') do
-			buffer = ActiveSupport::SafeBuffer.new
-			buffer << content_tag(:button, tepe: 'button',  class: 'navbar-toggle', data: { toggle: 'collapse', target:'#main-navbar-collapse' }) do
-				buffer_inner = ActiveSupport::SafeBuffer.new
-				4.times do
-					buffer_inner << content_tag(:span, '', class: 'icon-bar')
-				end
-				buffer_inner
-			end
- 			buffer << link_to('CRM', root_url, class: 'navbar-brand')
-			buffer
-		end
-	end
+  def header_add_task
+     if params[:controller] == 'tasks' && params[:action] == 'index' && !params[:only]
+      content_tag(:li) do
+        form_for Task.new do |f|
+          concat f.text_field(:name, hidden: true) 
+          concat f.submit("New task", class: "new btn btn-sm btn-primary") 
+        end 
+      end
+    end
+  end
 
-	def generate_left_menu(role)
-		menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
-		content_tag(:ul, class: 'nav navbar-nav') do
-			menu[role.to_s]['menu'].each do |sub_menu|
-				concat get_dropdown(sub_menu)
-			end
-		end	
-	end
+  def generate_header_menu
+    role = current_user.role if current_user
+    content_tag(:nav, class: 'navbar navbar-default navbar-fixed-top', role:'navigation') do
+      content_tag(:div, class: 'container-fluid') do
+        buffer = ActiveSupport::SafeBuffer.new
+        buffer << generate_logo
+        buffer << content_tag(:div, class: 'collapse navbar-collapse', id: 'main-navbar-collapse') do
+          concat generate_left_menu
+          concat generate_right_menu
+        end 
+        buffer
+      end
+    end 
+  end
 
-	def get_dropdown(sub_menu)
-		content_tag(:li, class: 'dropdown') do
-			concat get_toggle_link(sub_menu[1]['name'])
-			concat get_dropdown_menu(sub_menu)
-		end
-	end
-	
-	def get_toggle_link(name)
-		link_to('#', class: 'dropdown-toggle', data: { toggle:'dropdown' }) do
-			concat name
-			concat content_tag(:b, '', class: 'caret')
-		end
-	end
+  def generate_logo
+    content_tag(:div, class: 'navbar-header') do
+      buffer = ActiveSupport::SafeBuffer.new
+      buffer << content_tag(:button, tepe: 'button',  class: 'navbar-toggle', data: { toggle: 'collapse', target:'#main-navbar-collapse' }) do
+        buffer_inner = ActiveSupport::SafeBuffer.new
+        4.times do
+          buffer_inner << content_tag(:span, '', class: 'icon-bar')
+        end
+        buffer_inner
+      end
+      buffer << link_to('CRM', root_url, class: 'navbar-brand')
+      buffer
+    end
+  end
 
-	def get_dropdown_menu(sub_menu)
-		content_tag(:ul, class: 'dropdown-menu') do
-			sub_menu[1].each do |item|
-				topic = item[0]
-				concat get_dropdown_menu_link(item) if topic != 'name' && topic != 'divider'					
-				concat get_divider if topic == 'divider'
-			end							
-		end
-	end
+  def generate_left_menu(role = 'seller')
+    menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
+    content_tag(:ul, class: 'nav navbar-nav') do
+      menu[role.to_s]['menu'].each do |sub_menu|
+        concat get_dropdown(sub_menu)
+      end
+    end 
+  end
 
-	def get_dropdown_menu_link(item)
-		content_tag(:li) do
-			link_to(item[1]['name'], item[1]['path'])
-		end
-	end
+  def get_dropdown(sub_menu)
+    content_tag(:li, class: 'dropdown') do
+      concat get_toggle_link(sub_menu[1]['name'])
+      concat get_dropdown_menu(sub_menu)
+    end
+  end
+  
+  def get_toggle_link(name)
+    link_to('#', class: 'dropdown-toggle', data: { toggle:'dropdown' }) do
+      concat name
+      concat content_tag(:b, '', class: 'caret')
+    end
+  end
 
-	def get_divider
-		content_tag(:li,'', class: 'divider')
-	end
+  def get_dropdown_menu(sub_menu)
+    content_tag(:ul, class: 'dropdown-menu') do
+      sub_menu[1].each do |item|
+        topic = item[0]
+        concat get_dropdown_menu_link(item) if topic != 'name' && topic != 'divider'          
+        concat get_divider if topic == 'divider'
+      end             
+    end
+  end
 
-	def generate_right_menu
-		content_tag(:ul, class: 'nav navbar-nav navbar-right') do
-			generate_log_in unless current_user
-			generate_right_sub_menu if current_user
-		end
-	end
+  def get_dropdown_menu_link(item)
+    content_tag(:li) do
+      link_to(item[1]['name'], item[1]['path'])
+    end
+  end
 
-	def generate_right_sub_menu
-		concat header_add_task
-		concat get_dropdown(get_current_user_sub_menu)
-		concat get_avatar
-	end
+  def get_divider
+    content_tag(:li,'', class: 'divider')
+  end
 
-	def generate_log_in
-		content_tag(:li) do
-			link_to("Log in", new_user_session_path)
-		end
-	end
+  def generate_right_menu
+    content_tag(:ul, class: 'nav navbar-nav navbar-right') do
+      generate_log_in unless current_user
+      generate_right_sub_menu if current_user
+    end
+  end
 
-	def get_current_user_sub_menu
-		show_path = "users/" + current_user.id.to_s
-		result = ['sub menu', { 'name'=>current_user.first_name, 
-													 	"item one"=>{ "name"=>"Profile", "path"=> show_path },
-													 	"divider"=>true,
-													 	"item two"=>{ "name"=>"Sign out", "path"=> destroy_user_session_path } }]
-	end
+  def generate_right_sub_menu
+    concat header_add_task
+    concat get_dropdown(get_current_user_sub_menu)
+    concat get_avatar
+  end
 
-	def get_avatar
-		content_tag(:li) do
-			image_tag(current_user.avatar.url, class: 'avatar-small')
-		end
-	end
+  def generate_log_in
+    content_tag(:li) do
+      link_to("Log in", new_user_session_path)
+    end
+  end
+
+  def get_current_user_sub_menu
+    show_path = "users/" + current_user.id.to_s
+    result = ['sub menu', { 'name'=>current_user.first_name, 
+                            "item one"=>{ "name"=>"Profile", "path"=> show_path },
+                            "divider"=>true,
+                            "item two"=>{ "name"=>"Sign out", "path"=> destroy_user_session_path } }]
+  end
+
+  def get_avatar
+    content_tag(:li) do
+      image_tag(current_user.avatar.url, class: 'avatar-small')
+    end
+  end
 end

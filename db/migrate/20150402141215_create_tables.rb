@@ -1,19 +1,21 @@
+# Not typed table
 class CreateTables < ActiveRecord::Migration
   def change
     create_table :tables do |t|
-      t.string :name, default: :missing, unique: true
-      t.string :level, default: :missing
-      t.string :specialization, default: :missing
-      t.string :email, default: :missing
-      t.string :source, default: :missing
-      t.string :date, default: :missing
-      t.string :comment, default: :missing
-      t.string :status, default: :missing
-      t.string :topic, default: :missing
-      t.string :skype, default: :missing
-      t.string :message, default: :missing
-      t.string :link, default: :missing
-      t.string :assign_to, default: :missing
+      t.string :type
+      t.string :name
+      t.integer :level_id
+      t.integer :specialization_id
+      t.string :email
+      t.integer :source_id
+      t.date :date
+      t.integer :status_id
+      t.string :topic
+      t.string :skype
+      t.integer :user_id
+      t.integer :price
+      t.date :date_start
+      t.date :date_end
 
       t.timestamps null: false
     end

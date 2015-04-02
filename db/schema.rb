@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150401121314) do
+ActiveRecord::Schema.define(version: 20150402224408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,12 +24,19 @@ ActiveRecord::Schema.define(version: 20150401121314) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "levels", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "links", force: :cascade do |t|
     t.string   "alt"
     t.string   "href"
     t.integer  "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "table_id"
   end
 
   create_table "meetings", force: :cascade do |t|
@@ -66,10 +73,42 @@ ActiveRecord::Schema.define(version: 20150401121314) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "specializations", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "statuses", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "table_comments", force: :cascade do |t|
+    t.integer  "table_id"
+    t.integer  "comment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tables", force: :cascade do |t|
+    t.string   "type"
+    t.string   "name"
+    t.integer  "level_id"
+    t.integer  "specialization_id"
+    t.string   "email"
+    t.integer  "source_id"
+    t.date     "date"
+    t.integer  "status_id"
+    t.string   "topic"
+    t.string   "skype"
+    t.integer  "user_id"
+    t.integer  "price"
+    t.date     "date_start"
+    t.date     "date_end"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "task_comments", force: :cascade do |t|
