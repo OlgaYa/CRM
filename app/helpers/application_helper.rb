@@ -78,11 +78,13 @@ module ApplicationHelper
 		role = current_user.role if current_user
 		content_tag(:nav, class: 'navbar navbar-default navbar-fixed-top', role:'navigation') do
 			content_tag(:div, class: 'container-fluid') do
-				content_tag(:div, class: 'collapse navbar-collapse', id: 'main-navbar-collapse') do
-					concat generate_logo
+				buffer = ActiveSupport::SafeBuffer.new
+				buffer << generate_logo
+				buffer << content_tag(:div, class: 'collapse navbar-collapse', id: 'main-navbar-collapse') do
 					concat generate_left_menu(role)
 					concat generate_right_menu
 				end 
+				buffer
 			end
 		end 
 	end
@@ -90,7 +92,7 @@ module ApplicationHelper
 	def generate_logo
 		content_tag(:div, class: 'navbar-header') do
 			buffer = ActiveSupport::SafeBuffer.new
-			buffer << content_tag(:button, class: 'navbar-toggle', data: { toggle: 'collapse', target:'#main-navbar-collapse' }) do
+			buffer << content_tag(:button, tepe: 'button',  class: 'navbar-toggle', data: { toggle: 'collapse', target:'#main-navbar-collapse' }) do
 				buffer_inner = ActiveSupport::SafeBuffer.new
 				4.times do
 					buffer_inner << content_tag(:span, '', class: 'icon-bar')
