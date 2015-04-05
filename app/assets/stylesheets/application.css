@@ -16,7 +16,25 @@
  *= require bootstrap
  *= require bootstrap-datetimepicker
  */
+.ui-dialog {
 
-.ui-dialog .ui-dialog-titlebar {
-    font-size: 10pt;
 }
+  .ui-dialog-titlebar {
+    height: 35px;
+    /*padding-bottom: 10px !important;*/
+  }  
+    .ui-dialog-title {
+      font-size: 10pt;
+    }
+    .ui-dialog-titlebar-close {
+    
+    }
+  .ui-dialog-content {
+
+  }
+  .ui-dialog-buttonpane {
+
+  }
+    .ui-dialog-buttonset {
+
+    }

@@ -7,6 +7,7 @@ class TablesController < ApplicationController
     when 'SALE'
       @table = sale_table
     end
+    paginate_table
   end
 
   def create
@@ -14,7 +15,8 @@ class TablesController < ApplicationController
   end
 
   def update
-    Table.update_attributes(table_params)
+    Table.find(params[:id]).update_attributes(table_params)
+    render json: 'success'.to_json
   end
 
   def destroy
@@ -40,5 +42,10 @@ class TablesController < ApplicationController
     else
       Sale.open
     end
+  end
+
+  private def paginate_table
+    @table = @table.paginate(page: params[:page],
+                             per_page: 10).oder_date_nulls_first
   end
 end

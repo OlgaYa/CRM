@@ -28,3 +28,27 @@ seller:
 hr:
 hh:
 admin:
+  menu:
+    sub menu one:
+      name: 'Sales'
+      item one: 
+        name: 'Open sales'
+        path: '/tables?only=open&type=SALE'
+      item two: 
+        name: 'Sold sales'
+        path: '/tables?only=sold&type=SALE'
+      item three: 
+        name: 'Declined sales'
+        path: '/tables?only=declined&type=SALE'
+      divider: true
+      item fore: 
+        name: 'Export'
+        path: '/export'
+      divider: true
+      item five: 
+        name: 'Meetings'
+        path: '/meetings'
+      divider: true
+      item six: 
+        name: 'Statistic'
+        path: '/statistics'

@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   root to: 'static_pages#home'
   resources :tables, only: [:create, :update, :destroy, :index]
   # resources :users
-  # resources :comments, only: [:create, :destroy]
+  resources :comments, only: [:create, :destroy]
   # resources :sold_tasks, only: :update
   # resources :meetings, only: [:index, :create]
   # resources :tasks, only:[:index, :create, :destroy, :update]

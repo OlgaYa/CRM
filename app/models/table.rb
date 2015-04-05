@@ -9,4 +9,8 @@ class Table < ActiveRecord::Base
 
   has_many :table_comments, dependent: :destroy
   has_many :comments, through: :table_comments
+
+  def self.oder_date_nulls_first
+    order('date DESC NULLS FIRST')
+  end
 end

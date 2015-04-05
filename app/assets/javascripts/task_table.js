@@ -61,36 +61,36 @@ $(document).ready(function(){
     }
   });
 
-  //dialog for change date
-  var flag = false;
-  $('.date-input').datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function(date, obj){
-      flag = true;
-    },
-    onClose: function(date, obj){
-      if(flag){
-        var task_id = obj.input.parents().eq(1).attr('id');
-        var sold_task_id = $(obj.input).siblings('.id').val();
-        var filedName = obj.input.attr('name');
-        var path;
-        var values = { 'field': filedName, 'value': date };
-        if(filedName == 'date'){
-          path = 'tasks/' + task_id; 
-        } else {
-          path = 'sold_tasks/' + sold_task_id;
-        }
-        $.when(sendARequest(path, values)).always(function(data, textStatus, jqXHR){
-          if(textStatus == 'success'){
-            notifie( capitalize(filedName) + ' has been successfully updated!', $notifier);
-          } else {
-            error('', $notifier);
-          }
-        })
-        flag = false;      
-      }
-    }
-  });
+  // //dialog for change date
+  // var flag = false;
+  // $('.date-input').datepicker({
+  //   dateFormat: 'yy-mm-dd',
+  //   onSelect: function(date, obj){
+  //     flag = true;
+  //   },
+  //   onClose: function(date, obj){
+  //     if(flag){
+  //       var task_id = obj.input.parents().eq(1).attr('id');
+  //       var sold_task_id = $(obj.input).siblings('.id').val();
+  //       var filedName = obj.input.attr('name');
+  //       var path;
+  //       var values = { 'field': filedName, 'value': date };
+  //       if(filedName == 'date'){
+  //         path = 'tasks/' + task_id; 
+  //       } else {
+  //         path = 'sold_tasks/' + sold_task_id;
+  //       }
+  //       $.when(sendARequest(path, values)).always(function(data, textStatus, jqXHR){
+  //         if(textStatus == 'success'){
+  //           notifie( capitalize(filedName) + ' has been successfully updated!', $notifier);
+  //         } else {
+  //           error('', $notifier);
+  //         }
+  //       })
+  //       flag = false;      
+  //     }
+  //   }
+  // });
 
   // popup after chenge status to "Decline"
   var reload = true;
@@ -473,11 +473,7 @@ $(document).ready(function(){
   function updateDate(task_id) {
     d = new Date();
     $('#'+task_id).children('.date').children('.date-input').val(d.yyyymmdd());   
-  }
-
-  function capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1); 
-  }
+  }  
 
   $.fn.active = function(){
     this.addClass('active-td');

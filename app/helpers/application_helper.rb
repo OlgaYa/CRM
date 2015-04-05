@@ -76,12 +76,13 @@ module ApplicationHelper
 
   def generate_header_menu
     role = current_user.role if current_user
+    role = 'admin' if current_user.admin?
     content_tag(:nav, class: 'navbar navbar-default navbar-fixed-top', role:'navigation') do
       content_tag(:div, class: 'container-fluid') do
         buffer = ActiveSupport::SafeBuffer.new
         buffer << generate_logo
         buffer << content_tag(:div, class: 'collapse navbar-collapse', id: 'main-navbar-collapse') do
-          concat generate_left_menu
+          concat generate_left_menu(role)
           concat generate_right_menu
         end 
         buffer
