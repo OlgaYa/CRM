@@ -70,16 +70,20 @@ body > #wrapper {
   display: none;
 }
 
-.comments div:not(:last-child){
-  display: none;
-}
-
 .comment_list {
   max-height: 250px;
   overflow-y: auto;
   background-color: rgba(217, 237, 247, 0.2);
   padding: 10px 10px 10px 10px;
   border: 1px solid #DDDDDD;
+}
+
+td .comment_list div:not(:last-child){
+  display: none;
+}
+
+.comment_list div{
+  display: block;
 }
 
 td .comment_list{
@@ -89,6 +93,7 @@ td .comment_list{
   max-height: 58px;
   overflow-y: hidden;
 }
+
 
 .comment-foto {
   width: 36px;

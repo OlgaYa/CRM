@@ -40,15 +40,31 @@ admin:
       item three: 
         name: 'Declined sales'
         path: '/tables?only=declined&type=SALE'
-      divider: true
+      item dev one:
+        divider: true
       item fore: 
         name: 'Export'
         path: '/export'
-      divider: true
+      item dev two:
+        divider: true
       item five: 
         name: 'Meetings'
         path: '/meetings'
-      divider: true
+      item dev three:
+        divider: true
       item six: 
         name: 'Statistic'
         path: '/statistics'
+    sub menu two:
+      name: 'Admin panel'
+      item one: 
+        name: 'Active users'
+        path: '/admin/show_users?status=unlock'
+      item two: 
+        name: 'Bloked users'
+        path: '/admin/show_users?status=lock'
+      item dev one:
+        divider: true
+      item three: 
+        name: 'Tables controls'
+        path: '/admin/task_controls'

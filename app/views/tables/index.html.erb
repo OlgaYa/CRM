@@ -1,6 +1,6 @@
 <div class="row">
   <div class="container-fluid">
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
       <div class="notifier pull-right">
         <div class="notice-mess">       
@@ -22,185 +22,82 @@
 <div id='editable-field'>
   <textarea id='editable-field-textarea' ></textarea>
 </div>
+<div id='activity-dialog'>
+  <textarea id="activity-body"></textarea>
+  <button id='activity-add' class="btn btn-primary btn-lg pull-right", type="button">Add</button>
+</div>
+<div id="declined-comment">
+  <textarea id="declined_comment_body" class="comment_body"></textarea>
+</div>
 
-<script>
-$(document).ready(function(){
-  var $editableFieldDialog = $('#editable-field'),
-      $editableFieldTextArea = $('#editable-field-textarea'),
-      $notifier = $('.notifier'),
-      pathFirstPart = '/tables/'; 
+ <!-- Modal -->
 
-  $editableFieldDialog.dialog({
-    autoOpen: false,
-    resizable: false,
-    width: 300,
-    height: 100
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Assigned Meeting</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row" id="meeting_dialog">
+              <%= form_for :@meeting, :url => meetings_path(@meeting) do |f| %> 
+                <div class="control-field">
+                  <%= f.text_field :title, class: 'form-control', placeholder: 'Title'%>
+                </div>
+                <div class="control-field">
+                  <%= f.text_area :description, class: 'form-control', placeholder: 'Description' %>
+                </div>
+                <div class="container" id="container">
+                  <div class='col-md-5' id='col-md-5' >
+                   <div class="form-group">
+                      <div class='input-group date' id='datetimepicker6'>
+                        <%= f.text_field :start_time, placeholder: 'Start time', class: "form-control" %>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class='col-md-5' id='col-md-5' >
+                    <div class="form-group">
+                      <div class='input-group date' id='datetimepicker7'>
+                        <%= f.text_field :end_time, placeholder: 'End time', class: "form-control" %>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="control-field" id="meeting-email">
+                  <%= f.text_field :email,  class: 'form-control', placeholder: 'Add email'%>
+                </div>
+                <div class="side-by-side clearfix", id="chosen">
+                  <%= select_tag "User", options_for_select(User.all_except(current_user).collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]} + Task.all.collect {|p| [ p.name , p.id.to_s + "task" ]}),multiple: true, style:"width:100% !important;", class: "chosen-select", name: 'users[]', id: 'user', "data-placeholder" => 'Select User ...' %>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <%= f.submit "Create", class: "btn btn-large btn-primary btn-block" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- End hidden blocks -->
+
+  </div><!-- /main-content col-md-12 -->
+</div> <!-- /row -->
+
+<script type="text/javascript">
+$(function () {
+  $(".chosen-select").chosen();
+  $('#datetimepicker6').datetimepicker({format: 'MMMM Do YYYY, h:mm'});
+  $('#datetimepicker7').datetimepicker({format: 'MMMM Do YYYY, h:mm'});
+  $("#datetimepicker6").on("dp.change",function (e) {
+    $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
   });
-
-  $('.editable-field').on('dblclick', function(){
-    var currentData = $(this).text();
-    $editableFieldDialog.dialog('option', 'position', { my: 'left top', at: 'left bottom',  of: $(this) });
-    $editableFieldDialog.dialog('option', 'title', capitalize($(this).attr('value')));
-    $editableFieldDialog.data('$td', $(this));
-    $editableFieldTextArea.val(currentData);
-    $editableFieldDialog.dialog('open');
-  });
-
-  $editableFieldTextArea.on('keydown', function(event){
-    if(event.which===13){
-      var $td = $editableFieldDialog.data('$td'),
-          name = $td.name(),
-          rowId = $td.id(),
-          newValue = $editableFieldTextArea.val(),
-          d = new Date();
-      
-      var dataForSend = name + '=' + newValue,
-          path = pathFirstPart + rowId;
-      
-      $.when(sendData(dataForSend, path, $td.attr('value'), d)).always(function(data, textStatus, jqXHR){
-        if(textStatus==='success'){
-          $editableFieldTextArea.val('');
-          $editableFieldDialog.dialog('close');
-          $td.text(newValue);
-          notifie(capitalize($td.attr('value')) + ' was successfully updated', $notifier);
-          updateDate(rowId, d, $td.attr('value'));
-        } else {
-          error('', $notifier);
-        }
-      });            
-    }
-  });
-
-  $('.selectable-field').on('change', function(){
-    var selectedText = $(this).children(':selected').text(),
-        dataForSend = $(this).name() + '=' + $(this).val(),
-        rowId = $(this).parent().id(),
-        path = pathFirstPart + rowId,
-        d = new Date(),
-        fieldName = $(this).attr('fieldname'),
-        $td = $(this).parent();
-
-    $.when(sendData(dataForSend, path, fieldName, d)).always(function(data, textStatus, jqXHR){
-      if(textStatus==='success'){
-          updateDate(rowId, d, $td.children().attr('fieldname'));
-          if($td.children().attr('fieldname') == 'status_id') {
-            // if(field_text == 'assigned_meeting'){
-            //   $('#myModal').modal()
-            // }
-            changeStatus($td.parent(), selectedText.toLowerCase());
-          } else {
-            notifie('Field was successfully updated', $notifier);
-          }         
-        } else {
-          error('', $notifier);
-        }
-    });
-  });
-
-  function changeStatus($row, field_text){
-    switch(getParameterByName('only')){
-    case 'sold': {
-      moveTo($row, field_text);                  
-    }
-    break;
-    case 'declined': {
-      moveTo($row, field_text);       
-    }
-    break;
-    default: {
-      if(field_text == 'declined' || field_text == 'sold'){                   
-        moveTo($row, field_text);
-      } else {
-        notifie('Task status was successful changed', $notifier)
-      }
-    }
-    }           
-
-  }
-
-  function moveTo($row, path){
-    $row.remove();
-    switch(path) {
-    case 'declined': {
-      notifie('Task was successful moved to "Declined tasks"', $notifier)
-    }
-    break;
-
-    case 'sold': {
-      notifie('Task was successful moved to "Sold tasks"', $notifier)
-    }
-    break;
-
-    default: {
-      notifie('Task was successful moved to "Open tasks"', $notifier)
-    }
-    break;
-    }
-  }
-
-    //function parse value of params with 'name' 
-  function getParameterByName(name) {
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-  }
-
-  //dialog for change date
-  var flag = false;
-  $('.date-input').datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function(date, obj){
-      flag = true;
-    },
-    onClose: function(date, obj){
-      if(flag){
-        var $td = obj.input.parent(),
-            path = pathFirstPart + $td.id(),
-            dataForSend = $(obj.input).name() + '=' + date;
-
-        $.when(sendData(dataForSend, path)).always(function(data, textStatus, jqXHR){
-          if(textStatus == 'success'){
-            notifie('Date has been successfully updated!', $notifier);
-          } else {
-            error('', $notifier);
-          }
-        })
-        flag = false;      
-      }
-    }
-  });
-
-  function sendData(dataForSend, path, fieldName, d){
-    if( ['topic', 'source_id', 'name'].indexOf(fieldName) === -1 ){
-      dataForSend += '&table[date]=' + d;
-    }
-    return $.ajax({
-        type: 'PUT',
-        url: path,
-        data: dataForSend
-      })    
-  }
-
-  function updateDate(row_id, d, fieldName) {
-    if( ['topic', 'source_id', 'name'].indexOf(fieldName) === -1 ){     
-      $('#'+row_id).children('.td-date').children('.date-input').val(d.yyyymmdd());   
-    }
-  }
-
-  Date.prototype.yyyymmdd = function() {
-    var yyyy = this.getFullYear().toString();
-    var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-    var dd  = this.getDate().toString();
-    return yyyy +'-'+(mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
-  }
-
-  $.fn.name = function(){
-    return $(this).attr('name');
-  }
-
-  $.fn.id = function() {
-    return $(this).parent().attr('id');
-  }
+  $("#datetimepicker7").on("dp.change",function (e) {
+    $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+  }); 
 });
 </script>
 

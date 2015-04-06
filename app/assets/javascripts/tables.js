@@ -1,2 +1,380 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
+$(document).ready(function(){
+  var $editableFieldDialog = $('#editable-field'),
+      $editableActivityDialog = $('#activity-dialog'),
+      $activityBody = $('#activity-body'),
+      $declinedCommentDialog = $('#declined-comment'),
+      $editableFieldTextArea = $('#editable-field-textarea'),
+      $notifier = $('.notifier'),
+      pathFirstPart = '/tables/'; 
+
+  $editableFieldDialog.dialog({
+    autoOpen: false,
+    resizable: false,
+    width: 300,
+    height: 100
+  });
+
+  $editableActivityDialog.dialog({
+    autoOpen: false,
+    modal: true,
+    width: 300,
+    resizable: false,
+    close: function(){
+      $(this).children('div').remove();
+    }
+  });
+
+  // OPTIMIZE
+  var reload = true;
+  $declinedCommentDialog.dialog({
+    autoOpen: false,
+    modal: true,
+    title: 'Please describe the reason of refusal',
+    close: function(event, ui){
+      if(reload){
+        location.reload(true);
+      }
+    }, 
+    buttons: 
+      [ 
+        { 
+          text: 'Close',
+          click: function(){
+            $(this).dialog('close');
+            location.reload(true);
+          }
+        },
+        {
+          text: 'Save',
+          click: function(){
+            var currentData = $('#declined_comment_body').val();
+            if(currentData.length > 0){
+              reload = false; 
+              var $td = $(this).data('$td'),
+                  dataForSend = $(this).data('dataForSend'),
+                  path = $(this).data('path'),
+                  d = new Date();
+              sendActivityData(currentData, 'comments', $td.id());
+              sendData(dataForSend, path, 'status_id', d);
+              changeStatus($td.parent(), 'declined');
+              $(this).dialog('close');
+            }
+            reload = true;
+          }          
+        }
+      ]
+  });
+
+  $('.editable-activity').on('dblclick', function(){
+    $editableActivityDialog.data('activityName', $(this).attr('value'));
+    $editableActivityDialog.data('rowId', $(this).id());
+    $editableActivityDialog.data('$td', $(this));
+    $editableActivityDialog.dialog('option', 'position', { my: 'left top', at: 'left bottom',  of: $(this) });
+    $editableActivityDialog.dialog('option', 'title', capitalize($(this).attr('value')));
+    $editableActivityDialog.dialog('open');
+    $editableActivityDialog.prepend($(this).children().clone());
+  });
+
+  $('#activity-add').on('click', function(){
+    var currentData = $activityBody.val(),
+        rowId = $editableActivityDialog.data('rowId'),
+        activityName = $editableActivityDialog.data('activityName');
+    sendActivityData(currentData, activityName, rowId);
+  });
+
+  $activityBody.on('keydown', function(event){
+    if(event.which === 13){
+      var currentData = $activityBody.val(),
+          rowId = $editableActivityDialog.data('rowId'),
+          activityName = $editableActivityDialog.data('activityName');
+      sendActivityData(currentData, activityName, rowId); 
+    }
+  });
+
+  function sendActivityData(inputData, activityName, rowId){
+    var $td = $editableActivityDialog.data('$td'),
+        dataForSend;
+
+    if(inputData.length > 0){
+      switch(activityName){
+      case 'links': {
+        path = '/tables/create_link'
+        var alt = inputData.match(/[a-z0-9]*(\.?[a-z0-9]+)\.[a-z]{2,10}(:[0-9]{1,10})?(.\/)?/)[0]
+        dataForSend = { table_id: rowId, alt: alt, href: inputData };
+      }
+      break;
+      case 'comments': {
+        path = '/comments'
+        dataForSend = { table_id: rowId, body: inputData }
+      }
+      break;
+      }
+      $.ajax({
+        type: 'POST',
+        url: path,
+        data: dataForSend,
+        success: function(data){
+          $editableActivityDialog.children('div').append(data);
+          $td.children('div').append(data);
+          $activityBody.val('');
+        }
+      });
+    }    
+  }
+
+  $('.editable-field').on('dblclick', function(){
+    var currentData = $(this).text();
+    $editableFieldDialog.dialog('option', 'position', { my: 'left top', at: 'left bottom',  of: $(this) });
+    $editableFieldDialog.dialog('option', 'title', capitalize($(this).attr('value')));
+    $editableFieldDialog.data('$td', $(this));
+    $editableFieldTextArea.val(currentData);
+    $editableFieldDialog.dialog('open');
+  });
+
+  $editableFieldTextArea.on('keydown', function(event){
+    if(event.which===13){
+      var $td = $editableFieldDialog.data('$td'),
+          name = $td.name(),
+          rowId = $td.id(),
+          newValue = $editableFieldTextArea.val(),
+          d = new Date();
+      
+      var dataForSend = name + '=' + newValue,
+          path = pathFirstPart + rowId;
+      
+      $.when(sendData(dataForSend, path, $td.attr('value'), d)).always(function(data, textStatus, jqXHR){
+        if(textStatus==='success'){
+          $editableFieldTextArea.val('');
+          $editableFieldDialog.dialog('close');
+          $td.text(newValue);
+          notifie(capitalize($td.attr('value')) + ' was successfully updated', $notifier);
+          updateDate(rowId, d, $td.attr('value'));
+        } else {
+          error('', $notifier);
+        }
+      });            
+    }
+  });
+
+// OPTIMIZE
+  $('.selectable-field').on('change', function(){
+    var selectedText = $(this).children(':selected').text().toLowerCase(),
+        dataForSend = $(this).name() + '=' + $(this).val(),
+        rowId = $(this).parent().id(),
+        path = pathFirstPart + rowId,
+        d = new Date(),
+        fieldName = $(this).attr('fieldname'),
+        $td = $(this).parent();
+    if(fieldName === 'status_id' && selectedText === 'declined'){
+      $declinedCommentDialog.data('$td', $td);
+      $declinedCommentDialog.data('dataForSend', dataForSend);
+      $declinedCommentDialog.data('path', path);
+      $declinedCommentDialog.dialog('open');
+      return false;
+    }
+    $.when(sendData(dataForSend, path, fieldName, d)).always(function(data, textStatus, jqXHR){
+      if(textStatus==='success'){
+          updateDate(rowId, d, $td.children().attr('fieldname'));
+          if($td.children().attr('fieldname') === 'status_id') {
+            if(selectedText == 'assigned_meeting'){
+              $('#myModal').modal()
+            }
+            changeStatus($td.parent(), selectedText);
+          } else {
+            notifie('Field was successfully updated', $notifier);
+          }         
+        } else {
+          error('', $notifier);
+        }
+    });
+    return false;
+  });
+
+  function changeStatus($row, field_text){
+    switch(getParameterByName('only')){
+    case 'sold': {
+      moveTo($row, field_text);                  
+    }
+    break;
+    case 'declined': {
+      moveTo($row, field_text);       
+    }
+    break;
+    default: {
+      if(field_text == 'declined' || field_text == 'sold'){                   
+        moveTo($row, field_text);
+      } else {
+        notifie('Task status was successful changed', $notifier)
+      }
+    }
+    }           
+
+  }
+
+  function moveTo($row, path){
+    $row.remove();
+    switch(path) {
+    case 'declined': {
+      notifie('Task was successful moved to "Declined tasks"', $notifier)
+    }
+    break;
+
+    case 'sold': {
+      notifie('Task was successful moved to "Sold tasks"', $notifier)
+    }
+    break;
+
+    default: {
+      notifie('Task was successful moved to "Open tasks"', $notifier)
+    }
+    break;
+    }
+  }
+
+    //function parse value of params with 'name' 
+  function getParameterByName(name) {
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+  }
+
+  //dialog for change date
+  var flag = false;
+  $('.date-input').datepicker({
+    dateFormat: 'yy-mm-dd',
+    onSelect: function(date, obj){
+      flag = true;
+    },
+    onClose: function(date, obj){
+      if(flag){
+        var $td = obj.input.parent(),
+            path = pathFirstPart + $td.id(),
+            dataForSend = $(obj.input).name() + '=' + date;
+
+        $.when(sendData(dataForSend, path, 'date')).always(function(data, textStatus, jqXHR){
+          if(textStatus == 'success'){
+            notifie('Date has been successfully updated!', $notifier);
+          } else {
+            error('', $notifier);
+          }
+        })
+        flag = false;      
+      }
+    }
+  });
+
+  function sendData(dataForSend, path, fieldName, d){
+    if( ['topic', 'source_id', 'name', 'date'].indexOf(fieldName) === -1 ){
+      dataForSend += '&table[date]=' + d;
+    }
+    return $.ajax({
+        type: 'PUT',
+        url: path,
+        data: dataForSend
+      })    
+  }
+
+  function updateDate(row_id, d, fieldName) {
+    if( ['topic', 'source_id', 'name'].indexOf(fieldName) === -1 ){     
+      $('#'+row_id).children('.td-date').children('.date-input').val(d.yyyymmdd());   
+    }
+  }
+
+  Date.prototype.yyyymmdd = function() {
+    var yyyy = this.getFullYear().toString();
+    var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+    var dd  = this.getDate().toString();
+    return yyyy +'-'+(mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
+  }
+
+  $.fn.name = function(){
+    return $(this).attr('name');
+  }
+
+  $.fn.id = function() {
+    return $(this).parent().attr('id');
+  }
+
+  $('.sort').on('click', function(){
+    clear($('.sort'), $(this));
+    $(this).changeSort($(this).attr('value'));
+
+  });
+
+  function clear($selectors, $current){
+    $selectors.each(function(){
+      if($(this).attr('value')!== $current.attr('value')){
+        $(this).clearSort()
+      }
+    })
+  }
+  $.fn.clearSort = function(){
+    $(this).removeClass('sort_asc sort_desc').addClass('sortable');
+  }
+
+  $.fn.changeSort = function(field){
+    if($(this).hasClass('sortable')){
+      $(this).removeClass('sortable').addClass('sort_desc');
+      sortTable(field, -1);
+      return;
+    }
+    if($(this).hasClass('sort_desc')){
+      $(this).removeClass('sort_desc').addClass('sort_asc');
+      sortTable(field, 1);
+      return;
+    }
+    if($(this).hasClass('sort_asc')){
+      $(this).removeClass('sort_asc').addClass('sort_desc');
+      sortTable(field, -1);
+      return;
+    }
+  }
+  // OPTIMIZE
+  function sortTable(col, type) {
+    var $rows = $('tbody'),
+        $row = $rows.children('tr');
+    if(col !== 'td-date') {
+      type = -type;
+    }
+    $row.sort(function(a,b) {
+      var an,
+          bn,
+          an_v,
+          bn_v;
+      switch(col) {
+      case 'td-date': {
+        an = $(a).children('.' + col).children('input').val(),
+        bn = $(b).children('.' + col).children('input').val();
+      }
+      break;
+      default: {
+        an_v = $(a).children('.' + col).children('select').val(),
+        bn_v = $(b).children('.' + col).children('select').val();
+        an = $(a).children('.' + col).children('select').children(':selected').text(),
+        bn = $(b).children('.' + col).children('select').children(':selected').text();
+      }
+      break;
+      }
+      if((an_v === '' && bn_v !== '') || (an_v !== '' && bn_v === '')){
+        if(an_v > bn_v ) {
+          return type;
+        }
+        if(an_v < bn_v ) {
+          return -type;
+        }
+        return 0;
+      } else {
+        if(an > bn) {
+          return type;
+        }
+        if(an < bn) {
+          return -type;
+        }
+        return 0;
+      }
+    });
+    $row.detach().appendTo($rows);
+  }
+});  
+
+

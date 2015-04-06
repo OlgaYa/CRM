@@ -34,7 +34,7 @@ module AdminHelper
 
   def get_remove_link(path, id, field)
     flag = true if field == 'status_id' && UNCHANGEABLESTATUS.include?(Status.find(id).name)
-    unless Task.exists?({field => id}) || flag
+    unless Table.exists?({field => id}) || flag
       link_to(image_tag('remove.png'), path, 
                         method: :delete, remote: true)
     else

@@ -4,12 +4,12 @@ class CommentsController < ApplicationController
   include ApplicationHelper
 
   def create
-    task = Task.find(params[:task_id])
+    table = Table.find(params[:table_id])
     time = DateTime.now
-    comment = task.comments.create(user_id: current_user.id,
-                                   body: params[:body],
-                                   datetime: time)
-    ubdate_task_date task
+    comment = table.comments.create(user_id: current_user.id,
+                                    body: params[:body],
+                                    datetime: time)
+    ubdate_table_date table
     render html: generate_comment(comment, time).html_safe
   end
 
@@ -17,7 +17,7 @@ class CommentsController < ApplicationController
     Comment.find(params[:id]).destroy
   end
 
-  private def ubdate_task_date(task)
-    task.update_attribute(:date, Date.current)
+  private def ubdate_table_date(table)
+    table.update_attribute(:date, Date.current)
   end
 end

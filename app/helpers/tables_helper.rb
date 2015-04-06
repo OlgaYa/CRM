@@ -15,19 +15,21 @@ module TablesHelper
 
   # OPTIMIZE
   def generate_sale_table_head(name)
-    content_tag(:tr, class: 'info') do
-      concat content_tag(:th, 'Name')
-      concat content_tag(:th, 'Topic')
-      concat content_tag(:th, 'Source', class: 'sortable sort')
-      concat content_tag(:th, 'Skype')
-      concat content_tag(:th, 'Email')
-      concat content_tag(:th, 'Links')
-      concat content_tag(:th, 'Date', class: 'sort_desc sort')
-      concat content_tag(:th, 'Assign to', class: 'sortable sort')
-      concat content_tag(:th, 'Status', class: 'sortable sort')
-      concat content_tag(:th, 'Price') if name == 'sold'
-      concat content_tag(:th, 'Terms') if name == 'sold'
-      concat content_tag(:th, 'Comments')
+    content_tag(:thead) do
+      content_tag(:tr, class: 'info') do
+        concat content_tag(:th, 'Name')
+        concat content_tag(:th, 'Topic')
+        concat content_tag(:th, 'Source', class: 'sortable sort', value: 'td-source-id')
+        concat content_tag(:th, 'Skype')
+        concat content_tag(:th, 'Email')
+        concat content_tag(:th, 'Links')
+        concat content_tag(:th, 'Date', class: 'sort_desc sort', value: 'td-date')
+        concat content_tag(:th, 'Assign to', class: 'sortable sort', value: 'td-user-id')
+        concat content_tag(:th, 'Status', class: 'sortable sort', value: 'td-status-id')
+        concat content_tag(:th, 'Price') if name == 'sold'
+        concat content_tag(:th, 'Terms') if name == 'sold'
+        concat content_tag(:th, 'Comments')
+      end
     end
   end
 
@@ -174,7 +176,7 @@ module TablesHelper
   end
 
   def table_links(links)
-    content_tag(:td, '', class: 'td-links', value: 'links') do
+    content_tag(:td, '', class: 'editable-activity td-links', value: 'links') do
       content_tag(:div, class: 'link_list') do
         links.each do |link|
           concat generate_link(link)
@@ -189,14 +191,16 @@ module TablesHelper
       concat link_to(link.alt, link.href, target: '_blank')
       concat link_to(image_tag(ActionController::Base.helpers
                      .asset_path('remove-red.png')),
-                     '',
+                     tables_destroy_link_path(link),
                      class: 'pull-right remove-link',
                      method: :delete, remote: true)
     end
   end
 
   def table_comments(comments)
-    content_tag(:td, class: 'td-comments') do
+    content_tag(:td,
+                class: 'editable-activity td-comments',
+                value: 'comments') do
       content_tag(:div, class: 'comment_list') do
         comments.each do |comment|
           concat generate_comment(comment)

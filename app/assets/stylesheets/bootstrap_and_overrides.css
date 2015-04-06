@@ -16,91 +16,97 @@ td .btn {
 td.editable-field:hover {
   cursor: pointer;
 }
-table.data-table {
+table {
   font-size: 10pt;
   margin-top: 50px;
 }
-  table.data-table th {
-
-  } 
-  td.td-name {
-    max-width: 200px;
-  } 
-  td.td-level-id {
-
-  }
-  td.td-specialization-id {
-
-  }
-  td.td-email {
+  table.data-table td {
     max-width: 200px;
   }
-  td.td-source-id {
-    width: 110px;
-  }
-    td.td-source-id select {
+    table.data-table th {
+
+    } 
+    td.td-name {
+      max-width: 200px;
+    } 
+    td.td-level-id {
+
+    }
+    td.td-specialization-id {
+
+    }
+    td.td-email {
+      max-width: 200px;
+    }
+    td.td-source-id {
+      width: 110px;
+    }
+      td.td-source-id select {
+        width: 100px;
+      }
+    td.td-date {
+      width: 90px;
+    }
+      td.td-date input {
+        width: 80px;
+      }
+    td.td-status-id {
+      width: 110px;
+    }
+      td.td-status-id select {
+        width: 100px;
+      }
+    td.td-topic {
+      max-width: 200px;
+    }
+    td.td-user-id {
+      width: 110px;
+    }
+      td.td-user-id select {
+        width: 100px;
+      }
+    td.td-price {
+      max-width: 200px;
+    } 
+    td.td-skype {
+      max-width: 200px;
+    }
+    td.td-period {
+      width: 135px;
+    }
+      td.td-period label {
+        width: 35px;
+      }
+      .period-date-start {
+        width: 80px;
+      }
+      .period-date-end {
+        width: 80px;
+      }
+    td.td-links {
       width: 100px;
     }
-  td.td-date {
-    width: 90px;
-  }
-    td.td-date input {
-      width: 80px;
+    td.td-links:hover{
+      cursor: pointer;
     }
-  td.td-status-id {
-    width: 110px;
-  }
-    td.td-status-id select {
-      width: 100px;
-    }
-  td.td-topic {
-    max-width: 200px;
-  }
-  td.td-user-id {
-    width: 110px;
-  }
-    td.td-user-id select {
-      width: 100px;
-    }
-  td.td-price {
-    max-width: 200px;
-  } 
-  td.td-skype {
-    max-width: 200px;
-  }
-  td.td-period {
-    width: 135px;
-  }
-    td.td-period label {
-      width: 35px;
-    }
-    .period-date-start {
-      width: 80px;
-    }
-    .period-date-end {
-      width: 80px;
-    }
-  td.td-links {
-    width: 100px;
-  }
-    .link_list {
-
-    }
-      .link {
+      .link_list {
 
       }
-  td.td-comments {
-    max-width: 300px;
-  }
-  td.td-comments:hover {
-    cursor: pointer;
-  }
-    .comment_list {
+        .link {
 
+        }
+    td.td-comments {
+      max-width: 300px;
     }
-      .comment {
+    td.td-comments:hover {
+      cursor: pointer;
+    }
+      .comment_list {
 
       }
+        .comment {
+
+        }
 
 .navbar {
   margin-bottom: 15px;

@@ -1,5 +1,7 @@
 # Main controller for work with tables
 class TablesController < ApplicationController
+  include ApplicationHelper
+
   def index
     case params[:type]
     when 'CANDIDATE'
@@ -23,29 +25,41 @@ class TablesController < ApplicationController
     Table.find(params[:id]).destroy
   end
 
-  private def table_params
-    params.require(:table).permit(:type, :name, :level_id,
-                                  :specialization_id,
-                                  :email, :source_id,
-                                  :date, :status_id,
-                                  :topic, :skype,
-                                  :user_id, :price,
-                                  :date_end, :date_start)
+  def create_link
+    link = Link.create(table_id: params[:table_id],
+                       alt: params[:alt],
+                       href: params[:href])
+    render html: generate_link(link).html_safe
   end
 
-  private def sale_table
-    case params[:only]
-    when 'sold'
-      Sale.sold
-    when 'declined'
-      Sale.declined
-    else
-      Sale.open
+  def destroy_link
+    Link.find(params[:id]).destroy
+  end
+
+  private
+    def table_params
+      params.require(:table).permit(:type, :name, :level_id,
+                                    :specialization_id,
+                                    :email, :source_id,
+                                    :date, :status_id,
+                                    :topic, :skype,
+                                    :user_id, :price,
+                                    :date_end, :date_start)
     end
-  end
 
-  private def paginate_table
-    @table = @table.paginate(page: params[:page],
-                             per_page: 10).oder_date_nulls_first
-  end
+    def sale_table
+      case params[:only]
+      when 'sold'
+        Sale.sold
+      when 'declined'
+        Sale.declined
+      else
+        Sale.open
+      end
+    end
+
+    def paginate_table
+      @table = @table.paginate(page: params[:page],
+                               per_page: 10).oder_date_nulls_first
+    end
 end

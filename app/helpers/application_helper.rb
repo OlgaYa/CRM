@@ -22,7 +22,7 @@ module ApplicationHelper
       buffer = ActiveSupport::SafeBuffer.new
       buffer << link_to(link.alt, link.href, target: '_blank')
       buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")), 
-                      tasks_destroy_link_path(link), class: 'pull-right remove-link', 
+                      tables_destroy_link_path(link), class: 'pull-right remove-link', 
                       method: :delete, remote: true)
       buffer
     end
@@ -132,8 +132,8 @@ module ApplicationHelper
     content_tag(:ul, class: 'dropdown-menu') do
       sub_menu[1].each do |item|
         topic = item[0]
-        concat get_dropdown_menu_link(item) if topic != 'name' && topic != 'divider'          
-        concat get_divider if topic == 'divider'
+        concat get_dropdown_menu_link(item) if topic != 'name' && !item[1]['divider']
+        concat get_divider if item[1]['divider']
       end             
     end
   end
@@ -171,7 +171,7 @@ module ApplicationHelper
     show_path = "users/" + current_user.id.to_s
     result = ['sub menu', { 'name'=>current_user.first_name, 
                             "item one"=>{ "name"=>"Profile", "path"=> show_path },
-                            "divider"=>true,
+                            "item dev one"=>{ "divider"=>true },
                             "item two"=>{ "name"=>"Sign out", "path"=> destroy_user_session_path } }]
   end
 

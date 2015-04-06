@@ -6,3 +6,9 @@
   max-height: 90%;
   min-height: 90%;
 }
+#activity-body {
+  margin-top: 10px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+}
