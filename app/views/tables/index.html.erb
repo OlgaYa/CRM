@@ -9,6 +9,18 @@
         </div>
       </div>
 
+      <!-- FIXME -->
+      <div class='controll-panel'>
+        <button class="btn btn-sm btn-primary delete"> Delete </button>
+        <%= form_for(Table.new)  do |f| %>
+          <%= f.text_field(:name, hidden: true, name: 'table[name]') %>
+          <%= f.text_field(:type, hidden: true, name: 'type', value: params[:type]) %>
+          <%= f.text_field(:user_id, hidden: true, value: current_user.id) %>
+          <%= f.text_field(:status_id, hidden: true,  value: Status.find_by(name: 'negotiations').id) %>
+          <%= f.submit("Add new", class: "add-new btn btn-sm btn-primary") %>
+        <% end %>
+      </div>
+
       <table class="table table-striped table-bordered table-condensed table-responsive data-table">
         <%= table_generation @table %>
       </table>
@@ -100,4 +112,28 @@ $(function () {
   }); 
 });
 </script>
+<script>
+$(document).ready(function(){
+  var $notifier = $('.notifier');
 
+  $('.controll').on('change', function(){
+    $('#' + this.value).toggleClass('warning');
+  })
+  $('.delete').on('click', function(){
+    if($('.controll:checked').size() === 0){
+      error('Please select some row', $notifier);
+      return;
+    } else {
+      if(confirm('Are you sure you want to delete selected rows?')){
+        $('.controll:checked').each(function(){
+          var id = this.value;
+          $.ajax({
+            type: 'DELETE',
+            url: '/tables/' + id
+          });
+        });        
+      }
+    }
+  });
+});
+</script>

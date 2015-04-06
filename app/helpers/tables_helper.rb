@@ -17,15 +17,24 @@ module TablesHelper
   def generate_sale_table_head(name)
     content_tag(:thead) do
       content_tag(:tr, class: 'info') do
+        concat content_tag(:th, '#')
         concat content_tag(:th, 'Name')
         concat content_tag(:th, 'Topic')
-        concat content_tag(:th, 'Source', class: 'sortable sort', value: 'td-source-id')
+        concat content_tag(:th, 'Source',
+                           class: 'sortable sort',
+                           value: 'td-source-id')
         concat content_tag(:th, 'Skype')
         concat content_tag(:th, 'Email')
         concat content_tag(:th, 'Links')
-        concat content_tag(:th, 'Date', class: 'sort_desc sort', value: 'td-date')
-        concat content_tag(:th, 'Assign to', class: 'sortable sort', value: 'td-user-id')
-        concat content_tag(:th, 'Status', class: 'sortable sort', value: 'td-status-id')
+        concat content_tag(:th, 'Date',
+                           class: 'sort_desc sort',
+                           value: 'td-date')
+        concat content_tag(:th, 'Assign to',
+                           class: 'sortable sort',
+                           value: 'td-user-id')
+        concat content_tag(:th, 'Status',
+                           class: 'sortable sort',
+                           value: 'td-status-id')
         concat content_tag(:th, 'Price') if name == 'sold'
         concat content_tag(:th, 'Terms') if name == 'sold'
         concat content_tag(:th, 'Comments')
@@ -51,6 +60,7 @@ module TablesHelper
 
   def generate_sale_row(sale)
     content_tag(:tr, id: sale.id) do
+      concat table_control sale.id
       concat table_name sale.name
       concat table_topic sale.topic
       concat table_source sale.source_id
@@ -76,6 +86,13 @@ module TablesHelper
       concat table_source candidate.source_id
       concat table_date candidate.date
       concat table_status candidate.status_id
+    end
+  end
+
+  def table_control(id)
+    content_tag(:td, '', class: 'controlls') do
+      name = 'row' + id.to_s
+      check_box_tag(name, id, false, class: 'controll')
     end
   end
 

@@ -13,7 +13,13 @@ class TablesController < ApplicationController
   end
 
   def create
-    Table.create(table_params)
+    if params[:type] == 'SALE' 
+      Sale.create(table_params)
+      redirect_to tables_path(only: 'open', type: 'SALE')
+    else
+      Candidate.create(table_params)
+      redirect_to tables_path(type: 'CANDIDATE')
+    end
   end
 
   def update

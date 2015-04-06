@@ -34,12 +34,18 @@ body > #wrapper {
 
 /* TASK TABLE */
 
+.controll-panel {
+  position: absolute;
+}
+
 .tasks-sub-menu {
   display: flex;
 }
 
-.new {
-  margin-right: 20px;
+.add-new {
+  top: 0px;
+  left: 70px;
+  position: absolute;
 }
 
 .sort:hover {
@@ -62,7 +68,12 @@ body > #wrapper {
   background: asset-data-url("sort_desc.png") no-repeat center right; 
 }
 
+/* must be removed */
 .table>tbody>tr>.remove {  
+  vertical-align: middle;
+}
+
+.table>tbody>tr>.controlls {  
   vertical-align: middle;
 }
 

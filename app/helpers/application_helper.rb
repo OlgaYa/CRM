@@ -63,20 +63,20 @@ module ApplicationHelper
     end
   end
 
-  def header_add_task
-     if params[:controller] == 'tasks' && params[:action] == 'index' && !params[:only]
-      content_tag(:li) do
-        form_for Task.new do |f|
-          concat f.text_field(:name, hidden: true) 
-          concat f.submit("New task", class: "new btn btn-sm btn-primary") 
-        end 
-      end
-    end
-  end
+  # def header_add_task
+  #    if params[:controller] == 'tasks' && params[:action] == 'index' && !params[:only]
+  #     content_tag(:li) do
+  #       form_for Task.new do |f|
+  #         concat f.text_field(:name, hidden: true) 
+  #         concat f.submit("New task", class: "new btn btn-sm btn-primary") 
+  #       end 
+  #     end
+  #   end
+  # end
 
   def generate_header_menu
     role = current_user.role if current_user
-    role = 'admin' if current_user.admin?
+    role = 'admin' if current_user && current_user.admin?
     content_tag(:nav, class: 'navbar navbar-default navbar-fixed-top', role:'navigation') do
       content_tag(:div, class: 'container-fluid') do
         buffer = ActiveSupport::SafeBuffer.new
@@ -108,8 +108,10 @@ module ApplicationHelper
   def generate_left_menu(role = 'seller')
     menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
     content_tag(:ul, class: 'nav navbar-nav') do
-      menu[role.to_s]['menu'].each do |sub_menu|
-        concat get_dropdown(sub_menu)
+      if menu[role.to_s]
+        menu[role.to_s]['menu'].each do |sub_menu|
+          concat get_dropdown(sub_menu)
+        end
       end
     end 
   end
@@ -140,7 +142,11 @@ module ApplicationHelper
 
   def get_dropdown_menu_link(item)
     content_tag(:li) do
-      link_to(item[1]['name'], item[1]['path'])
+      if item[1]['name'] == 'Sign out'
+        link_to(item[1]['name'], item[1]['path'], method: :delete)
+      else
+        link_to(item[1]['name'], item[1]['path'])
+      end
     end
   end
 
@@ -150,13 +156,16 @@ module ApplicationHelper
 
   def generate_right_menu
     content_tag(:ul, class: 'nav navbar-nav navbar-right') do
-      generate_log_in unless current_user
-      generate_right_sub_menu if current_user
+      if current_user
+        generate_right_sub_menu 
+      else
+        generate_log_in
+      end 
     end
   end
 
   def generate_right_sub_menu
-    concat header_add_task
+    # concat header_add_task
     concat get_dropdown(get_current_user_sub_menu)
     concat get_avatar
   end

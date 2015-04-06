@@ -23,6 +23,10 @@ table {
   table.data-table td {
     max-width: 200px;
   }
+
+    table.data-table td.controlls {
+      width: 20px;
+    }
     table.data-table th {
 
     } 
