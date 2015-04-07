@@ -16,7 +16,7 @@
           <%= f.text_field(:name, hidden: true, name: 'table[name]') %>
           <%= f.text_field(:type, hidden: true, name: 'type', value: params[:type]) %>
           <%= f.text_field(:user_id, hidden: true, value: current_user.id) %>
-          <% if current_user.role == 'seller' %>
+          <% if params[:type] == 'SALE' %>
             <%= f.text_field(:status_id, hidden: true,  value: Status.where(name: 'negotiations', for_type: 'sale').take.id) %>
           <% else %>
             <%= f.text_field(:status_id, hidden: true,  value: Status.where(name: 'negotiations', for_type: 'candidate').take.id) %>
