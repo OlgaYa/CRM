@@ -16,7 +16,11 @@
           <%= f.text_field(:name, hidden: true, name: 'table[name]') %>
           <%= f.text_field(:type, hidden: true, name: 'type', value: params[:type]) %>
           <%= f.text_field(:user_id, hidden: true, value: current_user.id) %>
-          <%= f.text_field(:status_id, hidden: true,  value: Status.find_by(name: 'negotiations').id) %>
+          <% if current_user.role == 'seller' %>
+            <%= f.text_field(:status_id, hidden: true,  value: Status.where(name: 'negotiations', for_type: 'sale').take.id) %>
+          <% else %>
+            <%= f.text_field(:status_id, hidden: true,  value: Status.where(name: 'negotiations', for_type: 'candidate').take.id) %>
+          <% end %>
           <%= f.submit("Add new", class: "add-new btn btn-sm btn-primary") %>
         <% end %>
       </div>

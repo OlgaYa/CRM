@@ -123,7 +123,7 @@ module TablesHelper
 
   def table_level(level_id)
     content_tag(:td, '', class: 'td-level-id') do
-      select_field(:table, :level_id,
+      select_field_with_no_selected(:table, :level_id,
                    Level.all.collect { |l| [l.name.capitalize, l.id] },
                    level_id)
     end
@@ -131,7 +131,7 @@ module TablesHelper
 
   def table_specialization(specialization_id)
     content_tag(:td, '', class: 'td-specialization-id') do
-      select_field(:table, :specialization_id,
+      select_field_with_no_selected(:table, :specialization_id,
                    Specialization.all.collect { |s| [s.name.capitalize, s.id] },
                    specialization_id)
     end
