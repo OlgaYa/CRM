@@ -8,6 +8,7 @@ module TablesHelper
       buffer << generate_sale_table_head(table.first.status.name)
       buffer << generate_sale_table(table)
     when 'Candidate'
+      buffer << generate_candidate_table_head(table.first.status.name)
       buffer << generate_candidate_table(table)
     end
     buffer
@@ -37,6 +38,22 @@ module TablesHelper
                            value: 'td-status-id')
         concat content_tag(:th, 'Price') if name == 'sold'
         concat content_tag(:th, 'Terms') if name == 'sold'
+        concat content_tag(:th, 'Comments')
+      end
+    end
+  end
+
+  def generate_candidate_table_head(name)
+    content_tag(:thead) do
+      content_tag(:tr, class: 'info') do
+        concat content_tag(:th, '#')
+        concat content_tag(:th, 'Name')
+        concat content_tag(:th, 'Level')
+        concat content_tag(:th, 'Specialization')
+        concat content_tag(:th, 'Email')
+        concat content_tag(:th, 'Source')
+        concat content_tag(:th, 'Date')
+        concat content_tag(:th, 'Status')
         concat content_tag(:th, 'Comments')
       end
     end
@@ -79,6 +96,7 @@ module TablesHelper
 
   def generate_candidate_row(candidate)
     content_tag(:tr, id: candidate.id) do
+      concat table_control candidate.id
       concat table_name candidate.name
       concat table_level candidate.level_id
       concat table_specialization candidate.specialization_id
@@ -86,6 +104,7 @@ module TablesHelper
       concat table_source candidate.source_id
       concat table_date candidate.date
       concat table_status candidate.status_id
+      concat table_comments candidate.comments
     end
   end
 
