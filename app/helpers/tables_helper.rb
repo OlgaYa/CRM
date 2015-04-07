@@ -146,8 +146,8 @@ module TablesHelper
 
   def table_source(source_id)
     content_tag(:td, '', class: 'td-source-id') do
-      select_field(:table, :source_id,
-                   Source.all.collect { |s| [s.name.capitalize, s.id] },
+      select_field_with_no_selected(:table, :source_id,
+                   Source.all.where(for_type: params[:type].downcase).collect { |s| [s.name.capitalize, s.id] },
                    source_id)
     end
   end
@@ -163,7 +163,7 @@ module TablesHelper
   def table_status(status_id)
     content_tag(:td, '', class: 'td-status-id') do
       select_field(:table, :status_id,
-                   Status.all.collect { |s| [s.name.capitalize, s.id] },
+                   Status.all.where(for_type: params[:type].downcase).collect { |s| [s.name.capitalize, s.id] },
                    status_id)
     end
   end
@@ -286,6 +286,17 @@ module TablesHelper
                    class_names = '')
     select(field_name_1, field_name_2,
            collenction, { selected: selected_field },
+           class: class_names + 'selectable-field btn btn-default',
+           fieldname: field_name_2)
+  end
+
+  def select_field_with_no_selected(field_name_1,
+                                    field_name_2,
+                                    collenction,
+                                    selected_field,
+                                    class_names = '')
+    select(field_name_1, field_name_2,
+           collenction, { include_blank: "Not selected", selected: selected_field },
            class: class_names + 'selectable-field btn btn-default',
            fieldname: field_name_2)
   end
