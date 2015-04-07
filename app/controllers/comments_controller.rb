@@ -17,7 +17,9 @@ class CommentsController < ApplicationController
     Comment.find(params[:id]).destroy
   end
 
-  private def ubdate_table_date(table)
-    table.update_attribute(:date, Date.current)
-  end
+  private 
+
+    def ubdate_table_date(table)
+      table.update_attribute(:date, Date.current)
+    end
 end
