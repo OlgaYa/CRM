@@ -2,10 +2,6 @@ class UsersController < ApplicationController
 	skip_before_action :authenticate_user!, only: [:update]
 	before_action :correct_user,   only: [:edit, :update, :update_info, :update_pass]
   
-  # def index
-  #   @users = User.all.order(:created_at)
-  # end
-
   def show
     @user = User.find(params[:id])
   end

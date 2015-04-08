@@ -1,20 +1,16 @@
 seller:
   menu:
     sub menu one:
-      name: 'Tasks'
+      name: 'Sales'
       item one: 
-        name: 'Open tasks'
-        path: '/tasks'
+        name: 'Open sales'
+        path: '/tables?only=open&type=SALE'
       item two: 
-        name: 'Sold tasks'
-        path: '/tasks?only=sold'
+        name: 'Sold sales'
+        path: '/tables?only=sold&type=SALE'
       item three: 
-        name: 'Declined tasks'
-        path: '/tasks?only=declined'
-      divider: true
-      item fore: 
-        name: 'Export'
-        path: '/export'
+        name: 'Declined sales'
+        path: '/tables?only=declined&type=SALE'
     sub menu two:
       name: 'Events'
       item one: 
@@ -27,6 +23,12 @@ seller:
         path: '/statistics'
 hr:
 hh:
+  menu:
+    sub menu one:
+      name: 'Candidates'
+      item one: 
+        name: 'Current candidates'
+        path: '/tables?type=CANDIDATE'
 admin:
   menu:
     sub menu one:
@@ -43,19 +45,19 @@ admin:
       item dev one:
         divider: true
       item fore: 
-        name: 'Export'
-        path: '/export'
-      item dev two:
-        divider: true
-      item five: 
         name: 'Meetings'
         path: '/meetings'
       item dev three:
         divider: true
-      item six: 
+      item five: 
         name: 'Statistic'
         path: '/statistics'
     sub menu two:
+      name: 'HH'
+      item one: 
+        name: 'Current candidates'
+        path: '/tables?type=CANDIDATE'
+    sub menu three:
       name: 'Admin panel'
       item one: 
         name: 'Active users'

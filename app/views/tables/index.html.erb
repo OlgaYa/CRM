@@ -16,7 +16,11 @@
           <%= f.text_field(:name, hidden: true, name: 'table[name]') %>
           <%= f.text_field(:type, hidden: true, name: 'type', value: params[:type]) %>
           <%= f.text_field(:user_id, hidden: true, value: current_user.id) %>
-          <%= f.text_field(:status_id, hidden: true,  value: Status.find_by(name: 'negotiations').id) %>
+          <% if params[:type] == 'SALE' %>
+            <%= f.text_field(:status_id, hidden: true,  value: Status.where(name: 'negotiations', for_type: 'sale').take.id) %>
+          <% else %>
+            <%= f.text_field(:status_id, hidden: true,  value: Status.where(name: 'negotiations', for_type: 'candidate').take.id) %>
+          <% end %>
           <%= f.submit("Add new", class: "add-new btn btn-sm btn-primary") %>
         <% end %>
       </div>
@@ -82,7 +86,7 @@
                   <%= f.text_field :email,  class: 'form-control', placeholder: 'Add email'%>
                 </div>
                 <div class="side-by-side clearfix", id="chosen">
-                  <%= select_tag "User", options_for_select(User.all_except(current_user).collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]} + Task.all.collect {|p| [ p.name , p.id.to_s + "task" ]}),multiple: true, style:"width:100% !important;", class: "chosen-select", name: 'users[]', id: 'user', "data-placeholder" => 'Select User ...' %>
+                  <%= select_tag "User", options_for_select(User.all_except(current_user).collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]} + Sale.all.collect {|p| [ p.name , p.id.to_s + "task" ]}),multiple: true, style:"width:100% !important;", class: "chosen-select", name: 'users[]', id: 'user', "data-placeholder" => 'Select User ...' %>
                 </div>
               </div>
             </div>

@@ -25,11 +25,11 @@ class MeetingsController < ApplicationController
 		    attendees = [{'email'=> current_user.email, 'displayName' => "#{current_user.first_name} #{current_user.last_name}", 'responseStatus' => 'tentative'}]
 		    (users || []).each_index do |i|
 		    	if users[i].include?("task")
-		    		task = Task.find_by_id(users[i].to_i)
-		    		attendees[i] = {'email' => task.email, 'displayName' => task.name, 'responseStatus' => 'tentative'} if task.email
+		    		task = Sale.find_by_id(users[i].to_i)
+		   			attendees[i+1] = {'email' => task.email, 'displayName' => task.name, 'responseStatus' => 'tentative'} if task.email
 		    	else
 			    	user = User.find_by_id(users[i].to_i)
-			    	attendees[i] = {'email' => user.email, 'displayName' => "#{user.first_name} #{user.last_name}", 'responseStatus' => 'tentative'}
+			    	attendees[i+1] = {'email' => user.email, 'displayName' => "#{user.first_name} #{user.last_name}", 'responseStatus' => 'tentative'}
 		    	end
 		    end
 		    attendees<<{'email'=> params[:@meeting][:email], 'displayName' => "Indefinite", 'responseStatus' => 'tentative'} unless params[:@meeting][:email].empty?

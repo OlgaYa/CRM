@@ -8,6 +8,7 @@ module TablesHelper
       buffer << generate_sale_table_head(table.first.status.name)
       buffer << generate_sale_table(table)
     when 'Candidate'
+      buffer << generate_candidate_table_head(table.first.status.name)
       buffer << generate_candidate_table(table)
     end
     buffer
@@ -37,6 +38,22 @@ module TablesHelper
                            value: 'td-status-id')
         concat content_tag(:th, 'Price') if name == 'sold'
         concat content_tag(:th, 'Terms') if name == 'sold'
+        concat content_tag(:th, 'Comments')
+      end
+    end
+  end
+
+  def generate_candidate_table_head(name)
+    content_tag(:thead) do
+      content_tag(:tr, class: 'info') do
+        concat content_tag(:th, '#')
+        concat content_tag(:th, 'Name')
+        concat content_tag(:th, 'Level')
+        concat content_tag(:th, 'Specialization')
+        concat content_tag(:th, 'Email')
+        concat content_tag(:th, 'Source')
+        concat content_tag(:th, 'Date')
+        concat content_tag(:th, 'Status')
         concat content_tag(:th, 'Comments')
       end
     end
@@ -79,6 +96,7 @@ module TablesHelper
 
   def generate_candidate_row(candidate)
     content_tag(:tr, id: candidate.id) do
+      concat table_control candidate.id
       concat table_name candidate.name
       concat table_level candidate.level_id
       concat table_specialization candidate.specialization_id
@@ -86,6 +104,7 @@ module TablesHelper
       concat table_source candidate.source_id
       concat table_date candidate.date
       concat table_status candidate.status_id
+      concat table_comments candidate.comments
     end
   end
 
@@ -104,7 +123,7 @@ module TablesHelper
 
   def table_level(level_id)
     content_tag(:td, '', class: 'td-level-id') do
-      select_field(:table, :level_id,
+      select_field_with_no_selected(:table, :level_id,
                    Level.all.collect { |l| [l.name.capitalize, l.id] },
                    level_id)
     end
@@ -112,7 +131,7 @@ module TablesHelper
 
   def table_specialization(specialization_id)
     content_tag(:td, '', class: 'td-specialization-id') do
-      select_field(:table, :specialization_id,
+      select_field_with_no_selected(:table, :specialization_id,
                    Specialization.all.collect { |s| [s.name.capitalize, s.id] },
                    specialization_id)
     end
@@ -127,8 +146,8 @@ module TablesHelper
 
   def table_source(source_id)
     content_tag(:td, '', class: 'td-source-id') do
-      select_field(:table, :source_id,
-                   Source.all.collect { |s| [s.name.capitalize, s.id] },
+      select_field_with_no_selected(:table, :source_id,
+                   Source.all.where(for_type: params[:type].downcase).collect { |s| [s.name.capitalize, s.id] },
                    source_id)
     end
   end
@@ -144,7 +163,7 @@ module TablesHelper
   def table_status(status_id)
     content_tag(:td, '', class: 'td-status-id') do
       select_field(:table, :status_id,
-                   Status.all.collect { |s| [s.name.capitalize, s.id] },
+                   Status.all.where(for_type: params[:type].downcase).collect { |s| [s.name.capitalize, s.id] },
                    status_id)
     end
   end
@@ -267,6 +286,17 @@ module TablesHelper
                    class_names = '')
     select(field_name_1, field_name_2,
            collenction, { selected: selected_field },
+           class: class_names + 'selectable-field btn btn-default',
+           fieldname: field_name_2)
+  end
+
+  def select_field_with_no_selected(field_name_1,
+                                    field_name_2,
+                                    collenction,
+                                    selected_field,
+                                    class_names = '')
+    select(field_name_1, field_name_2,
+           collenction, { include_blank: "Not selected", selected: selected_field },
            class: class_names + 'selectable-field btn btn-default',
            fieldname: field_name_2)
   end

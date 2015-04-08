@@ -1,11 +1,15 @@
 class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  # REMOVE
+  # has_many :tasks
 
-  has_many :tasks
   has_many :tables
   has_many :comments, dependent: :destroy
-  has_many :sold_tasks
+  
+  # REMOVE
+  # has_many :sold_tasks
+  
   has_many :messages, dependent: :destroy
 
   validates :first_name, presence: true, length: { maximum: 50 }
