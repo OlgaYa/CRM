@@ -68,4 +68,12 @@ class User < ActiveRecord::Base
   def full_name
     "#{first_name.capitalize} #{last_name.capitalize}"
   end
+
+  def self.all_unlock
+    where(status: 'unlock')
+  end
+
+  def self.all_lock
+    where(status: 'lock')
+  end
 end

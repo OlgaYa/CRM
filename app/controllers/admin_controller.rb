@@ -1,13 +1,13 @@
 class AdminController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :thread
   UNCHANGEABLESTATUS = ['sold', 'declined', 'negotiations', 'assigned_meeting']
 
 	def show_users
     case params[:status]
     when 'lock'
-      @users = User.all.where(status: :lock).order(:created_at)
+      @users = User.all_lock.order(:created_at)
     else
-      @users = User.all.where(status: :unlock).order(:created_at)
+      @users = User.all_unlock.order(:created_at)
     end
 	end
 
