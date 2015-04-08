@@ -20,7 +20,7 @@
           </tr>
         </thead>
         <tbody id="statuses">
-          <% @statuses.each do |status| %>
+          <% @statuses.all_sale.each do |status| %>
             <tr id='<%= "status_#{status.id}" %>' name="status" value="<%= status.id %>">
               <td class="editable-name"> <%= status.name %>  </td>
               <td class="text-center"> <%= get_edit_for_task_controls(status.id) %> </td>
@@ -46,7 +46,7 @@
           </tr>
         </thead>
         <tbody  id="sources">
-          <% @sources.each do |source| %>
+          <% @sources.all_sale.each do |source| %>
             <tr id='<%= "source_#{source.id}" %>' value="<%=source.id %>"  name="source">
               <td class="editable-name"> <%= source.name %>  </td>
               <td class="text-center"> <%= image_tag('edit.png', class: 'edit') %> </td>

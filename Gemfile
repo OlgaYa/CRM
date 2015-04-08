@@ -19,6 +19,9 @@ gem 'bootstrap3-datetimepicker-rails', '~> 4.7.14'
 gem 'bootstrap-sass', '~> 3.1.1.0'
 gem 'will_paginate', '~> 3.0.6'
 gem "paperclip", "~> 4.2"
+gem 'cancancan', '~> 1.10'
+gem "rolify"
+
 
 group :development do
   gem 'spring'

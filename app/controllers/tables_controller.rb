@@ -1,12 +1,13 @@
 # Main controller for work with tables
 class TablesController < ApplicationController
+  load_and_authorize_resource
   include ApplicationHelper
 
   def index
     case params[:type]
     when 'CANDIDATE'
       @table = Candidate.all
-    when 'SALE'
+    else
       @table = sale_table
     end
     paginate_table
