@@ -1,20 +1,14 @@
 class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-  # REMOVE
-  # has_many :tasks
 
   has_many :tables
   has_many :comments, dependent: :destroy
-  
-  # REMOVE
-  # has_many :sold_tasks
-  
   has_many :messages, dependent: :destroy
-
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :last_name, presence: true, length: { maximum: 50 }
 
+  # FIXME
   has_attached_file :avatar, styles: { medium: '300x300>',
                                        thumb: '100x100>',
                                        small: '36x36' },
@@ -31,7 +25,7 @@ class User < ActiveRecord::Base
     begin
       self[column] = SecureRandom.urlsafe_base64
     end while User.exists?(column => self[column])
-  end    
+  end
 
   def send_password_reset(current_user)
     generate_token(:reset_password_token)
@@ -44,11 +38,10 @@ class User < ActiveRecord::Base
     date = 2.days
     date += 2.days if Date.yesterday.saturday?
     tasks = Task.where('updated_at < ?', Date.today - date)
-    # tasks = Task.where("updated_at < ?", 1.minute.ago)
     hash = {}
     tasks.each do |t|
       status = t.status
-      unless(status.name == "declined" || status.name == "sold" || !t.user_id)
+      unless(status.declined? || status.sold? || !t.user_id)
         if hash.key?(t.user_id)
           hash[t.user_id] << t.name
         else
@@ -75,5 +68,21 @@ class User < ActiveRecord::Base
 
   def self.all_lock
     where(status: 'lock')
+  end
+
+  def locked?
+    status == 'lock'
+  end
+
+  def seller?
+    role == 'seller'
+  end
+
+  def hh?
+    role == 'hh'
+  end
+
+  def hr?
+    role == 'hr'
   end
 end

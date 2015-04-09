@@ -10,7 +10,40 @@ class Table < ActiveRecord::Base
   has_many :table_comments, dependent: :destroy
   has_many :comments, through: :table_comments
 
+  scope :join_statuses,
+        -> { joins('INNER JOIN statuses ON tables.status_id = statuses.id') }
+
+  def self.in_time_period(from, to)
+    from = DateTime.now - 365.day unless from
+    to = DateTime.now
+    where(created_at: (from)..to)
+  end
+
+  def self.belongs_to_users(users)
+    users = User.all.pluck(:id) unless users
+    where(user_id: users)
+  end
+
+  def self.with_statuses(statuses)
+    statuses = Status.all.pluck(:id) unless statuses
+    where(status_id: statuses)
+  end
+
   def self.oder_date_nulls_first
     order('date DESC NULLS FIRST')
+  end
+
+  def self.export(from, to, users, statuses)
+    in_time_period(from, to).belongs_to_users(users).with_statuses(statuses)
+  end
+
+  def self.to_csv(options = {}, fields)
+    fields = %w(name email status_id date) unless fields
+    CSV.generate(options) do |csv|
+      csv << fields
+      all.each do |product|
+        csv << product.attributes.values_at(*fields)
+      end
+    end
   end
 end

@@ -22,7 +22,7 @@ module ApplicationHelper
       buffer = ActiveSupport::SafeBuffer.new
       buffer << link_to(link.alt, link.href, target: '_blank')
       buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")), 
-                      tables_destroy_link_path(link), class: 'pull-right remove-link', 
+                      link_path(link), class: 'pull-right remove-link', 
                       method: :delete, remote: true)
       buffer
     end
@@ -63,17 +63,6 @@ module ApplicationHelper
     end
   end
 
-  # def header_add_task
-  #    if params[:controller] == 'tasks' && params[:action] == 'index' && !params[:only]
-  #     content_tag(:li) do
-  #       form_for Task.new do |f|
-  #         concat f.text_field(:name, hidden: true) 
-  #         concat f.submit("New task", class: "new btn btn-sm btn-primary") 
-  #       end 
-  #     end
-  #   end
-  # end
-
   def generate_header_menu
     role = current_user.role if current_user
     role = 'admin' if current_user && current_user.admin?
@@ -105,7 +94,7 @@ module ApplicationHelper
     end
   end
 
-  def generate_left_menu(role = 'seller')
+  def generate_left_menu(role)
     menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
     content_tag(:ul, class: 'nav navbar-nav') do
       if menu[role.to_s]

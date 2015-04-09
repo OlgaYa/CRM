@@ -98,7 +98,7 @@ $(document).ready(function(){
     if(inputData.length > 0){
       switch(activityName){
       case 'links': {
-        path = '/tables/create_link'
+        path = '/tables/links'
         var alt = inputData.match(/[a-z0-9]*(\.?[a-z0-9]+)\.[a-z]{2,10}(:[0-9]{1,10})?(.\/)?/)[0]
         dataForSend = { table_id: rowId, alt: alt, href: inputData };
       }
@@ -263,6 +263,26 @@ $(document).ready(function(){
     }
   });
 
+  $('.controll').on('change', function(){
+    $('#' + this.value).toggleClass('warning');
+  })
+  $('.delete').on('click', function(){
+    if($('.controll:checked').size() === 0){
+      error('Please select some row', $notifier);
+      return;
+    } else {
+      if(confirm('Are you sure you want to delete selected rows?')){
+        $('.controll:checked').each(function(){
+          var id = this.value;
+          $.ajax({
+            type: 'DELETE',
+            url: '/tables/' + id
+          });
+        });        
+      }
+    }
+  });
+
   function sendData(dataForSend, path, fieldName, d){
     if( ['topic', 'source_id', 'name', 'date'].indexOf(fieldName) === -1 ){
       dataForSend += '&table[date]=' + d;
@@ -377,4 +397,15 @@ $(document).ready(function(){
   }
 });  
 
+$(function () {
+  $(".chosen-select").chosen();
+  $('#datetimepicker6').datetimepicker({format: 'MMMM Do YYYY, h:mm'});
+  $('#datetimepicker7').datetimepicker({format: 'MMMM Do YYYY, h:mm'});
+  $("#datetimepicker6").on("dp.change",function (e) {
+    $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+  });
+  $("#datetimepicker7").on("dp.change",function (e) {
+    $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+  }); 
+});
 

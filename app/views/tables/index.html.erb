@@ -2,12 +2,7 @@
   <div class="container-fluid">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-      <div class="notifier pull-right">
-        <div class="notice-mess">       
-        </div>
-        <div class="helper">
-        </div>
-      </div>
+    <%= render 'shared/notifier' %>
 
       <!-- FIXME -->
       <div class='controll-panel'>
@@ -16,11 +11,7 @@
           <%= f.text_field(:name, hidden: true, name: 'table[name]') %>
           <%= f.text_field(:type, hidden: true, name: 'type', value: params[:type]) %>
           <%= f.text_field(:user_id, hidden: true, value: current_user.id) %>
-          <% if params[:type] == 'SALE' %>
-            <%= f.text_field(:status_id, hidden: true,  value: Status.where(name: 'negotiations', for_type: 'sale').take.id) %>
-          <% else %>
-            <%= f.text_field(:status_id, hidden: true,  value: Status.where(name: 'negotiations', for_type: 'candidate').take.id) %>
-          <% end %>
+          <%= f.text_field(:status_id, hidden: true,  value: Status.default_status(params[:type])) %>
           <%= f.submit("Add new", class: "add-new btn btn-sm btn-primary") %>
         <% end %>
       </div>
@@ -102,42 +93,3 @@
 
   </div><!-- /main-content col-md-12 -->
 </div> <!-- /row -->
-
-<script type="text/javascript">
-$(function () {
-  $(".chosen-select").chosen();
-  $('#datetimepicker6').datetimepicker({format: 'MMMM Do YYYY, h:mm'});
-  $('#datetimepicker7').datetimepicker({format: 'MMMM Do YYYY, h:mm'});
-  $("#datetimepicker6").on("dp.change",function (e) {
-    $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
-  });
-  $("#datetimepicker7").on("dp.change",function (e) {
-    $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-  }); 
-});
-</script>
-<script>
-$(document).ready(function(){
-  var $notifier = $('.notifier');
-
-  $('.controll').on('change', function(){
-    $('#' + this.value).toggleClass('warning');
-  })
-  $('.delete').on('click', function(){
-    if($('.controll:checked').size() === 0){
-      error('Please select some row', $notifier);
-      return;
-    } else {
-      if(confirm('Are you sure you want to delete selected rows?')){
-        $('.controll:checked').each(function(){
-          var id = this.value;
-          $.ajax({
-            type: 'DELETE',
-            url: '/tables/' + id
-          });
-        });        
-      }
-    }
-  });
-});
-</script>

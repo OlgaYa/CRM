@@ -10,6 +10,7 @@ class UsersController < ApplicationController
   	@user = User.find(params[:id])
   end
 
+  # OPTIMIZE
   def update
     case params[:update]
     when 'update-pass'
@@ -38,6 +39,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # OPTIMIZE
   def destroy
     user = User.find(params[:id])
     if user.sign_in_count == 0

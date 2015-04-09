@@ -227,7 +227,7 @@ module TablesHelper
       concat link_to(link.alt, link.href, target: '_blank')
       concat link_to(image_tag(ActionController::Base.helpers
                      .asset_path('remove-red.png')),
-                     tables_destroy_link_path(link),
+                     link_path(link),
                      class: 'pull-right remove-link',
                      method: :delete, remote: true)
     end

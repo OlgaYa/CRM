@@ -35,13 +35,13 @@ class AdminController < ApplicationController
   end
 
   def update_source
-    Source.find(params[:id]).update_attribute(params[:field].to_s, params[:value])
-    resp = "success".to_json
-    render :json => resp  
+    Source.find(params[:id]).update_attribute(params[:field].to_s,
+                                              params[:value])
+    render json: "success".to_json
   end
 
   def destroy_source
-    unless Task.exists?(source_id: params[:id])
+    unless Table.exists?(source_id: params[:id])
       Source.find(params[:id]).destroy
     end
   end
@@ -66,7 +66,7 @@ class AdminController < ApplicationController
 
   def destroy_status
     status = Status.find(params[:id])
-    unless Task.exists?(status_id: params[:id])
+    unless Table.exists?(status_id: params[:id])
       unless UNCHANGEABLESTATUS.include? status.name
         status.destroy
       end

@@ -34,10 +34,10 @@ table {
       max-width: 200px;
     } 
     td.td-level-id {
-
+      width: 110px;
     }
     td.td-specialization-id {
-
+      width: 110px;
     }
     td.td-email {
       max-width: 200px;

@@ -8,7 +8,7 @@
   $tdName.addClass('editable-name');
   $tdEdit = $(document.createElement('td')).append('<%= image_tag('edit.png', class: 'edit')%>' );
   $tdEdit.addClass('text-center')
-  $tdRemove = $(document.createElement('td')).append('<%= get_remove_link(admin_destroy_source_path(@source), @source.id, "source_id" )%>');
+  $tdRemove = $(document.createElement('td')).append('<%= get_remove_link(source_path(@source), @source.id, "source_id" )%>');
   $tdRemove.addClass('text-center')
   $tr.attr('name', 'source');
   $tr.attr('id', 'source_' + <%= @source.id %> )

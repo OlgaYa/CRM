@@ -10,7 +10,7 @@
 		<!-- Tab panes -->
 		<div class="tab-content">
 		  <div class="tab-pane active" id="simple">
-			  <%= form_tag export_path do %>
+			  <%= form_tag export_scoped_path(type: 'SALE') do %>
 			  	<div class="export-radio-group">
 				  	<%= radio_button_tag 'export', 'open' %>
 						<%= label_tag "open tasks" %>	
@@ -37,7 +37,7 @@
 				<% end %>
 		  </div>
 		  <div class="tab-pane" id="advanced">
-		  	<%= form_tag export_path do %>
+		  	<%= form_tag export_selective_path(type: 'SALE') do %>
 			  	<table class="table">
 						<thead>
 							<tr>
@@ -50,26 +50,20 @@
 						<tbody>
 							<tr>
 								<td id="statuses">
-									<% Status.all.each do |status| %>
+									<% Status.all_sale.each do |status| %>
 										<input type="checkbox" name="statuses[]" id= '<%= "s_#{status.id}" %>' value= '<%= status.id %>' >
 										<%= label_tag status.name %>
 										<br>					
 									<% end %>  
 								</td>
 								<td id="users">
-									<% all_users.each do |user| %>
+									<% User.all.each do |user| %>
 										<input type="checkbox" name="users[]" id= '<%= user.id %>' value= '<%= user.id %>' >
 										<%= label_tag "#{user.first_name} #{user.last_name}" %>
 										<br>
 									<% end %>
 								</td>
-								<td id="fields">
-									<% Task.column_names.each do |name| %>
-										<input type="checkbox" name="fields[]" id= '<%= name %>' value= '<%= name %>' >
-										<%= label_tag name %>
-										<br>
-									<% end %>
-								</td>
+								<%= export_field %>
 								<td class="settings">
 									<%= check_box_tag "All statuses", "All statuses" %>
 									<%= label_tag "All statuses" %>
@@ -97,61 +91,7 @@
 					<%= label_tag "Statistic" %>
 					<%= submit_tag 	"Download", class: "brn btn-primary pull-right" %>
 				<% end %> <!--/form_tag -->
-			  </div>
-
+			</div>
 		</div>	
 	</div>
 </div>
-<script>
-  $(function() {
-    $( ".from" ).datepicker({
-      defaultDate: "+1w",
-      changeMonth: true,
-      numberOfMonths: 3,
-      dateFormat: 'yy-mm-dd',
-      onClose: function( selectedDate ) {
-        $( ".to" ).datepicker( "option", "minDate", selectedDate );
-      }
-    });
-    $( ".to" ).datepicker({
-      defaultDate: "+1w",
-      changeMonth: true,
-      numberOfMonths: 3,
-      dateFormat: 'yy-mm-dd',
-      onClose: function( selectedDate ) {
-        $( ".from" ).datepicker( "option", "maxDate", selectedDate );
-      }
-    });
-  });
-
-  $(document).ready(function(){
-  	var $allStatuses = $('#All_statuses');
-  	var $allFields = $('#All_fields');
-  	var $allUsers = $('#All_users');
-
-  	$allStatuses.on('change', function(){
-  		check(this, $('#statuses'));
-  	});
-
-  	$allFields.on('change', function(){
-  		check(this, $('#fields'));
-  	});
-
-  	$allUsers.on('change', function(){
-  		check(this, $('#users'));
-  	});
-
-	  function check(checkBox, selector){
-	  	if(checkBox.checked){
-	  		selector.checkedAll(true);	
-	  	} else {
-	  		selector.checkedAll(false);
-	  	}
-	  }
-  });
-
-  $.fn.checkedAll = function(bool){
-  	this.children('input').prop('checked', bool);
-  }
-
-  </script>
