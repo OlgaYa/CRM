@@ -72,6 +72,7 @@ class Table < ActiveRecord::Base
     when 'user_id'
       User.find(attribute[1]).full_name if attribute[1]
     when 'date'
+      attribute[1]
     else
       attribute[1].gsub(/(,|;)/, ' ') if attribute[1]
     end

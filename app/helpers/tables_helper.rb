@@ -33,6 +33,15 @@ module TablesHelper
   def export_field_candidate
   end
 
+  def export_users_fields
+    case params[:type]
+    when 'SALE'
+      User.seller
+    when 'CANDIDATE'
+      User.hh
+    end
+  end
+
   def table_generation(table)
     return if table.empty?
     buffer = ActiveSupport::SafeBuffer.new
