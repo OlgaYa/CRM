@@ -1,8 +1,7 @@
-class Source < ActiveRecord::Base
-  
+class Source < ActiveRecord::Base  
   has_many :sales
   has_many :candidates
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: { scope: [:name, :for_type] }
 
   def self.all_sale
     all.where(for_type: 'sale')

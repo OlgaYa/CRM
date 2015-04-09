@@ -63,6 +63,15 @@
       </div>
 
       <div class="control-field">
+        <%= f.radio_button :role, 'seller', :checked => true %> 
+        <%= label :role_seller, 'Seller' %>
+        <%= f.radio_button :role, 'hh' %>
+        <%= label :role_seller, 'HH' %>
+        <%= f.radio_button :role, 'hr' %>
+        <%= label :role_seller, 'HR' %>
+      </div>
+
+      <div class="control-field">
         <%= f.check_box :admin, class: 'check-box-field' %>
         <%= f.label :admin %>
       </div>

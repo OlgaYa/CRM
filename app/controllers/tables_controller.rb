@@ -129,6 +129,7 @@ class TablesController < ApplicationController
     end
   end
 
+  # NEED WRITE
   def scoped_candidate_data
   end
 end

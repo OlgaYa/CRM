@@ -1,6 +1,6 @@
 class Status < ActiveRecord::Base
   has_many :tables
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: { scope: [:name, :for_type] }
 
   UNCHANGEABLESTATUS = %w(sold declined negotiations assigned_meeting)
 

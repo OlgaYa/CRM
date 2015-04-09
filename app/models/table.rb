@@ -40,10 +40,40 @@ class Table < ActiveRecord::Base
   def self.to_csv(options = {}, fields)
     fields = %w(name email status_id date) unless fields
     CSV.generate(options) do |csv|
-      csv << fields
+      csv << fields_names(fields)
       all.each do |product|
-        csv << product.attributes.values_at(*fields)
+        arr = []
+        product.attributes.each do |attribute|
+          arr << field_value(attribute) if fields.include? attribute[0]
+        end
+        csv << arr
       end
+    end
+  end
+
+  def self.fields_names(fields)
+    ordered_fields = []
+    first.attributes.each do |attribute|
+      ordered_fields << attribute[0] if fields.include? attribute[0]
+    end
+    ordered_fields
+  end
+
+  def self.field_value(attribute)
+    case attribute[0]
+    when 'status_id'
+      Status.find(attribute[1]).name if attribute[1]
+    when 'source_id'
+      Source.find(attribute[1]).name if attribute[1]
+    when 'specialization_id'
+      Specialization.find(attribute[1]).name if attribute[1]
+    when 'level_id'
+      Level.find(attribute[1]).name if attribute[1]
+    when 'user_id'
+      User.find(attribute[1]).full_name if attribute[1]
+    when 'date'
+    else
+      attribute[1].gsub(/(,|;)/, ' ') if attribute[1]
     end
   end
 end

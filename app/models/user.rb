@@ -9,8 +9,7 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true, length: { maximum: 50 }
 
   # FIXME
-  has_attached_file :avatar, styles: { medium: '300x300>',
-                                       thumb: '100x100>',
+  has_attached_file :avatar, styles: { medium: '128x128>',
                                        small: '36x36' },
                              default_url: 'avatar-default.jpg'
   
@@ -58,16 +57,24 @@ class User < ActiveRecord::Base
     where.not(id: user)
   end
 
-  def full_name
-    "#{first_name.capitalize} #{last_name.capitalize}"
-  end
-
   def self.all_unlock
     where(status: 'unlock')
   end
 
   def self.all_lock
     where(status: 'lock')
+  end
+
+  def self.hh
+    where(role: 'hh')
+  end
+
+  def self.seller
+    where(role: 'seller')
+  end
+
+  def full_name
+    "#{first_name.capitalize} #{last_name.capitalize}"
   end
 
   def locked?

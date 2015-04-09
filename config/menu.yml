@@ -78,5 +78,5 @@ admin:
       item dev one:
         divider: true
       item three: 
-        name: 'Tables controls'
+        name: 'Controls'
         path: '/admin/task_controls'

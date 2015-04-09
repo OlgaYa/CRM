@@ -1,5 +1,38 @@
 # Here main generator for table view
 module TablesHelper
+  EXPORT_FIELDS_SALE = { name: :name,
+                         email: :email,
+                         source: :source_id,
+                         date: :date,
+                         status: :status_id,
+                         topic: :topic,
+                         skype: :skype,
+                         user: :user_id }
+  def export_field
+    case params[:type]
+    when 'SALE'
+      export_fields_sale
+    when 'CANDIDATE'
+      export_field_candidate
+    end
+  end
+
+  def export_fields_sale
+    content_tag(:td, '', id: 'fields') do
+      buffer = ActiveSupport::SafeBuffer.new
+      EXPORT_FIELDS_SALE.each do |key, value|
+        buffer << check_box_tag(key, key, false, name: 'fields[]', value: value)
+        buffer << label_tag(key)
+        buffer << tag(:br)
+      end
+      buffer
+    end
+  end
+
+  # NEED WRITE
+  def export_field_candidate
+  end
+
   def table_generation(table)
     return if table.empty?
     buffer = ActiveSupport::SafeBuffer.new
@@ -178,7 +211,16 @@ module TablesHelper
   def table_user(user_id)
     content_tag(:td, '', class: 'td-user-id') do
       select_field(:table, :user_id,
-                   User.all.collect { |s| [s.full_name, s.id] }, user_id)
+                   users.collect { |s| [s.full_name, s.id] }, user_id)
+    end
+  end
+
+  def users
+    case params[:type]
+    when 'SALE'
+      User.seller
+    when 'CANDIDATE'
+      User.hh
     end
   end
 

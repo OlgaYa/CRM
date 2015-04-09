@@ -39,7 +39,6 @@
           <div class="first-form">
             <%= form_for(@user, method: :put)  do |f| %> 
               <input hidden='true' value="update-info" name="update" >
-              <!-- <span class="form-info"> User info </span>           -->
                 <table>
                   <tr>
                     <td class="first-td">
@@ -82,7 +81,6 @@
           <div class="second-form">
             <%= form_tag(@user, method: :put)  do %>
               <input hidden='true' value="update-pass" name="update" >
-              <!-- <span class="form-info"> Password </span> -->
               <table>
                 <tr>
                   <td class="first-td"></td>

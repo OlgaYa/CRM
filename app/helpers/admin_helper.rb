@@ -1,19 +1,11 @@
 module AdminHelper
-  EXPORT_FIELDS_SALE = { name: :name,
-                         email: :email,
-                         source: :source_id,
-                         date: :date,
-                         status: :status_id,
-                         topic: :topic,
-                         skype: :skype }
-
   def get_users_control(user)
     if user.sign_in_count == 0
       link_to(image_tag('remove.png'), user,
               data: { confirm: "Are you want remove user #{user.full_name}?" },
               method: :delete)
     else
-      link_to(image_tag('edit.png'), '#{user_path(user)}#settings')
+      link_to(image_tag('edit.png'), "#{user_path(user)}#settings")
     end
   end
 
@@ -42,29 +34,5 @@ module AdminHelper
 
   def can_not_remove?(field, id)
     (field == 'status_id' && Status.find(id).unchengeble_satus?) || Table.exists?({field => id})
-  end
-
-  def export_field
-    case params[:type]
-    when 'SALE'
-      export_fields_sale
-    when 'CANDIDATE'
-      export_field_candidate
-    end
-  end
-
-  def export_fields_sale
-    content_tag(:td, '', id: 'fields') do
-      buffer = ActiveSupport::SafeBuffer.new
-      EXPORT_FIELDS_SALE.each do |key, value|
-        buffer << check_box_tag(key, key, false, name: 'fields[]', value: value)
-        buffer << label_tag(key)
-        buffer << tag(:br)
-      end
-      buffer
-    end
-  end
-
-  def export_field_candidate
-  end
+  end  
 end
