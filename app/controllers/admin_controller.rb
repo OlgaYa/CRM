@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  load_and_authorize_resource :thread
+  # load_and_authorize_resource :thread
   UNCHANGEABLESTATUS = ['sold', 'declined', 'negotiations', 'assigned_meeting']
 
 	def show_users
