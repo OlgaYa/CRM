@@ -1,6 +1,6 @@
 # Main controller for work with tables
 class TablesController < ApplicationController
-  # load_and_authorize_resource :thread
+  load_and_authorize_resource
   before_action :nil_if_blank, only: [:download_selective_xls,
                                       :download_scoped_xls]
   before_action :current_entity, only: [:download_selective_xls,

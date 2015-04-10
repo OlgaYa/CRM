@@ -7,8 +7,9 @@ class ApplicationController < ActionController::Base
   before_action :check_user_status, except: [:baned_user, :home]
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :alert => exception.message
+    redirect_to root_url, alert: exception.message
   end
+
   def current_ability
     @current_ability ||= Ability.new(current_user, params)
   end
@@ -18,7 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_user_status
-    if current_user && current_user.status == 'lock'
+    if current_user && current_user.locked?
       redirect_to baned_user_path
     end
   end  

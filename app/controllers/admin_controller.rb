@@ -1,6 +1,5 @@
 class AdminController < ApplicationController
-  # load_and_authorize_resource :thread
-  UNCHANGEABLESTATUS = ['sold', 'declined', 'negotiations', 'assigned_meeting']
+  load_and_authorize_resource
 
 	def show_users
     case params[:status]
@@ -55,7 +54,7 @@ class AdminController < ApplicationController
 
   def update_status
     status = Status.find(params[:id])
-    if UNCHANGEABLESTATUS.include? status.name
+    if status.unchengeble_satus?
       resp = "Sorry but you can't destroy this status".to_json
     else
       status.update_attribute(params[:field].to_s, params[:value])
@@ -67,7 +66,7 @@ class AdminController < ApplicationController
   def destroy_status
     status = Status.find(params[:id])
     unless Table.exists?(status_id: params[:id])
-      unless UNCHANGEABLESTATUS.include? status.name
+      unless status.unchengeble_satus?
         status.destroy
       end
     end

@@ -1,5 +1,4 @@
 module ApplicationHelper
-
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::AssetTagHelper
   include ActionView::Helpers::UrlHelper
