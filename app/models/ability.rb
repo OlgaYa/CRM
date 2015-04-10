@@ -5,7 +5,6 @@ class Ability
     user ||= User.new
     if user.admin?
       can :manage, :all
-      can :manage, User
     else
       case user.role
       when 'seller'
