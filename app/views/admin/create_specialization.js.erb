@@ -1,27 +1,22 @@
 <% unless @errors %> 
-  <% if @source.for_type == 'sale' %>
-    var $statuses = $('#sources')
-  <% else %>
-    var $statuses = $('#sources_c')
-  <% end %>
-
+  var $specializations = $('#specializations');
   var $tr = $(document.createElement('tr')),
-      $statusInp = $('.new-source');
+      $statusInp = $('.new-specialization');
 
   $tdName = $(document.createElement('td'));
-  $tdName.text('<%= @source.name %>');
+  $tdName.text('<%= @specialization.name %>');
   $tdName.addClass('editable-name');
   $tdEdit = $(document.createElement('td')).append('<%= image_tag('edit.png', class: 'edit')%>' );
   $tdEdit.addClass('text-center')
-  $tdRemove = $(document.createElement('td')).append('<%= get_remove_link(source_path(@source), @source.id, "source_id" )%>');
+  $tdRemove = $(document.createElement('td')).append('<%= get_remove_link(specialization_path(@specialization), @specialization.id, "specialization_id" )%>');
   $tdRemove.addClass('text-center')
-  $tr.attr('name', 'source');
-  $tr.attr('id', 'source_' + <%= @source.id %> )
-  $tr.attr('value', <%= @source.id %>);
+  $tr.attr('name', 'specialization');
+  $tr.attr('id', 'specialization_' + <%= @specialization.id %> )
+  $tr.attr('value', <%= @specialization.id %>);
   $tr.append($tdName);
   $tr.append($tdEdit);
   $tr.append($tdRemove);
-  $statuses.append($tr);
+  $specializations.append($tr);
   $statusInp.val('');
 <% else %>
   var $notifier = $('.notifier');

@@ -37,9 +37,19 @@ Rails.application.routes.draw do
   put    'admin/status/:id', to: 'admin#update_status'
 
   # CRUD TABLE SOURCES / ADMIN CONTROLS
-  post   'sources',    to: 'admin#create_source'
-  delete 'source/:id', to: 'admin#destroy_source', as: :source
-  put    'source/:id', to: 'admin#update_source'
+  post   'admin/sources',    to: 'admin#create_source', as: :sources
+  delete 'admin/source/:id', to: 'admin#destroy_source', as: :source
+  put    'admin/source/:id', to: 'admin#update_source'
+
+  # CRUD TABLE LEVELS / ADMIN CONTROLS
+  post   'admin/levels',    to: 'admin#create_level', as: :levels
+  delete 'admin/level/:id', to: 'admin#destroy_level', as: :level
+  put    'admin/level/:id', to: 'admin#update_level'
+
+  # CRUD TABLE SPECIALIZATION / ADMIN CONTROLS
+  post   'admin/specializations',    to: 'admin#create_specialization', as: :specializations
+  delete 'admin/specialization/:id', to: 'admin#destroy_specialization', as: :specialization
+  put    'admin/specialization/:id', to: 'admin#update_specialization'
 
   # ADMIN CONTROLS
   put    'admin/user_status/:id', to: 'admin#update_user_status', as: :user_status

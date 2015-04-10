@@ -154,8 +154,15 @@ $(document).ready(function(){
     $editInp.val(value);
     if(entity === 'status'){
       $editDialog.data('path', '/admin/status/' + id);
-    } else {
+    }
+    if(entity === 'source') {
       $editDialog.data('path', '/admin/source/' + id);
+    }
+    if(entity === 'level') {
+      $editDialog.data('path', '/admin/level/' + id);
+    }
+    if(entity === 'specialization') {
+      $editDialog.data('path', '/admin/specialization/' + id);
     }
     $editDialog.data('id', id);
     $editDialog.data('field', 'name');

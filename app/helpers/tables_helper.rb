@@ -90,20 +90,30 @@ module TablesHelper
       content_tag(:tr, class: 'info') do
         concat content_tag(:th, '#')
         concat content_tag(:th, 'Name')
-        concat content_tag(:th, 'Level')
-        concat content_tag(:th, 'Specialization')
+        concat content_tag(:th, 'Level',
+                           class: 'sortable sort',
+                           value: 'td-level-id')
+        concat content_tag(:th, 'Specialization',
+                           class: 'sortable sort',
+                           value: 'td-specialization-id')
         concat content_tag(:th, 'Email')
-        concat content_tag(:th, 'Source')
+        concat content_tag(:th, 'Source',
+                           class: 'sortable sort',
+                           value: 'td-source-id')
         concat content_tag(:th, 'Links')
-        concat content_tag(:th, 'Date')
-        concat content_tag(:th, 'Status')
+        concat content_tag(:th, 'Date',
+                           class: 'sort_desc sort',
+                           value: 'td-date')
+        concat content_tag(:th, 'Status',
+                           class: 'sortable sort',
+                           value: 'td-status-id')
         concat content_tag(:th, 'Comments')
       end
     end
   end
 
   def generate_sale_table(table)
-    content_tag(:tbody) do
+    content_tag(:tbody, class: 'table-body') do
       table.each do |entity|
         concat generate_sale_row entity
       end
@@ -111,7 +121,7 @@ module TablesHelper
   end
 
   def generate_candidate_table(table)
-    content_tag(:tbody) do
+    content_tag(:tbody, class: 'table-body') do
       table.each do |entity|
         concat generate_candidate_row entity
       end

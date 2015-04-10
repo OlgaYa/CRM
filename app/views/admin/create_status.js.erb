@@ -1,6 +1,11 @@
 <% unless @errors %>
-  var $statuses = $('#statuses'),
-      $tr = $(document.createElement('tr')),
+  <% if @status.for_type == 'sale' %>
+    var $statuses = $('#statuses')
+  <% else %>
+    var $statuses = $('#statuses_c')
+  <% end %>
+
+  var $tr = $(document.createElement('tr')),
       $statusInp = $('.new-status');
     
   $tdName = $(document.createElement('td'));

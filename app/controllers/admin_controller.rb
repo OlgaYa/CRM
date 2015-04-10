@@ -13,6 +13,8 @@ class AdminController < ApplicationController
   def task_controls
     @statuses = Status.all.order('created_at')
     @sources = Source.all.order('created_at')
+    @specializations = Specialization.all.order('created_at')
+    @levels = Level.all.order('created_at')
   end
 
   def update_user_status
@@ -27,7 +29,8 @@ class AdminController < ApplicationController
   end
 
   def create_source
-    @source = Source.new(name: params[:name].downcase)
+    @source = Source.new(name: params[:name].downcase,
+                         for_type: params[:for_type])
     unless @source.save
       @errors = @source.errors.full_messages
     end
@@ -46,7 +49,8 @@ class AdminController < ApplicationController
   end
 
   def create_status
-    @status = Status.new(name: params[:name].downcase)
+    @status = Status.new(name: params[:name].downcase,
+                         for_type: params[:for_type])
     unless @status.save
       @errors = @status.errors.full_messages
     end
@@ -69,6 +73,44 @@ class AdminController < ApplicationController
       unless status.unchengeble_satus?
         status.destroy
       end
+    end
+  end
+
+  def create_specialization
+    @specialization = Specialization.new(name: params[:name].downcase)
+    unless @specialization.save
+      @errors = @specialization.errors.full_messages
+    end
+  end
+
+  def update_specialization
+    Specialization.find(params[:id]).update_attribute(params[:field].to_s,
+                                              params[:value])
+    render json: "success".to_json
+  end
+
+  def destroy_specialization
+    unless Table.exists?(specialization_id: params[:id])
+      Specialization.find(params[:id]).destroy
+    end
+  end
+
+  def create_level
+    @level = Level.new(name: params[:name].downcase)
+    unless @level.save
+      @errors = @level.errors.full_messages
+    end
+  end
+
+  def update_level
+    Level.find(params[:id]).update_attribute(params[:field].to_s,
+                                              params[:value])
+    render json: "success".to_json
+  end
+
+  def destroy_level
+    unless Table.exists?(level_id: params[:id])
+      Level.find(params[:id]).destroy
     end
   end
 

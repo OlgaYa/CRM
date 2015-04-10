@@ -352,7 +352,7 @@ $(document).ready(function(){
   }
   // OPTIMIZE
   function sortTable(col, type) {
-    var $rows = $('tbody'),
+    var $rows = $('.table-body'),
         $row = $rows.children('tr');
     if(col !== 'td-date') {
       type = -type;
