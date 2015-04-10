@@ -9,7 +9,7 @@ module ApplicationHelper
     if user.admin?
       return 'Admin'
     else
-      return user.role.capitalize
+      return user.role
     end
   end
 
