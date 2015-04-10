@@ -108,17 +108,18 @@ module ApplicationHelper
     end 
   end
 
-  def get_dropdown(sub_menu)
+  def get_dropdown(sub_menu, image = nil)
     content_tag(:li, class: 'dropdown') do
-      concat get_toggle_link(sub_menu[1]['name'])
+      concat get_toggle_link(sub_menu[1]['name'], image)
       concat get_dropdown_menu(sub_menu)
     end
   end
   
-  def get_toggle_link(name)
+  def get_toggle_link(name, image)
     link_to('#', class: 'dropdown-toggle', data: { toggle:'dropdown' }) do
       concat name
-      concat content_tag(:b, '', class: 'caret')
+      concat content_tag(:b, '', class: 'caret') unless image
+      concat image if image
     end
   end
 
@@ -157,9 +158,8 @@ module ApplicationHelper
   end
 
   def generate_right_sub_menu
-    # concat header_add_task
-    concat get_dropdown(get_current_user_sub_menu)
-    concat get_avatar
+    image = get_avatar
+    get_dropdown(get_current_user_sub_menu, image)
   end
 
   def generate_log_in
@@ -176,8 +176,8 @@ module ApplicationHelper
   end
 
   def get_avatar
-    content_tag(:li) do
+    # content_tag(:li) do
       image_tag(current_user.avatar.url, class: 'avatar-small')
-    end
+    # end
   end
 end

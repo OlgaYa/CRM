@@ -21,8 +21,13 @@ body > #wrapper {
 .avatar-small {
   width: 36px;
   height: 36px;
-  margin-top: 7px;
-  margin-right: 20px;
+  border-radius: 150px;
+  -webkit-border-radius: 150px;
+  -moz-border-radius: 150px;
+  margin-left: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, .4);
+  -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .4);
+  -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .4);
 }
 
 /* LOG IN */
