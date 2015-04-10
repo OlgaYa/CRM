@@ -20,8 +20,8 @@
         <%= table_generation @table %>
       </table>
       <div class="text-center">
-        <%= will_paginate @table %>
-    </div>
+        <%= will_paginate @table, renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
+      </div>
     </div>
   </div>
 </div>

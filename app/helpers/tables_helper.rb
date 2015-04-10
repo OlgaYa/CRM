@@ -94,6 +94,7 @@ module TablesHelper
         concat content_tag(:th, 'Specialization')
         concat content_tag(:th, 'Email')
         concat content_tag(:th, 'Source')
+        concat content_tag(:th, 'Links')
         concat content_tag(:th, 'Date')
         concat content_tag(:th, 'Status')
         concat content_tag(:th, 'Comments')
@@ -144,6 +145,7 @@ module TablesHelper
       concat table_specialization candidate.specialization_id
       concat table_email candidate.email
       concat table_source candidate.source_id
+      concat table_links candidate.links
       concat table_date candidate.date
       concat table_status candidate.status_id
       concat table_comments candidate.comments
