@@ -269,7 +269,7 @@ $(document).ready(function(){
   $('.delete').on('click', function(){
     if($('.controll:checked').size() === 0){
       error('Please select some row', $notifier);
-      return;
+      return false;
     } else {
       if(confirm('Are you sure you want to delete selected rows?')){
         $('.controll:checked').each(function(){
@@ -281,6 +281,7 @@ $(document).ready(function(){
         });        
       }
     }
+    return false;
   });
 
   function sendData(dataForSend, path, fieldName, d){

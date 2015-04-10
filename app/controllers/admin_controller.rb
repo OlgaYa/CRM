@@ -1,5 +1,5 @@
 class AdminController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :thread
 
 	def show_users
     case params[:status]
@@ -70,5 +70,8 @@ class AdminController < ApplicationController
         status.destroy
       end
     end
+  end
+
+  def controls
   end
 end

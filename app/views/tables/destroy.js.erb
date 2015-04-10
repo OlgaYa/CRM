@@ -1,3 +1,5 @@
 $(function(){
-  $("#"+<%= params[:id] %>).remove();
+  $('.controll:checked').each(function(){
+    $(this).parent().parent().remove();
+  }); 
 })

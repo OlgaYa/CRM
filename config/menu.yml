@@ -78,5 +78,10 @@ admin:
       item dev one:
         divider: true
       item three: 
-        name: 'Controls'
+        name: 'Task controls'
         path: '/admin/task_controls'
+      item dev two:
+        divider: true
+      item fore: 
+        name: 'Controls'
+        path: '/admin/controls'

@@ -6,13 +6,18 @@
 
       <!-- FIXME -->
       <div class='controll-panel'>
-        <button class="btn btn-sm btn-primary delete"> Delete </button>
         <%= form_for(Table.new)  do |f| %>
+          <div class="btn-group">
+            <button class="btn btn-sm btn-danger delete"> 
+            <span class="glyphicon glyphicon-trash"></span> Delete </button>
+            <button class="add-new btn btn-sm btn-info" type="submit"> 
+            <span class="glyphicon glyphicon-plus"></span> Add new </button>
+
+          </div>
           <%= f.text_field(:name, hidden: true, name: 'table[name]') %>
           <%= f.text_field(:type, hidden: true, name: 'type', value: params[:type]) %>
           <%= f.text_field(:user_id, hidden: true, value: current_user.id) %>
           <%= f.text_field(:status_id, hidden: true,  value: Status.default_status(params[:type])) %>
-          <%= f.submit("Add new", class: "add-new btn btn-sm btn-primary") %>
         <% end %>
       </div>
 
@@ -25,6 +30,8 @@
     </div>
   </div>
 </div>
+
+
 
 <div id='editable-field'>
   <textarea id='editable-field-textarea' ></textarea>

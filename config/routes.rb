@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   # ADMIN NAVIGATION
   get    'admin/task_controls', to: 'admin#task_controls', as: 'admin_task_controls'
   get    'admin/users',         to: 'admin#show_users',    as: 'admin_show_users'
+  get    'admin/controls',      to: 'admin#controls',      as: 'admin_controls'
 
   # CRUD TABLE STATUSES / ADMIN CONTROLS
   post   'admin/statuses',   to: 'admin#create_status', as: :statuses
@@ -41,7 +42,7 @@ Rails.application.routes.draw do
   put    'source/:id', to: 'admin#update_source'
 
   # ADMIN CONTROLS
-  put 'admin/user_status/:id', to: 'admin#update_user_status', as: :user_status
+  put    'admin/user_status/:id', to: 'admin#update_user_status', as: :user_status
   
   # CRUD TABLE LINKS
   post   'tables/links',    to: 'tables#create_link'

@@ -6,8 +6,12 @@
   =require twitter-bootstrap-static/fontawesome
   */
 .row {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.container-fluid{
+  height: 100%;
 }
 
 .navbar-right .dropdown{
@@ -17,8 +21,6 @@
   padding-top: 8px;
   padding-bottom: 6px;
 }
-
-
 td .btn {
   padding: 2px 2px;
   font-size: 10pt;
@@ -169,4 +171,35 @@ table {
   margin-top: 0;
   margin-left: 0;
   border-collapse: initial;
+}
+
+/* ADMIN ROOM */
+.navbar-fixed-top {
+  border-width: 0 !important;
+}
+
+div.panel-body {
+  padding: 0;
+}
+
+div.panel-group .panel + .panel{
+  margin: 0;
+}
+
+div.panel-heading{
+  border-radius: 0;
+}
+
+.panel .panel-default div.panel-heading {
+  border-radius: 0;
+}
+
+.main-panel-heading {
+  background-color: #CCCCCC !important;
+  box-shadow: 0px 1px 0px 0px rgba(163, 163, 163, 0.99);
+  margin-bottom: 1px; 
+}
+
+.tab-pane {
+  margin-top: 0px !important;
 }
