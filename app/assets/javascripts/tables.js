@@ -117,6 +117,8 @@ $(document).ready(function(){
           $editableActivityDialog.children('div').append(data);
           $td.children('div').append(data);
           $activityBody.val('');
+          d = new Date();
+          updateDate(rowId, d, activityName);
         }
       });
     }    
