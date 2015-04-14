@@ -15,7 +15,7 @@ class Table < ActiveRecord::Base
 
   def self.in_time_period(from, to)
     from = DateTime.now - 365.day unless from
-    to = DateTime.now
+    to = DateTime.now unless to
     where(created_at: (from)..to)
   end
 
