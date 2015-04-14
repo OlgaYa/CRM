@@ -226,6 +226,9 @@ $(document).ready(function(){
         sendData(dataForSend, path, 'status_id', d);
         changeStatus($td.parent(), $remainderDialog.data('status'));
       }
+      if($td.hasClass('date-time-editable')){
+        $td.text(currentData);
+      }
     }
     $remainderDialog.modal('hide');
   });
@@ -233,7 +236,7 @@ $(document).ready(function(){
   $('.date-time-editable').on('dblclick',function(){
     var rowId = $(this).id(),
         path = pathFirstPart + rowId;
-    $remainderDialog.data('$td', $(this).parent());
+    $remainderDialog.data('$td', $(this));
     $remainderDialog.data('path', path);
     $('#remainder-date-time').val($(this).text())
     $remainderDialog.modal();
