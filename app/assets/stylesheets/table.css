@@ -48,3 +48,7 @@
 .tables-sub-menu-nav.nav.nav-tabs li.active a{
   color: #333;
 }
+
+.date-time-editable:hover{
+  cursor: pointer;
+}

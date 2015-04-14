@@ -222,11 +222,22 @@ $(document).ready(function(){
         d = new Date();
     if(currentData.length > 0){
       sendData('table[reminder_date]=' + currentData, path, 'reminder_date', d)
-      sendData(dataForSend, path, 'status_id', d);
-      changeStatus($td.parent(), $remainderDialog.data('status'));
+      if(dataForSend){
+        sendData(dataForSend, path, 'status_id', d);
+        changeStatus($td.parent(), $remainderDialog.data('status'));
+      }
     }
     $remainderDialog.modal('hide');
-  })
+  });
+
+  $('.date-time-editable').on('dblclick',function(){
+    var rowId = $(this).id(),
+        path = pathFirstPart + rowId;
+    $remainderDialog.data('$td', $(this).parent());
+    $remainderDialog.data('path', path);
+    $('#remainder-date-time').val($(this).text())
+    $remainderDialog.modal();
+  });
 
   function changeStatus($row, field_text){
     if(isInArray(getParameterByName('only'), MAIN_LOGIC_STATUSES))
