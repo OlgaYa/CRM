@@ -2,177 +2,180 @@
   <div class='col-lg-8, col-md-8 col-lg-offset-2 col-md-offset-2'>
 
     <%= render 'shared/notifier' %>
-    <div class="row">
-      <div class="col-md-6 col-lg-6">
-        <div class="col-md-12 col-lg-10">
-        <table class="table table-condensed table-hover">
-          <thead >
-            <tr>
-              <th> Statuses for Sale table </th>
-              <th class="text-center"> Edit </th>
-              <th class="text-center"> Remove </th>
-            </tr>
-          </thead>
-          <tbody id="statuses">
-            <% @statuses.all_sale.each do |status| %>
-              <tr id='<%= "status_#{status.id}" %>' name="status" value="<%= status.id %>">
-                <td class="editable-name"> <%= status.name %>  </td>
-                <td class="text-center"> <%= get_edit_for_task_controls(status.id) %> </td>
-                <td class="text-center"> <%= get_remove_link(status_path(status), status.id, 'status_id') %> </td>
+    <% if params[:type]== 'SALE' %>
+      <div class="row">
+        <div class="col-md-6 col-lg-6">
+          <div class="col-md-12 col-lg-10">
+          <table class="table table-condensed table-hover">
+            <thead >
+              <tr>
+                <th> Statuses for Sale table </th>
+                <th class="text-center"> Edit </th>
+                <th class="text-center"> Remove </th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
-        <%= form_tag(statuses_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
-          <%= text_field_tag(:name, '' ,class: 'new new-status') %>
-          <%= text_field_tag(:for_type, '' , value: 'sale', hidden: true) %>
-          <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
-        <% end %>
+            </thead>
+            <tbody id="statuses">
+              <% @statuses.all_sale.each do |status| %>
+                <tr id='<%= "status_#{status.id}" %>' name="status" value="<%= status.id %>">
+                  <td class="editable-name"> <%= status.name %>  </td>
+                  <td class="text-center"> <%= get_edit_for_task_controls(status.id) %> </td>
+                  <td class="text-center"> <%= get_remove_link(status_path(status), status.id, 'status_id') %> </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <%= form_tag(statuses_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
+            <%= text_field_tag(:name, '' ,class: 'new new-status') %>
+            <%= text_field_tag(:for_type, '' , value: 'sale', hidden: true) %>
+            <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
+          <% end %>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+          <div class="col-md-12 col-lg-10">
+          <table class="table table-condensed table-hover">
+            <thead>
+              <tr>
+                <th> Sources for Sale table </th>
+                <th class="text-center"> Edit </th>
+                <th class="text-center"> Remove </th>
+              </tr>
+            </thead>
+            <tbody  id="sources">
+              <% @sources.all_sale.each do |source| %>
+                <tr id='<%= "source_#{source.id}" %>' value="<%=source.id %>"  name="source">
+                  <td class="editable-name"> <%= source.name %>  </td>
+                  <td class="text-center"> <%= image_tag('edit.png', class: 'edit') %> </td>
+                  <td class="text-center"> <%= get_remove_link(source_path(source), source.id, 'source_id') %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>  
+          <%= form_tag(sources_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
+            <%= text_field_tag(:name, '' , class: 'new new-source') %>
+            <%= text_field_tag(:for_type, '' , value: 'sale', hidden: true) %>
+            <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
+          <% end %>
+          </div>
         </div>
       </div>
-      <div class="col-md-6 col-lg-6">
-        <div class="col-md-12 col-lg-10">
-        <table class="table table-condensed table-hover">
-          <thead>
-            <tr>
-              <th> Sources for Sale table </th>
-              <th class="text-center"> Edit </th>
-              <th class="text-center"> Remove </th>
-            </tr>
-          </thead>
-          <tbody  id="sources">
-            <% @sources.all_sale.each do |source| %>
-              <tr id='<%= "source_#{source.id}" %>' value="<%=source.id %>"  name="source">
-                <td class="editable-name"> <%= source.name %>  </td>
-                <td class="text-center"> <%= image_tag('edit.png', class: 'edit') %> </td>
-                <td class="text-center"> <%= get_remove_link(source_path(source), source.id, 'source_id') %>
-                </td>
+    <% else %>
+      <div class="row">
+        <div class="col-md-6 col-lg-6">
+          <div class="col-md-12 col-lg-10">
+          <table class="table table-condensed table-hover">
+            <thead >
+              <tr>
+                <th> Statuses </th>
+                <th class="text-center"> Edit </th>
+                <th class="text-center"> Remove </th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>  
-        <%= form_tag(sources_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
-          <%= text_field_tag(:name, '' , class: 'new new-source') %>
-          <%= text_field_tag(:for_type, '' , value: 'sale', hidden: true) %>
-          <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
-        <% end %>
+            </thead>
+            <tbody id="statuses_c">
+              <% @statuses.all_candidate.each do |status| %>
+                <tr id='<%= "status_#{status.id}" %>' name="status" value="<%= status.id %>">
+                  <td class="editable-name"> <%= status.name %>  </td>
+                  <td class="text-center"> <%= get_edit_for_task_controls(status.id) %> </td>
+                  <td class="text-center"> <%= get_remove_link(status_path(status), status.id, 'status_id') %> </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <%= form_tag(statuses_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
+            <%= text_field_tag(:name, '' ,class: 'new new-status') %>
+            <%= text_field_tag(:for_type, '' , value: 'candidate', hidden: true) %>
+            <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
+          <% end %>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+          <div class="col-md-12 col-lg-10">
+          <table class="table table-condensed table-hover">
+            <thead>
+              <tr>
+                <th> Sources </th>
+                <th class="text-center"> Edit </th>
+                <th class="text-center"> Remove </th>
+              </tr>
+            </thead>
+            <tbody  id="sources_c">
+              <% @sources.all_candidate.each do |source| %>
+                <tr id='<%= "source_#{source.id}" %>' value="<%=source.id %>"  name="source">
+                  <td class="editable-name"> <%= source.name %>  </td>
+                  <td class="text-center"> <%= image_tag('edit.png', class: 'edit') %> </td>
+                  <td class="text-center"> <%= get_remove_link(source_path(source), source.id, 'source_id') %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>  
+          <%= form_tag(sources_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
+            <%= text_field_tag(:name, '' , class: 'new new-source') %>
+            <%= text_field_tag(:for_type, '' , value: 'candidate', hidden: true) %>
+            <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
+          <% end %>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 col-lg-6">
-        <div class="col-md-12 col-lg-10">
-        <table class="table table-condensed table-hover">
-          <thead >
-            <tr>
-              <th> Candidates table statuses </th>
-              <th class="text-center"> Edit </th>
-              <th class="text-center"> Remove </th>
-            </tr>
-          </thead>
-          <tbody id="statuses_c">
-            <% @statuses.all_candidate.each do |status| %>
-              <tr id='<%= "status_#{status.id}" %>' name="status" value="<%= status.id %>">
-                <td class="editable-name"> <%= status.name %>  </td>
-                <td class="text-center"> <%= get_edit_for_task_controls(status.id) %> </td>
-                <td class="text-center"> <%= get_remove_link(status_path(status), status.id, 'status_id') %> </td>
+      <div class="row" style='margin-bottom: 100px;'>
+        <div class="col-md-6 col-lg-6">
+          <div class="col-md-12 col-lg-10">
+          <table class="table table-condensed table-hover">
+            <thead >
+              <tr>
+                <th> Specializations </th>
+                <th class="text-center"> Edit </th>
+                <th class="text-center"> Remove </th>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
-        <%= form_tag(statuses_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
-          <%= text_field_tag(:name, '' ,class: 'new new-status') %>
-          <%= text_field_tag(:for_type, '' , value: 'candidate', hidden: true) %>
-          <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
-        <% end %>
+            </thead>
+            <tbody id="specializations">
+              <% @specializations.each do |specialization| %>
+                <tr id='<%= "specialization_#{specialization.id}" %>' name="specialization" value="<%= specialization.id %>">
+                  <td class="editable-name"> <%= specialization.name %>  </td>
+                  <td class="text-center"> <%= image_tag('edit.png', class: 'edit') %> </td>
+                  <td class="text-center"> <%= get_remove_link(specialization_path(specialization), specialization.id, 'specialization_id') %> </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <%= form_tag(specializations_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
+            <%= text_field_tag(:name, '' ,class: 'new new-specialization') %>
+            <%= text_field_tag(:for_type, '' , value: 'candidate', hidden: true) %>
+            <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
+          <% end %>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-6">
+          <div class="col-md-12 col-lg-10">
+          <table class="table table-condensed table-hover">
+            <thead>
+              <tr>
+                <th> Levels </th>
+                <th class="text-center"> Edit </th>
+                <th class="text-center"> Remove </th>
+              </tr>
+            </thead>
+            <tbody  id="levels">
+              <% @levels.each do |level| %>
+                <tr id='<%= "level_#{level.id}" %>' value="<%=level.id %>"  name="level">
+                  <td class="editable-name"> <%= level.name %>  </td>
+                  <td class="text-center"> <%= image_tag('edit.png', class: 'edit') %> </td>
+                  <td class="text-center"> <%= get_remove_link(level_path(level), level.id, 'level_id') %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>  
+          <%= form_tag(levels_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
+            <%= text_field_tag(:name, '' , class: 'new new-level') %>
+            <%= text_field_tag(:for_type, '' , value: 'candidate', hidden: true) %>
+            <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
+          <% end %>
+          </div>
         </div>
       </div>
-      <div class="col-md-6 col-lg-6">
-        <div class="col-md-12 col-lg-10">
-        <table class="table table-condensed table-hover">
-          <thead>
-            <tr>
-              <th> Candidates table sources </th>
-              <th class="text-center"> Edit </th>
-              <th class="text-center"> Remove </th>
-            </tr>
-          </thead>
-          <tbody  id="sources_c">
-            <% @sources.all_candidate.each do |source| %>
-              <tr id='<%= "source_#{source.id}" %>' value="<%=source.id %>"  name="source">
-                <td class="editable-name"> <%= source.name %>  </td>
-                <td class="text-center"> <%= image_tag('edit.png', class: 'edit') %> </td>
-                <td class="text-center"> <%= get_remove_link(source_path(source), source.id, 'source_id') %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>  
-        <%= form_tag(sources_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
-          <%= text_field_tag(:name, '' , class: 'new new-source') %>
-          <%= text_field_tag(:for_type, '' , value: 'candidate', hidden: true) %>
-          <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
-        <% end %>
-        </div>
-      </div>
-    </div>
-    <div class="row" style='margin-bottom: 100px;'>
-      <div class="col-md-6 col-lg-6">
-        <div class="col-md-12 col-lg-10">
-        <table class="table table-condensed table-hover">
-          <thead >
-            <tr>
-              <th> Specializations </th>
-              <th class="text-center"> Edit </th>
-              <th class="text-center"> Remove </th>
-            </tr>
-          </thead>
-          <tbody id="specializations">
-            <% @specializations.each do |specialization| %>
-              <tr id='<%= "specialization_#{specialization.id}" %>' name="specialization" value="<%= specialization.id %>">
-                <td class="editable-name"> <%= specialization.name %>  </td>
-                <td class="text-center"> <%= image_tag('edit.png', class: 'edit') %> </td>
-                <td class="text-center"> <%= get_remove_link(specialization_path(specialization), specialization.id, 'specialization_id') %> </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-        <%= form_tag(specializations_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
-          <%= text_field_tag(:name, '' ,class: 'new new-specialization') %>
-          <%= text_field_tag(:for_type, '' , value: 'candidate', hidden: true) %>
-          <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
-        <% end %>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-6">
-        <div class="col-md-12 col-lg-10">
-        <table class="table table-condensed table-hover">
-          <thead>
-            <tr>
-              <th> Levels </th>
-              <th class="text-center"> Edit </th>
-              <th class="text-center"> Remove </th>
-            </tr>
-          </thead>
-          <tbody  id="levels">
-            <% @levels.each do |level| %>
-              <tr id='<%= "level_#{level.id}" %>' value="<%=level.id %>"  name="level">
-                <td class="editable-name"> <%= level.name %>  </td>
-                <td class="text-center"> <%= image_tag('edit.png', class: 'edit') %> </td>
-                <td class="text-center"> <%= get_remove_link(level_path(level), level.id, 'level_id') %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>  
-        <%= form_tag(levels_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
-          <%= text_field_tag(:name, '' , class: 'new new-level') %>
-          <%= text_field_tag(:for_type, '' , value: 'candidate', hidden: true) %>
-          <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
-        <% end %>
-        </div>
-      </div>
-    </div>
+    <% end %>
   </div>
 </div>
 

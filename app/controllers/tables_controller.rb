@@ -6,22 +6,23 @@ class TablesController < ApplicationController
   before_action :current_entity, only: [:download_selective_xls,
                                         :download_scoped_xls]
   include ApplicationHelper
-
+  
   def index
     case params[:type]
     when 'CANDIDATE'
       @table = Candidate.all
-    else
+    when 'SALE'
       @table = sale_table
     end
     paginate_table
   end
 
   def create
-    if params[:type] == 'SALE'
+    case params[:type]
+    when 'SALE'
       Sale.create(table_params)
       redirect_to tables_path(only: 'open', type: 'SALE')
-    else
+    when 'CANDIDATE'
       Candidate.create(table_params)
       redirect_to tables_path(type: 'CANDIDATE')
     end
