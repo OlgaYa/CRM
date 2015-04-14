@@ -1,0 +1,31 @@
+<div class='tables-sub-menu'>  
+    <ul class="tables-sub-menu-nav nav nav-tabs">
+      <% if params[:type] == 'SALE' %>
+        <li class=<%= 'active' if params[:only] == 'open' || !params[:only] %>>
+          <%= link_to('Open', tables_path(type: 'SALE', only: 'open')) %>
+        </li>
+        <li class=<%= 'active' if params[:only] == 'sold' %>>
+          <%= link_to('Sold', tables_path(type: 'SALE', only: 'sold')) %>
+        </li>
+        <li class=<%= 'active' if params[:only] == 'declined' %>>
+          <%= link_to('Declined', tables_path(type: 'SALE', only: 'declined')) %>
+        </li>
+      <% elsif params[:type] == 'CANDIDATE' %>
+        <li class=<%= 'active' if params[:only] == 'open' || !params[:only] %>> 
+          <%= link_to('Current', tables_path(type: 'CANDIDATE', only: 'open')) %>
+        </li>
+        <li class=<%= 'active' if params[:only] == 'hired' %>>
+          <%= link_to('Hired', tables_path(type: 'CANDIDATE', only: 'hired')) %>
+        </li>
+        <li class=<%= 'active' if params[:only] == 'we_declined' %>>
+          <%= link_to('We Declined', tables_path(type: 'CANDIDATE', only: 'we_declined')) %>
+        </li>
+        <li class=<%= 'active' if params[:only] == 'he_declined' %>>
+          <%= link_to('He Declined', tables_path(type: 'CANDIDATE', only: 'he_declined')) %>
+        </li>
+        <li class=<%= 'active' if params[:only] == 'contact_later' %>>
+          <%= link_to('Contact Later', tables_path(type: 'CANDIDATE', only: 'contact_later')) %>
+        </li>
+      <% end %>
+    </ul>
+</div>

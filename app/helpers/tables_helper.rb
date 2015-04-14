@@ -107,6 +107,7 @@ module TablesHelper
         concat content_tag(:th, 'Status',
                            class: 'sortable sort',
                            value: 'td-status-id')
+        concat content_tag(:th, 'Reminder') if name == 'contact_later'
         concat content_tag(:th, 'Comments')
       end
     end
@@ -140,9 +141,9 @@ module TablesHelper
       concat table_date sale.date
       concat table_user sale.user_id
       concat table_status sale.status_id
-      concat table_price sale.price if sale.status.name == 'sold'
+      concat table_price sale.price if sale.status.sold?
       concat table_period sale.date_start,
-                          sale.date_end if sale.status.name == 'sold'
+                          sale.date_end if sale.status.sold?
       concat table_comments sale.comments
     end
   end
@@ -158,6 +159,7 @@ module TablesHelper
       concat table_links candidate.links
       concat table_date candidate.date
       concat table_status candidate.status_id
+      concat table_reminder candidate.reminder_date if candidate.status.contact_later?
       concat table_comments candidate.comments
     end
   end
@@ -167,6 +169,12 @@ module TablesHelper
       name = 'row' + id.to_s
       check_box_tag(name, id, false, class: 'controll')
     end
+  end
+
+  def table_reminder(date_time)
+    content_tag(:td, date_time,
+                class: 'date-time-editable td-reminder',
+                name: 'table[reminder_date]', value: 'reminder_date')
   end
 
   def table_name(name)

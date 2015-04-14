@@ -3,9 +3,21 @@ $(document).ready(function(){
       $editableActivityDialog = $('#activity-dialog'),
       $activityBody = $('#activity-body'),
       $declinedCommentDialog = $('#declined-comment'),
+      $declinedCommentBody = $('#declined_comment_body'),
       $editableFieldTextArea = $('#editable-field-textarea'),
+      $remainderDialog = $('#remainderDialog'),
       $notifier = $('.notifier'),
-      pathFirstPart = '/tables/'; 
+      pathFirstPart = '/tables/';
+
+  var MAIN_LOGIC_STATUSES = ['sold', 'declined',
+                             'we_declined',
+                             'he_declined',
+                             'hired',
+                             'contact_later']
+
+  var DECLINE_DIALOG_STATUSES = ['declined',
+                                 'we_declined',
+                                 'he_declined']
 
   $editableFieldDialog.dialog({
     autoOpen: false,
@@ -47,7 +59,7 @@ $(document).ready(function(){
         {
           text: 'Save',
           click: function(){
-            var currentData = $('#declined_comment_body').val();
+            var currentData = $declinedCommentBody.val();
             if(currentData.length > 0){
               reload = false; 
               var $td = $(this).data('$td'),
@@ -56,7 +68,8 @@ $(document).ready(function(){
                   d = new Date();
               sendActivityData(currentData, 'comments', $td.id());
               sendData(dataForSend, path, 'status_id', d);
-              changeStatus($td.parent(), 'declined');
+              changeStatus($td.parent(), $declinedCommentDialog.data('status'));
+              $declinedCommentBody.val('');
               $(this).dialog('close');
             }
             reload = true;
@@ -167,11 +180,20 @@ $(document).ready(function(){
         d = new Date(),
         fieldName = $(this).attr('fieldname'),
         $td = $(this).parent();
-    if(fieldName === 'status_id' && selectedText === 'declined'){
+    if(fieldName === 'status_id' && isInArray(selectedText, DECLINE_DIALOG_STATUSES)){
       $declinedCommentDialog.data('$td', $td);
       $declinedCommentDialog.data('dataForSend', dataForSend);
       $declinedCommentDialog.data('path', path);
+      $declinedCommentDialog.data('status', selectedText);
       $declinedCommentDialog.dialog('open');
+      return false;
+    }
+    if(fieldName === 'status_id' && selectedText === 'contact_later'){
+      $remainderDialog.data('$td', $td);
+      $remainderDialog.data('dataForSend', dataForSend);
+      $remainderDialog.data('path', path);
+      $remainderDialog.data('status', selectedText);
+      $remainderDialog.modal();
       return false;
     }
     $.when(sendData(dataForSend, path, fieldName, d)).always(function(data, textStatus, jqXHR){
@@ -192,42 +214,61 @@ $(document).ready(function(){
     return false;
   });
 
+  $('#remainder-dialog-save-button').on('click', function(){      
+    var currentData = $('#remainder-date-time').val(),
+        $td = $remainderDialog.data('$td'),
+        dataForSend = $remainderDialog.data('dataForSend'),
+        path = $remainderDialog.data('path'),
+        d = new Date();
+    if(currentData.length > 0){
+      sendData('table[reminder_date]=' + currentData, path, 'reminder_date', d)
+      sendData(dataForSend, path, 'status_id', d);
+      changeStatus($td.parent(), $remainderDialog.data('status'));
+    }
+    $remainderDialog.modal('hide');
+  })
+
   function changeStatus($row, field_text){
-    switch(getParameterByName('only')){
-    case 'sold': {
-      moveTo($row, field_text);                  
-    }
-    break;
-    case 'declined': {
-      moveTo($row, field_text);       
-    }
-    break;
-    default: {
-      if(field_text == 'declined' || field_text == 'sold'){                   
+    if(isInArray(getParameterByName('only'), MAIN_LOGIC_STATUSES))
+      moveTo($row, field_text);
+    else {
+      if(isInArray(field_text, MAIN_LOGIC_STATUSES)){                   
         moveTo($row, field_text);
       } else {
         notifie('Task status was successful changed', $notifier)
       }
     }
-    }           
-
   }
 
   function moveTo($row, path){
     $row.remove();
     switch(path) {
     case 'declined': {
-      notifie('Task was successful moved to "Declined tasks"', $notifier)
+      notifie('Task was successful moved to "Declined" section', $notifier)
     }
     break;
-
     case 'sold': {
-      notifie('Task was successful moved to "Sold tasks"', $notifier)
+      notifie('Task was successful moved to "Sold" section', $notifier)
     }
     break;
-
+    case 'hired': {
+      notifie('Candidate was successful moved to "Hired" section', $notifier)
+    }
+    break;
+    case 'we_declined': {
+      notifie('Candidate was successful moved to "We Declined" section', $notifier)
+    }
+    break;
+    case 'he_declined': {
+      notifie('Candidate was successful moved to "He Declined" section', $notifier)
+    }
+    break;
+    case 'contact_later': {
+      notifie('Candidate was successful moved to "Contact Later" section', $notifier)
+    }
+    break;
     default: {
-      notifie('Task was successful moved to "Open tasks"', $notifier)
+      notifie('It was successful moved to "Open" section', $notifier)
     }
     break;
     }
@@ -409,6 +450,7 @@ $(function () {
   });
   $("#datetimepicker7").on("dp.change",function (e) {
     $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
-  }); 
+  });
+  $('#datetimepicker_reminder').datetimepicker({format: 'MMMM Do YYYY, h:mm'});
 });
 

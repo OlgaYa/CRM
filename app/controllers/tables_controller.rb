@@ -6,11 +6,11 @@ class TablesController < ApplicationController
   before_action :current_entity, only: [:download_selective_xls,
                                         :download_scoped_xls]
   include ApplicationHelper
-  
+
   def index
     case params[:type]
     when 'CANDIDATE'
-      @table = Candidate.all
+      @table = candidate_table
     when 'SALE'
       @table = sale_table
     end
@@ -84,7 +84,8 @@ class TablesController < ApplicationController
                                   :date, :status_id,
                                   :topic, :skype,
                                   :user_id, :price,
-                                  :date_end, :date_start)
+                                  :date_end, :date_start,
+                                  :reminder_date)
   end
 
   def sale_table
@@ -95,6 +96,21 @@ class TablesController < ApplicationController
       Sale.declined
     else
       Sale.open
+    end
+  end
+
+  def candidate_table
+    case params[:only]
+    when 'hired'
+      Candidate.hired
+    when 'we_declined'
+      Candidate.we_declined
+    when 'he_declined'
+      Candidate.he_declined
+    when 'contact_later'
+      Candidate.contact_later
+    else
+      Candidate.open
     end
   end
 
