@@ -5,6 +5,7 @@ class Candidate < Table
            :specialization_id,
            :email, :source_id,
            :date, :status_id,
-           :type)
+           :type, :created_at,
+           :updated_at)
   end
 end

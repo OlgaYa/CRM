@@ -1,10 +1,12 @@
 class StaticPagesController < ApplicationController
 	def home
     if current_user
-      if current_user.admin? || current_user.role == 'seller'
-  		  redirect_to tables_path(type: 'SALE')
-      else
+      case current_user.role
+      when 'seller'
+    	  redirect_to tables_path(type: 'SALE')
+      when 'hh'
         redirect_to tables_path(type: 'CANDIDATE')
+      when 'hr'
       end
     end
   end

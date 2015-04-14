@@ -11,6 +11,11 @@ seller:
       item three: 
         name: 'Declined sales'
         path: '/tables?only=declined&type=SALE'
+      item dev one:
+        divider: true
+      item fore: 
+        name: 'Export'
+        path: '/export?type=SALE'
     sub menu two:
       name: 'Events'
       item one: 
@@ -52,6 +57,11 @@ admin:
       item five: 
         name: 'Statistic'
         path: '/statistics'
+      item dev fore:
+        divider: true
+      item six: 
+        name: 'Export'
+        path: '/export?type=SALE'
     sub menu two:
       name: 'HH'
       item one: 
@@ -61,12 +71,17 @@ admin:
       name: 'Admin panel'
       item one: 
         name: 'Active users'
-        path: '/admin/show_users?status=unlock'
+        path: '/admin/users?status=unlock'
       item two: 
         name: 'Bloked users'
-        path: '/admin/show_users?status=lock'
+        path: '/admin/users?status=lock'
       item dev one:
         divider: true
       item three: 
-        name: 'Tables controls'
+        name: 'Task controls'
         path: '/admin/task_controls'
+      item dev two:
+        divider: true
+      item fore: 
+        name: 'Controls'
+        path: '/admin/controls'

@@ -1,6 +1,11 @@
 <% unless @errors %>
-  var $statuses = $('#statuses'),
-      $tr = $(document.createElement('tr')),
+  <% if @status.for_type == 'sale' %>
+    var $statuses = $('#statuses')
+  <% else %>
+    var $statuses = $('#statuses_c')
+  <% end %>
+
+  var $tr = $(document.createElement('tr')),
       $statusInp = $('.new-status');
     
   $tdName = $(document.createElement('td'));
@@ -8,7 +13,7 @@
   $tdName.addClass('editable-name');
   $tdEdit = $(document.createElement('td')).append('<%= image_tag('edit.png', class: 'edit') %>' );
   $tdEdit.addClass('text-center')
-  $tdRemove = $(document.createElement('td')).append('<%= get_remove_link(admin_destroy_status_path(@status), @status.id, "status_id") %>');
+  $tdRemove = $(document.createElement('td')).append('<%= get_remove_link(status_path(@status), @status.id, "status_id") %>');
   $tdRemove.addClass('text-center')
   $tr.attr('name', 'status');
   $tr.attr('id', 'status_' + <%= @status.id %> )

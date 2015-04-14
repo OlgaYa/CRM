@@ -3,42 +3,58 @@ Rails.application.routes.draw do
                      controllers: { sessions: 'users/sessions' }
 
   root to: 'static_pages#home'
+  
   resources :tables, only: [:create, :update, :destroy, :index]
   resources :users
   resources :comments, only: [:create, :destroy]
-  
-
-  # resources :sold_tasks, only: :update
   resources :meetings, only: [:index, :create]
-  # resources :tasks, only:[:index, :create, :destroy, :update]
   resources :statistics, only: :index do
     collection do
       post :change_information
     end
-  end
-  # get 'export', to: 'tasks#export', as: 'export'
-  # post 'export', to: 'tasks#download_xls'
-  get 'home', to: 'static_pages#home'
-  get 'baned_user', to: 'static_pages#baned_user' 
+  end  
   
   namespace :admin do
     resources :registration
   end
 
-  post 'tables/create_link', to: 'tables#create_link', as: 'tables_create_link'
-  delete 'tables/destroy_link/:id', to: 'tables#destroy_link', as: 'tables_destroy_link'
-
-  get 'admin/task_controls', to: 'admin#task_controls', as: 'admin_task_controls'
-  get 'admin/show_users', to: 'admin#show_users', as: 'admin_show_users'
-  post 'admin/create_source', to: 'admin#create_source', as: 'admin_create_source'
-  delete 'admin/destroy_source/:id', to: 'admin#destroy_source', as: 'admin_destroy_source'
-  put 'admin/update_source/:id', to: 'admin#update_source', as: 'admin_update_source'
-  post 'admin/create_status', to: 'admin#create_status', as: 'admin_create_status'
-  delete 'admin/destroy_status/:id', to: 'admin#destroy_status', as: 'admin_destroy_status'
-  put 'admin/update_status/:id', to: 'admin#update_status', as: 'admin_update_status'
+  # COMMON NAVIGATION AND ACTIONS
+  get    'home',       to: 'static_pages#home'
+  get    'baned_user', to: 'static_pages#baned_user' 
+  get    'export',     to: 'tables#export',          as: 'export'
   
-  # post 'tasks/create_link', to: 'tasks#create_link', as: 'tasks_create_link'
-  # delete 'tasks/destroy_link/:id', to: 'tasks#destroy_link', as: 'tasks_destroy_link'
+  post   'export_selective', to: 'tables#download_selective_xls'
+  post   'export_scoped',    to: 'tables#download_scoped_xls'
 
-  put 'admin/update_user_status/:id', to: 'admin#update_user_status', as:'admin_update_user_status'
+  # ADMIN NAVIGATION
+  get    'admin/task_controls', to: 'admin#task_controls', as: 'admin_task_controls'
+  get    'admin/users',         to: 'admin#show_users',    as: 'admin_show_users'
+  get    'admin/controls',      to: 'admin#controls',      as: 'admin_controls'
+
+  # CRUD TABLE STATUSES / ADMIN CONTROLS
+  post   'admin/statuses',   to: 'admin#create_status', as: :statuses
+  delete 'admin/status/:id', to: 'admin#destroy_status', as: :status
+  put    'admin/status/:id', to: 'admin#update_status'
+
+  # CRUD TABLE SOURCES / ADMIN CONTROLS
+  post   'admin/sources',    to: 'admin#create_source', as: :sources
+  delete 'admin/source/:id', to: 'admin#destroy_source', as: :source
+  put    'admin/source/:id', to: 'admin#update_source'
+
+  # CRUD TABLE LEVELS / ADMIN CONTROLS
+  post   'admin/levels',    to: 'admin#create_level', as: :levels
+  delete 'admin/level/:id', to: 'admin#destroy_level', as: :level
+  put    'admin/level/:id', to: 'admin#update_level'
+
+  # CRUD TABLE SPECIALIZATION / ADMIN CONTROLS
+  post   'admin/specializations',    to: 'admin#create_specialization', as: :specializations
+  delete 'admin/specialization/:id', to: 'admin#destroy_specialization', as: :specialization
+  put    'admin/specialization/:id', to: 'admin#update_specialization'
+
+  # ADMIN CONTROLS
+  put    'admin/user_status/:id', to: 'admin#update_user_status', as: :user_status
+  
+  # CRUD TABLE LINKS
+  post   'tables/links',    to: 'tables#create_link'
+  delete 'tables/link/:id', to: 'tables#destroy_link', as: :link
 end

@@ -1,5 +1,47 @@
 # Here main generator for table view
 module TablesHelper
+  EXPORT_FIELDS_SALE = { name: :name,
+                         email: :email,
+                         source: :source_id,
+                         date: :date,
+                         status: :status_id,
+                         topic: :topic,
+                         skype: :skype,
+                         user: :user_id }
+  def export_field
+    case params[:type]
+    when 'SALE'
+      export_fields_sale
+    when 'CANDIDATE'
+      export_field_candidate
+    end
+  end
+
+  def export_fields_sale
+    content_tag(:td, '', id: 'fields') do
+      buffer = ActiveSupport::SafeBuffer.new
+      EXPORT_FIELDS_SALE.each do |key, value|
+        buffer << check_box_tag(key, key, false, name: 'fields[]', value: value)
+        buffer << label_tag(key)
+        buffer << tag(:br)
+      end
+      buffer
+    end
+  end
+
+  # NEED WRITE
+  def export_field_candidate
+  end
+
+  def export_users_fields
+    case params[:type]
+    when 'SALE'
+      User.seller
+    when 'CANDIDATE'
+      User.hh
+    end
+  end
+
   def table_generation(table)
     return if table.empty?
     buffer = ActiveSupport::SafeBuffer.new
@@ -48,19 +90,30 @@ module TablesHelper
       content_tag(:tr, class: 'info') do
         concat content_tag(:th, '#')
         concat content_tag(:th, 'Name')
-        concat content_tag(:th, 'Level')
-        concat content_tag(:th, 'Specialization')
+        concat content_tag(:th, 'Level',
+                           class: 'sortable sort',
+                           value: 'td-level-id')
+        concat content_tag(:th, 'Specialization',
+                           class: 'sortable sort',
+                           value: 'td-specialization-id')
         concat content_tag(:th, 'Email')
-        concat content_tag(:th, 'Source')
-        concat content_tag(:th, 'Date')
-        concat content_tag(:th, 'Status')
+        concat content_tag(:th, 'Source',
+                           class: 'sortable sort',
+                           value: 'td-source-id')
+        concat content_tag(:th, 'Links')
+        concat content_tag(:th, 'Date',
+                           class: 'sort_desc sort',
+                           value: 'td-date')
+        concat content_tag(:th, 'Status',
+                           class: 'sortable sort',
+                           value: 'td-status-id')
         concat content_tag(:th, 'Comments')
       end
     end
   end
 
   def generate_sale_table(table)
-    content_tag(:tbody) do
+    content_tag(:tbody, class: 'table-body') do
       table.each do |entity|
         concat generate_sale_row entity
       end
@@ -68,7 +121,7 @@ module TablesHelper
   end
 
   def generate_candidate_table(table)
-    content_tag(:tbody) do
+    content_tag(:tbody, class: 'table-body') do
       table.each do |entity|
         concat generate_candidate_row entity
       end
@@ -102,6 +155,7 @@ module TablesHelper
       concat table_specialization candidate.specialization_id
       concat table_email candidate.email
       concat table_source candidate.source_id
+      concat table_links candidate.links
       concat table_date candidate.date
       concat table_status candidate.status_id
       concat table_comments candidate.comments
@@ -178,7 +232,16 @@ module TablesHelper
   def table_user(user_id)
     content_tag(:td, '', class: 'td-user-id') do
       select_field(:table, :user_id,
-                   User.all.collect { |s| [s.full_name, s.id] }, user_id)
+                   users.collect { |s| [s.full_name, s.id] }, user_id)
+    end
+  end
+
+  def users
+    case params[:type]
+    when 'SALE'
+      User.seller
+    when 'CANDIDATE'
+      User.hh
     end
   end
 
@@ -227,7 +290,7 @@ module TablesHelper
       concat link_to(link.alt, link.href, target: '_blank')
       concat link_to(image_tag(ActionController::Base.helpers
                      .asset_path('remove-red.png')),
-                     tables_destroy_link_path(link),
+                     link_path(link),
                      class: 'pull-right remove-link',
                      method: :delete, remote: true)
     end

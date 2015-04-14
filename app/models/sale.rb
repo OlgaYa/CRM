@@ -1,14 +1,12 @@
 # This class defines essence of which users will be working with the role seller
 class Sale < Table
-  scope :join_statuses,
-        -> { joins('INNER JOIN statuses ON tables.status_id = statuses.id') }
-
   def self.default_scope
     select(:id, :name, :skype,
            :email, :date,
            :user_id, :source_id,
            :topic, :status_id,
-           :type)
+           :type, :created_at,
+           :updated_at)
   end
 
   def self.all_sold
@@ -17,7 +15,8 @@ class Sale < Table
            :user_id, :source_id,
            :topic, :status_id,
            :price, :date_start,
-           :date_end, :type)
+           :date_end, :type,
+           :created_at, :updated_at)
   end
 
   def self.open

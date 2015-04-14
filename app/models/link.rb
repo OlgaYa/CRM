@@ -1,7 +1,3 @@
-class Link < ActiveRecord::Base
-  
-  # REMOVE
-  # belongs_to :task
-  
+class Link < ActiveRecord::Base  
   belongs_to :table
 end
