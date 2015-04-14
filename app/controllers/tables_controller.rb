@@ -1,7 +1,7 @@
 # Main controller for work with tables
 class TablesController < ApplicationController
   include ApplicationHelper
-
+  
   def index
     case params[:type]
     when 'CANDIDATE'
@@ -14,32 +14,23 @@ class TablesController < ApplicationController
 
   def create
     if params[:type] == 'SALE' 
-      Sale.create(table_params)
+      object = Sale.create(table_params)
       redirect_to tables_path(only: 'open', type: 'SALE')
     else
-      Candidate.create(table_params)
+      object = Candidate.create(table_params)
       redirect_to tables_path(type: 'CANDIDATE')
     end
+    Statistic.update_statistics(object)
   end
 
   def update
     Table.find(params[:id]).update_attributes(table_params)
+    Statistic.update_statistics(Table.find(params[:id]))
     render json: 'success'.to_json
   end
 
   def destroy
     Table.find(params[:id]).destroy
-  end
-
-  def create_link
-    link = Link.create(table_id: params[:table_id],
-                       alt: params[:alt],
-                       href: params[:href])
-    render html: generate_link(link).html_safe
-  end
-
-  def destroy_link
-    Link.find(params[:id]).destroy
   end
 
   private
@@ -53,7 +44,7 @@ class TablesController < ApplicationController
                                     :date_end, :date_start)
     end
 
-    def sale_table
+   def sale_table
       case params[:only]
       when 'sold'
         Sale.sold
