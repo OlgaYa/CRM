@@ -30,7 +30,6 @@ class TablesController < ApplicationController
       object = Candidate.create(table_params)
       redirect_to tables_path(type: 'CANDIDATE')
     end
-    Statistic.update_statistics(object) unless params[:type] == 'PLAN'
   end
 
   def update
