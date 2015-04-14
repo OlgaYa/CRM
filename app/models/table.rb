@@ -52,7 +52,8 @@ class Table < ActiveRecord::Base
   end
 
   def self.fields_names(fields)
-    ordered_fields = []
+    return fields unless first
+    ordered_fields = [] 
     first.attributes.each do |attribute|
       ordered_fields << attribute[0] if fields.include? attribute[0]
     end

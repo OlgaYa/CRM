@@ -228,6 +228,7 @@ $(document).ready(function(){
       }
       if($td.hasClass('date-time-editable')){
         $td.text(currentData);
+        notifie('Reminder date was successful changed', $notifier)
       }
     }
     $remainderDialog.modal('hide');
