@@ -34,7 +34,6 @@ class TablesController < ApplicationController
 
   def update
     Table.find(params[:id]).update_attributes(table_params)
-    Statistic.update_statistics(Table.find(params[:id]))
     render json: 'success'.to_json
   end
 
