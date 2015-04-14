@@ -443,8 +443,8 @@ $(document).ready(function(){
 
 $(function () {
   $(".chosen-select").chosen();
-  $('#datetimepicker6').datetimepicker({format: 'MMMM Do YYYY, h:mm'});
-  $('#datetimepicker7').datetimepicker({format: 'MMMM Do YYYY, h:mm'});
+  $('#datetimepicker6').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
+  $('#datetimepicker7').datetimepicker({ format: 'DD/MM/YYYY HH:mm' });
   $("#datetimepicker6").on("dp.change",function (e) {
     $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
   });
