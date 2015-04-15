@@ -105,7 +105,9 @@ module TablesHelper
                            class: 'sortable sort',
                            value: 'td-source-id')
         concat content_tag(:th, 'Links')
-        concat content_tag(:th, 'Date')
+        concat content_tag(:th, 'Date',
+                           class: 'sort_desc sort',
+                           value: 'td-date')
         concat content_tag(:th, 'Status',
                            class: 'sortable sort',
                            value: 'td-status-id')
@@ -132,9 +134,7 @@ module TablesHelper
         concat content_tag(:th, 'Status',
                            class: 'sortable sort',
                            value: 'td-status-id')
-        concat content_tag(:th, 'Datа',
-                           class: 'sort_desc sort',
-                           value: 'td-date')
+        concat content_tag(:th, 'Datа')
         concat content_tag(:th, 'Count')
         concat content_tag(:th, 'Percentage, %')
       end
