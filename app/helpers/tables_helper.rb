@@ -55,7 +55,6 @@ module TablesHelper
     when 'Plan'
       buffer << generate_plan_table_head("")
       buffer << generate_plan_table(table)
-      Plan.all.each { |p| p.find_percentage() }
     end
     buffer
   end

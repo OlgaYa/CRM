@@ -14,6 +14,7 @@ class TablesController < ApplicationController
     when 'SALE'
       @table = sale_table
     when 'PLAN'
+      Plan.all.each { |p| p.find_percentage() }
       @table = Plan.all
     end
     paginate_table
@@ -35,8 +36,14 @@ class TablesController < ApplicationController
   end
 
   def update
-    Table.find(params[:id]).update_attributes(table_params)
-    Statistic.update_statistics(Table.find(params[:id]))
+    table = Table.find(params[:id])
+    if params[:table][:count]
+      table.count = params[:table][:count].to_i
+      table.save
+    else
+      table.update_attributes(table_params)
+    end
+    Statistic.update_statistics(Table.find(params[:id])) unless params[:type] == 'PLAN'
     render json: 'success'.to_json
   end
 
