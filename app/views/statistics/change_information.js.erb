@@ -1,0 +1,33 @@
+$(function () {
+	debugger;
+	var
+		data_for_series = JSON.parse(<%= raw @hash.to_json.html_safe %>);
+	$('.graphics').highcharts({
+	  chart: {
+		  type: 'column'
+	  },
+	  title: {
+		  text: 'Statistics of task'
+	  },
+	  xAxis: {  
+		tickInterval:  <%= @date_interval %>,
+		type: 'datetime',
+		labels: {
+			format: '{value: %d-%m-%Y}',
+			align: 'center'
+		} 
+	},
+	plotOptions: {
+		  series: {
+			  pointStart: <%= @date_start %>,
+			  pointInterval: <%= @date_interval %>
+		  }
+	  }, 
+	  yAxis: {
+		  title: {
+			  text: 'Count tasks'
+		  }
+	  },
+	  series: data_for_series
+	});
+});

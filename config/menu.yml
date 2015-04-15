@@ -2,22 +2,22 @@ seller:
   menu:
     sub menu one:
       name: 'Seller'
-      item one: 
+      item one:
         name: 'Sales'
         path: '/tables?only=open&type=SALE'
       item dev one:
         divider: true
-      item fore: 
+      item fore:
         name: 'Export'
         path: '/export?type=SALE'
     sub menu two:
       name: 'Events'
-      item one: 
+      item one:
         name: 'Meetings'
         path: '/meetings'
     sub menu three:
       name: 'Info'
-      item one: 
+      item one:
         name: 'Statistic'
         path: '/statistics'
 hr:
@@ -25,49 +25,52 @@ hh:
   menu:
     sub menu one:
       name: 'HH'
-      item one: 
+      item one:
         name: 'Candidates'
         path: '/tables?only=open&type=CANDIDATE'
 admin:
   menu:
     sub menu one:
-      name: 'Seller'
-      item one: 
+      name: 'Sellers'
+      item one:
         name: 'Sales'
         path: '/tables?only=open&type=SALE'
       item dev one:
         divider: true
-      item fore: 
+      item fore:
         name: 'Meetings'
         path: '/meetings'
       item dev three:
         divider: true
-      item five: 
+      item five:
         name: 'Statistic'
         path: '/statistics'
       item dev fore:
         divider: true
-      item six: 
+      item six:
         name: 'Export'
         path: '/export?type=SALE'
     sub menu two:
       name: 'HH'
-      item one: 
+      item one:
         name: 'Candidates'
         path: '/tables?only=open&type=CANDIDATE'
     sub menu three:
       name: 'Admin panel'
-      item one: 
+      item one:
         name: 'Active users'
         path: '/admin/users?status=unlock'
-      item two: 
+      item two:
         name: 'Bloked users'
         path: '/admin/users?status=lock'
       item dev one:
         divider: true
-      item three: 
+      item three:
         name: 'Sellers controls'
         path: '/admin/task_controls?type=SALE'
-      item fore: 
+      item fore:
         name: 'HH controls'
         path: '/admin/task_controls?type=CANDIDATE'
+      item five:
+        name: 'Plans'
+        path: '/tables?type=PLAN'

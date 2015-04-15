@@ -22,19 +22,21 @@ class TablesController < ApplicationController
   def create
     case params[:type]
     when 'SALE'
-      Sale.create(table_params)
+      object = Sale.create(table_params)
       redirect_to tables_path(only: 'open', type: 'SALE')
-    when 'CANDIDATE'
-      Candidate.create(table_params)
-      redirect_to tables_path(type: 'CANDIDATE')
     when 'PLAN'
       Plan.create(table_params)
       redirect_to tables_path(type: 'PLAN')
+    when 'CANDIDATE'
+      object = Candidate.create(table_params)
+      redirect_to tables_path(type: 'CANDIDATE')
     end
+    Statistic.update_statistics(object) unless params[:type] == 'PLAN'
   end
 
   def update
     Table.find(params[:id]).update_attributes(table_params)
+    Statistic.update_statistics(Table.find(params[:id]))
     render json: 'success'.to_json
   end
 

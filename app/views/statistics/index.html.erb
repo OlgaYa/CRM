@@ -1,22 +1,32 @@
 <div class="statistics">
-	<span> Status: </span><br/>
-	<div class="datestatistic">
-		<div class="side-by-side clearfix">
-          <%= select_tag "Status", options_for_select(Status.all.collect {|p| [ p.name, p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-status", name: 'status[]', id: 'status', "data-placeholder" => 'Select Status ...' %>
-        </div>
-	</div>
-	<span> Assign: </span><br/>
-	<div class="datestatistic">
-		<div class="side-by-side clearfix">
-          <%= select_tag "User", options_for_select(User.all.collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-user", name: 'users[]', id: 'user', "data-placeholder" => 'Select User ...' %>
-        </div>
-	</div>
-	<span> Source: </span><br/>
-	<div class="datestatistic">
-		<div class="side-by-side clearfix">
-          <%= select_tag "Source", options_for_select(Source.all.collect {|p| [p.name , p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-source", name: 'sources[]', id: 'source', "data-placeholder" => 'Select Sources ...' %>
-        </div>
-	</div>
+	<%= form_tag change_information_statistics_path, remote: true do %>
+		<span> From: </span>
+		<div class="date">
+			<%= text_field_tag :dateFrom, Date.today.at_beginning_of_week, id:"dpd1" %><br />
+		</div>
+		<span> to: </span>
+		<div class="date">
+	    	<%= text_field_tag :dateTo, Date.today.at_end_of_week, id:"dpd12", class: "span2" %><br />
+		</div>
+		<span> Status: </span><br/>
+		<div class="datestatistic">
+			<div class="side-by-side clearfix">
+	      <%= select_tag "Status", options_for_select(Status.all.collect {|p| [ p.name, p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-status", name: 'status[]', id: 'status', "data-placeholder" => 'Select Status ...' %>
+	    </div>
+		</div>
+		<span> Assign: </span><br/>
+		<div class="datestatistic">
+			<div class="side-by-side clearfix">
+	      <%= select_tag("User", options_for_select(User.all.collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-user", name: 'users[]', id: 'user', "data-placeholder" => 'Select User ...') %>
+	    </div>
+		</div>
+		<span> Source: </span><br/>
+		<div class="datestatistic">
+			<div class="side-by-side clearfix">
+	          <%= select_tag("Source", options_for_select(Source.all.collect {|p| [p.name , p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-source", name: 'sources[]', id: 'source', "data-placeholder" => 'Select Sources ...') %>
+	        </div>
+		</div>
+	<% end %>
 </div>
 
 <div class="graphics">
@@ -24,44 +34,34 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	$(".chosen-select-user").chosen().change( function(e){
-  			ajax_for_information($(".chosen-select-status").val(),$(".chosen-select-user").val(),$(".chosen-select-source").val());
-	} );
-	$(".chosen-select-status").chosen().change( function(e){
-  			ajax_for_information($(".chosen-select-status").val(),$(".chosen-select-user").val(),$(".chosen-select-source").val());
-	} );
-	$(".chosen-select-source").chosen().change( function(e){
-			ajax_for_information($(".chosen-select-status").val(),$(".chosen-select-user").val(), $(".chosen-select-source").val());
-	} );
-	ajax_for_information("","","");
-});
-function ajax_for_information(status, user, source){
-	$.ajax({
-	    type: "POST",
-	    url: "statistics/change_information",
-	    data: {status: status, user: user, source: source} ,
-	    dataType: "json",
-	    success: function(data) {
-		  	$(function () { 
-		    	$('.graphics').highcharts({
-		        chart: {
-		            type: 'column'
-		        },
-		        title: {
-		            text: 'Statistics of task'
-		        },
-		        xAxis: {
-					categories: data[0]
-				},
-		        yAxis: {
-		            title: {
-		                text: 'Count tasks'
-		            }
-		        },
-		        series: data[1]
-				});
-			});
+	$('form :input').on('change', function(){
+		$('form').submit();
+	})
+	$(".chosen-select-user").chosen();
+	$(".chosen-select-status").chosen();
+	$(".chosen-select-source").chosen();
+	var nowTemp = new Date();
+  var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+
+  var checkin = $('#dpd1').datepicker({
+		onRender: function(date) {
+			return date.valueOf() > now.valueOf() ? 'disabled' : '';
 		}
-	});
-};
+	}).on('changeDate', function(ev) {
+		if (ev.date.valueOf() < checkout.date.valueOf()) {
+			var newDate = new Date(ev.date)
+			newDate.setDate(newDate.getDate() + 1);
+			checkout.setValue(newDate);
+		}
+		checkin.hide();
+		$('#dpd2')[0].focus();
+	}).data('datepicker');
+	var checkout = $('#dpd2').datepicker({
+		onRender: function(date) {
+			return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+		}
+	}).on('changeDate', function(ev) {
+		checkout.hide();
+	}).data('datepicker');
+});
 </script>
