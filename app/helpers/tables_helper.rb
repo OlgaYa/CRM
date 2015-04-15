@@ -134,7 +134,7 @@ module TablesHelper
         concat content_tag(:th, 'Status',
                            class: 'sortable sort',
                            value: 'td-status-id')
-        concat content_tag(:th, 'Datа')
+        concat content_tag(:th, 'Data')
         concat content_tag(:th, 'Count')
         concat content_tag(:th, 'Percentage, %')
       end
