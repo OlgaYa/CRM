@@ -105,9 +105,7 @@ module TablesHelper
                            class: 'sortable sort',
                            value: 'td-source-id')
         concat content_tag(:th, 'Links')
-        concat content_tag(:th, 'Date',
-                           class: 'sort_desc sort',
-                           value: 'td-date')
+        concat content_tag(:th, 'Date')
         concat content_tag(:th, 'Status',
                            class: 'sortable sort',
                            value: 'td-status-id')
