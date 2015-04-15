@@ -2,7 +2,13 @@ class Status < ActiveRecord::Base
   has_many :tables
   validates :name, presence: true, uniqueness: { scope: [:name, :for_type] }
 
-  UNCHANGEABLESTATUS = %w(sold declined negotiations assigned_meeting)
+  UNCHANGEABLESTATUS = %w(sold declined
+                          negotiations
+                          assigned_meeting
+                          we_declined
+                          he_declined
+                          hired
+                          contact_later)
 
   def self.all_sale
     all.where(for_type: 'sale')
@@ -26,6 +32,10 @@ class Status < ActiveRecord::Base
 
   def declined?
     name == 'declined'
+  end
+
+  def contact_later?
+    name == 'contact_later'
   end
 
   def unchengeble_satus?

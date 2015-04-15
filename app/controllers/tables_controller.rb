@@ -10,25 +10,26 @@ class TablesController < ApplicationController
   def index
     case params[:type]
     when 'CANDIDATE'
-      @table = Candidate.all
+      @table = candidate_table
+    when 'SALE'
+      @table = sale_table
     when 'PLAN'
       @table = Plan.all
-    else
-      @table = sale_table
     end
     paginate_table
   end
 
   def create
-    if params[:type] == 'SALE'
-      object = Sale.create(table_params)
+    case params[:type]
+    when 'SALE'
+      Sale.create(table_params)
       redirect_to tables_path(only: 'open', type: 'SALE')
-    elsif params[:type] == 'PLAN'
+    when 'CANDIDATE'
+      Candidate.create(table_params)
+      redirect_to tables_path(type: 'CANDIDATE')
+    when 'PLAN'
       Plan.create(table_params)
       redirect_to tables_path(type: 'PLAN')
-    else
-      object = Candidate.create(table_params)
-      redirect_to tables_path(type: 'CANDIDATE')
     end
   end
 
@@ -88,7 +89,8 @@ class TablesController < ApplicationController
                                   :date, :status_id,
                                   :topic, :skype,
                                   :user_id, :price,
-                                  :date_end, :date_start)
+                                  :date_end, :date_start,
+                                  :reminder_date)
   end
 
   def sale_table
@@ -99,6 +101,21 @@ class TablesController < ApplicationController
       Sale.declined
     else
       Sale.open
+    end
+  end
+
+  def candidate_table
+    case params[:only]
+    when 'hired'
+      Candidate.hired
+    when 'we_declined'
+      Candidate.we_declined
+    when 'he_declined'
+      Candidate.he_declined
+    when 'contact_later'
+      Candidate.contact_later
+    else
+      Candidate.open
     end
   end
 

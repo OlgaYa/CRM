@@ -12,3 +12,43 @@
   max-width: 100%;
   min-width: 100%;
 }
+
+.tables-sub-menu {
+  background-color: #282D37;
+  height: 30px;
+  margin-top: -20px;
+  margin-bottom: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.tables-sub-menu-nav.nav.nav-tabs{
+  height: 31px;
+}
+
+.tables-sub-menu-nav.nav.nav-tabs li {
+  height: 27px;
+  font-size: 10pt;
+  margin-top: 3px;
+}
+
+.tables-sub-menu-nav.nav.nav-tabs li a {
+  padding-top: 3px;
+  padding-bottom: 5px;
+  color: #fff;
+}
+
+.tables-sub-menu-nav.nav.nav-tabs li a:active,
+.tables-sub-menu-nav.nav.nav-tabs li a:hover {
+  background-color: #fff;
+  color: #333;
+  border-color: #fff;
+}
+
+.tables-sub-menu-nav.nav.nav-tabs li.active a{
+  color: #333;
+}
+
+.date-time-editable:hover{
+  cursor: pointer;
+}

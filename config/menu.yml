@@ -1,16 +1,10 @@
 seller:
   menu:
     sub menu one:
-      name: 'Sales'
+      name: 'Seller'
       item one: 
-        name: 'Open sales'
+        name: 'Sales'
         path: '/tables?only=open&type=SALE'
-      item two: 
-        name: 'Sold sales'
-        path: '/tables?only=sold&type=SALE'
-      item three: 
-        name: 'Declined sales'
-        path: '/tables?only=declined&type=SALE'
       item dev one:
         divider: true
       item fore: 
@@ -30,23 +24,17 @@ hr:
 hh:
   menu:
     sub menu one:
-      name: 'Candidates'
+      name: 'HH'
       item one: 
-        name: 'Current candidates'
-        path: '/tables?type=CANDIDATE'
+        name: 'Candidates'
+        path: '/tables?only=open&type=CANDIDATE'
 admin:
   menu:
     sub menu one:
-      name: 'Sales'
+      name: 'Seller'
       item one: 
-        name: 'Open sales'
+        name: 'Sales'
         path: '/tables?only=open&type=SALE'
-      item two: 
-        name: 'Sold sales'
-        path: '/tables?only=sold&type=SALE'
-      item three: 
-        name: 'Declined sales'
-        path: '/tables?only=declined&type=SALE'
       item dev one:
         divider: true
       item fore: 
@@ -65,8 +53,8 @@ admin:
     sub menu two:
       name: 'HH'
       item one: 
-        name: 'Current candidates'
-        path: '/tables?type=CANDIDATE'
+        name: 'Candidates'
+        path: '/tables?only=open&type=CANDIDATE'
     sub menu three:
       name: 'Admin panel'
       item one: 
@@ -78,10 +66,8 @@ admin:
       item dev one:
         divider: true
       item three: 
-        name: 'Task controls'
-        path: '/admin/task_controls'
-      item dev two:
-        divider: true
+        name: 'Sellers controls'
+        path: '/admin/task_controls?type=SALE'
       item fore: 
-        name: 'Controls'
-        path: '/admin/controls'
+        name: 'HH controls'
+        path: '/admin/task_controls?type=CANDIDATE'
