@@ -20,7 +20,6 @@ gem 'bootstrap-sass', '~> 3.1.1.0'
 gem 'will_paginate-bootstrap'
 gem "paperclip", "~> 4.2"
 gem 'cancancan', '~> 1.10'
-# gem 'sucker_punch'
 gem 'sidekiq', '~> 2.17.7'
 gem 'sinatra'
 
