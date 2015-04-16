@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-ruby '2.2.0'
 
 gem 'rails', '~>4.2.0'
 gem 'sass-rails', '~> 5.0'
@@ -22,7 +21,7 @@ gem 'will_paginate-bootstrap'
 gem "paperclip", "~> 4.2"
 gem 'cancancan', '~> 1.10'
 # gem 'sucker_punch'
-gem 'sidekiq'
+gem 'sidekiq', '~> 2.17.7'
 gem 'sinatra'
 
 group :development do
