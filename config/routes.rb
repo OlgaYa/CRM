@@ -3,6 +3,11 @@ Rails.application.routes.draw do
                      controllers: { sessions: 'users/sessions' }
 
   root to: 'static_pages#home'
+
+  require 'sidekiq/web'
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
   
   resources :tables, only: [:create, :update, :destroy, :index]
   resources :users
