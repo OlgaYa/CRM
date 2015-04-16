@@ -9,6 +9,7 @@ class Statistic < ActiveRecord::Base
     information = Statistic.where(user_id: object.user_id,
                                   status_id: object.status_id,
                                   source_id: object.source_id,
+                                  specialization_id: object.specialization_id,
                                   for_type: object.type,
                                   week: object.updated_at.at_beginning_of_week).first
     if information == nil

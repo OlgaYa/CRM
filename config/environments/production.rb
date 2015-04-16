@@ -24,6 +24,7 @@ CRMProject::Application.configure do
   config.log_level = :debug
   config.i18n.fallbacks = true
   config.active_support.deprecation = :notify
+  config.active_job.queue_adapter = :sidekiq
   config.log_formatter = ::Logger::Formatter.new
   config.active_record.dump_schema_after_migration = false
   config.time_zone = 'Europe/Kiev'
