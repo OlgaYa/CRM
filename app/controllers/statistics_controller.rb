@@ -52,10 +52,10 @@ class StatisticsController < ApplicationController
   def find_in_database(source, users, status, date_from, date_to)
     inform = Statistic.where(source).where(users).where(status).where(:week => date_from..date_to).group(:week).order(:week).sum(:count)
     current_week = date_from
-    inform.each do |k, v|
-      inform[current_week] = 0 if current_week != k
+    while current_week < date_to
+      inform[current_week] = 0 unless inform.include? (current_week)
       current_week += 1.weeks
     end
-    inform.to_a
+    inform.sort.to_a
   end
 end
