@@ -43,7 +43,7 @@ class TablesController < ApplicationController
     else
       table.update_attributes(table_params)
     end
-    Statistic.update_statistics(Table.find(params[:id])) unless params[:type] == 'PLAN'
+    Statistic.update_statistics(table) unless params[:type] == 'PLAN'
     render json: 'success'.to_json
   end
 

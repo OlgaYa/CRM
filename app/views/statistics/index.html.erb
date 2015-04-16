@@ -2,11 +2,11 @@
 	<%= form_tag change_information_statistics_path, remote: true do %>
 		<span> From: </span>
 		<div class="date">
-			<%= text_field_tag :dateFrom, Date.today.at_beginning_of_week, id:"dpd1" %><br />
+			<%= text_field_tag :dateFrom, Date.today.at_beginning_of_week.strftime("%d-%m-%Y"), id:"dpd1" %><br />
 		</div>
 		<span> to: </span>
 		<div class="date">
-	    	<%= text_field_tag :dateTo, Date.today.at_end_of_week, id:"dpd12", class: "span2" %><br />
+			<%= text_field_tag :dateTo, Date.today.at_end_of_week.strftime("%d-%m-%Y"), id:"dpd2" %><br />
 		</div>
 		<span> Status: </span><br/>
 		<div class="datestatistic">
@@ -31,3 +31,18 @@
 
 <div class="graphics">
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('form :input').on('change', function(e){
+			$('form').submit();
+		})
+		$(".chosen-select-user").chosen();
+		$(".chosen-select-status").chosen();
+		$(".chosen-select-source").chosen()
+
+		var checkin = $('#dpd1').datepicker( {dateFormat: 'dd-mm-yy'});
+		var checkout = $('#dpd2').datepicker({ dateFormat: 'dd-mm-yy'});
+	});
+
+</script>
