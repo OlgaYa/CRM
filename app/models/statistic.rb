@@ -9,14 +9,18 @@ class Statistic < ActiveRecord::Base
     information = Statistic.where(user_id: object.user_id,
                                   status_id: object.status_id,
                                   source_id: object.source_id,
+                                  specialization_id: object.specialization_id,
+                                  level_id: object.level_id,
                                   for_type: object.type,
-                                  week: object.updated_at.at_beginning_of_week).first
+                                  week: object.updated_at.to_date.at_beginning_of_week).first
     if information == nil
       information = Statistic.new(user_id: object.user_id,
                                   status_id: object.status_id,
                                   source_id: object.source_id,
                                   for_type: object.type,
-                                  week: object.updated_at.at_beginning_of_week)
+                                  specialization_id: object.specialization_id,
+                                  level_id: object.level_id,
+                                  week: object.updated_at.to_date.at_beginning_of_week)
       information.save
     else
       information.count += 1
