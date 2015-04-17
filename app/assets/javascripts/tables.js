@@ -466,6 +466,6 @@ $(function () {
   $("#datetimepicker7").on("dp.change",function (e) {
     $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
   });
-  $('#datetimepicker_reminder').datetimepicker({format: 'MMMM Do YYYY, h:mm'});
+  $('#datetimepicker_reminder').datetimepicker({format: 'DD/MM/YYYY HH:mm'});
 });
 

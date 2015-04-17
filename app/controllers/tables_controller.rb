@@ -23,7 +23,7 @@ class TablesController < ApplicationController
   def create
     case params[:type]
     when 'SALE'
-      object = Sale.create(table_params)
+     object = Sale.create(table_params)
       redirect_to tables_path(only: 'open', type: 'SALE')
     when 'PLAN'
       object = Plan.create(table_params)

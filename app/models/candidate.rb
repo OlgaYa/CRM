@@ -15,7 +15,8 @@ class Candidate < Table
            :email, :source_id,
            :date, :status_id,
            :type, :created_at,
-           :updated_at, :reminder_date)
+           :updated_at, :user_id,
+           :reminder_date)
   end
 
   def self.open

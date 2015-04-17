@@ -1,3 +1,4 @@
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -39,6 +40,9 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   config.action_mailer.delivery_method = :sendmail
+  # config.active_job.queue_adapter = :sucker_punch
+  config.active_job.queue_adapter = :sidekiq
+
   config.action_mailer.default_url_options = { :host => "localhost:3000" }
   config.time_zone = 'Europe/Kiev'
 end

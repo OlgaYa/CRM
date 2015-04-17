@@ -2,7 +2,19 @@ class Status < ActiveRecord::Base
   has_many :tables
   validates :name, presence: true, uniqueness: { scope: [:name, :for_type] }
 
-  UNCHANGEABLESTATUS = %w(sold declined negotiations assigned_meeting)
+  UNCHANGEABLESTATUS = %w(sold declined
+                          negotiations
+                          assigned_meeting
+                          we_declined
+                          he_declined
+                          hired
+                          contact_later)
+
+  NOT_REMIND_WITH_STATUSES = %w(sold declined
+                                we_declined
+                                he_declined
+                                hired
+                                contact_later)
 
   def self.all_sale
     all.where(for_type: 'sale')
@@ -13,11 +25,12 @@ class Status < ActiveRecord::Base
   end
 
   def self.default_status(type)
-    if type == 'SALE'
+    case type
+    when 'SALE'
       all_sale.where(name: 'negotiations').take.id
-    elsif type == 'PLAN'
+    when 'PLAN'
       # Table.where(name: 'negotiations').take.id
-    else
+    when 'CANDIDATE'
       all_candidate.where(name: 'negotiations').take.id
     end
   end
@@ -36,5 +49,9 @@ class Status < ActiveRecord::Base
 
   def unchengeble_satus?
     UNCHANGEABLESTATUS.include?(name)
+  end
+
+  def not_remind?
+    NOT_REMIND_WITH_STATUSES.include?(name)
   end
 end

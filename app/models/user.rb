@@ -36,11 +36,11 @@ class User < ActiveRecord::Base
   def self.reminder
     date = 2.days
     date += 2.days if Date.yesterday.saturday?
-    tasks = Task.where('updated_at < ?', Date.today - date)
+    tables = Table.where('updated_at < ?', Date.today - date)
     hash = {}
-    tasks.each do |t|
+    tables.each do |t|
       status = t.status
-      unless(status.declined? || status.sold? || !t.user_id)
+      unless(status.not_remind? || !t.user_id)
         if hash.key?(t.user_id)
           hash[t.user_id] << t.name
         else
@@ -50,6 +50,16 @@ class User < ActiveRecord::Base
     end
     hash.each_key do |k|
       UserMailer.reminder_instructions(k, hash[k]).deliver
+    end
+  end
+
+  def self.contact_later_reminder
+    tables = Candidate.contact_later
+    tables.each do |t|
+      reminder_date = Candidate.contact_later.first.reminder_date
+      if reminder_date.to_date == Date.today
+        UserMailer.remind_today(t).deliver_later!(wait_until: reminder_date)
+      end
     end
   end
 
