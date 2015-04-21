@@ -1,5 +1,6 @@
 class Status < ActiveRecord::Base
   has_many :tables
+  has_many :options_for_plan, as: :option
   validates :name, presence: true, uniqueness: { scope: [:name, :for_type] }
 
   UNCHANGEABLESTATUS = %w(sold declined
