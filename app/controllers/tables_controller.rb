@@ -33,13 +33,12 @@ class TablesController < ApplicationController
 
   def update
     table = Table.find(params[:id])
-    if params[:table][:count]
-      table.count = params[:table][:count].to_i
-      table.save
-    else
-      table.update_attributes(table_params)
-    end
+    table.update_attributes(table_params)
     Statistic.update_statistics(table)
+    binding.pry
+    if (params[:table][:user_id] and params[:table][:user_id].to_i != current_user.id)
+      UserMailer.new_assign_user_instructions(table, current_user, params[:table][:user_id].to_i).deliver
+    end
     render json: 'success'.to_json
   end
 

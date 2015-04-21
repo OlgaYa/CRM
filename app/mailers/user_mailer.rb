@@ -10,11 +10,11 @@ class UserMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "Registered")
   end
 
-  def new_assign_user_instructions(task, current_user, user_id)
-  	@user = User.find(user_id)
-  	@task_name = strip_tags(task.name)
-  	@current_user = current_user
-    subject = "TASK #{task.id}"
+  def new_assign_user_instructions(table, current_user, user_id)
+    @user = User.find(user_id)
+    @table_name = table.name
+    @current_user = current_user
+    subject = "TASK #{table.id}"
   	mail(:to => @user.email, :subject => subject )
   end
 
