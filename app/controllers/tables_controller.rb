@@ -13,9 +13,6 @@ class TablesController < ApplicationController
       @table = candidate_table
     when 'SALE'
       @table = sale_table
-    when 'PLAN'
-      Plan.all.each { |p| p.find_percentage() }
-      @table = Plan.all
     end
     paginate_table
   end
@@ -25,14 +22,11 @@ class TablesController < ApplicationController
     when 'SALE'
      object = Sale.create(table_params)
       redirect_to tables_path(only: 'open', type: 'SALE')
-    when 'PLAN'
-      object = Plan.create(table_params)
-      redirect_to tables_path(type: 'PLAN')
     when 'CANDIDATE'
       object = Candidate.create(table_params)
       redirect_to tables_path(type: 'CANDIDATE')
     end
-    Statistic.update_statistics(object) unless object.type == 'Plan'
+    Statistic.update_statistics(object)
   end
 
   def update
@@ -43,7 +37,7 @@ class TablesController < ApplicationController
     else
       table.update_attributes(table_params)
     end
-    Statistic.update_statistics(table) unless table.type == 'Plan'
+    Statistic.update_statistics(table)
     render json: 'success'.to_json
   end
 

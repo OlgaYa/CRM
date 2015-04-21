@@ -52,9 +52,6 @@ module TablesHelper
     when 'Candidate'
       buffer << generate_candidate_table_head(table.first.status.name)
       buffer << generate_candidate_table(table)
-    when 'Plan'
-      buffer << generate_plan_table_head("")
-      buffer << generate_plan_table(table)
     end
     buffer
   end
@@ -116,30 +113,6 @@ module TablesHelper
     end
   end
 
-  def generate_plan_table_head(name)
-    content_tag(:thead) do
-      content_tag(:tr, class: 'info') do
-        concat content_tag(:th, '#')
-        concat content_tag(:th, 'Name')
-        concat content_tag(:th, 'User',
-                   class: 'sortable sort',
-                   value: 'td-user-id')
-        concat content_tag(:th, 'Level',
-                           class: 'sortable sort',
-                           value: 'td-level-id')
-        concat content_tag(:th, 'Specialization',
-                           class: 'sortable sort',
-                           value: 'td-specialization-id')
-        concat content_tag(:th, 'Status',
-                           class: 'sortable sort',
-                           value: 'td-status-id')
-        concat content_tag(:th, 'Data')
-        concat content_tag(:th, 'Count')
-        concat content_tag(:th, 'Percentage, %')
-      end
-    end
-  end
-
   def generate_sale_table(table)
     content_tag(:tbody, class: 'table-body') do
       table.each do |entity|
@@ -153,29 +126,6 @@ module TablesHelper
       table.each do |entity|
         concat generate_candidate_row entity
       end
-    end
-  end
-
-  def generate_plan_table(table)
-    content_tag(:tbody, class: 'table-body') do
-      table.each do |entity|
-        concat generate_plan_row entity
-      end
-    end
-  end
-
-  def generate_plan_row(plan)
-    content_tag(:tr, id: plan.id) do
-      concat table_control plan.id
-      concat table_name plan.name
-      concat table_user plan.user_id
-      concat table_level plan.level_id
-      concat table_specialization plan.specialization_id
-      concat table_status plan.status
-      concat table_period plan.date_start,
-                          plan.date_end
-      concat table_count plan.count
-      concat table_percentage plan.percentage
     end
   end
 
@@ -234,18 +184,6 @@ module TablesHelper
                 name: 'table[name]', value: 'name')
   end
 
-  def table_count(count)
-    content_tag(:td, count,
-                class: 'editable-field td-count',
-                name: 'table[count]', value: 'count')
-  end
-
-  def table_percentage(percentage)
-    content_tag(:td, percentage,
-                class: 'editable-field td-percentage',
-                name: 'table[percentage]', value: 'percentage')
-  end
-
   def table_level(level_id)
     content_tag(:td, '', class: 'td-level-id') do
       select_field_with_no_selected(:table, :level_id,
@@ -287,16 +225,9 @@ module TablesHelper
 
   def table_status(status_id)
     content_tag(:td, '', class: 'td-status-id') do
-      case params[:type]
-      when 'PLAN'
-        select_field_with_no_selected(:table, :status_id,
-                   Status.all.collect { |s| [s.name.capitalize, s.id] },
-                   status_id)
-      else
-        select_field(:table, :status_id,
-                   Status.all.where(for_type: params[:type].downcase).collect { |s| [s.name.capitalize, s.id] },
-                   status_id)
-      end
+      select_field(:table, :status_id,
+                 Status.all.where(for_type: params[:type].downcase).collect { |s| [s.name.capitalize, s.id] },
+                 status_id)
     end
   end
 
@@ -320,8 +251,6 @@ module TablesHelper
       User.seller
     when 'CANDIDATE'
       User.hh
-    when 'PLAN'
-      User.all
     end
   end
 
