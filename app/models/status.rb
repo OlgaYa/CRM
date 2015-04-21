@@ -29,8 +29,6 @@ class Status < ActiveRecord::Base
     case type
     when 'SALE'
       all_sale.where(name: 'negotiations').take.id
-    when 'PLAN'
-      # Table.where(name: 'negotiations').take.id
     when 'CANDIDATE'
       all_candidate.where(name: 'negotiations').take.id
     end

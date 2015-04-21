@@ -35,7 +35,6 @@ class TablesController < ApplicationController
     table = Table.find(params[:id])
     table.update_attributes(table_params)
     Statistic.update_statistics(table)
-    binding.pry
     if (params[:table][:user_id] and params[:table][:user_id].to_i != current_user.id)
       UserMailer.new_assign_user_instructions(table, current_user, params[:table][:user_id].to_i).deliver
     end
@@ -43,7 +42,9 @@ class TablesController < ApplicationController
   end
 
   def destroy
-    Table.find(params[:id]).destroy
+    table = Table.find(params[:id])
+    Statistic.destroy(table)
+    table.destroy
   end
 
   def create_link
