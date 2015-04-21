@@ -1,0 +1,50 @@
+<div id = "sale">
+	<%= form_tag plans_path(type: 'SALE') do %>
+  	<table class="table">
+			<thead>
+				<tr>
+					<th> Statuses </th>
+					<th> Users </th>
+					<th> Settings </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td id="statuses">
+						<% Status.all_sale.each do |status| %>
+							<input type="checkbox" name="statuses[]" id= '<%= "s_#{status.id}" %>' value= '<%= status.id %>' >
+							<%= label_tag status.name %>
+							<br>					
+						<% end %>  
+					</td>
+					<td id="users">
+						<% export_users_fields.each do |user| %>
+							<input type="checkbox" name="users[]" id= '<%= user.id %>' value= '<%= user.id %>' >
+							<%= label_tag "#{user.first_name} #{user.last_name}" %>
+							<br>
+						<% end %>
+					</td>
+
+					<td class="settings">
+						<%= check_box_tag "All statuses", "All statuses" %>
+						<%= label_tag "All statuses" %>
+						<br>
+						<%= check_box_tag "All users", "All users" %>
+						<%= label_tag "All users" %>
+						<br>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		<label for="from">From</label>
+		<%= text_field_tag :dateFrom, Date.today.at_beginning_of_week.strftime("%d-%m-%Y"), id:"dpd1" %>
+		<label for="to">to</label>
+		<%= text_field_tag :dateTo, Date.today.at_end_of_week.strftime("%d-%m-%Y"), id:"dpd2" %>
+		<hr>
+		<label for="from">The number of tasks for the plan</label>
+		<%= text_field_tag :count %>
+		<hr>
+		<%= submit_tag 	"Create", class: "brn btn-primary pull-right" %>
+	<% end %> <!--/form_tag -->
+</div>

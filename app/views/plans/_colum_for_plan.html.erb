@@ -1,0 +1,6 @@
+<td>
+	<% find_information_from_options(plan, name).each do |item| %>
+		<%= label_tag item.option.name %>
+		<br>					
+	<% end %>  
+</td>

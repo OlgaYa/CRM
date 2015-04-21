@@ -73,4 +73,4 @@ admin:
         path: '/admin/task_controls?type=CANDIDATE'
       item five:
         name: 'Plans'
-        path: '/tables?type=PLAN'
+        path: '/plans'

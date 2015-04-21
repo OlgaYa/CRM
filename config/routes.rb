@@ -17,7 +17,8 @@ Rails.application.routes.draw do
     collection do
       post :change_information
     end
-  end  
+  end
+  resources :plans
   
   namespace :admin do
     resources :registration

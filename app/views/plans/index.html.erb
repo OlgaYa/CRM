@@ -1,0 +1,82 @@
+<div class="row">
+	<div class="col-lg-6 col-md-8 col-lg-offset-3 col-md-offset-2" id="plan">
+
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs">
+		  <li class="active"><a href="#sale" data-toggle="tab">Sale</a></li>
+			<li><a href="#candidate" data-toggle="tab">Candidate</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+		  <div class="tab-pane active" id="sale">
+		  	<%= link_to "Create new plan", new_plan_path(type: "SALE")%>
+        <table class="table">
+					<thead>
+						<tr>
+							<th> Users </th>
+							<th> Statuses </th>
+							<th> Date from </th> 
+							<th> Date to </th>
+							<th> Count </th>
+							<th> Percentage, % </th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @plan_sale.each do |plan|%>
+							<tr>
+								<td>
+									<% find_information_from_options(plan, "User").each do |user| %>
+										<%= label_tag "#{user.option.first_name} #{user.option.last_name}" %>
+										<br>
+									<% end %>
+								</td>
+								<%= render partial: "colum_for_plan", locals: {plan: plan, name: "Status"} %>
+								<%= render partial: "same_information_in_plan", locals: {plan: plan} %>
+							</tr>
+							<% end %>
+						</tbody>
+      	</table>
+      	<div class="text-center">
+	        <%= will_paginate @plan_sale, renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
+	      </div>
+		  </div>
+		  <div class="tab-pane" id="candidate">
+		  	<%= link_to "Create", new_plan_path(type: "CANDIDATE")%>
+		  	 <table class="table">
+					<thead>
+						<tr>
+							<th> Users </th>
+							<th> Statuses </th>
+							<th> Leveles </th>
+							<th> Specializations </th>
+							<th> Date from </th> 
+							<th> Date to </th>
+							<th> Count </th>
+							<th> Percentage, % </th>
+						</tr>
+					</thead>
+					<tbody>
+						<% @plan_candidate.each do |plan|%>
+							<tr>
+								<td>
+									<% find_information_from_options(plan, "User").each do |user| %>
+										<%= label_tag "#{user.option.first_name} #{user.option.last_name}" %>
+										<br>
+									<% end %>
+								</td>
+								<%= render partial: "colum_for_plan", locals: {plan: plan, name: "Status"} %>
+								<%= render partial: "colum_for_plan", locals: {plan: plan, name: "Level"} %>
+								<%= render partial: "colum_for_plan", locals: {plan: plan, name: "Specialization"} %>
+								<%= render partial: "same_information_in_plan", locals: {plan: plan} %>
+							</tr>
+							<% end %>
+						</tbody>
+      	</table>
+      	<div class="text-center">
+	        <%= will_paginate @plan_candidate, renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
+	      </div>
+			</div>
+		</div>	
+	</div>
+</div>
