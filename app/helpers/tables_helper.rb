@@ -8,6 +8,9 @@ module TablesHelper
                          topic: :topic,
                          skype: :skype,
                          user: :user_id }
+
+  DEFAULT_SORT = 'date:desc,user_id,status_id'
+
   def export_field
     case params[:type]
     when 'SALE'
@@ -63,21 +66,13 @@ module TablesHelper
         concat content_tag(:th, '#')
         concat content_tag(:th, 'Name')
         concat content_tag(:th, 'Topic')
-        concat content_tag(:th, 'Source',
-                           class: 'sortable sort',
-                           value: 'td-source-id')
+        concat generate_sortable_th('sort', 'Source', :source_id)
         concat content_tag(:th, 'Skype')
         concat content_tag(:th, 'Email')
         concat content_tag(:th, 'Links')
-        concat content_tag(:th, 'Date',
-                           class: 'sort_desc sort',
-                           value: 'td-date')
-        concat content_tag(:th, 'Assign to',
-                           class: 'sortable sort',
-                           value: 'td-user-id')
-        concat content_tag(:th, 'Status',
-                           class: 'sortable sort',
-                           value: 'td-status-id')
+        concat generate_sortable_th('sort', 'Date', :date)
+        concat generate_sortable_th('sort', 'Assign to', :user_id)
+        concat generate_sortable_th('sort', 'Status', :status_id)
         concat content_tag(:th, 'Price') if name == 'sold'
         concat content_tag(:th, 'Terms') if name == 'sold'
         concat content_tag(:th, 'Comments')
@@ -90,27 +85,21 @@ module TablesHelper
       content_tag(:tr, class: 'info') do
         concat content_tag(:th, '#')
         concat content_tag(:th, 'Name')
-        concat content_tag(:th, 'Level',
-                           class: 'sortable sort',
-                           value: 'td-level-id')
-        concat content_tag(:th, 'Specialization',
-                           class: 'sortable sort',
-                           value: 'td-specialization-id')
+        concat generate_sortable_th('sort', 'Level', :level_id)
+        concat generate_sortable_th('sort', 'Specialization', :specialization_id)
         concat content_tag(:th, 'Email')
-        concat content_tag(:th, 'Source',
-                           class: 'sortable sort',
-                           value: 'td-source-id')
+        concat generate_sortable_th('sort', 'Source', :source_id)
         concat content_tag(:th, 'Links')
-        concat content_tag(:th, 'Date',
-                           class: 'sort_desc sort',
-                           value: 'td-date')
-        concat content_tag(:th, 'Status',
-                           class: 'sortable sort',
-                           value: 'td-status-id')
+        concat generate_sortable_th('sort', 'Date', :date)
+        concat generate_sortable_th('sort', 'Status', :status_id)
         concat content_tag(:th, 'Reminder') if name == 'contact_later'
         concat content_tag(:th, 'Comments')
       end
     end
+  end
+
+  def generate_sortable_th(class_names, name, value)
+    content_tag(:th, sort_link(@q, value, name),  class: class_names)
   end
 
   def generate_sale_table(table)

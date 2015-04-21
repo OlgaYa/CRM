@@ -22,6 +22,7 @@ gem "paperclip", "~> 4.2"
 gem 'cancancan', '~> 1.10'
 gem 'sidekiq', '~> 2.17.7'
 gem 'sinatra'
+gem 'ransack'
 
 group :development do
   gem 'spring'

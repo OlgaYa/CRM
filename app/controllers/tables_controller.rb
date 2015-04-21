@@ -11,8 +11,10 @@ class TablesController < ApplicationController
     case params[:type]
     when 'CANDIDATE'
       @table = candidate_table
+      @q = Candidate.ransack(params[:q])
     when 'SALE'
       @table = sale_table
+      @q = Sale.ransack(params[:q])
     end
     paginate_table
   end
@@ -123,8 +125,13 @@ class TablesController < ApplicationController
   end
 
   def paginate_table
-    @table = @table.paginate(page: params[:page],
-                             per_page: 10).oder_date_nulls_first
+    if params[:q] && params[:q][:s]
+      @table = @table.paginate(page: params[:page],
+                               per_page: 10).order(params[:q][:s])
+    else
+      @table = @table.paginate(page: params[:page],
+                               per_page: 10).oder_date_nulls_first
+    end
   end
 
   def nil_if_blank
