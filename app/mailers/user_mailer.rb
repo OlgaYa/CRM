@@ -28,8 +28,8 @@ class UserMailer < ActionMailer::Base
   def remind_today(table_id)
     table = Table.find(table_id);
     @user = table.user
-    @level = table.level.name if table.level
-    @specialization = table.specialization.name if table.specialization
+    @level = Level.find(table.level_id).name if table.level_id
+    @specialization = Specialization.find(table.specialization_id).name if table.specialization_id
     @name = table.name
     subject = "[info] CRM-Reminder"
     mail(:to => @user.email, :subject => subject)
