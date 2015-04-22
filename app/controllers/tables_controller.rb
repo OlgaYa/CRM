@@ -129,8 +129,8 @@ class TablesController < ApplicationController
       @table = @table.paginate(page: params[:page],
                                per_page: 10).order(params[:q][:s])
     else
-      @table = @table.paginate(page: params[:page],
-                               per_page: 10).oder_date_nulls_first
+      @table = @table.oder_date_nulls_first.paginate(page: params[:page],
+                                                     per_page: 10)
     end
   end
 

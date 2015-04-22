@@ -8,6 +8,6 @@ scheduler.cron '0 9 * * 1-5' do
 	User.reminder
 end 
 
-scheduler.cron '47 02 * * *' do
+scheduler.cron '25 20 * * *' do
   User.contact_later_reminder
 end 
