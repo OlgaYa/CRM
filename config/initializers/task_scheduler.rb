@@ -8,6 +8,6 @@ scheduler.cron '0 9 * * 1-5' do
 	User.reminder
 end 
 
-scheduler.every '30s' do
+scheduler.every '5m' do
   User.contact_later_reminder
 end 
