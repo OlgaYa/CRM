@@ -1,5 +1,6 @@
 class Status < ActiveRecord::Base
   has_many :tables
+  has_many :options_for_plan, as: :option
   validates :name, presence: true, uniqueness: { scope: [:name, :for_type] }
 
   UNCHANGEABLESTATUS = %w(sold declined
@@ -28,8 +29,6 @@ class Status < ActiveRecord::Base
     case type
     when 'SALE'
       all_sale.where(name: 'negotiations').take.id
-    when 'PLAN'
-      # Table.where(name: 'negotiations').take.id
     when 'CANDIDATE'
       all_candidate.where(name: 'negotiations').take.id
     end
