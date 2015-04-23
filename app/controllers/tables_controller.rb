@@ -5,6 +5,7 @@ class TablesController < ApplicationController
                                       :download_scoped_xls]
   before_action :current_entity, only: [:download_selective_xls,
                                         :download_scoped_xls]
+  after_action :send_remind_today, only: :update
   include ApplicationHelper
   
   def index
@@ -32,11 +33,11 @@ class TablesController < ApplicationController
   end
 
   def update
-    table = Table.find(params[:id])
-    table.update_attributes(table_params)
-    Statistic.update_statistics(table)
+    @table = Table.find(params[:id])
+    @table.update_attributes(table_params)
+    Statistic.update_statistics(@table)
     if (params[:table][:user_id] and params[:table][:user_id].to_i != current_user.id)
-      UserMailer.new_assign_user_instructions(table, current_user, params[:table][:user_id].to_i).deliver
+      UserMailer.new_assign_user_instructions(@table, current_user, params[:table][:user_id].to_i).deliver
     end
     render json: 'success'.to_json
   end
@@ -163,5 +164,13 @@ class TablesController < ApplicationController
 
   # NEED WRITE
   def scoped_candidate_data
+  end
+
+  def send_remind_today
+    return unless @table.status.contact_later?
+    reminder_date = @table.reminder_date
+    if reminder_date.to_date == Date.today
+      UserMailer.remind_today(@table.id).deliver_later(wait_until: reminder_date)
+    end
   end
 end
