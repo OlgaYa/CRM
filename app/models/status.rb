@@ -34,6 +34,15 @@ class Status < ActiveRecord::Base
     end
   end
 
+  def self.meeting_status_id(type)
+    case type
+    when 'SALE'
+      all_sale.where(name: 'assigned_meeting').take.id
+    when 'CANDIDATE'
+      all_candidate.where(name: 'assigned_meeting').take.id
+    end
+  end
+
   def sold?
     name == 'sold'
   end
