@@ -1,3 +1,4 @@
+#encoding: utf-8
 class Admin::EmailTextsController < ApplicationController
   #defend_this controller: 'admin_email_texts'
   {
