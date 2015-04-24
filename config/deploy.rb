@@ -1,6 +1,7 @@
 require 'bundler/capistrano'
 require "rvm/capistrano"  # Load RVM's capistrano plugin.
 require 'capistrano/ext/multistage'
+require 'capistrano/sidekiq'
 
 set :bundle_flags,    "--deployment --quiet --local"
 
