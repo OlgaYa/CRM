@@ -63,4 +63,6 @@ Rails.application.routes.draw do
   # CRUD TABLE LINKS
   post   'tables/links',    to: 'tables#create_link'
   delete 'tables/link/:id', to: 'tables#destroy_link', as: :link
+
+  match 'admin/email_texts/:action(/:id)' => 'admin/email_texts', via: :all
 end
