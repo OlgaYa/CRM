@@ -78,22 +78,4 @@ class Table < ActiveRecord::Base
       attribute[1].gsub(/(,|;)/, ' ') if attribute[1]
     end
   end
-
-  # CAN BE USEFUL IN FUTURE
-  def self.default_filters(attributes)
-    filter = /_id/
-    fields = attributes.select { |field| field =~ filter }
-    entities = fields.map do |field|
-      field.sub(/_id/, '').capitalize
-    end
-    result = {}
-    entities.each_with_index do |entity, i|
-      values = []
-      entity.constantize.all.each_with_index do |att, j|
-        values[j] = ['0': att.name.capitalize, '1': att.id]
-      end
-      result[fields[i]] = { name: entity, type: :list, values: values }
-    end
-    result
-  end
 end
