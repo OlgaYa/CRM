@@ -30,7 +30,7 @@ class Statistic < ActiveRecord::Base
 
   def self.destroy(object)
     Statistic.change_count(object, object.status_id)
-    Statistic.change_count(object, Status.default_status(object.for_type.upcase)) if object.status_id != Status.default_status(object.for_type.upcase)
+    Statistic.change_count(object, Status.default_status(object.type.upcase)) if object.status_id != Status.default_status(object.type.upcase)
   end
 
   def self.change_count(object, status_id)
@@ -41,7 +41,7 @@ class Statistic < ActiveRecord::Base
                                   level_id: object.level_id,
                                   for_type: object.type,
                                   week: object.updated_at.to_date.at_beginning_of_week).first
-    information.count -= 1
-    information.save
+    information.count -= 1 if information
+    information.save if information
   end
 end

@@ -5,6 +5,7 @@ class TablesController < ApplicationController
                                       :download_scoped_xls]
   before_action :current_entity, only: [:download_selective_xls,
                                         :download_scoped_xls]
+  after_action :send_remind_today, only: :update
   include ApplicationHelper
   
   def index
@@ -25,7 +26,7 @@ class TablesController < ApplicationController
   def create
     case params[:type]
     when 'SALE'
-     object = Sale.create(table_params)
+      object = Sale.create(table_params)
       redirect_to tables_path(only: 'open', type: 'SALE')
     when 'CANDIDATE'
       object = Candidate.create(table_params)
@@ -132,8 +133,8 @@ class TablesController < ApplicationController
       @table = @table.paginate(page: params[:page],
                                per_page: 10).order(params[:q][:s])
     else
-      @table = @table.paginate(page: params[:page],
-                               per_page: 10).oder_date_nulls_first
+      @table = @table.oder_date_nulls_first.paginate(page: params[:page],
+                                                     per_page: 10)
     end
   end
 
@@ -166,5 +167,14 @@ class TablesController < ApplicationController
 
   # NEED WRITE
   def scoped_candidate_data
+  end
+
+  def send_remind_today
+    table = Table.find(params[:id])
+    return unless table.status.contact_later?
+    reminder_date = table.reminder_date
+    if reminder_date.to_date == Date.today
+      UserMailer.remind_today(table.id).deliver_later(wait_until: reminder_date)
+    end
   end
 end

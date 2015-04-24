@@ -59,7 +59,7 @@ class User < ActiveRecord::Base
     tables.each do |t|
       reminder_date = t.reminder_date
       if reminder_date.to_date == Date.today
-        UserMailer.remind_today(t).deliver_later(wait_until: reminder_date)
+        UserMailer.remind_today(t.id).deliver_later(wait_until: reminder_date)
       end
     end
   end

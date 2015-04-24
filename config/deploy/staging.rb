@@ -33,12 +33,4 @@ namespace :deploy do
       deploy.start
     end
   end
-
-  # task :migrations, roles: :app do
-  #   puts "\033[31m Migrations in #{stage} is disabled \033[0m"
-  # end
-
-  # task :migrate, roles: :app do
-  #   puts "\033[31m Migrations in #{stage} is disabled \033[0m"
-  # end
 end
