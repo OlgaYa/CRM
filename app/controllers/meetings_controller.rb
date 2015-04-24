@@ -3,6 +3,7 @@ class MeetingsController < ApplicationController
 	require 'google_calendar'
 
 	def index
+		@type = params[:type]
 	end 
 
 
@@ -24,7 +25,6 @@ class MeetingsController < ApplicationController
 									   :refresh_token => config['refresh_token'])
 			event = cal.create_event do |e|
 				e.title = @meeting.title
-				binding.pry
 				e.description = @meeting.description.gsub(/\r\n/, "\\n")
 				e.start_time = @meeting.start_time
 				e.end_time = @meeting.end_time

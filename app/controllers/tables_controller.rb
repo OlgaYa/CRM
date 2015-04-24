@@ -12,11 +12,14 @@ class TablesController < ApplicationController
     when 'CANDIDATE'
       @table = candidate_table
       @q = Candidate.ransack(params[:q])
+      @value_for_description = SimpleText.text_for_candidate
     when 'SALE'
       @table = sale_table
       @q = Sale.ransack(params[:q])
+      value_for_description = ""
     end
     paginate_table
+    @type = params[:type]
   end
 
   def create

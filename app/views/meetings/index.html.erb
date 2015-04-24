@@ -1,3 +1,19 @@
-<div >
-	<iframe src="https://www.google.com/calendar/embed?showTitle=0&amp;height=600&amp;wkst=1&amp;hl=ru&amp;bgcolor=%23FFFFFF&amp;src=crm.sloboda.studio%40gmail.com&amp;color=%231B887A&amp;ctz=Europe%2FKiev" style="margin-left: 5%; margin-rigth: 5%" width="90%" height="500" frameborder="0" scrolling="no"></iframe>
+<div id="candidate_calendar">
+	<iframe src="https://www.google.com/calendar/embed?src=mtqotfm54sgjsbkok95fumjhi8%40group.calendar.google.com&ctz=Europe/Kiev"  style="margin-left: 5%; margin-rigth: 5%" width="90%" height="500" frameborder="0" scrolling="no"></iframe>
 </div>
+
+<div id="sale_calendar">
+	<iframe src="https://www.google.com/calendar/embed?src=mdi0jpi6q1rb3hluj05ja0uftg%40group.calendar.google.com&ctz=Europe/Kiev" style="margin-left: 5%; margin-rigth: 5%" width="90%" height="500" frameborder="0" scrolling="no"></iframe>
+</div>
+
+<script type="text/javascript">
+	var type = "<%= @type%>";
+	if(type == "SALE"){
+		$("#candidate_calendar").css( "display", "none");
+		$("#sale_calendar").css( "display", "block");
+	}
+	if(type == "CANDIDATE"){
+		$("#candidate_calendar").css( "display", "block");
+		$("#sale_calendar").css( "display", "none");
+	}
+</script>
