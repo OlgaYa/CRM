@@ -1,0 +1,38 @@
+<div id='filters-place'>
+  <%= search_form_for @q, url: tables_path, class: 'filters-place-form' do |f| %>
+    <% if params[:type] == 'SALE' %>
+      <%= select('q', 'user_id_eq',
+                 User.all.where(role: 'seller').collect { |u| [u.full_name, u.id] },
+                 { include_blank: 'Assigned to' },
+                 class: 'btn  btn-default')
+      %>
+    <% else %>
+      <%= select('q', 'specialization_id_eq',
+               Specialization.all.collect { |s| [s.name, s.id] },
+               { include_blank: 'Specialization' },
+               class: 'btn  btn-default')
+      %>
+      <%= select('q', 'level_id_eq',
+               Level.all.collect { |l| [l.name, l.id] },
+               { include_blank: 'Level' },
+               class: 'btn  btn-default')
+      %>
+    <% end %>
+    <%= select('q', 'status_id_eq', 
+               Status.all.where(for_type: params[:type].downcase).collect { |s| [s.name.capitalize, s.id] },
+               { include_blank: 'Status' },
+               class: 'btn  btn-default') 
+    %>
+    <%= select('q', 'source_id_eq',
+               Source.all.where(for_type: params[:type].downcase).collect { |s| [s.name.capitalize, s.id] },
+               { include_blank: 'Source' },
+               class: 'btn  btn-default') 
+    %>
+    <%= f.search_field :date_gteq, placeholder: 'From', class: 'form-control form-control-search-filter date-input-filter' %>
+    <%= f.search_field :date_lteq, placeholder: 'To', class: 'form-control form-control-search-filter date-input-filter' %>
+
+    <%= hidden_field :type, '', name: 'type', id: 'type', value: params[:type] %>
+    <%= hidden_field :type, '', name: 'only', id: 'only', value: params[:only] %>
+    <%= f.submit 'Filter',  class: 'btn btn-sm btn-primary' %>
+  <% end %>
+</div>

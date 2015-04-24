@@ -63,4 +63,7 @@ Rails.application.routes.draw do
   # CRUD TABLE LINKS
   post   'tables/links',    to: 'tables#create_link'
   delete 'tables/link/:id', to: 'tables#destroy_link', as: :link
+
+  # JSON STRING FOR FILTERS
+  post   'tables/filters',  to: 'tables#json_filters'
 end

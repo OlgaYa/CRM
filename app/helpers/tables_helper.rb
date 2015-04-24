@@ -9,8 +9,6 @@ module TablesHelper
                          skype: :skype,
                          user: :user_id }
 
-  DEFAULT_SORT = 'date:desc,user_id,status_id'
-
   def export_field
     case params[:type]
     when 'SALE'
@@ -66,7 +64,7 @@ module TablesHelper
         concat content_tag(:th, '#')
         concat content_tag(:th, 'Name')
         concat content_tag(:th, 'Topic')
-        concat generate_sortable_th('sort', 'Source', :source_id)
+        concat generate_sortable_th('sort', 'Source', :source_name)
         concat content_tag(:th, 'Skype')
         concat content_tag(:th, 'Email')
         concat content_tag(:th, 'Links')
@@ -85,10 +83,11 @@ module TablesHelper
       content_tag(:tr, class: 'info') do
         concat content_tag(:th, '#')
         concat content_tag(:th, 'Name')
-        concat generate_sortable_th('sort', 'Level', :level_id)
-        concat generate_sortable_th('sort', 'Specialization', :specialization_id)
+        concat generate_sortable_th('sort', 'Level', :level_name)
+        concat generate_sortable_th('sort', 'Specialization', :specialization_name)
         concat content_tag(:th, 'Email')
-        concat generate_sortable_th('sort', 'Source', :source_id)
+        concat content_tag(:th, 'Skype')
+        concat generate_sortable_th('sort', 'Source', :source_name)
         concat content_tag(:th, 'Links')
         concat generate_sortable_th('sort', 'Date', :date)
         concat generate_sortable_th('sort', 'Status', :status_id)
@@ -144,6 +143,7 @@ module TablesHelper
       concat table_level candidate.level_id
       concat table_specialization candidate.specialization_id
       concat table_email candidate.email
+      concat table_skype candidate.skype
       concat table_source candidate.source_id
       concat table_links candidate.links
       concat table_date candidate.date

@@ -13,7 +13,7 @@ body > #wrapper {
   position: relative;
   min-height: 100%;
   padding-bottom: 50px;
-  padding-top: 70px;
+  padding-top: 50px;
   height: 100% !important;
 }
 
@@ -34,8 +34,6 @@ a.navbar-brand {
 .navbar-default .navbar-nav > .open > a:focus{
   background-color: #5B626F !important;
 }
-
-
 
 
 /* HEADER */
@@ -62,37 +60,19 @@ a.navbar-brand {
 /* TASK TABLE */
 
 .controll-panel {
-  position: absolute;
+  display: block;
 }
 
 .tasks-sub-menu {
   display: flex;
 }
 
-/*.add-new {
-  top: 0px;
-  left: 57px;
-  position: absolute;
-}
-*/
 .sort:hover {
   cursor: pointer;
 }
 
 .tasks-sub-menu {
   position: absolute;
-}
-
-.sortable {
-  background: asset-data-url("sort_both.png") no-repeat center right;
-}
-
-.sort_asc {
-  background: asset-data-url("sort_asc.png") no-repeat center right; 
-}
-
-.sort_desc {
-  background: asset-data-url("sort_desc.png") no-repeat center right; 
 }
 
 /* must be removed */
@@ -178,10 +158,7 @@ td .comment:last-child{
   margin-left: 0%;
   margin-right: 0%;
 }
-/*.comment:nth-child(even){
-  margin-left: 20%;
-}
-*/
+
 .comment_body {
   margin-top: 15px;
   width: 255px;
@@ -471,10 +448,11 @@ footer {
 }
 
 #chosen:focus {
-    border-color: #66AFE9;
-    outline: 0px none;
-    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(102, 175, 233, 0.6);
-    }
+  border-color: #66AFE9;
+  outline: 0px none;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(102, 175, 233, 0.6);
+}
+
 #myModalLabel{
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 16px;
@@ -482,6 +460,7 @@ footer {
   color: #9F9999;
   text-align: center;
 }
+
 /* EXPORT PAGE */
 
 .export-radio-group {

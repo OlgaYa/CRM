@@ -9,14 +9,13 @@ class TablesController < ApplicationController
   include ApplicationHelper
   
   def index
-    case params[:type]
-    when 'CANDIDATE'
-      @table = candidate_table
-      @q = Candidate.ransack(params[:q])
-    when 'SALE'
-      @table = sale_table
-      @q = Sale.ransack(params[:q])
-    end
+    @q = case params[:type]
+         when 'CANDIDATE'
+           candidate_table
+         when 'SALE'
+           sale_table
+         end.ransack(params[:q])
+    @table = @q.result.includes(:source, :status)
     paginate_table
   end
 
@@ -36,8 +35,11 @@ class TablesController < ApplicationController
     table = Table.find(params[:id])
     table.update_attributes(table_params)
     Statistic.update_statistics(table)
-    if (params[:table][:user_id] and params[:table][:user_id].to_i != current_user.id)
-      UserMailer.new_assign_user_instructions(table, current_user, params[:table][:user_id].to_i).deliver
+    if not_itself_id?(params[:table][:user_id])
+      UserMailer.new_assign_user_instructions(table,
+                                              current_user,
+                                              params[:table][:user_id].to_i)
+        .deliver
     end
     render json: 'success'.to_json
   end
@@ -71,12 +73,12 @@ class TablesController < ApplicationController
   end
 
   def download_scoped_xls
-    case params[:type]
-    when 'SALE'
-      tables = scoped_sale_data
-    when 'CANDIDATE'
-      tables = scoped_candidate_data
-    end
+    tables = case params[:type]
+             when 'SALE'
+               scoped_sale_data
+             when 'CANDIDATE'
+               scoped_candidate_data
+             end
     send_for_user tables.in_time_period(params[:period][:from],
                                         params[:period][:to])
   end
@@ -86,92 +88,103 @@ class TablesController < ApplicationController
               filename: 'data.xls')
   end
 
+  # CAN BE USEFUL IN FUTURE
+  def json_filters
+    render json: case params[:type]
+                 when 'SALE'
+                   Sale.simple_filters
+                 when 'CANDIDATE'
+                   Candidate.simple_filters
+                 end.to_json
+  end
+
   private
 
-  def table_params
-    params.require(:table).permit(:type, :name, :level_id,
-                                  :specialization_id,
-                                  :email, :source_id,
-                                  :date, :status_id,
-                                  :topic, :skype,
-                                  :user_id, :price,
-                                  :date_end, :date_start,
-                                  :reminder_date)
-  end
-
-  def sale_table
-    case params[:only]
-    when 'sold'
-      Sale.sold
-    when 'declined'
-      Sale.declined
-    else
-      Sale.open
+    def table_params
+      params.require(:table).permit(:type, :name, :level_id,
+                                    :specialization_id,
+                                    :email, :source_id,
+                                    :date, :status_id,
+                                    :topic, :skype,
+                                    :user_id, :price,
+                                    :date_end, :date_start,
+                                    :reminder_date)
     end
-  end
 
-  def candidate_table
-    case params[:only]
-    when 'hired'
-      Candidate.hired
-    when 'we_declined'
-      Candidate.we_declined
-    when 'he_declined'
-      Candidate.he_declined
-    when 'contact_later'
-      Candidate.contact_later
-    else
-      Candidate.open
+    def sale_table
+      case params[:only]
+      when 'sold'
+        Sale.sold
+      when 'declined'
+        Sale.declined
+      else
+        Sale.open
+      end
     end
-  end
 
-  def paginate_table
-    if params[:q] && params[:q][:s]
+    def candidate_table
+      case params[:only]
+      when 'hired'
+        Candidate.hired
+      when 'we_declined'
+        Candidate.we_declined
+      when 'he_declined'
+        Candidate.he_declined
+      when 'contact_later'
+        Candidate.contact_later
+      else
+        Candidate.open
+      end
+    end
+
+    def paginate_table
       @table = @table.paginate(page: params[:page],
-                               per_page: 10).order(params[:q][:s])
-    else
-      @table = @table.oder_date_nulls_first.paginate(page: params[:page],
-                                                     per_page: 10)
+                               per_page: 10).oder_date_nulls_first
     end
-  end
 
-  def nil_if_blank
-    params[:period][:from] = nil if params[:period][:from].blank?
-    params[:period][:to] = nil if params[:period][:to].blank?
-  end
-
-  def current_entity
-    case params[:type]
-    when 'SALE'
-      @entity = Sale
-    when 'CANDIDATE'
-      @entity = Candidate
+    def nil_if_blank
+      params[:period][:from] = nil if params[:period][:from].blank?
+      params[:period][:to] = nil if params[:period][:to].blank?
     end
-  end
 
-  def scoped_sale_data
-    case params[:export]
-    when 'sold'
-      Sale.sold
-    when 'declined'
-      Sale.declined
-    when 'open'
-      Sale.open
-    else
-      Sale.all
+    def current_entity
+      case params[:type]
+      when 'SALE'
+        @entity = Sale
+      when 'CANDIDATE'
+        @entity = Candidate
+      end
     end
-  end
 
-  # NEED WRITE
-  def scoped_candidate_data
-  end
-
-  def send_remind_today
-    table = Table.find(params[:id])
-    return unless table.status.contact_later?
-    reminder_date = table.reminder_date
-    if reminder_date.to_date == Date.today
-      UserMailer.remind_today(table.id).deliver_later(wait_until: reminder_date)
+    def scoped_sale_data
+      case params[:export]
+      when 'sold'
+        Sale.sold
+      when 'declined'
+        Sale.declined
+      when 'open'
+        Sale.open
+      else
+        Sale.all
+      end
     end
-  end
+
+    # NEED WRITE
+    def scoped_candidate_data
+    end
+
+    # NEED OPIMIZE
+    def send_remind_today
+      return unless params[:table][:status_id] && Status.find(params[:table][:status_id]).contact_later? 
+      table = Table.find(params[:id])
+      reminder_date = table.reminder_date
+      return unless reminder_date.to_date == Date.today && reminder_date > DateTime.current
+      UserMailer.remind_today(table.id)
+        .deliver_later(wait_until: reminder_date)
+    end
+
+    def not_itself_id?(id)
+      return false unless id
+      current_user.id != id.to_i
+    end
 end

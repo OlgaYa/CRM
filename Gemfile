@@ -23,6 +23,7 @@ gem 'cancancan', '~> 1.10'
 gem 'sidekiq', '~> 2.17.7'
 gem 'sinatra'
 gem 'ransack'
+gem 'capistrano-sidekiq', '0.3.0'
 
 group :development do
   gem 'spring'

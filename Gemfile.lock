@@ -61,6 +61,9 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
+    capistrano-sidekiq (0.3.0)
+      capistrano
+      sidekiq
     celluloid (0.15.2)
       timers (~> 1.1.0)
     climate_control (0.0.3)
@@ -272,6 +275,7 @@ DEPENDENCIES
   bootstrap3-datetimepicker-rails (~> 4.7.14)
   cancancan (~> 1.10)
   capistrano (~> 2.13.0)
+  capistrano-sidekiq (= 0.3.0)
   devise
   enumerize
   google-api-client

@@ -1,5 +1,9 @@
 # This class defines essence of which users will be working with the role seller
 class Sale < Table
+  # CAN BE USEFUL IN FUTURE
+  FILTER_ENTITIES = %w(user_id source_id status_id)
+  FILTER_DATE_FIELDS = %w(date_start date_end)
+
   def self.default_scope
     select(:id, :name, :skype,
            :email, :date,
@@ -30,5 +34,10 @@ class Sale < Table
 
   def self.declined
     all.join_statuses.where("statuses.name = 'declined'")
+  end
+
+  # CAN BE USEFUL IN FUTURE
+  def self.simple_filters
+    default_filters FILTER_ENTITIES
   end
 end

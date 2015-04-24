@@ -374,6 +374,10 @@ $(document).ready(function(){
     return $(this).parent().attr('id');
   }
 
+  $('.date-input-filter').datepicker({
+    dateFormat: 'yy-mm-dd',
+  });
+
 });  
 
 $(function () {
