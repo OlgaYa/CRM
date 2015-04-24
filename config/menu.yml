@@ -14,12 +14,12 @@ seller:
       name: 'Events'
       item one:
         name: 'Meetings'
-        path: '/meetings'
+        path: '/meetings?type=SALE'
     sub menu three:
       name: 'Info'
       item one:
         name: 'Statistic'
-        path: '/statistics'
+        path: '/statistics?type=SALE'
 hr:
 hh:
   menu:
@@ -28,6 +28,16 @@ hh:
       item one:
         name: 'Candidates'
         path: '/tables?only=open&type=CANDIDATE'
+      item dev one:
+        divider: true
+      item two:
+        name: 'Meetings'
+        path: '/meetings?type=CANDIDATE'
+      item dev two:
+        divider: true
+      item three:
+        name: 'Text for interview'
+        path: '/admin/email_texts/interview_text'
 admin:
   menu:
     sub menu one:
@@ -39,12 +49,12 @@ admin:
         divider: true
       item fore:
         name: 'Meetings'
-        path: '/meetings'
+        path: '/meetings?type=SALE'
       item dev three:
         divider: true
       item five:
         name: 'Statistic'
-        path: '/statistics'
+        path: '/statistics?type=SALE'
       item dev fore:
         divider: true
       item six:
@@ -55,6 +65,16 @@ admin:
       item one:
         name: 'Candidates'
         path: '/tables?only=open&type=CANDIDATE'
+      item dev one:
+        divider: true
+      item two:
+        name: 'Meetings'
+        path: '/meetings?type=CANDIDATE'
+      tem dev two:
+        divider: true
+      item three:
+        name: 'Text for interview'
+        path: '/admin/email_texts/interview_text'
     sub menu three:
       name: 'Admin panel'
       item one:

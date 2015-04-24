@@ -7,16 +7,19 @@ class TablesController < ApplicationController
                                         :download_scoped_xls]
   after_action :send_remind_today, only: :update
   include ApplicationHelper
-  
+
   def index
     @q = case params[:type]
          when 'CANDIDATE'
+           @value_for_description = SimpleText.text_for_candidate
            candidate_table
          when 'SALE'
+           @value_for_description = ""
            sale_table
          end.ransack(params[:q])
     @table = @q.result.includes(:source, :status)
     paginate_table
+    @type = params[:type]
   end
 
   def create

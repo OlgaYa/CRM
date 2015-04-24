@@ -35,4 +35,22 @@ module AdminHelper
   def can_not_remove?(field, id)
     (field == 'status_id' && Status.find(id).unchengeble_satus?) || Table.exists?({field => id})
   end  
+
+  def custom_admin_text_area_tag(name, content = nil, options = {})
+    content_tag("div", class: "field textarea") do
+      text_area_tag(name, content, class: "text_area_for_mail")
+    end
+  end
+
+  def button(args)
+    if args[:wrapper]
+      content_tag('div', class: "button-wrapper #{args[:wrapper_class]}") do
+        content_tag('a', args[:text], class: "button #{args[:class]}", href: args[:href], type: args[:type] || 'button',
+                        'data-method' => args[:method])
+      end
+    else
+      content_tag('a', args[:text], class: "button #{args[:class]}", href: args[:href], type: args[:type] || 'button',
+                      'data-method' => args[:method])
+    end
+  end
 end

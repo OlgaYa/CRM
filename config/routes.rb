@@ -66,4 +66,6 @@ Rails.application.routes.draw do
 
   # JSON STRING FOR FILTERS
   post   'tables/filters',  to: 'tables#json_filters'
+  
+  match 'admin/email_texts/:action(/:id)' => 'admin/email_texts', via: :all
 end

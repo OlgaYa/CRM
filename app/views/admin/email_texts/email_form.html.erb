@@ -1,0 +1,11 @@
+<div class="row">
+	<div class="col-lg-6 col-md-8 col-lg-offset-3 col-md-offset-2" id="plan">
+		<div class="meeting_title"> <%= @title %> </div>
+		<%= form_tag "/admin/email_texts/#{controller.action_name}" do %>
+			<div class="form" class="text_form_for_mail">
+				<%= custom_admin_text_area_tag(controller.action_name.to_s, @email_text, placeholder: "Текст письма" )%>
+				<%= submit_tag('Изменить')%>
+			</div>
+		<% end %>
+	</div>
+</div>
