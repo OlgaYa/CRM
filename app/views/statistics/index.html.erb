@@ -1,48 +1,43 @@
-<div class="statistics">
-	<%= form_tag change_information_statistics_path, remote: true do %>
-		<span> From: </span>
-		<div class="date">
-			<%= text_field_tag :dateFrom, Date.today.at_beginning_of_week.strftime("%d-%m-%Y"), id:"dpd1" %><br />
-		</div>
-		<span> to: </span>
-		<div class="date">
-			<%= text_field_tag :dateTo, Date.today.at_end_of_week.strftime("%d-%m-%Y"), id:"dpd2" %><br />
-		</div>
-		<span> Status: </span><br/>
-		<div class="datestatistic">
-			<div class="side-by-side clearfix">
-	      <%= select_tag "Status", options_for_select(Status.all.collect {|p| [ p.name, p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-status", name: 'status[]', id: 'status', "data-placeholder" => 'Select Status ...' %>
-	    </div>
-		</div>
-		<span> Assign: </span><br/>
-		<div class="datestatistic">
-			<div class="side-by-side clearfix">
-	      <%= select_tag("User", options_for_select(User.all.collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-user", name: 'users[]', id: 'user', "data-placeholder" => 'Select User ...') %>
-	    </div>
-		</div>
-		<span> Source: </span><br/>
-		<div class="datestatistic">
-			<div class="side-by-side clearfix">
-	          <%= select_tag("Source", options_for_select(Source.all.collect {|p| [p.name , p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-source", name: 'sources[]', id: 'source', "data-placeholder" => 'Select Sources ...') %>
-	        </div>
-		</div>
-	<% end %>
-</div>
+<div class="row">
+  <div class="container-fluid">
+    <div class="statistics">
+      <%= form_tag change_information_statistics_path(type: @type), remote: true do %>
+        <span> From: </span>
+        <div class="date">
+          <%= text_field_tag :dateFrom, Date.today.at_beginning_of_week.strftime("%d-%m-%Y"), id:"dpd1" %><br />
+        </div>
+        <span> to: </span>
+        <div class="date">
+          <%= text_field_tag :dateTo, Date.today.at_end_of_week.strftime("%d-%m-%Y"), id:"dpd2" %><br />
+        </div>
+        <span> Assign: </span><br/>
+        <div class="datestatistic">
+          <div class="side-by-side clearfix">
+            <%= select_tag("User", options_for_select(find_collect_for_select(@type, "user").collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-user", name: 'user[]', id: 'user', "data-placeholder" => 'Select User ...') %>         
+          </div>
+        </div>
+        <% array_select_field(@type).each do |name|%>
+          <%= render partial: "select_for_option", locals: {name: name} %>
+        <% end %>
+      <% end %>
+    </div>
 
-<div class="graphics">
+    <div class="graphics">
+    </div>
+  </div>
 </div>
 
 <script type="text/javascript">
-	$(document).ready(function(){
-		$('form :input').on('change', function(e){
-			$('form').submit();
-		})
-		$(".chosen-select-user").chosen();
-		$(".chosen-select-status").chosen();
-		$(".chosen-select-source").chosen()
+  $(document).ready(function(){
+    $('form :input').on('change', function(e){
+      $('form').submit();
+    })
+    $(".chosen-select-user").chosen();
+    $(".chosen-select-status").chosen();
+    $(".chosen-select-source").chosen()
 
-		var checkin = $('#dpd1').datepicker( {dateFormat: 'dd-mm-yy'});
-		var checkout = $('#dpd2').datepicker({ dateFormat: 'dd-mm-yy'});
-	});
+    var checkin = $('#dpd1').datepicker( {dateFormat: 'dd-mm-yy'});
+    var checkout = $('#dpd2').datepicker({ dateFormat: 'dd-mm-yy'});
+  });
 
 </script>

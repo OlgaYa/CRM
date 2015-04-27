@@ -41,7 +41,9 @@ class Statistic < ActiveRecord::Base
                                   level_id: object.level_id,
                                   for_type: object.type,
                                   week: object.updated_at.to_date.at_beginning_of_week).first
-    information.count -= 1 if information
-    information.save if information
+    if information
+      information.count -= 1
+      information.count.zero? ? information.delete : information.save
+    end
   end
 end

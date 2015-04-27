@@ -38,6 +38,11 @@ hh:
       item three:
         name: 'Text for interview'
         path: '/admin/email_texts/interview_text'
+      item dev three:
+        divider: true
+      item fore:
+        name: 'Statistic'
+        path: '/statistics?type=CANDIDATE'
 admin:
   menu:
     sub menu one:
@@ -75,6 +80,11 @@ admin:
       item three:
         name: 'Text for interview'
         path: '/admin/email_texts/interview_text'
+      item dev three:
+        divider: true
+      item fore:
+        name: 'Statistic'
+        path: '/statistics?type=CANDIDATE'
     sub menu three:
       name: 'Admin panel'
       item one:
