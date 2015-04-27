@@ -143,8 +143,8 @@ class TablesController < ApplicationController
     end
 
     def paginate_table
-      @table = @table.paginate(page: params[:page],
-                               per_page: cookies[:lid_count] || 25).oder_date_nulls_first
+      @table = @table.oder_date_nulls_first.paginate(page: params[:page],
+                               per_page: cookies[:lid_count] || 25)
     end
 
     def nil_if_blank
