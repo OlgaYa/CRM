@@ -14,6 +14,10 @@
   height: 100%;
 }
 
+footer .container-fluid {
+  padding-bottom: 
+}
+
 .navbar-right .dropdown{
   margin-right: 20px;
 }
@@ -130,10 +134,6 @@ table {
 
 .navbar-default .navbar-nav > li > a{
   color: rgba(255,255,255, 0.8) !important;
-}
-
-ul.pagination{
-  margin-bottom: 100px !important;
 }
 
  /*FIXME*/ 

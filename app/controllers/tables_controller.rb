@@ -5,7 +5,9 @@ class TablesController < ApplicationController
                                       :download_scoped_xls]
   before_action :current_entity, only: [:download_selective_xls,
                                         :download_scoped_xls]
+  before_action :lid_count_conf, only: :index
   after_action :send_remind_today, only: :update
+
   include ApplicationHelper
 
   def index
@@ -142,7 +144,7 @@ class TablesController < ApplicationController
 
     def paginate_table
       @table = @table.paginate(page: params[:page],
-                               per_page: 10).oder_date_nulls_first
+                               per_page: cookies[:lid_count] || 25).oder_date_nulls_first
     end
 
     def nil_if_blank
@@ -184,6 +186,11 @@ class TablesController < ApplicationController
       return unless reminder_date.to_date == Date.today && reminder_date > DateTime.current
       UserMailer.remind_today(table.id)
         .deliver_later(wait_until: reminder_date)
+    end
+
+    def lid_count_conf
+      return unless params[:lid_count]
+      cookies[:lid_count] = params[:lid_count]
     end
 
     def not_itself_id?(id)

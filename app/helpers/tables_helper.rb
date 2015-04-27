@@ -361,4 +361,9 @@ module TablesHelper
            class: class_names + 'selectable-field btn btn-default',
            fieldname: field_name_2)
   end
+
+  def active_link(count)
+    return unless cookies[:lid_count].to_i == count.to_i
+    'active-link-per-page'
+  end
 end

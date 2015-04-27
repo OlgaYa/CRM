@@ -77,5 +77,10 @@
   height: 30px !important;
   min-height: 30px;
   border-radius: 0;
+  margin-top: -20px;
 }
 
+.active-link-per-page {
+  color: #4A4343;
+  text-decoration: underline;
+}

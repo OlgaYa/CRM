@@ -27,7 +27,13 @@
       <table class="table table-striped table-bordered table-condensed table-responsive data-table">
         <%= table_generation @table %>
       </table>
-      <div class="text-center">
+      <div class='lid-count'>
+        <%= label_tag 'Per page:' %>
+        <%= link_to '25', tables_path(type: params[:type], only: params[:only], lid_count: 25, q: params[:q]), class: active_link(25) %>
+        <%= link_to '100', tables_path(type: params[:type], only: params[:only], lid_count: 100, q: params[:q]), class: active_link(100) %>
+        <%= link_to '200', tables_path(type: params[:type], only: params[:only], lid_count: 200, q: params[:q]), class: active_link(200) %>
+      </div>
+      <div class='text-center'>
         <%= will_paginate @table, renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
       </div>
     </div>
