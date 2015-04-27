@@ -178,8 +178,8 @@ class TablesController < ApplicationController
 
     # NEED OPIMIZE
     def send_remind_today
-      return unless params[:table][:status_id] && Status.find(params[:table][:status_id]).contact_later? 
       table = Table.find(params[:id])
+      return unless table.status.contact_later? && params[:table][:reminder_date]
       reminder_date = table.reminder_date
       return unless reminder_date.to_date == Date.today && reminder_date > DateTime.current
       UserMailer.remind_today(table.id)
