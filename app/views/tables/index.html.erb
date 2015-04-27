@@ -4,7 +4,6 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
     <%= render 'shared/notifier' %>
-
       <!-- FIXME -->
       <div class='controll-panel'>
         <%= form_for(Table.new)  do |f| %>
@@ -21,11 +20,20 @@
           <%= f.text_field(:status_id, hidden: true,  value: Status.default_status(params[:type])) %>
         <% end %>
       </div>
+      
+      <%= render 'filters' %>
+      <%= render 'table_search' %>
 
       <table class="table table-striped table-bordered table-condensed table-responsive data-table">
         <%= table_generation @table %>
       </table>
-      <div class="text-center">
+      <div class='lid-count'>
+        <%= label_tag 'Per page:' %>
+        <%= link_to '25', tables_path(type: params[:type], only: params[:only], lid_count: 25, q: params[:q]), class: active_link(25) %>
+        <%= link_to '100', tables_path(type: params[:type], only: params[:only], lid_count: 100, q: params[:q]), class: active_link(100) %>
+        <%= link_to '200', tables_path(type: params[:type], only: params[:only], lid_count: 200, q: params[:q]), class: active_link(200) %>
+      </div>
+      <div class='text-center'>
         <%= will_paginate @table, renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
       </div>
     </div>
@@ -119,5 +127,4 @@
     </div>
   </div>
 </div>
-
 <!-- End hidden blocks -->

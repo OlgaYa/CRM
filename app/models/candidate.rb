@@ -3,7 +3,7 @@ class Candidate < Table
   def self.default_scope
     select(:id, :name, :level_id,
            :specialization_id,
-           :email, :source_id,
+           :email, :skype, :source_id,
            :date, :status_id,
            :type, :created_at,
            :updated_at)
@@ -12,7 +12,7 @@ class Candidate < Table
   def self.all_contact_later
     select(:id, :name, :level_id,
            :specialization_id,
-           :email, :source_id,
+           :email, :skype, :source_id,
            :date, :status_id,
            :type, :created_at,
            :updated_at, :user_id,

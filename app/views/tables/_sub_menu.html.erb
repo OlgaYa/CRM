@@ -1,6 +1,9 @@
-<div class='tables-sub-menu'>  
-    <ul class="tables-sub-menu-nav nav nav-tabs">
-      <% if params[:type] == 'SALE' %>
+<nav class="navbar navbar-inverse" id='navbar-submenu' role="navigation">
+ <div class="container-fluid">
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id='tables-sub-menu'>
+      <ul id='tables-sub-menu-nav' class="nav navbar-nav">
+        <% if params[:type] == 'SALE' %>
         <li class=<%= 'active' if params[:only] == 'open' || !params[:only] %>>
           <%= link_to('Open', tables_path(type: 'SALE', only: 'open')) %>
         </li>
@@ -27,5 +30,7 @@
           <%= link_to('Contact Later', tables_path(type: 'CANDIDATE', only: 'contact_later')) %>
         </li>
       <% end %>
-    </ul>
-</div>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>

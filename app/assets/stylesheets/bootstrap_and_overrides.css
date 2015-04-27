@@ -30,7 +30,7 @@ td.editable-field:hover {
 }
 table {
   font-size: 10pt;
-  margin-top: 50px;
+  margin-top: 20px;
 }
   table.data-table td {
     max-width: 200px;
@@ -130,10 +130,6 @@ table {
 
 .navbar-default .navbar-nav > li > a{
   color: rgba(255,255,255, 0.8) !important;
-}
-
-ul.pagination{
-  margin-bottom: 100px !important;
 }
 
  /*FIXME*/ 

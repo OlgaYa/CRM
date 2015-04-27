@@ -64,6 +64,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def name
+    full_name
+  end
+
   def self.all_except(user)
     where.not(id: user)
   end

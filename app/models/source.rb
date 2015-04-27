@@ -1,6 +1,5 @@
 class Source < ActiveRecord::Base  
-  has_many :sales
-  has_many :candidates
+  has_many :tables
   validates :name, presence: true, uniqueness: { scope: [:name, :for_type] }
 
   def self.all_sale

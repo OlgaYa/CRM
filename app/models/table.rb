@@ -2,8 +2,8 @@
 class Table < ActiveRecord::Base
   belongs_to :source
   belongs_to :status
-  belongs_to :specializations
-  belongs_to :levels
+  belongs_to :specialization
+  belongs_to :level
   belongs_to :user
   has_many :links
 

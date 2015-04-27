@@ -41,6 +41,11 @@
       selector.checkedAll(false);
     }
   }
+
+  $('.hasDatepicker').on('submit', function(){
+    return false;
+  });
+
 });
 
 $.fn.checkedAll = function(bool){
