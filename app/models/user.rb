@@ -88,6 +88,14 @@ class User < ActiveRecord::Base
     where(role: 'seller')
   end
 
+  def self.all_candidate
+    self.hh
+  end
+
+  def self.all_sale
+    self.seller
+  end
+
   def full_name
     "#{first_name.capitalize} #{last_name.capitalize}"
   end
