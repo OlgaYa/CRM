@@ -62,6 +62,7 @@ module TablesHelper
     content_tag(:thead) do
       content_tag(:tr, class: 'info') do
         concat content_tag(:th, '#')
+        concat content_tag(:th, 'Id')
         concat content_tag(:th, 'Name')
         concat content_tag(:th, 'Topic')
         concat generate_sortable_th('sort', 'Source', :source_name)
@@ -82,6 +83,7 @@ module TablesHelper
     content_tag(:thead) do
       content_tag(:tr, class: 'info') do
         concat content_tag(:th, '#')
+        concat content_tag(:th, 'Id')
         concat content_tag(:th, 'Name')
         concat generate_sortable_th('sort', 'Level', :level_name)
         concat generate_sortable_th('sort', 'Specialization', :specialization_name)
@@ -124,6 +126,7 @@ module TablesHelper
   def generate_sale_row(sale)
     content_tag(:tr, id: sale.id, class: generate_class_tr(sale.user_id)) do
       concat table_control sale.id
+      concat table_id sale.id
       concat table_name sale.name
       concat table_topic sale.topic
       concat table_source sale.source_id
@@ -143,6 +146,7 @@ module TablesHelper
   def generate_candidate_row(candidate)
     content_tag(:tr, id: candidate.id) do
       concat table_control candidate.id
+      concat table_id candidate.id
       concat table_name candidate.name
       concat table_level candidate.level_id
       concat table_specialization candidate.specialization_id
@@ -162,6 +166,11 @@ module TablesHelper
       name = 'row' + id.to_s
       check_box_tag(name, id, false, class: 'controll')
     end
+  end
+
+  def table_id(id)
+    content_tag(:td, id, class: 'id',
+                name: "row#{id}", value: 'id')
   end
 
   def table_reminder(date_time)
