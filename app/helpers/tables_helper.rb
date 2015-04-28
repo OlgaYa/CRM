@@ -117,8 +117,12 @@ module TablesHelper
     end
   end
 
+  def generate_class_tr(user_id)
+    user_id == current_user.id ? 'user_owner' : nil
+  end
+
   def generate_sale_row(sale)
-    content_tag(:tr, id: sale.id) do
+    content_tag(:tr, id: sale.id, class: generate_class_tr(sale.user_id)) do
       concat table_control sale.id
       concat table_name sale.name
       concat table_topic sale.topic

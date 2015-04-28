@@ -1,4 +1,4 @@
-<div class='table-search'>
+<div class='table-search pull-right'>
   <%= search_form_for @q, url: tables_path do |f| %>
     <%= f.search_field :name_or_topic_or_skype_or_email_cont, placeholder: 'Search', class: 'form-control form-control-search' %>
     <%= hidden_field :type, '', name: 'type', id: 'type', value: params[:type] %>
