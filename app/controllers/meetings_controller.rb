@@ -1,4 +1,3 @@
-# encoding: utf-8
 class MeetingsController < ApplicationController
   require 'rubygems'
   require 'google_calendar'
@@ -14,7 +13,7 @@ class MeetingsController < ApplicationController
     @meeting.end_time = @meeting.start_time + 1.hours unless @meeting.end_time
     @meeting.table = table
     if @meeting.save
-      comment = table.comments.create(user_id: current_user.id, body: "Назначен митинг #{@meeting.start_time.strftime('%Y-%m-%d в %H:%M')}", datetime: Date.today)
+      comment = table.comments.create(user_id: current_user.id, body: "Appointed meeting #{@meeting.start_time.strftime('%Y-%m-%d %H:%M')}", datetime: Date.today)
       config = YAML.load(File.read(File.join(Rails.root, 'config', 'calendar.yml')))
       case params[:type]
       when "SALE"
