@@ -323,7 +323,7 @@ module TablesHelper
     content_tag(:div, class: "comment c_#{comment.id}") do
       concat comment_topic(comment)
       concat link_remove_comment(comment)
-      concat content_tag(:p, comment.body)
+      concat content_tag(:p, auto_link(comment.body))
       concat content_tag(:div, '', class: 'clear')
     end
   end

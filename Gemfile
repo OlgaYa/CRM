@@ -25,6 +25,7 @@ gem 'sidekiq', '~> 2.17.7'
 gem 'sinatra'
 gem 'ransack'
 gem 'capistrano-sidekiq', '0.3.0'
+gem 'rails_autolink'
 
 group :development do
   gem 'spring'
