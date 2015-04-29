@@ -38,6 +38,7 @@ class TablesController < ApplicationController
 
   def update
     table = Table.find(params[:id])
+    Statistic.find_record_with_same_information(table, params[:table])
     table.update_attributes(table_params)
     Statistic.update_statistics(table)
     if not_itself_id?(params[:table][:user_id])
