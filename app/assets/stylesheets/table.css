@@ -87,3 +87,7 @@
   color: #4A4343;
   text-decoration: underline;
 }
+
+#can-hide {
+  background: asset-data-url('unlock-icon.png');
+}
