@@ -62,19 +62,19 @@ module TablesHelper
     content_tag(:thead) do
       content_tag(:tr, class: 'info') do
         concat content_tag(:th, '#')
-        concat content_tag(:th, 'Id')
-        concat content_tag(:th, 'Name')
-        concat content_tag(:th, 'Topic')
-        concat generate_sortable_th('sort', 'Source', :source_name)
-        concat content_tag(:th, 'Skype')
-        concat content_tag(:th, 'Email')
-        concat content_tag(:th, 'Links')
-        concat generate_sortable_th('sort', 'Date', :date)
-        concat generate_sortable_th('sort', 'Assign to', :user_id)
-        concat generate_sortable_th('sort', 'Status', :status_id)
-        concat content_tag(:th, 'Price') if name == 'sold'
-        concat content_tag(:th, 'Terms') if name == 'sold'
-        concat content_tag(:th, 'Comments')
+        concat content_tag(:th, 'Id', class: 'can-hide')
+        concat content_tag(:th, 'Name', class: 'can-hide')
+        concat content_tag(:th, 'Topic', class: 'can-hide')
+        concat generate_sortable_th('sort can-hide', 'Source', :source_name)
+        concat content_tag(:th, 'Skype', class: 'can-hide')
+        concat content_tag(:th, 'Email', class: 'can-hide')
+        concat content_tag(:th, 'Links', class: 'can-hide')
+        concat generate_sortable_th('sort can-hide', 'Date', :date)
+        concat generate_sortable_th('sort can-hide', 'Assign to', :user_id)
+        concat generate_sortable_th('sort can-hide', 'Status', :status_id)
+        concat content_tag(:th, 'Price', class: 'can-hide') if name == 'sold'
+        concat content_tag(:th, 'Terms', class: 'can-hide') if name == 'sold'
+        concat content_tag(:th, 'Comments', class: 'can-hide')
       end
     end
   end
@@ -83,18 +83,18 @@ module TablesHelper
     content_tag(:thead) do
       content_tag(:tr, class: 'info') do
         concat content_tag(:th, '#')
-        concat content_tag(:th, 'Id')
-        concat content_tag(:th, 'Name')
-        concat generate_sortable_th('sort', 'Level', :level_name)
-        concat generate_sortable_th('sort', 'Specialization', :specialization_name)
-        concat content_tag(:th, 'Email')
-        concat content_tag(:th, 'Skype')
-        concat generate_sortable_th('sort', 'Source', :source_name)
-        concat content_tag(:th, 'Links')
-        concat generate_sortable_th('sort', 'Date', :date)
-        concat generate_sortable_th('sort', 'Status', :status_id)
-        concat content_tag(:th, 'Reminder') if name == 'contact_later'
-        concat content_tag(:th, 'Comments')
+        concat content_tag(:th, 'Id', class: 'can-hide')
+        concat content_tag(:th, 'Name', class: 'can-hide')
+        concat generate_sortable_th('sort can-hide', 'Level', :level_name)
+        concat generate_sortable_th('sort can-hide', 'Specialization', :specialization_name)
+        concat content_tag(:th, 'Email', class: 'can-hide')
+        concat content_tag(:th, 'Skype', class: 'can-hide')
+        concat generate_sortable_th('sort can-hide', 'Source', :source_name)
+        concat content_tag(:th, 'Links', class: 'can-hide')
+        concat generate_sortable_th('sort can-hide', 'Date', :date)
+        concat generate_sortable_th('sort can-hide', 'Status', :status_id)
+        concat content_tag(:th, 'Reminder', class: 'can-hide') if name == 'contact_later'
+        concat content_tag(:th, 'Comments', class: 'can-hide')
       end
     end
   end
@@ -376,6 +376,7 @@ module TablesHelper
   end
 
   def active_link(count)
+    return 'active-link-per-page' if cookies[:lid_count] == count.to_s && cookies[:lid_count] == 'all'
     return unless cookies[:lid_count].to_i == count.to_i
     'active-link-per-page'
   end

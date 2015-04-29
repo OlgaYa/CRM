@@ -47,4 +47,15 @@ end
 
 after "deploy:update", "deploy:cleanup"
 
+namespace :db do
+
+    desc "Migrate Production Database"
+    task :migrate do
+      puts "\n\n=== Migrating the Production Database! ===\n\n"
+      run "cd #{deploy_to}/current && bundle exec rake db:migrate RAILS_ENV=production"
+    end
+
+  end
+
+
 require './config/boot'

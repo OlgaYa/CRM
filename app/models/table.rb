@@ -9,9 +9,18 @@ class Table < ActiveRecord::Base
 
   has_many :table_comments, dependent: :destroy
   has_many :comments, through: :table_comments
+  has_many :meetings, dependent: :destroy
 
   scope :join_statuses,
         -> { joins('INNER JOIN statuses ON tables.status_id = statuses.id') }
+
+  def date
+    if self.comments.empty?
+      self.created_at
+    else
+      self.comments.last.created_at
+    end.strftime("%Y-%m-%d")
+  end
 
   def self.in_time_period(from, to)
     from = DateTime.now - 365.day unless from

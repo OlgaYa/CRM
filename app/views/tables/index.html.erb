@@ -8,9 +8,9 @@
       <div class='controll-panel'>
         <%= form_for(Table.new)  do |f| %>
           <div class="btn-group">
-            <button class="btn btn-sm btn-danger delete"> 
+            <button class="btn btn-sm btn-danger delete">
             <span class="glyphicon glyphicon-trash"></span> Delete </button>
-            <button class="add-new btn btn-sm btn-info" type="submit"> 
+            <button class="add-new btn btn-sm btn-info" type="submit">
             <span class="glyphicon glyphicon-plus"></span> Add new </button>
 
           </div>
@@ -20,7 +20,7 @@
           <%= f.text_field(:status_id, hidden: true,  value: Status.default_status(params[:type])) %>
         <% end %>
       </div>
-      
+
       <%= render 'filters' %>
       <%= render 'table_search' %>
 
@@ -32,9 +32,12 @@
         <%= link_to '25', tables_path(type: params[:type], only: params[:only], lid_count: 25, q: params[:q]), class: active_link(25) %>
         <%= link_to '100', tables_path(type: params[:type], only: params[:only], lid_count: 100, q: params[:q]), class: active_link(100) %>
         <%= link_to '200', tables_path(type: params[:type], only: params[:only], lid_count: 200, q: params[:q]), class: active_link(200) %>
+        <%= link_to 'All', tables_path(type: params[:type], only: params[:only], lid_count: 'all', q: params[:q]), class: active_link('all') %>
       </div>
       <div class='text-center'>
+      <% unless cookies[:lid_count] == 'all' %>
         <%= will_paginate @table, renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
+      <% end %>
       </div>
     </div>
   </div>
@@ -87,7 +90,8 @@
       </div>
       <div class="modal-body">
         <div class="row" id="meeting_dialog">
-          <%= form_for :@meeting, :url => meetings_path(@meeting, :type => @type) do |f| %> 
+          <%= form_for :@meeting, :url => meetings_path(@meeting, :type => @type) do |f| %>
+            <%= f.hidden_field :table_id, class: "form-control" %>
             <div class="control-field">
               <%= f.text_field :title, class: 'form-control', placeholder: 'Title'%>
             </div>
