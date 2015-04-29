@@ -1,3 +1,4 @@
+# encoding: utf-8
 class MeetingsController < ApplicationController
   require 'rubygems'
   require 'google_calendar'
