@@ -19,8 +19,8 @@ class TablesController < ApplicationController
            @value_for_description = ""
            sale_table
          end.ransack(params[:q])
-    @table = @q.result.includes(:source, :status)
-    paginate_table
+    @table = @q.result.includes(:source, :status).oder_date_nulls_first
+    paginate_table if need_paginate?
     @type = params[:type]
   end
 
@@ -186,6 +186,10 @@ class TablesController < ApplicationController
       return unless reminder_date.to_date == Date.today && reminder_date > DateTime.current
       UserMailer.remind_today(table.id)
         .deliver_later(wait_until: reminder_date)
+    end
+
+    def need_paginate?
+      cookies[:lid_count] != 'all'      
     end
 
     def lid_count_conf
