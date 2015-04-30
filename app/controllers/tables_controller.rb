@@ -114,7 +114,7 @@ class TablesController < ApplicationController
                                     :topic, :skype,
                                     :user_id, :price,
                                     :date_end, :date_start,
-                                    :reminder_date)
+                                    :reminder_date, :lead)
     end
 
     def sale_table

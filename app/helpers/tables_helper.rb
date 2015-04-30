@@ -64,6 +64,7 @@ module TablesHelper
         concat content_tag(:th, '#')
         concat content_tag(:th, 'Id', class: 'can-hide')
         concat content_tag(:th, 'Name', class: 'can-hide')
+        concat generate_sortable_th('sort can-hide', 'Lead', :lead)
         concat content_tag(:th, 'Topic', class: 'can-hide')
         concat generate_sortable_th('sort can-hide', 'Source', :source_name)
         concat content_tag(:th, 'Skype', class: 'can-hide')
@@ -128,6 +129,7 @@ module TablesHelper
       concat table_control sale.id
       concat table_id sale.id
       concat table_name sale.name
+      concat table_lead sale.lead
       concat table_topic sale.topic
       concat table_source sale.source_id
       concat table_skype sale.skype
@@ -184,6 +186,12 @@ module TablesHelper
     content_tag(:td, name,
                 class: 'editable-field td-name',
                 name: 'table[name]', value: 'name')
+  end
+
+  def table_lead(lead)
+    content_tag(:td, '', class: 'td-specialization-id') do
+      select_field_with_no_selected(:table, :lead, (1..10).to_a, lead)
+    end
   end
 
   def table_level(level_id)

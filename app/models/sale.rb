@@ -6,7 +6,7 @@ class Sale < Table
            :user_id, :source_id,
            :topic, :status_id,
            :type, :created_at,
-           :updated_at)
+           :updated_at, :lead)
   end
 
   def self.all_sold
@@ -16,7 +16,7 @@ class Sale < Table
            :topic, :status_id,
            :price, :date_start,
            :date_end, :type,
-           :created_at, :updated_at)
+           :created_at, :updated_at, :lead)
   end
 
   def self.open
