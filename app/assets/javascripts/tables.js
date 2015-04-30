@@ -200,7 +200,7 @@ $(document).ready(function(){
       if(textStatus==='success'){
           updateDate(rowId, d, $td.children().attr('fieldname'));
           if($td.children().attr('fieldname') === 'status_id') {
-            if(selectedText == 'assigned_meeting'){
+            if(selectedText == 'assigned_meeting' || selectedText == 'interview'){
               $('#myModal').modal();
               $('#_meeting_table_id')[0].setAttribute('value',rowId);
             }
