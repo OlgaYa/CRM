@@ -139,7 +139,6 @@ module TablesHelper
       concat table_price sale.price if sale.status.sold?
       concat table_period sale.date_start,
                           sale.date_end if sale.status.sold?
-      concat table_comments sale.comments
       concat table_comments sale.comments.order(created_at: :desc)
     end
   end
