@@ -1,6 +1,0 @@
-client_id: 47998161823-ski3g1fuanlm6klueu4f0pp42083m099.apps.googleusercontent.com
-client_secret: m-F-vfaojfac6d4PB21or2TS
-calendar_sale: mdi0jpi6q1rb3hluj05ja0uftg@group.calendar.google.com
-calendar_candidate: mtqotfm54sgjsbkok95fumjhi8@group.calendar.google.com
-redirect_url: http://localhost:3000/auth/google_oauth2/callback
-refresh_token: 1/p-9uWiltpenNRIMIeBQuhMa3prVEKKKztC4Lwhzn51k

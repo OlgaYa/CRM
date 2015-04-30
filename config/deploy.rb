@@ -46,7 +46,7 @@ after 'deploy:start' do
 end
 
 after "deploy:update", "deploy:cleanup"
-after "deploy", "deploy:migrate"
+after "deploy", "db:migrate"
 
 namespace :db do
 
