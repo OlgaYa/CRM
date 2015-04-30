@@ -1,3 +1,4 @@
+# encoding: utf-8
 namespace :task_3625 do
   desc 'В таблице НН переименовать статус'
   # http://tasks.sloboda-studio.com/issues/3625
