@@ -189,7 +189,7 @@ module TablesHelper
   end
 
   def table_lead(lead)
-    content_tag(:td, '', class: 'td-specialization-id') do
+    content_tag(:td, '', class: 'td-lead') do
       select_field_with_no_selected(:table, :lead, (1..10).to_a, lead)
     end
   end
