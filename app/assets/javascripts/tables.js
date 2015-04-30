@@ -127,8 +127,8 @@ $(document).ready(function(){
         url: path,
         data: dataForSend,
         success: function(data){
-          $editableActivityDialog.children('div').append(data);
-          $td.children('div').append(data);
+          $editableActivityDialog.children('div').prepend(data);
+          $td.children('div').prepend(data);
           $activityBody.val('');
           d = new Date();
           updateDate(rowId, d, activityName);
