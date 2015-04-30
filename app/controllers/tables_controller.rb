@@ -93,16 +93,6 @@ class TablesController < ApplicationController
               filename: 'data.xls')
   end
 
-  # CAN BE USEFUL IN FUTURE
-  def json_filters
-    render json: case params[:type]
-                 when 'SALE'
-                   Sale.simple_filters
-                 when 'CANDIDATE'
-                   Candidate.simple_filters
-                 end.to_json
-  end
-
   private
 
     def table_params

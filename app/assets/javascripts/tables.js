@@ -324,6 +324,7 @@ $(document).ready(function(){
   $('.controll').on('change', function(){
     $('#' + this.value).toggleClass('warning');
   })
+
   $('.delete').on('click', function(){
     if($('.controll:checked').size() === 0){
       error('Please select some row', $notifier);
@@ -378,6 +379,10 @@ $(document).ready(function(){
     dateFormat: 'yy-mm-dd',
   });
 
+  /* DISABLE DEFAULT CONTEXT MENU */ 
+  $('.context').on('contextmenu', function(){
+    return false;
+  })
 });  
 
 $(function () {

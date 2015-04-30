@@ -61,20 +61,20 @@ module TablesHelper
   def generate_sale_table_head(name)
     content_tag(:thead) do
       content_tag(:tr, class: 'info') do
-        concat content_tag(:th, '#')
-        concat content_tag(:th, 'Id', class: 'can-hide')
-        concat content_tag(:th, 'Name', class: 'can-hide')
-        concat content_tag(:th, 'Topic', class: 'can-hide')
-        concat generate_sortable_th('sort can-hide', 'Source', :source_name)
-        concat content_tag(:th, 'Skype', class: 'can-hide')
-        concat content_tag(:th, 'Email', class: 'can-hide')
-        concat content_tag(:th, 'Links', class: 'can-hide')
-        concat generate_sortable_th('sort can-hide', 'Date', :date)
-        concat generate_sortable_th('sort can-hide', 'Assign to', :user_id)
-        concat generate_sortable_th('sort can-hide', 'Status', :status_id)
-        concat content_tag(:th, 'Price', class: 'can-hide') if name == 'sold'
-        concat content_tag(:th, 'Terms', class: 'can-hide') if name == 'sold'
-        concat content_tag(:th, 'Comments', class: 'can-hide')
+        concat generate_head_item('#')
+        concat generate_head_item('Id', 'context')
+        concat generate_head_item('Name', 'context')
+        concat generate_head_item('Topic', 'context')
+        concat generate_sortable_th('sort context', 'Source', :source_name)
+        concat generate_head_item('Skype', 'context')
+        concat generate_head_item('Email', 'context')
+        concat generate_head_item('Links', 'context')
+        concat generate_sortable_th('sort context', 'Date', :date)
+        concat generate_sortable_th('sort context', 'Assign to', :user_id)
+        concat generate_sortable_th('sort context', 'Status', :status_id)
+        concat generate_head_item('Price', 'context') if name == 'sold'
+        concat generate_head_item('Terms', 'context') if name == 'sold'
+        concat generate_head_item('Comments', 'context')
       end
     end
   end
@@ -83,20 +83,26 @@ module TablesHelper
     content_tag(:thead) do
       content_tag(:tr, class: 'info') do
         concat content_tag(:th, '#')
-        concat content_tag(:th, 'Id', class: 'can-hide')
-        concat content_tag(:th, 'Name', class: 'can-hide')
-        concat generate_sortable_th('sort can-hide', 'Level', :level_name)
-        concat generate_sortable_th('sort can-hide', 'Specialization', :specialization_name)
-        concat content_tag(:th, 'Email', class: 'can-hide')
-        concat content_tag(:th, 'Skype', class: 'can-hide')
-        concat generate_sortable_th('sort can-hide', 'Source', :source_name)
-        concat content_tag(:th, 'Links', class: 'can-hide')
-        concat generate_sortable_th('sort can-hide', 'Date', :date)
-        concat generate_sortable_th('sort can-hide', 'Status', :status_id)
-        concat content_tag(:th, 'Reminder', class: 'can-hide') if name == 'contact_later'
-        concat content_tag(:th, 'Comments', class: 'can-hide')
+        concat content_tag(:th, 'Id')
+        concat content_tag(:th, 'Name')
+        concat generate_sortable_th('sort', 'Level', :level_name)
+        concat generate_sortable_th('sort', 'Specialization', :specialization_name)
+        concat content_tag(:th, 'Email')
+        concat content_tag(:th, 'Skype')
+        concat generate_sortable_th('sort', 'Source', :source_name)
+        concat content_tag(:th, 'Links')
+        concat generate_sortable_th('sort', 'Date', :date)
+        concat generate_sortable_th('sort', 'Status', :status_id)
+        concat content_tag(:th, 'Reminder') if name == 'contact_later'
+        concat content_tag(:th, 'Comments')
       end
     end
+  end
+
+  def generate_head_item(name,
+                         class_names = '')
+    content_tag(:th, name,
+                class: class_names)
   end
 
   def generate_sortable_th(class_names, name, value)
