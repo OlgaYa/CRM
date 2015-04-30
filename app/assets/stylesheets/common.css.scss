@@ -4,9 +4,14 @@
   margin:0;
 }
 
-html, body, #wrapper {
-   font-size: 12pt;
-   min-height: 100%;
+html, body {
+  font-size: 12pt;
+  height: 100%;
+}
+
+#footer{
+  height: 50px;
+  position: inherit;
 }
 
 body > #wrapper {
