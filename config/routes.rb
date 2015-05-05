@@ -67,8 +67,9 @@ Rails.application.routes.draw do
   # JSON STRING FOR FILTERS
   # post   'tables/filters',  to: 'tables#json_filters'
 
-  # GET CURRENT USER TABLE SETTINGS
+  # ACTIONS WITH TABLE SETTINGS
   get   'tables/table_settings', to: 'tables#table_settings'
+  post  'tables/update_table_settings', to: 'tables#update_table_settings'
   
   match 'admin/email_texts/:action(/:id)' => 'admin/email_texts', via: :all
 end

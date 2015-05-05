@@ -8,12 +8,28 @@ class Candidate < Table
                     :skype,
                     :source_id,
                     :date,
+                    :user_id,
                     :status_id,
                     :type,
                     :created_at,
                     :updated_at]
 
   ADVANCED_FIELDS = DEFAULT_FIELDS + [:reminder_date]
+
+  DEFAULT_COLUMNS = [:id,
+                     :name,
+                     :level,
+                     :specialization,
+                     :email,
+                     :skype,
+                     :source,
+                     :date,
+                     :user,
+                     :status,
+                     :comments,
+                     :links]
+  
+  ADVANCED_COLUMNS = DEFAULT_COLUMNS + [:reminder_date]
 
   def self.default_scope
     select(DEFAULT_FIELDS)
@@ -47,11 +63,11 @@ class Candidate < Table
     all_contact_later.join_statuses.where("statuses.name = 'contact_later'")
   end
 
-  def self.DEFAULT_FIELDS
-    DEFAULT_FIELDS
+  def self.DEFAULT_COLUMNS
+    DEFAULT_COLUMNS
   end
 
-  def self.ADVANCED_FIELDS
-    ADVANCED_FIELDS
+  def self.ADVANCED_COLUMNS
+    ADVANCED_COLUMNS
   end
 end

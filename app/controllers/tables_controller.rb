@@ -5,8 +5,10 @@ class TablesController < ApplicationController
                                       :download_scoped_xls]
   before_action :current_entity, only: [:download_selective_xls,
                                         :download_scoped_xls,
-                                        :table_settings]
+                                        :table_settings,
+                                        :index]
   before_action :lid_count_conf, only: :index
+  before_action :current_table_settings, only: [:index, :table_settings]
   after_action :send_remind_today, only: :update
 
   include ApplicationHelper
@@ -101,21 +103,69 @@ class TablesController < ApplicationController
   end
 
   def table_settings
+    render json: @settings.to_json
+  end
+
+  def update_table_settings
     if current_user.table_settings
-      render json: current_user.table_settings
+      settings_hash = JSON.parse(current_user.table_settings)
     else
-      render json: default_table_settings
+      settings_hash = {}
     end
+    settings_hash[current_key] = params[:invisible]
+    current_user.table_settings = settings_hash.to_json
+    current_user.save
+    render json: 'success'.to_json
   end
 
   private
 
+    def current_table_settings
+      @settings = {}
+      all_fields = default_table_settings
+      if current_user.table_settings
+        hidden_fields =  JSON.parse(current_user.table_settings)[current_key]
+        hidden_fields.map! { |f| f.to_sym } if hidden_fields
+        @settings[:visible] = hidden_fields ? all_fields - hidden_fields : all_fields
+        @settings[:invisible] = hidden_fields
+      else
+        @settings[:visible] = all_fields
+      end
+      @settings
+    end
+
     def default_table_settings
       if %w(sold contact_later).include? params[:only]
-        @entity.ADVANCED_FIELDS.to_json
+        @entity.ADVANCED_COLUMNS
       else
-        @entity.DEFAULT_FIELDS.to_json
+        @entity.DEFAULT_COLUMNS
       end
+    end
+
+    def user_table_settings
+      case params[:type]
+      when 'SALE'
+        if params[:only] == 'sold'
+          current_user.table_settings['ADVANCED_SALE']
+        else
+          current_user.table_settings['DEFAULT_SALE']
+        end
+      when 'CANDIDATE'
+        if params[:only] == 'contact_later'
+          current_user.table_settings['ADVANCED_CANDIDATE']
+        else
+          current_user.table_settings['DEFAULT_CANDIDATE']
+        end
+      end
+    end
+
+    def current_key
+      if %w(sold contact_later).include? params[:only]
+        key = 'ADVANCED_' + params[:type]
+      else
+        key = 'DEFAULT_' + params[:type]
+      end
+      key
     end
 
     def table_params
@@ -126,7 +176,7 @@ class TablesController < ApplicationController
                                     :topic, :skype,
                                     :user_id, :price,
                                     :date_end, :date_start,
-                                    :reminder_date)
+                                    :reminder_date, :lead)
     end
 
     def sale_table

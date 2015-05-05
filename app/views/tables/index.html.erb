@@ -126,28 +126,6 @@
   </div>
 </div>
 <!-- End hidden blocks -->
-
-<div id='context-menu'>
-  <ul class='dropdown-menu' role='menu'>
-    <li><a tabindex='-1'>Hide</a></li>
-  </ul>
-</div>
-
-<style>
-  #invisible-fields {
-    float: right;
-    border: 1px solid #ddd;
-    width: 180px;
-    min-height: 20px;
-  }
-
-  #visible-fields {
-    border: 1px solid #ddd;
-    width: 180px;
-    min-height: 20px;
-  }
-</style>
-
 <div id='table-settings-dialog'>
   <ul id='invisible-fields' class='connectedSortable'>
   </ul>
@@ -157,29 +135,41 @@
 
 <script>
   $(document).ready(function(){
+    var settings;
+
     $('#table-settings-dialog').dialog({
       autoOpen: false,
       title: 'Table settings',
       width: 410,
-      buttons:
-      [
-        {
-          text: 'Close'
+       buttons: {
+        Cancel: function() {
+          $( this ).dialog( "close" );
         },
-        {
-          text: 'Save'
+        "Save": function() {
+          var dataForSend = { invisible: $('#invisible-fields').listVars(),
+                              type: "<%= params[:type] %>",
+                              only: "<%= params[:only] %>" };
+
+          $.when($.ajax({
+            type: 'POST',
+            url: 'tables/update_table_settings',
+            data: dataForSend
+          })).always(function(data, textStatus, jqXHR){
+            if(textStatus==='success'){
+              location.reload(true);
+            }
+          })
         }
-      ]
-    });
-
-
-    $('.context').contextmenu({
-      target:'#context-menu', 
-      before: function(e,context) {
-
       },
-      onItem: function(context,e) {
-
+      close: function(){
+        $('#visible-fields').empty();
+        $('#invisible-fields').empty();
+        if(settings.visible){
+          appendVisibleFields($('#visible-fields'))
+        }
+        if(settings.invisible){
+          appendInvisibleFields($('#invisible-fields'))
+        }
       }
     });
 
@@ -197,11 +187,38 @@
            '<%= "only=#{params[:only]}" %>' + '&' +
            '<%= "type=#{params[:type]}" %>',
       success: function(data){
-        var i = 0;
-        for(i; i < data.length; i = i+1){
-          $('#visible-fields').append('<li>'+ data[i] +'</li>')
+        settings = data;
+       
+        if(data.visible){
+          appendVisibleFields($('#visible-fields'))
+        }
+
+        if(data.invisible){
+          appendInvisibleFields($('#invisible-fields'))
         }
       }
-    })
-  })
+    });
+
+    function appendVisibleFields($selector){
+      var i = 0;
+      for(i; i < settings.visible.length; i = i+1){
+        $selector.append('<li>'+ settings.visible[i] +'</li>')
+      }
+    }
+    
+    function appendInvisibleFields($selector){
+      var i = 0;
+      for(i; i < settings.invisible.length; i = i+1){
+        $selector.append('<li>'+ settings.invisible[i] +'</li>')
+      }
+    }
+
+    $.fn.listVars = function(){
+      var result = [];
+      $(this).children('li').each(function(){
+        result.push($(this).text());
+      })
+      return result;
+    }
+  });
 </script>

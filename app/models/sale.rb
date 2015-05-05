@@ -11,11 +11,27 @@ class Sale < Table
                     :status_id,
                     :type,
                     :created_at,
-                    :updated_at]
+                    :updated_at,
+                    :lead]
 
   ADVANCED_FIELDS = DEFAULT_FIELDS + [:price,
                                       :date_start,
                                       :date_end]
+
+  DEFAULT_COLUMNS = [:id,
+                     :name,
+                     :skype,
+                     :email,
+                     :date,
+                     :user,
+                     :source,
+                     :topic,
+                     :status,
+                     :lead,
+                     :comments,
+                     :links]
+
+  ADVANCED_COLUMNS = DEFAULT_COLUMNS + [:price, :terms]
 
   def self.default_scope
     select(DEFAULT_FIELDS)
@@ -38,11 +54,11 @@ class Sale < Table
     all.join_statuses.where("statuses.name = 'declined'")
   end
 
-  def self.DEFAULT_FIELDS
-    DEFAULT_FIELDS
+  def self.DEFAULT_COLUMNS
+    DEFAULT_COLUMNS
   end
 
-  def self.ADVANCED_FIELDS
-    ADVANCED_FIELDS
+  def self.ADVANCED_COLUMNS
+    ADVANCED_COLUMNS
   end
 end

@@ -93,3 +93,6 @@ config/secrets.yml
 
 #imap.yml
 config/imap.yml
+config/calendar.yml
+.ruby-gemset
+.ruby-version

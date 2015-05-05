@@ -23,9 +23,8 @@ class UsersController < ApplicationController
     when 'update-info'
       if @user.update_attributes(first_name: params[:user][:first_name], 
                                  last_name: params[:user][:last_name], 
-                                 email: params[:user][:email], 
-                                 avatar: params[:user][:avatar])
-      
+                                 email: params[:user][:email])
+        @user.update_attributes(avatar: params[:user][:avatar]) if params[:user][:avatar]
         user_successful_updatetd('info')
       else
         render 'show'
