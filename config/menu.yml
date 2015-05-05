@@ -1,91 +1,17 @@
-seller:
-  menu:
-    sub menu one:
-      name: 'Seller'
-      item one:
-        name: 'Sales'
-        path: '/tables?only=open&type=SALE'
-      item dev one:
-        divider: true
-      item fore:
-        name: 'Export'
-        path: '/export?type=SALE'
-    sub menu two:
-      name: 'Events'
-      item one:
-        name: 'Meetings'
-        path: '/meetings?type=SALE'
-    sub menu three:
-      name: 'Info'
-      item one:
-        name: 'Statistic'
-        path: '/statistics?type=SALE'
-hr:
-hh:
-  menu:
-    sub menu one:
-      name: 'HH'
-      item one:
-        name: 'Candidates'
-        path: '/tables?only=open&type=CANDIDATE'
-      item dev one:
-        divider: true
-      item two:
-        name: 'Meetings'
-        path: '/meetings?type=CANDIDATE'
-      item dev two:
-        divider: true
-      item three:
-        name: 'Text for interview'
-        path: '/admin/email_texts/interview_text'
-      item dev three:
-        divider: true
-      item fore:
-        name: 'Statistic'
-        path: '/statistics?type=CANDIDATE'
+roles:
+  seller:
+    name: 'Sale'
+    path_table: '/tables?only=open&type=SALE'
+    path_meeting: '/meetings?type=SALE'
+    path_statistics: '/statistics?type=SALE'
+  hh:
+    name: 'HH'
+    path_table: '/tables?only=open&type=CANDIDATE'
+    path_meeting: '/meetings?type=CANDIDATE'
+    path_statistics: '/statistics?type=CANDIDATE'
 admin:
   menu:
     sub menu one:
-      name: 'Sellers'
-      item one:
-        name: 'Sales'
-        path: '/tables?only=open&type=SALE'
-      item dev one:
-        divider: true
-      item fore:
-        name: 'Meetings'
-        path: '/meetings?type=SALE'
-      item dev three:
-        divider: true
-      item five:
-        name: 'Statistic'
-        path: '/statistics?type=SALE'
-      item dev fore:
-        divider: true
-      item six:
-        name: 'Export'
-        path: '/export?type=SALE'
-    sub menu two:
-      name: 'HH'
-      item one:
-        name: 'Candidates'
-        path: '/tables?only=open&type=CANDIDATE'
-      item dev one:
-        divider: true
-      item two:
-        name: 'Meetings'
-        path: '/meetings?type=CANDIDATE'
-      tem dev two:
-        divider: true
-      item three:
-        name: 'Text for interview'
-        path: '/admin/email_texts/interview_text'
-      item dev three:
-        divider: true
-      item fore:
-        name: 'Statistic'
-        path: '/statistics?type=CANDIDATE'
-    sub menu three:
       name: 'Admin panel'
       item one:
         name: 'Active users'
