@@ -16,19 +16,19 @@ module ApplicationHelper
     user == current_user
   end
 
-  def generate_link(link) 
+  def generate_link(link)
     content_tag(:div, class: "link l_#{link.id}") do
       buffer = ActiveSupport::SafeBuffer.new
       buffer << link_to(link.alt, link.href, target: '_blank')
-      buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")), 
-                      link_path(link), class: 'pull-right remove-link', 
+      buffer << link_to(image_tag(ActionController::Base.helpers.asset_path("remove-red.png")),
+                      link_path(link), class: 'pull-right remove-link',
                       method: :delete, remote: true)
       buffer
     end
   end
 
   def generate_tr_for_user(user)
-    content_tag(:tr) do     
+    content_tag(:tr) do
       buffer = ActiveSupport::SafeBuffer.new
       buffer << content_tag(:td, user.first_name)
       buffer << content_tag(:td, user.last_name)
@@ -38,7 +38,7 @@ module ApplicationHelper
       buffer << content_tag(:td) do
         link_to(image_tag(ActionController::Base.helpers.asset_path("remove.png")), user_path(user), data: {
           confirm: "Are you sure to remove user #{user.first_name} #{user.last_name}?"
-        }, 
+        },
         method: :delete )
       end
       buffer
@@ -52,8 +52,8 @@ module ApplicationHelper
       buffer << content_tag(:span, time.strftime("%e.%m %H:%M"), class: 'comment_time')
       buffer << content_tag(:span, ' ' + comment.user.first_name, class: 'comment_time')
       if current_user == comment.user
-        buffer << link_to(image_tag(ActionController::Base.helpers.asset_path('remove-red.png')), 
-                          comment_path(comment), class: 'pull-right', 
+        buffer << link_to(image_tag(ActionController::Base.helpers.asset_path('remove-red.png')),
+                          comment_path(comment), class: 'pull-right',
                           method: :delete, remote: true)
       end
       buffer << content_tag(:p, comment.body)
@@ -76,16 +76,16 @@ module ApplicationHelper
                               id: 'main-navbar-collapse') do
           concat generate_left_menu(role)
           concat generate_right_menu
-        end 
+        end
         buffer
       end
-    end 
+    end
   end
 
   def generate_logo
     content_tag(:div, class: 'navbar-header') do
       buffer = ActiveSupport::SafeBuffer.new
-      buffer << content_tag(:button, tepe: 'button',  class: 'navbar-toggle', data: { toggle: 'collapse', target:'#main-navbar-collapse' }) do
+      buffer << content_tag(:button, type: 'button',  class: 'navbar-toggle', data: { toggle: 'collapse', target:'#main-navbar-collapse' }) do
         buffer_inner = ActiveSupport::SafeBuffer.new
         4.times do
           buffer_inner << content_tag(:span, '', class: 'icon-bar')
@@ -100,21 +100,30 @@ module ApplicationHelper
   def generate_left_menu(role)
     menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
     content_tag(:ul, class: 'nav navbar-nav') do
-      if menu[role.to_s]
-        menu[role.to_s]['menu'].each do |sub_menu|
-          concat get_dropdown(sub_menu)
+      buffer = ActiveSupport::SafeBuffer.new
+      menu['roles'].each do |role|
+        if current_user && (current_user.role == role[0] || current_user.admin)
+          buffer << content_tag(:li) do
+            link_to(role[1]['name'], role[1]['path_table'])
+          end
         end
       end
-    end 
+      if menu[role.to_s]
+        menu[role.to_s]['menu'].each do |sub_menu|
+          buffer << get_dropdown(sub_menu)
+        end
+      end
+      buffer
+    end
   end
 
-  def get_dropdown(sub_menu, image = nil)
-    content_tag(:li, class: 'dropdown') do
+  def get_dropdown(sub_menu, image = nil, id = nil)
+    content_tag(:li, class: 'dropdown', id: id) do
       concat get_toggle_link(sub_menu[1]['name'], image)
       concat get_dropdown_menu(sub_menu)
     end
   end
-  
+
   def get_toggle_link(name, image)
     link_to('#', class: 'dropdown-toggle', data: { toggle:'dropdown' }) do
       concat name
@@ -129,7 +138,7 @@ module ApplicationHelper
         topic = item[0]
         concat get_dropdown_menu_link(item) if topic != 'name' && !item[1]['divider']
         concat get_divider if item[1]['divider']
-      end             
+      end
     end
   end
 
@@ -150,16 +159,42 @@ module ApplicationHelper
   def generate_right_menu
     content_tag(:ul, class: 'nav navbar-nav navbar-right') do
       if current_user
-        generate_right_sub_menu 
+        generate_right_sub_menu
       else
         generate_log_in
-      end 
+      end
     end
   end
 
   def generate_right_sub_menu
+    menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
+    buffer = ActiveSupport::SafeBuffer.new
+    if current_user.admin
+      sub_menu_meeting = [ 'sub_menu', {'name' => 'Meeting',
+        "item one" => {'name' => 'Meeting seller', 'path' => menu['roles']['seller']['path_meeting']},
+        "item two" => {'name' => 'Meeting HH', 'path' => menu['roles']['hh']['path_meeting']}
+        }]
+      buffer << get_dropdown(sub_menu_meeting, nil, 'sub_menu_meeting')
+      sub_menu_stat = [ 'sub_menu', {'name' => 'Statistics',
+        "item one" => {'name' => 'Statistics seller', 'path' => menu['roles']['seller']['path_statistics'] },
+        "item two" => {'name' => 'Statistics HH', 'path' => menu['roles']['hh']['path_statistics'] }
+        }]
+      buffer << get_dropdown(sub_menu_stat, nil, 'sub_menu_stat')
+    else
+      menu['roles'].each do |role|
+        if current_user && (current_user.role == role[0])
+          buffer << content_tag(:li) do
+            link_to('Meeting', role[1]['path_meeting'])
+          end
+          buffer << content_tag(:li) do
+            link_to('Statistics', role[1]['path_statistics'])
+          end
+        end
+      end
+    end
     image = get_avatar
-    get_dropdown(get_current_user_sub_menu, image)
+    buffer << get_dropdown(get_current_user_sub_menu, image)
+    buffer
   end
 
   def generate_log_in
@@ -169,10 +204,20 @@ module ApplicationHelper
   end
 
   def get_current_user_sub_menu
-    result = ['sub menu', { 'name'=>current_user.first_name, 
+    result = ['sub menu', { 'name'=>current_user.first_name,
                             "item one"=>{ "name"=>"Profile", "path"=> user_path(current_user.id) },
                             "item dev one"=>{ "divider"=>true },
                             "item two"=>{ "name"=>"Sign out", "path"=> destroy_user_session_path } }]
+
+    if (current_user.admin || current_user.role == 'hh')
+      result.last["item dev two"] = { "divider"=>true }
+      result.last["item three"] = { "name"=>"Text for interview", "path"=> '/admin/email_texts/interview_text' }
+    end
+    if (current_user.admin || current_user.role == 'seller')
+      result.last["item dev three"] = { "divider"=>true }
+      result.last["item four"] = { "name"=>"Export", "path"=> '/export?type=SALE' }
+    end
+    result
   end
 
   def get_avatar
