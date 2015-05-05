@@ -95,7 +95,7 @@ a.navbar-brand {
   border: 1px solid #DDDDDD;
 }
 
-td .comment_list div:not(:last-child){
+td .comment_list div:not(:first-child){
   display: none;
 }
 
@@ -147,10 +147,6 @@ td .comment {
   border: 0;
   background-color: rgba(0,0,0,0);
   width: 100%;
-}
-
-td .comment a {
-  display: none;
 }
 
 td .comment:last-child{

@@ -46,10 +46,10 @@ $(document).ready(function(){
       if(reload){
         location.reload(true);
       }
-    }, 
-    buttons: 
-      [ 
-        { 
+    },
+    buttons:
+      [
+        {
           text: 'Close',
           click: function(){
             $(this).dialog('close');
@@ -61,7 +61,7 @@ $(document).ready(function(){
           click: function(){
             var currentData = $declinedCommentBody.val();
             if(currentData.length > 0){
-              reload = false; 
+              reload = false;
               var $td = $(this).data('$td'),
                   dataForSend = $(this).data('dataForSend'),
                   path = $(this).data('path'),
@@ -73,7 +73,7 @@ $(document).ready(function(){
               $(this).dialog('close');
             }
             reload = true;
-          }          
+          }
         }
       ]
   });
@@ -100,7 +100,7 @@ $(document).ready(function(){
       var currentData = $activityBody.val(),
           rowId = $editableActivityDialog.data('rowId'),
           activityName = $editableActivityDialog.data('activityName');
-      sendActivityData(currentData, activityName, rowId); 
+      sendActivityData(currentData, activityName, rowId);
     }
   });
 
@@ -127,14 +127,14 @@ $(document).ready(function(){
         url: path,
         data: dataForSend,
         success: function(data){
-          $editableActivityDialog.children('div').append(data);
-          $td.children('div').append(data);
+          $editableActivityDialog.children('div').prepend(data);
+          $td.children('div').prepend(data);
           $activityBody.val('');
           d = new Date();
           updateDate(rowId, d, activityName);
         }
       });
-    }    
+    }
   }
 
   $('.editable-field').on('dblclick', function(){
@@ -153,10 +153,10 @@ $(document).ready(function(){
           rowId = $td.id(),
           newValue = $editableFieldTextArea.val(),
           d = new Date();
-      
+
       var dataForSend = name + '=' + newValue,
           path = pathFirstPart + rowId;
-      
+
       $.when(sendData(dataForSend, path, $td.attr('value'), d)).always(function(data, textStatus, jqXHR){
         if(textStatus==='success'){
           $editableFieldTextArea.val('');
@@ -167,7 +167,7 @@ $(document).ready(function(){
         } else {
           error('', $notifier);
         }
-      });            
+      });
     }
   });
 
@@ -201,12 +201,13 @@ $(document).ready(function(){
           updateDate(rowId, d, $td.children().attr('fieldname'));
           if($td.children().attr('fieldname') === 'status_id') {
             if(selectedText == 'assigned_meeting'){
-              $('#myModal').modal()
+              $('#myModal').modal();
+              $('#_meeting_table_id')[0].setAttribute('value',rowId);
             }
             changeStatus($td.parent(), selectedText);
           } else {
             notifie('Field was successfully updated', $notifier);
-          }         
+          }
         } else {
           error('', $notifier);
         }
@@ -214,7 +215,7 @@ $(document).ready(function(){
     return false;
   });
 
-  $('#remainder-dialog-save-button').on('click', function(){      
+  $('#remainder-dialog-save-button').on('click', function(){
     var currentData = $('#remainder-date-time').val(),
         $td = $remainderDialog.data('$td'),
         dataForSend = $remainderDialog.data('dataForSend'),
@@ -247,7 +248,7 @@ $(document).ready(function(){
     if(isInArray(getParameterByName('only'), MAIN_LOGIC_STATUSES))
       moveTo($row, field_text);
     else {
-      if(isInArray(field_text, MAIN_LOGIC_STATUSES)){                   
+      if(isInArray(field_text, MAIN_LOGIC_STATUSES)){
         moveTo($row, field_text);
       } else {
         notifie('Task status was successful changed', $notifier)
@@ -289,7 +290,7 @@ $(document).ready(function(){
     }
   }
 
-    //function parse value of params with 'name' 
+    //function parse value of params with 'name'
   function getParameterByName(name) {
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(location.search);
@@ -316,7 +317,7 @@ $(document).ready(function(){
             error('', $notifier);
           }
         })
-        flag = false;      
+        flag = false;
       }
     }
   });
@@ -337,7 +338,7 @@ $(document).ready(function(){
             type: 'DELETE',
             url: '/tables/' + id
           });
-        });        
+        });
       }
     }
     return false;
@@ -350,13 +351,17 @@ $(document).ready(function(){
     return $.ajax({
         type: 'PUT',
         url: path,
-        data: dataForSend
-      })    
+        data: dataForSend,
+        success: function(data){
+          // debugger;
+          // $('.table.table-bordered.table-condensed.table-responsive.data-table').empty().append(data)
+        }
+      })
   }
 
   function updateDate(row_id, d, fieldName) {
-    if( ['topic', 'source_id', 'name'].indexOf(fieldName) === -1 ){     
-      $('#'+row_id).children('.td-date').children('.date-input').val(d.yyyymmdd());   
+    if(fieldName == 'comments'){
+      $('#'+row_id).children('.td-date').children('.date-input').val(d.yyyymmdd());
     }
   }
 
@@ -378,12 +383,12 @@ $(document).ready(function(){
   $('.date-input-filter').datepicker({
     dateFormat: 'yy-mm-dd',
   });
+});
 
-  /* DISABLE DEFAULT CONTEXT MENU */ 
-  $('.context').on('contextmenu', function(){
-    return false;
-  })
-});  
+$(document).on('contextmenu', '.context', function(){
+  console.log('bla-bla-bla');
+  return false;
+});
 
 $(function () {
   $(".chosen-select").chosen();

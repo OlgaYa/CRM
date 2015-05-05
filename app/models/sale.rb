@@ -1,22 +1,28 @@
 # This class defines essence of which users will be working with the role seller
 class Sale < Table
+  DEFAULT_FIELDS = [:id,
+                    :name,
+                    :skype,
+                    :email,
+                    :date,
+                    :user_id,
+                    :source_id,
+                    :topic,
+                    :status_id,
+                    :type,
+                    :created_at,
+                    :updated_at]
+
+  ADVANCED_FIELDS = DEFAULT_FIELDS + [:price,
+                                      :date_start,
+                                      :date_end]
+
   def self.default_scope
-    select(:id, :name, :skype,
-           :email, :date,
-           :user_id, :source_id,
-           :topic, :status_id,
-           :type, :created_at,
-           :updated_at)
+    select(DEFAULT_FIELDS)
   end
 
   def self.all_sold
-    select(:id, :name, :skype,
-           :email, :date,
-           :user_id, :source_id,
-           :topic, :status_id,
-           :price, :date_start,
-           :date_end, :type,
-           :created_at, :updated_at)
+    select(ADVANCED_FIELDS)
   end
 
   def self.open
@@ -30,5 +36,13 @@ class Sale < Table
 
   def self.declined
     all.join_statuses.where("statuses.name = 'declined'")
+  end
+
+  def self.DEFAULT_FIELDS
+    DEFAULT_FIELDS
+  end
+
+  def self.ADVANCED_FIELDS
+    ADVANCED_FIELDS
   end
 end

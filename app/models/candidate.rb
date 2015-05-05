@@ -1,22 +1,26 @@
 # This class defines the essence of which users will be working with the role HH
 class Candidate < Table
+  DEFAULT_FIELDS = [:id,
+                    :name,
+                    :level_id,
+                    :specialization_id,
+                    :email,
+                    :skype,
+                    :source_id,
+                    :date,
+                    :status_id,
+                    :type,
+                    :created_at,
+                    :updated_at]
+
+  ADVANCED_FIELDS = DEFAULT_FIELDS + [:reminder_date]
+
   def self.default_scope
-    select(:id, :name, :level_id,
-           :specialization_id,
-           :email, :skype, :source_id,
-           :date, :status_id,
-           :type, :created_at,
-           :updated_at)
+    select(DEFAULT_FIELDS)
   end
 
   def self.all_contact_later
-    select(:id, :name, :level_id,
-           :specialization_id,
-           :email, :skype, :source_id,
-           :date, :status_id,
-           :type, :created_at,
-           :updated_at, :user_id,
-           :reminder_date)
+    select(ADVANCED_FIELDS)
   end
 
   def self.open
@@ -41,5 +45,13 @@ class Candidate < Table
 
   def self.contact_later
     all_contact_later.join_statuses.where("statuses.name = 'contact_later'")
+  end
+
+  def self.DEFAULT_FIELDS
+    DEFAULT_FIELDS
+  end
+
+  def self.ADVANCED_FIELDS
+    ADVANCED_FIELDS
   end
 end

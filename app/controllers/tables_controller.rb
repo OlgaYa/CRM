@@ -4,7 +4,8 @@ class TablesController < ApplicationController
   before_action :nil_if_blank, only: [:download_selective_xls,
                                       :download_scoped_xls]
   before_action :current_entity, only: [:download_selective_xls,
-                                        :download_scoped_xls]
+                                        :download_scoped_xls,
+                                        :table_settings]
   before_action :lid_count_conf, only: :index
   after_action :send_remind_today, only: :update
 
@@ -19,7 +20,7 @@ class TablesController < ApplicationController
            @value_for_description = ""
            sale_table
          end.ransack(params[:q])
-    @table = @q.result.includes(:source, :status).oder_date_nulls_first
+    @table = @q.result.oder_date_nulls_first
     paginate_table if need_paginate?
     @type = params[:type]
   end
@@ -38,6 +39,7 @@ class TablesController < ApplicationController
 
   def update
     table = Table.find(params[:id])
+    Statistic.find_record_with_same_information(table, params[:table])
     table.update_attributes(table_params)
     Statistic.update_statistics(table)
     if not_itself_id?(params[:table][:user_id])
@@ -47,6 +49,11 @@ class TablesController < ApplicationController
         .deliver
     end
     render json: 'success'.to_json
+    # params[:q]= {"name_or_topic_or_skype_or_email_cont"=>"", "s"=>"source_name asc"}
+    # params[:type] = 'SALE'
+    # @q = sale_table.ransack(params[:q])
+    # @table = @q.result
+    # render partial: 'table', formats: :html
   end
 
   def destroy
@@ -93,7 +100,23 @@ class TablesController < ApplicationController
               filename: 'data.xls')
   end
 
+  def table_settings
+    if current_user.table_settings
+      render json: current_user.table_settings
+    else
+      render json: default_table_settings
+    end
+  end
+
   private
+
+    def default_table_settings
+      if %w(sold contact_later).include? params[:only]
+        @entity.ADVANCED_FIELDS.to_json
+      else
+        @entity.DEFAULT_FIELDS.to_json
+      end
+    end
 
     def table_params
       params.require(:table).permit(:type, :name, :level_id,

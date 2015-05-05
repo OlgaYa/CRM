@@ -12,7 +12,6 @@
             <i class="glyphicon glyphicon-trash"></i></button>
             <button class="add-new btn btn-info" type="submit"> 
             <i class="glyphicon glyphicon-plus"></i></button>
-
           </div>
           <%= f.text_field(:name, hidden: true, name: 'table[name]') %>
           <%= f.text_field(:type, hidden: true, name: 'type', value: params[:type]) %>
@@ -23,20 +22,17 @@
           <i class='glyphicon glyphicon-cog'> </i>
         </button>
       </div>
-      
+
       <%= render 'filters' %>
       <%= render 'table_search' %>
-
       <table class="table table-bordered table-condensed table-responsive data-table">
-        <%= table_generation @table %>
+        <%= render 'table' %>
       </table>
-      
       <%= render 'per_page' %>
-
       <div class='text-center'>
-      <% unless cookies[:lid_count] == 'all' %>
-        <%= will_paginate @table, renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
-      <% end %>
+        <% unless cookies[:lid_count] == 'all' %>
+          <%= will_paginate @table, renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
+        <% end %>
       </div>
     </div>
   </div>
@@ -88,7 +84,8 @@
       </div>
       <div class="modal-body">
         <div class="row" id="meeting_dialog">
-          <%= form_for :@meeting, :url => meetings_path(@meeting, :type => @type) do |f| %> 
+          <%= form_for :@meeting, :url => meetings_path(@meeting, :type => @type) do |f| %>
+            <%= f.hidden_field :table_id, class: "form-control" %>
             <div class="control-field">
               <%= f.text_field :title, class: 'form-control', placeholder: 'Title'%>
             </div>
@@ -130,16 +127,52 @@
 </div>
 <!-- End hidden blocks -->
 
-<div id="context-menu">
-  <ul class="dropdown-menu" role="menu">
-    <li><a tabindex="-1">Hide</a></li>
+<div id='context-menu'>
+  <ul class='dropdown-menu' role='menu'>
+    <li><a tabindex='-1'>Hide</a></li>
   </ul>
 </div>
 
+<style>
+  #invisible-fields {
+    float: right;
+    border: 1px solid #ddd;
+    width: 180px;
+    min-height: 20px;
+  }
 
+  #visible-fields {
+    border: 1px solid #ddd;
+    width: 180px;
+    min-height: 20px;
+  }
+</style>
+
+<div id='table-settings-dialog'>
+  <ul id='invisible-fields' class='connectedSortable'>
+  </ul>
+  <ul id='visible-fields' class='connectedSortable'>
+  </ul>
+</div>
 
 <script>
   $(document).ready(function(){
+    $('#table-settings-dialog').dialog({
+      autoOpen: false,
+      title: 'Table settings',
+      width: 410,
+      buttons:
+      [
+        {
+          text: 'Close'
+        },
+        {
+          text: 'Save'
+        }
+      ]
+    });
+
+
     $('.context').contextmenu({
       target:'#context-menu', 
       before: function(e,context) {
@@ -151,7 +184,24 @@
     });
 
     $('#table-settings').on('click', function(){
-      console.log('table-settings click')
+      $('#table-settings-dialog').dialog('open');
     });
+
+    $( "#invisible-fields, #visible-fields" ).sortable({
+      connectWith: ".connectedSortable"
+    }).disableSelection();
+
+    $.ajax({
+      type: 'GET',
+      url: 'tables/table_settings?' +
+           '<%= "only=#{params[:only]}" %>' + '&' +
+           '<%= "type=#{params[:type]}" %>',
+      success: function(data){
+        var i = 0;
+        for(i; i < data.length; i = i+1){
+          $('#visible-fields').append('<li>'+ data[i] +'</li>')
+        }
+      }
+    })
   })
 </script>

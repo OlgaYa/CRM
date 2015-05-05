@@ -28,6 +28,12 @@ class Statistic < ActiveRecord::Base
     end
   end
 
+  def self.find_record_with_same_information(current_object, params)
+    unless current_object[params.keys[0]]
+      Statistic.destroy(current_object)
+    end
+  end
+
   def self.destroy(object)
     Statistic.change_count(object, object.status_id)
     Statistic.change_count(object, Status.default_status(object.type.upcase)) if object.status_id != Status.default_status(object.type.upcase)

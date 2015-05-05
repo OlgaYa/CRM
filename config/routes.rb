@@ -65,7 +65,10 @@ Rails.application.routes.draw do
   delete 'tables/link/:id', to: 'tables#destroy_link', as: :link
 
   # JSON STRING FOR FILTERS
-  post   'tables/filters',  to: 'tables#json_filters'
+  # post   'tables/filters',  to: 'tables#json_filters'
+
+  # GET CURRENT USER TABLE SETTINGS
+  get   'tables/table_settings', to: 'tables#table_settings'
   
   match 'admin/email_texts/:action(/:id)' => 'admin/email_texts', via: :all
 end

@@ -79,7 +79,10 @@ ActiveRecord::Schema.define(version: 20150429112119) do
     t.string   "location"
     t.datetime "start_time"
     t.datetime "end_time"
+    t.integer  "table_id"
   end
+
+  add_index "meetings", ["table_id"], name: "index_meetings_on_table_id", using: :btree
 
   create_table "messages", force: :cascade do |t|
     t.text     "body"
@@ -229,4 +232,5 @@ ActiveRecord::Schema.define(version: 20150429112119) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "meetings", "tables"
 end
