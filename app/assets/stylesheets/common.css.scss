@@ -105,7 +105,7 @@ a.navbar-brand {
   border: 1px solid #DDDDDD;
 }
 
-td .comment_list div:not(:first-child){
+td .comment_list div:not(:last-child){
   display: none;
 }
 
@@ -150,6 +150,10 @@ td .comment_list{
   margin-top: 3px;
   margin-right: 5px;
   display: inline-block;
+}
+
+td div.comment a {
+  display: none;
 }
 
 td .comment {
