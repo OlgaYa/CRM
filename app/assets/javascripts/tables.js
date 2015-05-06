@@ -86,6 +86,7 @@ $(document).ready(function(){
     $editableActivityDialog.dialog('option', 'title', capitalize($(this).attr('value')));
     $editableActivityDialog.dialog('open');
     $editableActivityDialog.prepend($(this).children().clone());
+    $editableActivityDialog.children('div').scrollTop($editableActivityDialog.children('div').height())
   });
 
   $(document).on('click', '#activity-add', function(){
@@ -133,6 +134,7 @@ $(document).ready(function(){
             $('.data-table tbody').remove();
             $('.data-table').append(data.table);
             dateInputInit();
+            $editableActivityDialog.children('div').scrollTop($editableActivityDialog.children('div').height())
           } else {
             $editableActivityDialog.children('div').append(data);
             $td.children('div').append(data);
@@ -166,7 +168,7 @@ $(document).ready(function(){
           path = pathFirstPart + rowId;
 
       $.when(sendData(dataForSend, path, $td.attr('value'), d)).always(function(data, textStatus, jqXHR){
-        if(textStatus==='success'){
+        if(textStatus === 'success') {
           $editableFieldTextArea.val('');
           $editableFieldDialog.dialog('close');
           $td.text(newValue);
