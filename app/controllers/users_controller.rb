@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class UsersController < GridsController
 	skip_before_action :authenticate_user!, only: [:update]
 	before_action :correct_user,   only: [:edit, :update, :update_info, :update_pass]
   

@@ -94,7 +94,6 @@
 
 /* TABLE SETTINGS */
 #invisible-fields {
-  float: right;
   border: 1px solid #ddd;
   width: 180px;
   min-height: 20px;
@@ -107,6 +106,14 @@
   width: 100%;
   margin-bottom: 5px;
   padding-left: 5px;
+}
+
+#invisible-fields li {
+  background-color: #d9534f;
+}
+
+#visible-fields li {
+  background-color: #5cb85c;
 }
 
 #invisible-fields li:hover, #visible-fields li:hover{
@@ -122,4 +129,8 @@
   width: 180px;
   min-height: 20px;
   padding: 5px;
+}
+
+#invisible {
+  float: right;
 }

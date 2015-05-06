@@ -43,15 +43,8 @@ module TablesHelper
     end
   end
 
-  def table_generation(table)
-    return if table.empty?
-    buffer = ActiveSupport::SafeBuffer.new
-    buffer << generate_head(table)
-    buffer << generate_table_body(table)
-    buffer
-  end
-
   def generate_head(entity)
+    return if entity.empty?
     content_tag(:thead) do
       content_tag(:tr, class: 'info') do
         concat generate_head_item('#')
@@ -65,6 +58,7 @@ module TablesHelper
                                     'Specialization',
                                     :specialization_name) if present? :specialization
         concat generate_head_item('Topic', 'context')     if present? :topic
+        concat generate_head_item('Phone', 'context')     if present? :phone
         concat generate_sortable_th('sort context',
                                     'Source',
                                     :source_name)         if present? :source
@@ -90,6 +84,7 @@ module TablesHelper
   end
 
   def generate_table_body(table)
+    return if table.empty?
     content_tag(:tbody, class: 'table-body') do
       table.each do |entity|
         concat generate_body entity
@@ -101,19 +96,20 @@ module TablesHelper
     content_tag(:tr, id: entity.id, class: generate_class_tr(entity.user_id)) do
       concat table_control        entity.id
       concat table_id             entity.id                if present? :id
-      concat table_name           entity.name              if present? :name
+      concat editable_field       entity.name, 'name'      if present? :name
       concat table_lead           entity.lead              if present? :lead
       concat table_level          entity.level_id          if present? :level
       concat table_specialization entity.specialization_id if present? :specialization
-      concat table_topic          entity.topic             if present? :topic
+      concat editable_field       entity.topic, 'topic'    if present? :topic
+      concat editable_field       entity.phone, 'phone'    if present? :phone
       concat table_source         entity.source_id         if present? :source
-      concat table_skype          entity.skype             if present? :skype
-      concat table_email          entity.email             if present? :email
+      concat editable_field       entity.skype, 'skype'    if present? :skype
+      concat editable_field       entity.email, 'email'    if present? :email
       concat table_links          entity.links             if present? :links
       concat table_date           entity.date              if present? :date
       concat table_user           entity.user_id           if present? :user
       concat table_status         entity.status_id         if present? :status
-      concat table_price          entity.price             if present? :price
+      concat editable_field       entity.price, 'price'    if present? :price
       concat table_period         entity.date_start,
                                   entity.date_end          if present? :terms
       concat table_reminder       entity.reminder_date     if present? :reminder
@@ -140,6 +136,12 @@ module TablesHelper
     user_id == current_user.id ? 'user_owner' : nil
   end
 
+  def editable_field(value, field_name)
+    content_tag(:td, value,
+                class: 'editable-field td-' + field_name,
+                name: "table[#{field_name}]", value: field_name)
+  end
+
   def table_control(id)
     content_tag(:td, '', class: 'controlls') do
       name = 'row' + id.to_s
@@ -156,13 +158,6 @@ module TablesHelper
     content_tag(:td, date_time,
                 class: 'date-time-editable td-reminder',
                 name: 'table[reminder_date]', value: 'reminder_date')
-  end
-
-
-  def table_name(name)
-    content_tag(:td, name,
-                class: 'editable-field td-name',
-                name: 'table[name]', value: 'name')
   end
 
   def table_lead(lead)
@@ -187,13 +182,6 @@ module TablesHelper
     end
   end
 
-  def table_email(email)
-    content_tag(:td, email,
-                class: 'editable-field td-email',
-                name: 'table[email]',
-                value: 'email')
-  end
-
   def table_source(source_id)
     content_tag(:td, '', class: 'td-source-id') do
       select_field_with_no_selected(:table, :source_id,
@@ -206,7 +194,7 @@ module TablesHelper
     content_tag(:td, '', class: 'td-date') do
       content_tag(:input, '',
                   name: 'table[date]',
-                  value: date, class: 'date-input')
+                  value: date.strftime("%Y-%m-%d"), class: 'date-input')
     end
   end
 
@@ -216,13 +204,6 @@ module TablesHelper
                  Status.all.where(for_type: params[:type].downcase).collect { |s| [s.name.capitalize, s.id] },
                  status_id)
     end
-  end
-
-  def table_topic(topic)
-    content_tag(:td, topic,
-                class: 'editable-field td-topic',
-                name: 'table[topic]',
-                value: 'topic')
   end
 
   def table_user(user_id)
@@ -239,20 +220,6 @@ module TablesHelper
     when 'CANDIDATE'
       User.hh
     end
-  end
-
-  def table_price(price)
-    content_tag(:td, price,
-                class: 'editable-field td-price',
-                name: 'table[price]',
-                value: 'price')
-  end
-
-  def table_skype(skype)
-    content_tag(:td, skype,
-                class: 'editable-field td-skype ',
-                name: 'table[skype]',
-                value: 'skype')
   end
 
   def table_period(date_start, date_end)

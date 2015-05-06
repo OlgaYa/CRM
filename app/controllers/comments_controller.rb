@@ -1,6 +1,7 @@
-# This file is called comments_controller.rb
-# It contains the class CommentsController
-class CommentsController < ApplicationController
+class CommentsController < GridsController
+  before_action :current_entity, only: :create
+  before_action :current_table_settings, only: :create
+
   include ApplicationHelper
 
   def create
@@ -10,7 +11,8 @@ class CommentsController < ApplicationController
                                     body: params[:body],
                                     datetime: time)
     ubdate_table_date table
-    render html: generate_comment(comment, time).html_safe
+    render json: { comment: generate_comment(comment, time).html_safe,
+                   table: @table_page }.to_json 
   end
 
   def destroy
@@ -19,7 +21,11 @@ class CommentsController < ApplicationController
 
   private
 
-  def ubdate_table_date(table)
-    table.update_attribute(:date, Date.current)
-  end
+    def ubdate_table_date(table)
+      table.update_attribute(:date, DateTime.now)
+      @q = q_sort
+      @table = @q.result.oder_date_nulls_first
+      paginate_table if need_paginate?
+      @table_page = view_context.render 'tables/table_body'
+    end
 end

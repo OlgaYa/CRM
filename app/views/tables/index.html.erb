@@ -8,17 +8,17 @@
       <div class='controll-panel'>
         <%= form_for(Table.new)  do |f| %>
           <div class="btn-group">
-            <button class="btn btn-danger delete"> 
-            <i class="glyphicon glyphicon-trash"></i></button>
-            <button class="add-new btn btn-info" type="submit"> 
-            <i class="glyphicon glyphicon-plus"></i></button>
+            <button class="btn btn-sm btn-danger delete"> 
+            <i class="glyphicon glyphicon-trash"></i>Delete</button>
+            <button class="add-new btn btn-sm btn-info" type="submit"> 
+            <i class="glyphicon glyphicon-plus"></i>Add new</button>
           </div>
           <%= f.text_field(:name, hidden: true, name: 'table[name]') %>
           <%= f.text_field(:type, hidden: true, name: 'type', value: params[:type]) %>
           <%= f.text_field(:user_id, hidden: true, value: current_user.id) %>
           <%= f.text_field(:status_id, hidden: true,  value: Status.default_status(params[:type])) %>
         <% end %>
-        <button id='table-settings' class='btn btn-success inline-block'>
+        <button id='table-settings' class='btn btn-sm btn-success inline-block'>
           <i class='glyphicon glyphicon-cog'> </i>
         </button>
       </div>
@@ -26,7 +26,8 @@
       <%= render 'filters' %>
       <%= render 'table_search' %>
       <table class="table table-bordered table-condensed table-responsive data-table">
-        <%= render 'table' %>
+        <%= render 'table_head' %>
+        <%= render 'table_body' %>
       </table>
       <%= render 'per_page' %>
       <div class='text-center'>
@@ -127,10 +128,16 @@
 </div>
 <!-- End hidden blocks -->
 <div id='table-settings-dialog'>
-  <ul id='invisible-fields' class='connectedSortable'>
-  </ul>
-  <ul id='visible-fields' class='connectedSortable'>
-  </ul>
+  <div id='invisible'>
+    <label>Invisible</label>
+    <ul id='invisible-fields' class='connectedSortable'>
+    </ul>
+  </div>
+  <div id='visible'>
+    <label>Visible</label>
+    <ul id='visible-fields' class='connectedSortable'>
+    </ul>
+  </div>
 </div>
 
 <script>
@@ -146,13 +153,12 @@
           $( this ).dialog( "close" );
         },
         "Save": function() {
-          var dataForSend = { invisible: $('#invisible-fields').listVars(),
-                              type: "<%= params[:type] %>",
-                              only: "<%= params[:only] %>" };
+          var dataForSend = { invisible: $('#invisible-fields').listVars() },
+              path = 'tables/update_table_settings' + location.search;
 
           $.when($.ajax({
             type: 'POST',
-            url: 'tables/update_table_settings',
+            url: path,
             data: dataForSend
           })).always(function(data, textStatus, jqXHR){
             if(textStatus==='success'){
@@ -181,23 +187,24 @@
       connectWith: ".connectedSortable"
     }).disableSelection();
 
-    $.ajax({
-      type: 'GET',
-      url: 'tables/table_settings?' +
-           '<%= "only=#{params[:only]}" %>' + '&' +
-           '<%= "type=#{params[:type]}" %>',
-      success: function(data){
-        settings = data;
-       
-        if(data.visible){
-          appendVisibleFields($('#visible-fields'))
-        }
+    (function(){
+      var path = 'tables/table_settings' + location.search;
+      $.ajax({
+        type: 'GET',
+        url: path,
+        success: function(data){
+          settings = data;
+         
+          if(data.visible){
+            appendVisibleFields($('#visible-fields'))
+          }
 
-        if(data.invisible){
-          appendInvisibleFields($('#invisible-fields'))
+          if(data.invisible){
+            appendInvisibleFields($('#invisible-fields'))
+          }
         }
-      }
-    });
+      });
+    })();
 
     function appendVisibleFields($selector){
       var i = 0;
