@@ -24,7 +24,6 @@ class Candidate < Table
                      :skype,
                      :source,
                      :date,
-                     :user,
                      :status,
                      :comments,
                      :links]
