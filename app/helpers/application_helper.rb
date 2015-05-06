@@ -169,6 +169,16 @@ module ApplicationHelper
   def generate_right_sub_menu
     menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
     buffer = ActiveSupport::SafeBuffer.new
+    if current_user.admin || current_user.role == 'hh'
+          buffer << content_tag(:li) do
+            link_to('Text for interview', '/admin/email_texts/interview_text')
+          end
+    end
+    if current_user.admin || current_user.role == 'seller'
+          buffer << content_tag(:li) do
+            link_to('Export', '/export?type=SALE')
+          end
+    end
     if current_user.admin
       sub_menu_meeting = [ 'sub_menu', {'name' => 'Meeting',
         "item one" => {'name' => 'Meeting seller', 'path' => menu['roles']['seller']['path_meeting']},
@@ -208,16 +218,6 @@ module ApplicationHelper
                             "item one"=>{ "name"=>"Profile", "path"=> user_path(current_user.id) },
                             "item dev one"=>{ "divider"=>true },
                             "item two"=>{ "name"=>"Sign out", "path"=> destroy_user_session_path } }]
-
-    if (current_user.admin || current_user.role == 'hh')
-      result.last["item dev two"] = { "divider"=>true }
-      result.last["item three"] = { "name"=>"Text for interview", "path"=> '/admin/email_texts/interview_text' }
-    end
-    if (current_user.admin || current_user.role == 'seller')
-      result.last["item dev three"] = { "divider"=>true }
-      result.last["item four"] = { "name"=>"Export", "path"=> '/export?type=SALE' }
-    end
-    result
   end
 
   def get_avatar
