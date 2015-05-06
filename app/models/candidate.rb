@@ -29,7 +29,7 @@ class Candidate < Table
                      :comments,
                      :links]
   
-  ADVANCED_COLUMNS = DEFAULT_COLUMNS + [:reminder_date]
+  ADVANCED_COLUMNS = DEFAULT_COLUMNS + [:reminder]
 
   def self.default_scope
     select(DEFAULT_FIELDS)

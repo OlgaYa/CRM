@@ -14,14 +14,6 @@ class Table < ActiveRecord::Base
   scope :join_statuses,
         -> { joins('INNER JOIN statuses ON tables.status_id = statuses.id') }
 
-  def date
-    if self.comments.empty?
-      self.created_at
-    else
-      self.comments.last.created_at
-    end.strftime("%Y-%m-%d")
-  end
-
   def self.in_time_period(from, to)
     from = DateTime.now - 365.day unless from
     to = DateTime.now unless to

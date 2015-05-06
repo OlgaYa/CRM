@@ -12,7 +12,8 @@ class Sale < Table
                     :type,
                     :created_at,
                     :updated_at,
-                    :lead]
+                    :lead,
+                    :phone]
 
   ADVANCED_FIELDS = DEFAULT_FIELDS + [:price,
                                       :date_start,
@@ -29,7 +30,8 @@ class Sale < Table
                      :status,
                      :lead,
                      :comments,
-                     :links]
+                     :links,
+                     :phone]
 
   ADVANCED_COLUMNS = DEFAULT_COLUMNS + [:price, :terms]
 
