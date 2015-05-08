@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="container-fluid">
+    <% @histories.each do |history| %>
+    <%= change_date(history) %>
+      <div>
+        <%= history.created_at.strftime("%I:%M") %>
+        <%= history.user.full_name %>
+      </div>
+      <div>
+        <%= history.table.id %>
+        <%= history.table.name %>
+      </div>
+      <div>
+        <%= information_about_change(history.options_for_history.first) %>
+      </div>
+    <% end %>
+  </div>
+</div>
