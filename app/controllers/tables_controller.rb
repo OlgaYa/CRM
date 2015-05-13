@@ -202,4 +202,5 @@ class TablesController < ApplicationController
       return false unless id
       current_user.id != id.to_i
     end
+
 end
