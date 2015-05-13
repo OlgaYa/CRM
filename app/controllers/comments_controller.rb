@@ -10,6 +10,7 @@ class CommentsController < ApplicationController
                                     body: params[:body],
                                     datetime: time)
     ubdate_table_date table
+    History.create_history_for_update_object(table, {"Comment"=>comment.id})
     render html: generate_comment(comment, time).html_safe
   end
 

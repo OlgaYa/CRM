@@ -34,6 +34,7 @@ class TablesController < ApplicationController
       redirect_to tables_path(type: 'CANDIDATE')
     end
     Statistic.update_statistics(object)
+    History.create_history_for_new_object(object)
   end
 
   def update
@@ -47,6 +48,7 @@ class TablesController < ApplicationController
                                               params[:table][:user_id].to_i)
         .deliver
     end
+    History.create_history_for_update_object(table, params[:table])
     render json: 'success'.to_json
   end
 
