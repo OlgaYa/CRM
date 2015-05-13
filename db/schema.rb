@@ -11,11 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150430113214) do
+ActiveRecord::Schema.define(version: 20150507115517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "uuid-ossp"
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
@@ -23,6 +22,15 @@ ActiveRecord::Schema.define(version: 20150430113214) do
     t.datetime "datetime"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "histories", force: :cascade do |t|
+    t.integer  "table_id"
+    t.integer  "user_id"
+    t.string   "for_type",    default: "sale"
+    t.string   "description"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   create_table "levels", force: :cascade do |t|
@@ -41,13 +49,13 @@ ActiveRecord::Schema.define(version: 20150430113214) do
   end
 
   create_table "meetings", force: :cascade do |t|
-    t.integer  "meeting_id"
     t.string   "title"
     t.string   "description"
     t.string   "location"
     t.datetime "start_time"
     t.datetime "end_time"
     t.integer  "table_id"
+    t.string   "event_id"
   end
 
   add_index "meetings", ["table_id"], name: "index_meetings_on_table_id", using: :btree
@@ -59,6 +67,12 @@ ActiveRecord::Schema.define(version: 20150430113214) do
     t.integer  "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "options_for_histories", force: :cascade do |t|
+    t.integer "history_id"
+    t.integer "history_option_id"
+    t.string  "history_option_type"
   end
 
   create_table "options_for_plans", force: :cascade do |t|

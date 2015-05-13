@@ -4,6 +4,7 @@ class MeetingsController < ApplicationController
 
   def index
     @type = params[:type]
+    @meeting = Meeting.last
   end
 
 
@@ -47,13 +48,36 @@ class MeetingsController < ApplicationController
         attendees<<{'email'=> params[:@meeting][:email], 'displayName' => "Indefinite", 'responseStatus' => 'needsAction'} unless params[:@meeting][:email].empty?
         e.attendees = attendees
       end
+      @meeting.update(event_id: event.raw["id"])
       redirect_to root_url
     else
       redirect_to root_url
     end
   end
 
+  def update
+    config = YAML.load(File.read(File.join(Rails.root, 'config', 'calendar.yml')))
+    cal = Google::Calendar.new(:client_id     => config['client_id'],
+                     :client_secret => config['client_secret'],
+                     :calendar      => config['calendar_sale'],
+                     :redirect_url  => config['redirect_url'],
+                     :refresh_token => config['refresh_token'])
+    binding.pry
+    meeting = Meeting.where(id: params[:id]).last
+    meeting.update_attributes(meeting_update_params)
+    event = cal.find_event_by_id(meeting.event_id)
+    event.title = @meeting.title
+    event.description = @meeting.description.gsub(/\r\n/, "\\n")
+    event.start_time = @meeting.start_time
+    event.end_time = @meeting.end_time
+    event.save
+    redirect_to action: :index
+  end
+
   def meeting_params
     params.require(:@meeting).permit(:title, :description, :start_time, :end_time)
+  end
+  def meeting_update_params
+    params.require(:meeting).permit(:title, :description, :start_time, :end_time)
   end
 end
