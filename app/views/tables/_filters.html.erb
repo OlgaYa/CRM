@@ -12,7 +12,7 @@
                { include_blank: 'Specialization' },
                class: 'btn  btn-default')
       %>
-      <%= select('q', 'level_id_eq',
+      <%= select('q', 'level_id_not_eq_all',
                Level.all.collect { |l| [l.name, l.id] },
                { include_blank: 'Level' },
                class: 'btn  btn-default')

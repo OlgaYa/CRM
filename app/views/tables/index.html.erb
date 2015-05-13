@@ -1,17 +1,16 @@
 <%= render 'tables/sub_menu' %>
-<div class="row">
+<div class="row content">
   <div class="container-fluid">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
     <%= render 'shared/notifier' %>
-      <!-- FIXME -->
       <div class='controll-panel'>
         <%= form_for(Table.new)  do |f| %>
           <div class="btn-group">
             <button class="btn btn-sm btn-danger delete"> 
-            <i class="glyphicon glyphicon-trash"></i>Delete</button>
+            <i class="glyphicon glyphicon-trash"></i> Delete</button>
             <button class="add-new btn btn-sm btn-info" type="submit"> 
-            <i class="glyphicon glyphicon-plus"></i>Add new</button>
+            <i class="glyphicon glyphicon-plus"></i> Add new</button>
           </div>
           <%= f.text_field(:name, hidden: true, name: 'table[name]') %>
           <%= f.text_field(:type, hidden: true, name: 'type', value: params[:type]) %>
@@ -23,12 +22,39 @@
         </button>
       </div>
 
-      <%= render 'filters' %>
+      <%= generate_filters %>
+      
+      <%= link_to(content_tag(:i, '', class: 'glyphicon glyphicon-refresh') + ' Show all',
+                              tables_path(type: params[:type], only: params[:only]),
+                              class: 'btn btn-sm btn-primary') %>
+
+      <%= search_form_for @q, url: tables_path, class: 'filters-params' do |f| %>
+       
+        <%= hidden_field :type, '', name: 'type', id: 'type', value: params[:type] %>
+        <%= hidden_field :type, '', name: 'only', id: 'only', value: params[:only] %>
+        <hr>
+        <%= f.submit 'Filter',  class: 'filter-submit btn btn-sm btn-primary' %>
+        
+      <% end %>
+
+      <script>
+        //<![CDATA[
+          var fParams = JSON.parse('<%= current_entity.filter_params %>');
+          var fdata = '<%= params[:q].to_json.html_safe %>';       
+        //]]>
+      </script>
+
       <%= render 'table_search' %>
-      <table class="table table-bordered table-condensed table-responsive data-table">
-        <%= render 'table_head' %>
-        <%= render 'table_body' %>
-      </table>
+      <div class='clear'></div>     
+      <% unless @table.empty? %>
+        <table class="table table-bordered table-condensed table-responsive data-table">
+          <%= render 'table_head' %>
+          <%= render 'table_body' %>
+        </table>
+      <% else %>
+
+       <div class='text-center no-data'> <label> No data to display </label> </div>
+      <% end %>
       <%= render 'per_page' %>
       <div class='text-center'>
         <% unless cookies[:lid_count] == 'all' %>
@@ -126,7 +152,7 @@
     </div>
   </div>
 </div>
-<!-- End hidden blocks -->
+
 <div id='table-settings-dialog'>
   <div id='invisible'>
     <label>Invisible</label>
@@ -139,93 +165,3 @@
     </ul>
   </div>
 </div>
-
-<script>
-  $(document).ready(function(){
-    var settings;
-
-    $('#table-settings-dialog').dialog({
-      autoOpen: false,
-      title: 'Table settings',
-      width: 410,
-       buttons: {
-        Cancel: function() {
-          $( this ).dialog( "close" );
-        },
-        "Save": function() {
-          var dataForSend = { invisible: $('#invisible-fields').listVars() },
-              path = 'tables/update_table_settings' + location.search;
-
-          $.when($.ajax({
-            type: 'POST',
-            url: path,
-            data: dataForSend
-          })).always(function(data, textStatus, jqXHR){
-            if(textStatus==='success'){
-              location.reload(true);
-            }
-          })
-        }
-      },
-      close: function(){
-        $('#visible-fields').empty();
-        $('#invisible-fields').empty();
-        if(settings.visible){
-          appendVisibleFields($('#visible-fields'))
-        }
-        if(settings.invisible){
-          appendInvisibleFields($('#invisible-fields'))
-        }
-      }
-    });
-
-    $('#table-settings').on('click', function(){
-      $('#table-settings-dialog').dialog('open');
-    });
-
-    $( "#invisible-fields, #visible-fields" ).sortable({
-      connectWith: ".connectedSortable"
-    }).disableSelection();
-
-    (function(){
-      var path = 'tables/table_settings' + location.search;
-      $.ajax({
-        type: 'GET',
-        url: path,
-        success: function(data){
-          settings = data;
-         
-          if(data.visible){
-            appendVisibleFields($('#visible-fields'))
-          }
-
-          if(data.invisible){
-            appendInvisibleFields($('#invisible-fields'))
-          }
-        }
-      });
-    })();
-
-    function appendVisibleFields($selector){
-      var i = 0;
-      for(i; i < settings.visible.length; i = i+1){
-        $selector.append('<li>'+ settings.visible[i] +'</li>')
-      }
-    }
-    
-    function appendInvisibleFields($selector){
-      var i = 0;
-      for(i; i < settings.invisible.length; i = i+1){
-        $selector.append('<li>'+ settings.invisible[i] +'</li>')
-      }
-    }
-
-    $.fn.listVars = function(){
-      var result = [];
-      $(this).children('li').each(function(){
-        result.push($(this).text());
-      })
-      return result;
-    }
-  });
-</script>

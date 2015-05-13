@@ -332,4 +332,20 @@ module TablesHelper
     return unless cookies[:lid_count].to_i == count.to_i
     'active-link-per-page'
   end
+
+  def generate_filters
+    fields = current_entity.FIELDS_FOR_FILTER
+    select('filter', 'params', fields,
+           { include_blank: 'Add filter' },
+           class: 'form-control', id: 'filter-select')
+  end
+
+  def current_entity
+    case params[:type]
+    when 'SALE'
+      Sale
+    when 'CANDIDATE'
+      Candidate
+    end
+  end
 end

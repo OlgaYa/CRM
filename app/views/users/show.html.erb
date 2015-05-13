@@ -15,6 +15,7 @@
         <span> <%= @user.tables.count %> </span>
         <span> Tasks </span>
       </div>
+
       <!-- Nav tabs -->
       <ul class="nav nav-tabs user-room-tabs">
         <li><a href="#contacts" data-toggle="tab">Contact info</a></li>
@@ -50,7 +51,7 @@
                         </div>
                       </div>
                     </td>   
-                    <td class="second-td">
+                    <td class="second-td">                      
                       <%= label_tag 'First name:' %>
                       <%= text_field_tag 'user[first_name]', @user.first_name, class:"form-control" %>
                       <div class="clear"></div>

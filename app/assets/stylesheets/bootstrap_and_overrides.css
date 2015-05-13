@@ -14,13 +14,23 @@
   height: 100%;
 }
 
+.navbar {
+  margin-bottom: 0 !important; 
+}
+
 .navbar-right .dropdown{
   margin-right: 20px;
 }
+
 .navbar-right .dropdown-toggle {
   padding-top: 8px;
   padding-bottom: 6px;
 }
+
+.dropdown-menu {
+  border: 0 !important;
+}
+
 td .btn {
   padding: 2px 2px;
   font-size: 10pt;

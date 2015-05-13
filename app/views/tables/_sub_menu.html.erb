@@ -1,9 +1,9 @@
-<nav class="navbar navbar-inverse" id='navbar-submenu' role="navigation">
+<nav class="navbar navbar-inverse nav-down" id='navbar-submenu' role="navigation">
  <div class="container-fluid">
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id='tables-sub-menu'>
       <ul id='tables-sub-menu-nav' class="nav navbar-nav">
-        <% if params[:type] == 'SALE' %>
+      <% if params[:type] == 'SALE' %>
         <li class=<%= 'active' if params[:only] == 'open' || !params[:only] %>>
           <%= link_to('Open', tables_path(type: 'SALE', only: 'open')) %>
         </li>

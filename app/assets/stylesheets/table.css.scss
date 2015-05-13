@@ -1,6 +1,7 @@
 .user_owner{
   background-color: #EFF999;
 }
+
 #editable-field-textarea {
   width: 100%;
   max-width: 100%;
@@ -76,11 +77,24 @@
   font-size: 10pt;
 }
 
-#navbar-submenu {
-  height: 30px !important;
+#navbar-submenu {  
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 1;
   min-height: 30px;
   border-radius: 0;
-  margin-top: -20px;
+  border: 0;
+  margin-bottom: 20px !important;
+  transition: top 0.2s ease-in-out;
+}
+
+.nav-up {
+  top: 20px;
+}
+
+.nav-down {
+  top: 50px;
 }
 
 .active-link-per-page {
@@ -133,4 +147,84 @@
 
 #invisible {
   float: right;
+}
+
+/* FILTERS */
+
+.no-data {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  line-height: 30px;
+  background-color: rgba(240, 173, 78, 0.49);
+  border: 2px solid #f0ad4e;
+}
+
+.table-search {
+  margin-top: 0;
+}
+
+#filter-select {
+  display: inline-block;
+  margin-left: 25px;
+  width: 152px;
+}
+
+.filters-params{
+  margin-top: 10px;
+  display: none;
+  width: 470px;
+  border: 1px solid #DDD;
+  padding: 20px;
+  border-radius: 20px;
+  position: relative;
+}
+
+.input-group-btn {
+  width: 0% !important;
+}
+
+.filter-commands {
+  height: 30px;
+  width: 90px;
+  float: left;
+}
+
+.filter {
+  display: inline-block;
+  height: 30px;
+  width: 140px;
+  margin-left: 20px;
+  float: left;
+}
+
+.date-filter {
+  margin-left: 20px;
+  width: 80px;
+  height: 30px;
+}
+
+.name-label {
+  width: 100px;
+  float: left;
+}
+
+span.remove-filter {
+  border-radius: 0;
+  height: 30px;
+  float: left;
+}
+
+i.multiple {
+  margin-left: 15px;
+  clear: both;
+  height: 30px;
+  margin-top: 5px;
+}
+
+i.multiple:hover {
+  cursor: pointer;
+}
+
+.filter-submit {
+  margin-left: 376px;
 }
