@@ -24,10 +24,12 @@ gem 'will_paginate-bootstrap'
 gem "paperclip", "~> 4.2"
 gem 'cancancan', '~> 1.10'
 gem 'sidekiq', '~> 2.17.7'
+gem 'sidekiq-limit_fetch'
 gem 'sinatra'
 gem 'ransack'
 gem 'capistrano-sidekiq', '0.3.0'
 gem 'rails_autolink'
+gem 'gibbon'
 
 group :development do
   gem 'spring'
@@ -39,4 +41,3 @@ group :development do
   gem 'capistrano', '~> 2.13.0'
   gem 'rvm-capistrano',  require: false
 end
-
