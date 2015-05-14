@@ -89,6 +89,8 @@ ActiveRecord::Schema.define(version: 20150506093251) do
     t.datetime "end_time"
     t.integer  "table_id"
     t.string   "event_id"
+    t.string   "for_type"
+    t.string   "email"
   end
 
   add_index "meetings", ["table_id"], name: "index_meetings_on_table_id", using: :btree

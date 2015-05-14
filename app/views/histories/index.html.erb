@@ -1,20 +1,23 @@
 <div class="row">
-  <div class="container-fluid">
-    <% @histories.each do |history| %>
-    <h3> <%= change_date(history) %> </h3>
-      <dl class="history">
-        <dt>
-          <%= history.created_at.strftime("%I:%M") %>
-          <%= history.user.full_name %>
-        </dt>
-        <dd>
-          <%= history.table.id %>
-          <%= history.table.name %>
-          <div>
-            <%= information_about_change(history) %>
-          </div>
-        </dd>
-      </dl>
-    <% end %>
+  <div class="col-lg-6 col-md-8 col-lg-offset-3 col-md-offset-2">
+    <div class="container-fluid">
+      <% @histories.each do |history| %>
+        <h3> <%= change_date_history(history) %> </h3>
+        <dl class="history">
+          <dt>
+            <%= history.created_at.strftime("%H:%M") %>
+            <%= history.user.full_name %>
+          </dt>
+          <dd>
+            <%= history.table.id %>
+            <%= history.table.name %>
+            <div>
+              <%= information_about_change(history) %>
+            </div>
+          </dd>
+        </dl>
+      <% end %>
+      <%= will_paginate @history, renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
+    </div>
   </div>
 </div>

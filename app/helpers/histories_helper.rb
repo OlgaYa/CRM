@@ -1,5 +1,5 @@
 module HistoriesHelper
-  NOT_MODEL = ["Name", "Lead", "Email", "Skype", "Topic"]
+  NOT_MODEL = ["Name", "Lead", "Email", "Skype", "Topic", "Phone"]
 
   def information_about_change(history)
     options = history.options_for_history.first
@@ -25,7 +25,7 @@ module HistoriesHelper
     end
   end
 
-  def change_date(history)
+  def change_date_history(history)
     if @current_day != history.created_at.to_date
       @current_day = history.created_at.to_date
       if @current_day == Date.today
