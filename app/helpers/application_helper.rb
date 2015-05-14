@@ -159,55 +159,55 @@ module ApplicationHelper
   def generate_right_menu
     content_tag(:ul, class: 'nav navbar-nav navbar-right') do
       if current_user
-        generate_right_sub_menu(true)
+        generate_right_sub_menu
       else
         generate_log_in
       end
     end
   end
 
-  def generate_right_sub_menu(user_menu = false)
+  def generate_right_sub_sub_menu
     buffer = ActiveSupport::SafeBuffer.new
-    if user_menu
-      image = get_avatar
-      buffer << get_dropdown(get_current_user_sub_menu, image)
+    menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
+    if current_user.admin || current_user.role == 'hh'
+          buffer << content_tag(:li) do
+            link_to('Text for interview', '/admin/email_texts/interview_text')
+          end
+    end
+    if current_user.admin || current_user.role == 'seller'
+          buffer << content_tag(:li) do
+            link_to('Export', '/export?type=SALE')
+          end
+    end
+    if current_user.admin
+      sub_menu_meeting = [ 'sub_menu', {'name' => 'Meeting',
+        "item one" => {'name' => 'Meeting seller', 'path' => menu['roles']['seller']['path_meeting']},
+        "item two" => {'name' => 'Meeting HH', 'path' => menu['roles']['hh']['path_meeting']}
+        }]
+      buffer << get_dropdown(sub_menu_meeting, nil, 'sub_menu_meeting')
+      sub_menu_stat = [ 'sub_menu', {'name' => 'Statistics',
+        "item one" => {'name' => 'Statistics seller', 'path' => menu['roles']['seller']['path_statistics'] },
+        "item two" => {'name' => 'Statistics HH', 'path' => menu['roles']['hh']['path_statistics'] }
+        }]
+      buffer << get_dropdown(sub_menu_stat, nil, 'sub_menu_stat')
     else
-      menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
-      if current_user.admin || current_user.role == 'hh'
-            buffer << content_tag(:li) do
-              link_to('Text for interview', '/admin/email_texts/interview_text')
-            end
-      end
-      if current_user.admin || current_user.role == 'seller'
-            buffer << content_tag(:li) do
-              link_to('Export', '/export?type=SALE')
-            end
-      end
-      if current_user.admin
-        sub_menu_meeting = [ 'sub_menu', {'name' => 'Meeting',
-          "item one" => {'name' => 'Meeting seller', 'path' => menu['roles']['seller']['path_meeting']},
-          "item two" => {'name' => 'Meeting HH', 'path' => menu['roles']['hh']['path_meeting']}
-          }]
-        buffer << get_dropdown(sub_menu_meeting, nil, 'sub_menu_meeting')
-        sub_menu_stat = [ 'sub_menu', {'name' => 'Statistics',
-          "item one" => {'name' => 'Statistics seller', 'path' => menu['roles']['seller']['path_statistics'] },
-          "item two" => {'name' => 'Statistics HH', 'path' => menu['roles']['hh']['path_statistics'] }
-          }]
-        buffer << get_dropdown(sub_menu_stat, nil, 'sub_menu_stat')
-      else
-        menu['roles'].each do |role|
-          if current_user && (current_user.role == role[0])
-            buffer << content_tag(:li) do
-              link_to('Meeting', role[1]['path_meeting'])
-            end
-            buffer << content_tag(:li) do
-              link_to('Statistics', role[1]['path_statistics'])
-            end
+      menu['roles'].each do |role|
+        if current_user && (current_user.role == role[0])
+          buffer << content_tag(:li) do
+            link_to('Meeting', role[1]['path_meeting'])
+          end
+          buffer << content_tag(:li) do
+            link_to('Statistics', role[1]['path_statistics'])
           end
         end
       end
     end
     buffer
+  end
+
+  def generate_right_sub_menu
+    image = get_avatar
+    get_dropdown(get_current_user_sub_menu, image)
   end
 
   def generate_log_in
