@@ -166,9 +166,9 @@ module ApplicationHelper
     end
   end
 
-  def generate_right_sub_menu
-    menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
+  def generate_right_sub_sub_menu
     buffer = ActiveSupport::SafeBuffer.new
+    menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
     if current_user.admin || current_user.role == 'hh'
           buffer << content_tag(:li) do
             link_to('Text for interview', '/admin/email_texts/interview_text')
@@ -210,9 +210,12 @@ module ApplicationHelper
         end
       end
     end
-    image = get_avatar
-    buffer << get_dropdown(get_current_user_sub_menu, image)
     buffer
+  end
+
+  def generate_right_sub_menu
+    image = get_avatar
+    get_dropdown(get_current_user_sub_menu, image)
   end
 
   def generate_log_in

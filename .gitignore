@@ -94,5 +94,6 @@ config/secrets.yml
 #imap.yml
 config/imap.yml
 config/calendar.yml
+config/mailchimp.yml
 .ruby-gemset
 .ruby-version

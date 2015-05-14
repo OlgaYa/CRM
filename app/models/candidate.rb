@@ -1,34 +1,36 @@
 # This class defines the essence of which users will be working with the role HH
 class Candidate < Table
-  DEFAULT_FIELDS = [:id,
-                    :name,
-                    :level_id,
-                    :specialization_id,
-                    :email,
-                    :skype,
-                    :source_id,
-                    :date,
-                    :user_id,
-                    :status_id,
-                    :type,
-                    :created_at,
-                    :updated_at]
+  
+  # fields for Candidate scope
+  DEFAULT_FIELDS = [:id,    :name,       :level_id,
+                    :email, :skype,      :source_id,
+                    :date,  :user_id,    :status_id,
+                    :type,  :created_at, :updated_at,
+                    :specialization_id]
 
+  # fields for Candidate scope with status 'contact_later'
   ADVANCED_FIELDS = DEFAULT_FIELDS + [:reminder_date]
 
-  DEFAULT_COLUMNS = [:id,
-                     :name,
-                     :level,
-                     :specialization,
-                     :email,
-                     :skype,
-                     :source,
-                     :date,
-                     :status,
-                     :comments,
-                     :links]
-  
+  # default fields for building Candidate table
+  DEFAULT_COLUMNS = [:id,    :name,   :level,
+                     :email, :skype,  :source,
+                     :date,  :status, :comments,
+                     :links, :specialization]
+
+  # default fields for building Candidate table with status 'contact_later'
   ADVANCED_COLUMNS = DEFAULT_COLUMNS + [:reminder]
+
+  # hash for building filters with params:
+  # st_default type = operations: 'equally', 'not equally'
+  # number     type = operations: 'equally', 'not equally',
+  #                               'between', 'more', 'less'
+  # date       type = operations: 'more', 'less', 'between'
+  FIELDS_FOR_FILTER = [[:status,      :status_id,   filter_type: :st_default],
+                       [:source,      :source_id,   filter_type: :st_default],
+                       [:date,        :date,        filter_type: :date],
+                       [:level,       :level_id,    filter_type: :st_default],
+                       [:specialization, :specialization_id,
+                        filter_type: :st_default]]
 
   def self.default_scope
     select(DEFAULT_FIELDS)
@@ -68,5 +70,22 @@ class Candidate < Table
 
   def self.ADVANCED_COLUMNS
     ADVANCED_COLUMNS
+  end
+
+  def self.FIELDS_FOR_FILTER
+    FIELDS_FOR_FILTER
+  end
+
+  def self.filter_params
+    result = {}
+    result[:source_id] = entities_params(Source.all_candidate)
+    result[:status_id] = entities_params(Status.all_candidate)
+    result[:specialization_id] = entities_params(Specialization.all)
+    result[:level_id] = entities_params(Level.all)
+    result.to_json.html_safe
+  end
+
+  def self.entities_params(entitys)
+    result = entitys.collect { |e| [e.name.to_sym, e.id] }
   end
 end

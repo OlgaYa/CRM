@@ -9,11 +9,6 @@ html, body {
   height: 100%;
 }
 
-#sub_menu_meeting > a, #sub_menu_stat > a{
-  padding-top: 15px;
-  padding-bottom: 15px;
-}
-
 #footer{
   height: 50px;
   position: inherit;
@@ -22,12 +17,26 @@ html, body {
 body > #wrapper {
   position: relative;
   min-height: 100%;
-  padding-bottom: 70px;
-  padding-top: 70px;
+  padding-bottom: 50px;
+  padding-top: 80px;
 }
 
 #header nav {
   background-color:  #6F7683;
+}
+
+
+#sub_menu_meeting, #sub_menu_stat {
+  margin-right: 0;
+}
+
+#sub_menu_meeting > a, #sub_menu_stat > a{
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.content {
+  padding-top: 20px;
 }
 
 a.dropdown-toggle {
@@ -69,7 +78,9 @@ a.navbar-brand {
 /* TASK TABLE */
 
 .controll-panel {
-  display: block;
+  display: inline-block;
+  margin-top: -10px;
+  margin-left: 5px;
 }
 
 .tasks-sub-menu {
@@ -105,7 +116,7 @@ a.navbar-brand {
   border: 1px solid #DDDDDD;
 }
 
-td .comment_list div:not(:last-child){
+td .comment_list div:not(:first-child){
   display: none;
 }
 

@@ -14,6 +14,8 @@ class Table < ActiveRecord::Base
   scope :join_statuses,
         -> { joins('INNER JOIN statuses ON tables.status_id = statuses.id') }
 
+  after_save :add_email_to_mailchimp
+
   def self.in_time_period(from, to)
     from = DateTime.now - 365.day unless from
     to = DateTime.now unless to
@@ -54,7 +56,7 @@ class Table < ActiveRecord::Base
 
   def self.fields_names(fields)
     return fields unless first
-    ordered_fields = [] 
+    ordered_fields = []
     first.attributes.each do |attribute|
       ordered_fields << attribute[0] if fields.include? attribute[0]
     end
@@ -79,4 +81,17 @@ class Table < ActiveRecord::Base
       attribute[1].gsub(/(,|;)/, ' ') if attribute[1]
     end
   end
+
+  def add_email_to_mailchimp
+    return unless Rails.env.production?
+    MailchimpWorker.perform_async({
+      'id' => self.id,
+      'email' => self.email.nil? ? '' : self.email.strip,
+      'type' => self.type,
+      'level_name' => self.level.nil? ? nil : self.level.name,
+      'specialization_name' => self.specialization.nil? ? nil : self.specialization.name,
+      'name' => self.name
+    })
+  end
+
 end
