@@ -86,7 +86,7 @@ $(document).ready(function(){
     $editableActivityDialog.dialog('option', 'title', capitalize($(this).attr('value')));
     $editableActivityDialog.dialog('open');
     $editableActivityDialog.prepend($(this).children().clone());
-    $editableActivityDialog.children('div').scrollTop(10000000)
+
   });
 
   $(document).on('click', '#activity-add', function(){
@@ -134,7 +134,6 @@ $(document).ready(function(){
             $('.data-table tbody').remove();
             $('.data-table').append(data.table);
             dateInputInit();
-            $editableActivityDialog.children('div').scrollTop(10000000)
           } else {
             $editableActivityDialog.children('div').append(data);
             $td.children('div').append(data);
