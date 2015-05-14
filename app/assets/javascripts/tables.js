@@ -129,8 +129,8 @@ $(document).ready(function(){
         data: dataForSend,
         success: function(data){
           if (data.comment) {
-            $editableActivityDialog.children('div').append(data.comment);
-            $td.children('div').append(data.comment);
+            $editableActivityDialog.children('div').prepend(data.comment);
+            $td.children('div').prepend(data.comment);
             $('.data-table tbody').remove();
             $('.data-table').append(data.table);
             dateInputInit();

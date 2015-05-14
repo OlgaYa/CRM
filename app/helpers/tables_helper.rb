@@ -113,7 +113,7 @@ module TablesHelper
       concat table_period         entity.date_start,
                                   entity.date_end          if present? :terms
       concat table_reminder       entity.reminder_date     if present? :reminder
-      concat table_comments       entity.comments          if present? :comments
+      concat table_comments       entity.comments.order(created_at: :desc)  if present? :comments
     end
   end
 
