@@ -9,6 +9,11 @@ html, body {
   height: 100%;
 }
 
+#sub_menu_meeting > a, #sub_menu_stat > a{
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
 #footer{
   height: 50px;
   position: inherit;
@@ -100,7 +105,7 @@ a.navbar-brand {
   border: 1px solid #DDDDDD;
 }
 
-td .comment_list div:not(:first-child){
+td .comment_list div:not(:last-child){
   display: none;
 }
 
@@ -145,6 +150,10 @@ td .comment_list{
   margin-top: 3px;
   margin-right: 5px;
   display: inline-block;
+}
+
+td div.comment a {
+  display: none;
 }
 
 td .comment {
@@ -296,7 +305,7 @@ footer {
 /* NOTICE */
 .notifier {
   right: 15px;
-  top: -5px;
+  top: -15px;
   border-radius: 3px;
   display: none;
   position: absolute;
@@ -716,4 +725,10 @@ body > #wrapper>.room>.content-column {
 
 .meeting_title{
   text-align: center;
+}
+
+/* CSS FOR USEFUL THINGS */
+
+.inline-block {
+  display: inline-block;
 }

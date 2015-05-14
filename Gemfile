@@ -8,12 +8,14 @@ gem 'twitter-bootstrap-rails'
 gem 'jquery-rails'
 gem 'unicorn'
 gem 'pg'
+
+# REMOVE?
 gem 'simple_form'
+
 gem 'enumerize'
 gem 'jquery-ui-rails'
 gem 'rufus-scheduler', '~> 2.0.24'
 gem 'google-api-client', :require => 'google/api_client'
-# gem 'google_calendar'
 gem 'google_calendar', :git => 'https://github.com/Anastasiya09/google_calendar'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.7.14'

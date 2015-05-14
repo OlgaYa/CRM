@@ -1,25 +1,27 @@
 # Main controller for work with tables
-class TablesController < ApplicationController
+class TablesController < GridsController
   load_and_authorize_resource
   before_action :nil_if_blank, only: [:download_selective_xls,
                                       :download_scoped_xls]
   before_action :current_entity, only: [:download_selective_xls,
-                                        :download_scoped_xls]
+                                        :download_scoped_xls,
+                                        :table_settings,
+                                        :index]
   before_action :lid_count_conf, only: :index
+  before_action :current_table_settings, only: [:index, :table_settings]
   after_action :send_remind_today, only: :update
 
   include ApplicationHelper
 
   def index
-    @q = case params[:type]
-         when 'CANDIDATE'
-           @value_for_description = SimpleText.text_for_candidate
-           candidate_table
-         when 'SALE'
-           @value_for_description = ""
-           sale_table
-         end.ransack(params[:q])
-    @table = @q.result.includes(:source, :status).oder_date_nulls_first
+    case params[:type]
+    when 'CANDIDATE'
+      @value_for_description = SimpleText.text_for_candidate
+    when 'SALE'
+      @value_for_description = "" # NEED WRITE
+    end
+    @q = q_sort
+    @table = @q.result.oder_date_nulls_first
     paginate_table if need_paginate?
     @type = params[:type]
   end
@@ -33,6 +35,7 @@ class TablesController < ApplicationController
       object = Candidate.create(table_params)
       redirect_to tables_path(type: 'CANDIDATE')
     end
+    object.update_attribute(:date, object.created_at)
     Statistic.update_statistics(object)
     History.create_history_for_new_object(object)
   end
@@ -96,18 +99,23 @@ class TablesController < ApplicationController
               filename: 'data.xls')
   end
 
-  # CAN BE USEFUL IN FUTURE
-  def json_filters
-    render json: case params[:type]
-                 when 'SALE'
-                   Sale.simple_filters
-                 when 'CANDIDATE'
-                   Candidate.simple_filters
-                 end.to_json
+  def table_settings
+    render json: @settings.to_json
+  end
+
+  def update_table_settings
+    if current_user.table_settings
+      settings_hash = JSON.parse(current_user.table_settings)
+    else
+      settings_hash = {}
+    end
+    settings_hash[current_key] = params[:invisible]
+    current_user.table_settings = settings_hash.to_json
+    current_user.save
+    render json: 'success'.to_json
   end
 
   private
-
     def table_params
       params.require(:table).permit(:type, :name, :level_id,
                                     :specialization_id,
@@ -116,52 +124,12 @@ class TablesController < ApplicationController
                                     :topic, :skype,
                                     :user_id, :price,
                                     :date_end, :date_start,
-                                    :reminder_date, :lead)
-    end
-
-    def sale_table
-      case params[:only]
-      when 'sold'
-        Sale.sold
-      when 'declined'
-        Sale.declined
-      else
-        Sale.open
-      end
-    end
-
-    def candidate_table
-      case params[:only]
-      when 'hired'
-        Candidate.hired
-      when 'we_declined'
-        Candidate.we_declined
-      when 'he_declined'
-        Candidate.he_declined
-      when 'contact_later'
-        Candidate.contact_later
-      else
-        Candidate.open
-      end
-    end
-
-    def paginate_table
-      @table = @table.oder_date_nulls_first.paginate(page: params[:page],
-                               per_page: cookies[:lid_count] || 25)
-    end
+                                    :reminder_date, :lead, :phone)
+    end  
 
     def nil_if_blank
       params[:period][:from] = nil if params[:period][:from].blank?
       params[:period][:to] = nil if params[:period][:to].blank?
-    end
-
-    def current_entity
-      case params[:type]
-      when 'SALE'
-        @entity = Sale
-      when 'CANDIDATE'
-        @entity = Candidate
-      end
     end
 
     def scoped_sale_data
@@ -189,19 +157,5 @@ class TablesController < ApplicationController
       return unless reminder_date.to_date == Date.today && reminder_date > DateTime.current
       UserMailer.remind_today(table.id)
         .deliver_later(wait_until: reminder_date)
-    end
-
-    def need_paginate?
-      cookies[:lid_count] != 'all'      
-    end
-
-    def lid_count_conf
-      return unless params[:lid_count]
-      cookies[:lid_count] = params[:lid_count]
-    end
-
-    def not_itself_id?(id)
-      return false unless id
-      current_user.id != id.to_i
     end
 end

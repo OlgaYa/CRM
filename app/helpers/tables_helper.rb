@@ -43,124 +43,103 @@ module TablesHelper
     end
   end
 
-  def table_generation(table)
+  def generate_head(entity)
+    return if entity.empty?
+    content_tag(:thead) do
+      content_tag(:tr, class: 'info') do
+        concat generate_head_item('#')
+        concat generate_head_item('Id', 'context')        if present? :id
+        concat generate_head_item('Name', 'context')      if present? :name
+        concat generate_sortable_th('sort', 'Lead',
+                                    :lead)                if present? :lead
+        concat generate_sortable_th('sort', 'Level',
+                                    :level_name)          if present? :level
+        concat generate_sortable_th('sort',
+                                    'Specialization',
+                                    :specialization_name) if present? :specialization
+        concat generate_head_item('Topic', 'context')     if present? :topic
+        concat generate_head_item('Phone', 'context')     if present? :phone
+        concat generate_sortable_th('sort context',
+                                    'Source',
+                                    :source_name)         if present? :source
+        concat generate_head_item('Skype', 'context')     if present? :skype
+        concat generate_head_item('Email', 'context')     if present? :email
+        concat generate_head_item('Links', 'context')     if present? :links
+        concat generate_sortable_th('sort context',
+                                    'Date',
+                                    :date)                if present? :date
+        concat generate_sortable_th('sort context',
+                                    'Assign to',
+                                    :user_id)             if present? :user
+        concat generate_sortable_th('sort context',
+                                    'Status',
+                                    :status_id)           if present? :status
+        concat generate_head_item('Price',
+                                  'context')              if present? :price
+        concat generate_head_item('Terms', 'context')     if present? :terms
+        concat content_tag(:th, 'Reminder')               if present? :reminder
+        concat generate_head_item('Comments', 'context')  if present? :comments
+      end
+    end
+  end
+
+  def generate_table_body(table)
     return if table.empty?
-    buffer = ActiveSupport::SafeBuffer.new
-    case table.first.type
-    when 'Sale'
-      buffer << generate_sale_table_head(table.first.status.name)
-      buffer << generate_sale_table(table)
-    when 'Candidate'
-      buffer << generate_candidate_table_head(table.first.status.name)
-      buffer << generate_candidate_table(table)
-    end
-    buffer
-  end
-
-  # OPTIMIZE
-  def generate_sale_table_head(name)
-    content_tag(:thead) do
-      content_tag(:tr, class: 'info') do
-        concat content_tag(:th, '#')
-        concat content_tag(:th, 'Id', class: 'can-hide')
-        concat content_tag(:th, 'Name', class: 'can-hide')
-        concat generate_sortable_th('sort can-hide', 'Lead', :lead)
-        concat content_tag(:th, 'Topic', class: 'can-hide')
-        concat generate_sortable_th('sort can-hide', 'Source', :source_name)
-        concat content_tag(:th, 'Skype', class: 'can-hide')
-        concat content_tag(:th, 'Email', class: 'can-hide')
-        concat content_tag(:th, 'Links', class: 'can-hide')
-        concat generate_sortable_th('sort can-hide', 'Date', :date)
-        concat generate_sortable_th('sort can-hide', 'Assign to', :user_id)
-        concat generate_sortable_th('sort can-hide', 'Status', :status_id)
-        concat content_tag(:th, 'Price', class: 'can-hide') if name == 'sold'
-        concat content_tag(:th, 'Terms', class: 'can-hide') if name == 'sold'
-        concat content_tag(:th, 'Comments', class: 'can-hide')
+    content_tag(:tbody, class: 'table-body') do
+      table.each do |entity|
+        concat generate_body entity
       end
     end
   end
-
-  def generate_candidate_table_head(name)
-    content_tag(:thead) do
-      content_tag(:tr, class: 'info') do
-        concat content_tag(:th, '#')
-        concat content_tag(:th, 'Id', class: 'can-hide')
-        concat content_tag(:th, 'Name', class: 'can-hide')
-        concat generate_sortable_th('sort can-hide', 'Level', :level_name)
-        concat generate_sortable_th('sort can-hide', 'Specialization', :specialization_name)
-        concat content_tag(:th, 'Email', class: 'can-hide')
-        concat content_tag(:th, 'Skype', class: 'can-hide')
-        concat generate_sortable_th('sort can-hide', 'Source', :source_name)
-        concat content_tag(:th, 'Links', class: 'can-hide')
-        concat generate_sortable_th('sort can-hide', 'Date', :date)
-        concat generate_sortable_th('sort can-hide', 'Status', :status_id)
-        concat content_tag(:th, 'Reminder', class: 'can-hide') if name == 'contact_later'
-        concat content_tag(:th, 'Comments', class: 'can-hide')
-      end
+  
+  def generate_body(entity)
+    content_tag(:tr, id: entity.id, class: generate_class_tr(entity.user_id)) do
+      concat table_control        entity.id
+      concat table_id             entity.id                if present? :id
+      concat editable_field       entity.name, 'name'      if present? :name
+      concat table_lead           entity.lead              if present? :lead
+      concat table_level          entity.level_id          if present? :level
+      concat table_specialization entity.specialization_id if present? :specialization
+      concat editable_field       entity.topic, 'topic'    if present? :topic
+      concat editable_field       entity.phone, 'phone'    if present? :phone
+      concat table_source         entity.source_id         if present? :source
+      concat editable_field       entity.skype, 'skype'    if present? :skype
+      concat editable_field       entity.email, 'email'    if present? :email
+      concat table_links          entity.links             if present? :links
+      concat table_date           entity.date              if present? :date
+      concat table_user           entity.user_id           if present? :user
+      concat table_status         entity.status_id         if present? :status
+      concat editable_field       entity.price, 'price'    if present? :price
+      concat table_period         entity.date_start,
+                                  entity.date_end          if present? :terms
+      concat table_reminder       entity.reminder_date     if present? :reminder
+      concat table_comments       entity.comments          if present? :comments
     end
+  end
+
+  def present?(column)
+    @settings[:visible].include? column
+  end
+  
+  def generate_head_item(name,
+                         class_names = '')
+    content_tag(:th, name,
+                class: class_names)
   end
 
   def generate_sortable_th(class_names, name, value)
     content_tag(:th, sort_link(@q, value, name),  class: class_names)
   end
 
-  def generate_sale_table(table)
-    content_tag(:tbody, class: 'table-body') do
-      table.each do |entity|
-        concat generate_sale_row entity
-      end
-    end
-  end
-
-  def generate_candidate_table(table)
-    content_tag(:tbody, class: 'table-body') do
-      table.each do |entity|
-        concat generate_candidate_row entity
-      end
-    end
-  end
-
   def generate_class_tr(user_id)
+    return if params[:type] == 'CANDIDATE'
     user_id == current_user.id ? 'user_owner' : nil
   end
 
-  def generate_sale_row(sale)
-    content_tag(:tr, id: sale.id, class: generate_class_tr(sale.user_id)) do
-      concat table_control sale.id
-      concat table_id sale.id
-      concat table_name sale.name
-      concat table_lead sale.lead
-      concat table_topic sale.topic
-      concat table_source sale.source_id
-      concat table_skype sale.skype
-      concat table_email sale.email
-      concat table_links sale.links
-      concat table_date sale.date
-      concat table_user sale.user_id
-      concat table_status sale.status_id
-      concat table_price sale.price if sale.status.sold?
-      concat table_period sale.date_start,
-                          sale.date_end if sale.status.sold?
-      concat table_comments sale.comments.order(created_at: :desc)
-    end
-  end
-
-  def generate_candidate_row(candidate)
-    content_tag(:tr, id: candidate.id) do
-      concat table_control candidate.id
-      concat table_id candidate.id
-      concat table_name candidate.name
-      concat table_level candidate.level_id
-      concat table_specialization candidate.specialization_id
-      concat table_email candidate.email
-      concat table_skype candidate.skype
-      concat table_source candidate.source_id
-      concat table_links candidate.links
-      concat table_date candidate.date
-      concat table_status candidate.status_id
-      concat table_reminder candidate.reminder_date if candidate.status.contact_later?
-      concat table_comments candidate.comments.order(created_at: :desc)
-    end
+  def editable_field(value, field_name)
+    content_tag(:td, value,
+                class: 'editable-field td-' + field_name,
+                name: "table[#{field_name}]", value: field_name)
   end
 
   def table_control(id)
@@ -179,13 +158,6 @@ module TablesHelper
     content_tag(:td, date_time,
                 class: 'date-time-editable td-reminder',
                 name: 'table[reminder_date]', value: 'reminder_date')
-  end
-
-
-  def table_name(name)
-    content_tag(:td, name,
-                class: 'editable-field td-name',
-                name: 'table[name]', value: 'name')
   end
 
   def table_lead(lead)
@@ -210,13 +182,6 @@ module TablesHelper
     end
   end
 
-  def table_email(email)
-    content_tag(:td, email,
-                class: 'editable-field td-email',
-                name: 'table[email]',
-                value: 'email')
-  end
-
   def table_source(source_id)
     content_tag(:td, '', class: 'td-source-id') do
       select_field_with_no_selected(:table, :source_id,
@@ -229,7 +194,7 @@ module TablesHelper
     content_tag(:td, '', class: 'td-date') do
       content_tag(:input, '',
                   name: 'table[date]',
-                  value: date, class: 'date-input')
+                  value: date.strftime("%Y-%m-%d"), class: 'date-input')
     end
   end
 
@@ -239,13 +204,6 @@ module TablesHelper
                  Status.all.where(for_type: params[:type].downcase).collect { |s| [s.name.capitalize, s.id] },
                  status_id)
     end
-  end
-
-  def table_topic(topic)
-    content_tag(:td, topic,
-                class: 'editable-field td-topic',
-                name: 'table[topic]',
-                value: 'topic')
   end
 
   def table_user(user_id)
@@ -262,20 +220,6 @@ module TablesHelper
     when 'CANDIDATE'
       User.hh
     end
-  end
-
-  def table_price(price)
-    content_tag(:td, price,
-                class: 'editable-field td-price',
-                name: 'table[price]',
-                value: 'price')
-  end
-
-  def table_skype(skype)
-    content_tag(:td, skype,
-                class: 'editable-field td-skype ',
-                name: 'table[skype]',
-                value: 'skype')
   end
 
   def table_period(date_start, date_end)

@@ -126,6 +126,12 @@ table {
     td.td-reminder {
       width: 100px;
     }
+    td.td-lead {
+      width: 100px;
+    }
+    td.td-phone {
+      max-width: 200px;
+    }
 
 
 .navbar-default .navbar-nav > li > a{

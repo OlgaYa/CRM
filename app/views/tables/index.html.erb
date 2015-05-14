@@ -8,41 +8,36 @@
       <div class='controll-panel'>
         <%= form_for(Table.new)  do |f| %>
           <div class="btn-group">
-            <button class="btn btn-sm btn-danger delete">
-            <span class="glyphicon glyphicon-trash"></span> Delete </button>
-            <button class="add-new btn btn-sm btn-info" type="submit">
-            <span class="glyphicon glyphicon-plus"></span> Add new </button>
-
+            <button class="btn btn-sm btn-danger delete"> 
+            <i class="glyphicon glyphicon-trash"></i>Delete</button>
+            <button class="add-new btn btn-sm btn-info" type="submit"> 
+            <i class="glyphicon glyphicon-plus"></i>Add new</button>
           </div>
           <%= f.text_field(:name, hidden: true, name: 'table[name]') %>
           <%= f.text_field(:type, hidden: true, name: 'type', value: params[:type]) %>
           <%= f.text_field(:user_id, hidden: true, value: current_user.id) %>
           <%= f.text_field(:status_id, hidden: true,  value: Status.default_status(params[:type])) %>
         <% end %>
+        <button id='table-settings' class='btn btn-sm btn-success inline-block'>
+          <i class='glyphicon glyphicon-cog'> </i>
+        </button>
       </div>
 
       <%= render 'filters' %>
       <%= render 'table_search' %>
-
       <table class="table table-bordered table-condensed table-responsive data-table">
-        <%= table_generation @table %>
+        <%= render 'table_head' %>
+        <%= render 'table_body' %>
       </table>
-      <div class='lid-count'>
-        <%= label_tag 'Per page:' %>
-        <%= link_to '25', tables_path(type: params[:type], only: params[:only], lid_count: 25, q: params[:q]), class: active_link(25) %>
-        <%= link_to '100', tables_path(type: params[:type], only: params[:only], lid_count: 100, q: params[:q]), class: active_link(100) %>
-        <%= link_to '200', tables_path(type: params[:type], only: params[:only], lid_count: 200, q: params[:q]), class: active_link(200) %>
-        <%= link_to 'All', tables_path(type: params[:type], only: params[:only], lid_count: 'all', q: params[:q]), class: active_link('all') %>
-      </div>
+      <%= render 'per_page' %>
       <div class='text-center'>
-      <% unless cookies[:lid_count] == 'all' %>
-        <%= will_paginate @table, renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
-      <% end %>
+        <% unless cookies[:lid_count] == 'all' %>
+          <%= will_paginate @table, renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
-
 
 <div id='editable-field'>
   <textarea id='editable-field-textarea' ></textarea>
@@ -132,3 +127,105 @@
   </div>
 </div>
 <!-- End hidden blocks -->
+<div id='table-settings-dialog'>
+  <div id='invisible'>
+    <label>Invisible</label>
+    <ul id='invisible-fields' class='connectedSortable'>
+    </ul>
+  </div>
+  <div id='visible'>
+    <label>Visible</label>
+    <ul id='visible-fields' class='connectedSortable'>
+    </ul>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    var settings;
+
+    $('#table-settings-dialog').dialog({
+      autoOpen: false,
+      title: 'Table settings',
+      width: 410,
+       buttons: {
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        },
+        "Save": function() {
+          var dataForSend = { invisible: $('#invisible-fields').listVars() },
+              path = 'tables/update_table_settings' + location.search;
+
+          $.when($.ajax({
+            type: 'POST',
+            url: path,
+            data: dataForSend
+          })).always(function(data, textStatus, jqXHR){
+            if(textStatus==='success'){
+              location.reload(true);
+            }
+          })
+        }
+      },
+      close: function(){
+        $('#visible-fields').empty();
+        $('#invisible-fields').empty();
+        if(settings.visible){
+          appendVisibleFields($('#visible-fields'))
+        }
+        if(settings.invisible){
+          appendInvisibleFields($('#invisible-fields'))
+        }
+      }
+    });
+
+    $('#table-settings').on('click', function(){
+      $('#table-settings-dialog').dialog('open');
+    });
+
+    $( "#invisible-fields, #visible-fields" ).sortable({
+      connectWith: ".connectedSortable"
+    }).disableSelection();
+
+    (function(){
+      var path = 'tables/table_settings' + location.search;
+      $.ajax({
+        type: 'GET',
+        url: path,
+        success: function(data){
+          settings = data;
+         
+          if(data.visible){
+            appendVisibleFields($('#visible-fields'))
+          }
+
+          if(data.invisible){
+            appendInvisibleFields($('#invisible-fields'))
+          }
+        }
+      });
+    })();
+
+    function appendVisibleFields($selector){
+      var i = 0;
+      for(i; i < settings.visible.length; i = i+1){
+        $selector.append('<li>'+ settings.visible[i] +'</li>')
+      }
+    }
+    
+    function appendInvisibleFields($selector){
+      var i = 0;
+      for(i; i < settings.invisible.length; i = i+1){
+        $selector.append('<li>'+ settings.invisible[i] +'</li>')
+      }
+    }
+
+    $.fn.listVars = function(){
+      var result = [];
+      $(this).children('li').each(function(){
+        result.push($(this).text());
+      })
+      return result;
+    }
+  });
+</script>

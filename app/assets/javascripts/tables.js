@@ -78,7 +78,7 @@ $(document).ready(function(){
       ]
   });
 
-  $('.editable-activity').on('dblclick', function(){
+  $(document).on('dblclick', '.editable-activity', function(){
     $editableActivityDialog.data('activityName', $(this).attr('value'));
     $editableActivityDialog.data('rowId', $(this).id());
     $editableActivityDialog.data('$td', $(this));
@@ -86,9 +86,10 @@ $(document).ready(function(){
     $editableActivityDialog.dialog('option', 'title', capitalize($(this).attr('value')));
     $editableActivityDialog.dialog('open');
     $editableActivityDialog.prepend($(this).children().clone());
+    $editableActivityDialog.children('div').scrollTop(10000000)
   });
 
-  $('#activity-add').on('click', function(){
+  $(document).on('click', '#activity-add', function(){
     var currentData = $activityBody.val(),
         rowId = $editableActivityDialog.data('rowId'),
         activityName = $editableActivityDialog.data('activityName');
@@ -117,8 +118,8 @@ $(document).ready(function(){
       }
       break;
       case 'comments': {
-        path = '/comments'
-        dataForSend = { table_id: rowId, body: inputData }
+        path = '/comments' + location.search;
+        dataForSend = { table_id: rowId, body: inputData };
       }
       break;
       }
@@ -127,8 +128,17 @@ $(document).ready(function(){
         url: path,
         data: dataForSend,
         success: function(data){
-          $editableActivityDialog.children('div').prepend(data);
-          $td.children('div').prepend(data);
+          if (data.comment) {
+            $editableActivityDialog.children('div').append(data.comment);
+            $td.children('div').append(data.comment);
+            $('.data-table tbody').remove();
+            $('.data-table').append(data.table);
+            dateInputInit();
+            $editableActivityDialog.children('div').scrollTop(10000000)
+          } else {
+            $editableActivityDialog.children('div').append(data);
+            $td.children('div').append(data);
+          }
           $activityBody.val('');
           d = new Date();
           updateDate(rowId, d, activityName);
@@ -137,7 +147,7 @@ $(document).ready(function(){
     }
   }
 
-  $('.editable-field').on('dblclick', function(){
+  $(document).on('dblclick', '.editable-field', function(){
     var currentData = $(this).text();
     $editableFieldDialog.dialog('option', 'position', { my: 'left top', at: 'left bottom',  of: $(this) });
     $editableFieldDialog.dialog('option', 'title', capitalize($(this).attr('value')));
@@ -147,7 +157,7 @@ $(document).ready(function(){
   });
 
   $editableFieldTextArea.on('keydown', function(event){
-    if(event.which===13){
+    if(event.which === 13){
       var $td = $editableFieldDialog.data('$td'),
           name = $td.name(),
           rowId = $td.id(),
@@ -158,7 +168,7 @@ $(document).ready(function(){
           path = pathFirstPart + rowId;
 
       $.when(sendData(dataForSend, path, $td.attr('value'), d)).always(function(data, textStatus, jqXHR){
-        if(textStatus==='success'){
+        if(textStatus === 'success') {
           $editableFieldTextArea.val('');
           $editableFieldDialog.dialog('close');
           $td.text(newValue);
@@ -172,7 +182,7 @@ $(document).ready(function(){
   });
 
 // OPTIMIZE
-  $('.selectable-field').on('change', function(){
+  $(document).on('change', '.selectable-field', function(){
     var selectedText = $(this).children(':selected').text().toLowerCase(),
         dataForSend = $(this).name() + '=' + $(this).val(),
         rowId = $(this).parent().id(),
@@ -197,10 +207,10 @@ $(document).ready(function(){
       return false;
     }
     $.when(sendData(dataForSend, path, fieldName, d)).always(function(data, textStatus, jqXHR){
-      if(textStatus==='success'){
+      if(textStatus === 'success'){
           updateDate(rowId, d, $td.children().attr('fieldname'));
           if($td.children().attr('fieldname') === 'status_id') {
-            if(selectedText == 'assigned_meeting' || selectedText == 'interview'){
+            if(selectedText === 'assigned_meeting' || selectedText === 'interview'){
               $('#myModal').modal();
               $('#_meeting_table_id')[0].setAttribute('value',rowId);
             }
@@ -215,7 +225,7 @@ $(document).ready(function(){
     return false;
   });
 
-  $('#remainder-dialog-save-button').on('click', function(){
+  $(document).on('click', '#remainder-dialog-save-button', function(){
     var currentData = $('#remainder-date-time').val(),
         $td = $remainderDialog.data('$td'),
         dataForSend = $remainderDialog.data('dataForSend'),
@@ -235,7 +245,7 @@ $(document).ready(function(){
     $remainderDialog.modal('hide');
   });
 
-  $('.date-time-editable').on('dblclick',function(){
+  $(document).on('dblclick', '.date-time-editable',function(){
     var rowId = $(this).id(),
         path = pathFirstPart + rowId;
     $remainderDialog.data('$td', $(this));
@@ -299,33 +309,37 @@ $(document).ready(function(){
 
   //dialog for change date
   var flag = false;
-  $('.date-input').datepicker({
-    dateFormat: 'yy-mm-dd',
-    onSelect: function(date, obj){
-      flag = true;
-    },
-    onClose: function(date, obj){
-      if(flag){
-        var $td = obj.input.parent(),
-            path = pathFirstPart + $td.id(),
-            dataForSend = $(obj.input).name() + '=' + date;
+  function dateInputInit(){
+    $('.date-input').datepicker({
+      dateFormat: 'yy-mm-dd',
+      onSelect: function(date, obj){
+        flag = true;
+      },
+      onClose: function(date, obj){
+        if(flag){
+          var $td = obj.input.parent(),
+              path = pathFirstPart + $td.id(),
+              dataForSend = $(obj.input).name() + '=' + date;
 
-        $.when(sendData(dataForSend, path, 'date')).always(function(data, textStatus, jqXHR){
-          if(textStatus == 'success'){
-            notifie('Date has been successfully updated!', $notifier);
-          } else {
-            error('', $notifier);
-          }
-        })
-        flag = false;
+          $.when(sendData(dataForSend, path, 'date')).always(function(data, textStatus, jqXHR){
+            if(textStatus == 'success'){
+              notifie('Date has been successfully updated!', $notifier);
+            } else {
+              error('', $notifier);
+            }
+          })
+          flag = false;
+        }
       }
-    }
-  });
+    });
+  }
+  dateInputInit();
 
-  $('.controll').on('change', function(){
+  $(document).on('change', '.controll', function(){
     $('#' + this.value).toggleClass('warning');
   })
-  $('.delete').on('click', function(){
+
+  $(document).on('click', '.delete', function(){
     if($('.controll:checked').size() === 0){
       error('Please select some row', $notifier);
       return false;
@@ -344,9 +358,6 @@ $(document).ready(function(){
   });
 
   function sendData(dataForSend, path, fieldName, d){
-    if( ['topic', 'source_id', 'name', 'date'].indexOf(fieldName) === -1 ){
-      dataForSend += '&table[date]=' + d;
-    }
     return $.ajax({
         type: 'PUT',
         url: path,
@@ -378,7 +389,6 @@ $(document).ready(function(){
   $('.date-input-filter').datepicker({
     dateFormat: 'yy-mm-dd',
   });
-
 });
 
 $(function () {
