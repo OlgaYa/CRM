@@ -9,6 +9,8 @@
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag "application", :media => "all" %>
     <%= javascript_include_tag "application" %>
+    <%= yield(:custom_scripts) %>
+
     
     <script src="http://code.highcharts.com/stock/highstock.js"></script>
     <script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
@@ -16,9 +18,7 @@
 <body>
   <div id="wrapper" >
     <%= render 'layouts/header' %>
-
     <%= yield %>
-
   </div>
     <%= render 'layouts/footer' %>
 </body>
