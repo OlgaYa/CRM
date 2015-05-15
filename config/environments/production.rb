@@ -28,7 +28,5 @@ CRMProject::Application.configure do
   config.log_formatter = ::Logger::Formatter.new
   config.active_record.dump_schema_after_migration = false
   config.time_zone = 'Europe/Kiev'
-
-  config.assets.precompile << "*.css"
   config.assets.precompile << "*.js"
 end
