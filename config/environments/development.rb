@@ -42,7 +42,9 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :sendmail
   # config.active_job.queue_adapter = :sucker_punch
   config.active_job.queue_adapter = :sidekiq
-
   config.action_mailer.default_url_options = { :host => "localhost:3000" }
   config.time_zone = 'Europe/Kiev'
+
+  config.assets.precompile << "*.css"
+  config.assets.precompile << "*.js"
 end
