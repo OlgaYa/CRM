@@ -31,6 +31,10 @@
   border: 0 !important;
 }
 
+nav.navbar-fixed-top {
+  z-index: 2 !important;
+}
+
 td .btn {
   padding: 2px 2px;
   font-size: 10pt;
