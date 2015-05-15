@@ -1,3 +1,9 @@
+<%= content_for(:custom_scripts) do %>
+  <%= javascript_include_tag 'tables' %>
+  <%= javascript_include_tag 'filters' %>
+  <%= javascript_include_tag 'chosen.jquery.min' %>
+<% end %>
+
 <%= render 'tables/sub_menu' %>
 <div class="row content">
   <div class="container-fluid">
@@ -36,13 +42,6 @@
         <%= f.submit 'Filter',  class: 'filter-submit btn btn-sm btn-primary' %>
         
       <% end %>
-
-      <script>
-        //<![CDATA[
-          var fParams = JSON.parse('<%= current_entity.filter_params %>');
-          var fdata = '<%= params[:q].to_json.html_safe %>';       
-        //]]>
-      </script>
 
       <%= render 'table_search' %>
       <div class='clear'></div>     
@@ -165,3 +164,10 @@
     </ul>
   </div>
 </div>
+
+<script>
+  //<![CDATA[
+    var fParams = JSON.parse('<%= current_entity.filter_params %>');
+    var fdata = '<%= params[:q].to_json.html_safe %>';       
+  //]]>
+</script>
