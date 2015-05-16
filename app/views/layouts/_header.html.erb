@@ -3,4 +3,6 @@
     <%= generate_header_menu %>
   </div>
 </header>
-<%= render 'shared/sub_menu' %>
+<% if current_user %>
+  <%= render 'shared/sub_menu' %>
+<% end %>
