@@ -1,4 +1,8 @@
-<div class='row'>
+<%= content_for(:custom_scripts) do %>
+  <%= javascript_include_tag 'admin' %>
+<% end %>
+
+<div class='row content'>
 	<div class='col-lg-8, col-md-8 col-lg-offset-2 col-md-offset-2'>
 
 		<%= render 'shared/notifier' %>

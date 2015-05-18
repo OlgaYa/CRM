@@ -1,4 +1,8 @@
-<div class="row">
+<%= content_for(:custom_scripts) do %>
+  <%= javascript_include_tag 'chosen.jquery.min' %>
+<% end %>
+
+<div class="row content">
   <div class="container-fluid">
     <div class="statistics">
       <%= form_tag change_information_statistics_path(type: @type), remote: true do %>

@@ -16,7 +16,6 @@
 //= require jquery-ui
 //= require moment
 //= require bootstrap-datetimepicker
-//= require_tree .
 
 var notifierTimer  
 

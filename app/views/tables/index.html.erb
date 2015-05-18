@@ -1,4 +1,11 @@
-<%= render 'tables/sub_menu' %>
+<%= content_for(:custom_scripts) do %>
+  <%= javascript_include_tag 'tables' %>
+  <%= javascript_include_tag 'filters' %>
+  <%= javascript_include_tag 'chosen.jquery.min' %>
+<% end %>
+<%= content_for(:left_sub_menu) do %>
+  <%= render 'tables/sub_menu' %>
+<% end %>
 <div class="row content">
   <div class="container-fluid">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -28,21 +35,12 @@
                               tables_path(type: params[:type], only: params[:only]),
                               class: 'btn btn-sm btn-primary') %>
 
-      <%= search_form_for @q, url: tables_path, class: 'filters-params' do |f| %>
-       
+      <%= search_form_for @q, url: tables_path, class: 'filters-params' do |f| %>       
         <%= hidden_field :type, '', name: 'type', id: 'type', value: params[:type] %>
         <%= hidden_field :type, '', name: 'only', id: 'only', value: params[:only] %>
         <hr>
-        <%= f.submit 'Filter',  class: 'filter-submit btn btn-sm btn-primary' %>
-        
+        <%= f.submit 'Filter',  class: 'filter-submit btn btn-sm btn-primary' %>        
       <% end %>
-
-      <script>
-        //<![CDATA[
-          var fParams = JSON.parse('<%= current_entity.filter_params %>');
-          var fdata = '<%= params[:q].to_json.html_safe %>';       
-        //]]>
-      </script>
 
       <%= render 'table_search' %>
       <div class='clear'></div>     
@@ -165,3 +163,10 @@
     </ul>
   </div>
 </div>
+
+<script>
+  //<![CDATA[
+    var fParams = JSON.parse('<%= current_entity.filter_params %>');
+    var fdata = '<%= params[:q].to_json.html_safe %>';       
+  //]]>
+</script>
