@@ -64,12 +64,12 @@ Rails.application.routes.draw do
   post   'tables/links',    to: 'tables#create_link'
   delete 'tables/link/:id', to: 'tables#destroy_link', as: :link
 
-  # JSON STRING FOR FILTERS
-  # post   'tables/filters',  to: 'tables#json_filters'
-
   # ACTIONS WITH TABLE SETTINGS
   get   'tables/table_settings', to: 'tables#table_settings'
   post  'tables/update_table_settings', to: 'tables#update_table_settings'
+
+  # ACTION FOR CHECK DUPLICATE DATA IN TABLE
+  get   'tables/check_duplicate_data', to: 'tables#check_duplicate_data'
   
   match 'admin/email_texts/:action(/:id)' => 'admin/email_texts', via: :all
 end

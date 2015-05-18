@@ -1,6 +1,9 @@
 # Main controller for work with tables
 class TablesController < GridsController
-  load_and_authorize_resource
+
+  # OPTIMIZE (NEED CHANGE WORK OF CANCANCAN)
+  # load_and_authorize_resource
+
   before_action :nil_if_blank, only: [:download_selective_xls,
                                       :download_scoped_xls]
   before_action :current_entity, only: [:download_selective_xls,
@@ -10,6 +13,7 @@ class TablesController < GridsController
   before_action :lid_count_conf, only: :index
   before_action :current_table_settings, only: [:index, :table_settings]
   after_action :send_remind_today, only: :update
+  before_action :check_duplicate_data, only: :update
 
   include ApplicationHelper
 
@@ -50,7 +54,11 @@ class TablesController < GridsController
                                               params[:table][:user_id].to_i)
         .deliver
     end
-    render json: 'success'.to_json
+    if @candidates
+      render json: { pseudo_uniq: 'exist', candidates: @candidates, id: params[:id] }.to_json
+    else
+      render json: 'success'.to_json
+    end
   end
 
   def destroy
@@ -114,6 +122,7 @@ class TablesController < GridsController
   end
 
   private
+
     def table_params
       params.require(:table).permit(:type, :name, :level_id,
                                     :specialization_id,
@@ -123,7 +132,11 @@ class TablesController < GridsController
                                     :user_id, :price,
                                     :date_end, :date_start,
                                     :reminder_date, :lead, :phone)
-    end  
+    end
+
+    def pseudo_uniq_params
+      params.require(:table).permit(:skype, :phone, :email)
+    end
 
     def nil_if_blank
       params[:period][:from] = nil if params[:period][:from].blank?
@@ -155,5 +168,15 @@ class TablesController < GridsController
       return unless reminder_date.to_date == Date.today && reminder_date > DateTime.current
       UserMailer.remind_today(table.id)
         .deliver_later(wait_until: reminder_date)
+    end
+
+    def check_duplicate_data
+      return unless pseudo_unique?
+      @candidates = Candidate.where(pseudo_uniq_params)
+    end
+
+    def pseudo_unique?
+      return false unless params[:type] == 'CANDIDATE'
+      params[:table][:skype] || params[:table][:phone] || params[:table][:email]
     end
 end

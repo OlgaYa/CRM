@@ -4,6 +4,8 @@ $(document).ready(function(){
       $activityBody = $('#activity-body'),
       $declinedCommentDialog = $('#declined-comment'),
       $declinedCommentBody = $('#declined_comment_body'),
+      $pseudoUniqDialog = $('#pseudo-uniq-dialog'),
+      $pseudoUniqDialogContent = $('#pseudo-uniq-dialog-content'),
       $editableFieldTextArea = $('#editable-field-textarea'),
       $remainderDialog = $('#remainderDialog'),
       $notifier = $('.notifier'),
@@ -13,11 +15,15 @@ $(document).ready(function(){
                              'we_declined',
                              'he_declined',
                              'hired',
-                             'contact_later']
+                             'contact_later'];
 
   var DECLINE_DIALOG_STATUSES = ['declined',
                                  'we_declined',
-                                 'he_declined']
+                                 'he_declined'];
+
+  var CHECK_DUPLICATE_FIELDS = ['table[phone]',
+                                'table[email]',
+                                'table[skype]'];
 
   $editableFieldDialog.dialog({
     autoOpen: false,
@@ -34,6 +40,34 @@ $(document).ready(function(){
     close: function(){
       $(this).children('div').remove();
     }
+  });
+
+  $pseudoUniqDialog.dialog({
+    autoOpen: false,
+    modal: true,
+    resizable: false,
+    buttons:
+      [
+        {
+          text: 'Delete current',
+          click: function(){
+            $.ajax({
+              type: 'DELETE',
+              url: '/tables/' + $pseudoUniqDialog.data('id'),
+              success: function(){
+                location.reload(true);
+              }
+            });
+          }
+        },
+        {
+          text: 'Ignore',
+          click: function(){
+            $pseudoUniqDialog.dialog('close');
+            $pseudoUniqDialogContent.empty();
+          }         
+        }
+      ]
   });
 
   // OPTIMIZE
@@ -53,7 +87,7 @@ $(document).ready(function(){
           text: 'Close',
           click: function(){
             $(this).dialog('close');
-            location.reload(true);
+            location.reload(true);            
           }
         },
         {
@@ -165,14 +199,46 @@ $(document).ready(function(){
 
       var dataForSend = name + '=' + newValue,
           path = pathFirstPart + rowId;
-
       $.when(sendData(dataForSend, path, $td.attr('value'), d)).always(function(data, textStatus, jqXHR){
         if(textStatus === 'success') {
+          var id,
+              name,
+              skype,
+              email
+              flag = false;
           $editableFieldTextArea.val('');
           $editableFieldDialog.dialog('close');
           $td.text(newValue);
           notifie(capitalize($td.attr('value')) + ' was successfully updated', $notifier);
           updateDate(rowId, d, $td.attr('value'));
+          if(data.pseudo_uniq){
+            for(var i = 0; i < data.candidates.length; i = i + 1) {
+              if(data.candidates[i].id != rowId){
+                flag = true;
+                id = document.createElement('div');
+                name = document.createElement('div');
+                skype = document.createElement('div');
+                email = document.createElement('div');
+                phone = document.createElement('div');
+                $(id).text('id: ' + data.candidates[i].id);
+                $(name).text('name: ' + data.candidates[i].name);
+                $(skype).text('skype: ' + data.candidates[i].skype);
+                $(email).text('email: ' + data.candidates[i].email);
+                $(phone).text('phone: ' + data.candidates[i].phone);
+                $pseudoUniqDialogContent.append($(id))
+                                        .append($(name))
+                                        .append($(skype))
+                                        .append($(email))
+                                        .append($(phone))
+                                        .append('<hr>');
+                $pseudoUniqDialog.data('id', data.id);
+              }
+              if(flag) {
+                $pseudoUniqDialog.dialog('option', 'title', 'Similar contacts with ' + rowId);
+                $pseudoUniqDialog.dialog('open');
+              }
+             }
+          }
         } else {
           error('', $notifier);
         }
@@ -357,9 +423,10 @@ $(document).ready(function(){
   });
 
   function sendData(dataForSend, path, fieldName, d){
+    var table_type = getParameterByName('type');
     return $.ajax({
         type: 'PUT',
-        url: path,
+        url: path + '?type=' + table_type,
         data: dataForSend
       })
   }
