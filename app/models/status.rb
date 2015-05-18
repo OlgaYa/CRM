@@ -29,7 +29,7 @@ class Status < ActiveRecord::Base
   def self.default_status(type)
     case type
     when 'SALE'
-      all_sale.where(name: 'negotiations').take.id
+      all_sale.where(name: '4 Interest').take.id
     when 'CANDIDATE'
       all_candidate.where(name: 'negotiations').take.id
     end
@@ -38,18 +38,18 @@ class Status < ActiveRecord::Base
   def self.meeting_status_id(type)
     case type
     when 'SALE'
-      all_sale.where(name: 'assigned_meeting').take.id
+      all_sale.where(name: '5 Asigned meeting').take.id
     when 'CANDIDATE'
       all_candidate.where(name: 'assigned_meeting').take.id
     end
   end
 
   def sold?
-    name == 'sold'
+    name == 'sold' || name == '10 Sold'
   end
 
   def declined?
-    name == 'declined'
+    name == 'declined' || name == '0 Declined'  || name == '1 ProbablyNo'
   end
 
   def contact_later?

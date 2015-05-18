@@ -13,11 +13,16 @@ $(document).ready(function(){
                              'we_declined',
                              'he_declined',
                              'hired',
-                             'contact_later']
+                             'contact_later',
+                             '0 declined',
+                             '1 probablyno',
+                             '10 sold']
 
   var DECLINE_DIALOG_STATUSES = ['declined',
                                  'we_declined',
-                                 'he_declined']
+                                 'he_declined',
+                                 '0 declined',
+                                 '1 probablyno']
 
   $editableFieldDialog.dialog({
     autoOpen: false,
@@ -209,7 +214,7 @@ $(document).ready(function(){
       if(textStatus === 'success'){
           updateDate(rowId, d, $td.children().attr('fieldname'));
           if($td.children().attr('fieldname') === 'status_id') {
-            if(selectedText === 'assigned_meeting' || selectedText === 'interview'){
+            if(selectedText === 'assigned_meeting' || selectedText === 'interview' || selectedText === '5 assigned meeting'){
               $('#myModal').modal();
               $('#_meeting_table_id')[0].setAttribute('value',rowId);
             }
@@ -272,7 +277,19 @@ $(document).ready(function(){
       notifie('Task was successful moved to "Declined" section', $notifier)
     }
     break;
+    case '0 declined': {
+      notifie('Task was successful moved to "Declined" section', $notifier)
+    }
+    break;
+    case '1 probablyno': {
+      notifie('Task was successful moved to "Declined" section', $notifier)
+    }
+    break;
     case 'sold': {
+      notifie('Task was successful moved to "Sold" section', $notifier)
+    }
+    break;
+    case '10 sold': {
       notifie('Task was successful moved to "Sold" section', $notifier)
     }
     break;

@@ -50,8 +50,6 @@ module TablesHelper
         concat generate_head_item('#')
         concat generate_head_item('Id', 'context')        if present? :id
         concat generate_head_item('Name', 'context')      if present? :name
-        concat generate_sortable_th('sort', 'Lead',
-                                    :lead)                if present? :lead
         concat generate_sortable_th('sort', 'Level',
                                     :level_name)          if present? :level
         concat generate_sortable_th('sort',
@@ -97,7 +95,6 @@ module TablesHelper
       concat table_control        entity.id
       concat table_id             entity.id                if present? :id
       concat editable_field       entity.name, 'name'      if present? :name
-      concat table_lead           entity.lead              if present? :lead
       concat table_level          entity.level_id          if present? :level
       concat table_specialization entity.specialization_id if present? :specialization
       concat editable_field       entity.topic, 'topic'    if present? :topic
@@ -160,12 +157,6 @@ module TablesHelper
                 name: 'table[reminder_date]', value: 'reminder_date')
   end
 
-  def table_lead(lead)
-    content_tag(:td, '', class: 'td-lead') do
-      select_field_with_no_selected(:table, :lead, (1..10).to_a, lead)
-    end
-  end
-
   def table_level(level_id)
     content_tag(:td, '', class: 'td-level-id') do
       select_field_with_no_selected(:table, :level_id,
@@ -201,7 +192,7 @@ module TablesHelper
   def table_status(status_id)
     content_tag(:td, '', class: 'td-status-id') do
       select_field(:table, :status_id,
-                 Status.all.where(for_type: params[:type].downcase).collect { |s| [s.name.capitalize, s.id] },
+                 Status.all.where(for_type: params[:type].downcase).order(:id).collect { |s| [s.name.slice(0,1).capitalize + s.name.slice(1..-1), s.id] },
                  status_id)
     end
   end

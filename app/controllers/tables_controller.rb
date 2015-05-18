@@ -124,7 +124,7 @@ class TablesController < GridsController
                                     :topic, :skype,
                                     :user_id, :price,
                                     :date_end, :date_start,
-                                    :reminder_date, :lead, :phone)
+                                    :reminder_date, :phone)
     end  
 
     def nil_if_blank
