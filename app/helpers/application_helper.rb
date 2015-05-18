@@ -4,6 +4,14 @@ module ApplicationHelper
   include ActionView::Helpers::UrlHelper
   attr_accessor :output_buffer
 
+  def site_title(location)
+    if location
+      "#{location} - CRM"
+    else
+      'CRM'
+    end
+  end
+
   def user_status(user)
     if user.admin?
       return 'Admin'
