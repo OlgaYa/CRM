@@ -5,7 +5,7 @@ class Sale < Table
                     :email,     :date,       :user_id,
                     :source_id, :topic,      :status_id,
                     :type,      :created_at, :updated_at,
-                    :lead,      :phone]
+                    :phone]
 
   # fields for Sale scope with status 'sold'
   ADVANCED_FIELDS = DEFAULT_FIELDS + [:price,
@@ -16,8 +16,7 @@ class Sale < Table
   DEFAULT_COLUMNS = [:id,     :name,     :skype,
                      :email,  :date,     :user,
                      :source, :topic,    :status,
-                     :lead,   :comments, :links,
-                     :phone]
+                     :comments, :links,  :phone]
 
   # default fields for building Sale table with status 'sold'
   ADVANCED_COLUMNS = DEFAULT_COLUMNS + [:price, :terms]
@@ -27,11 +26,12 @@ class Sale < Table
   # number     type = operations: 'equally', 'not equally',
   #                               'between', 'more', 'less'
   # date       type = operations: 'more', 'less', 'between'
-  FIELDS_FOR_FILTER = [[:lead,        :lead,        filter_type: :number],
-                       [:status,      :status_id,   filter_type: :st_default],
+  FIELDS_FOR_FILTER = [[:status,      :status_id,   filter_type: :st_default],
                        [:source,      :source_id,   filter_type: :st_default],
                        [:date,        :date,        filter_type: :date],
                        [:assigned_to, :user_id,     filter_type: :st_default]]
+
+  before_save :set_date_status_1
 
   def self.default_scope
     select(DEFAULT_FIELDS)
@@ -42,16 +42,16 @@ class Sale < Table
   end
 
   def self.open
-    sql = "statuses.name <> 'sold' AND statuses.name <> 'declined'"
+    sql = "statuses.name <> '10 Sold' AND statuses.name <> '0 Declined' AND statuses.name <> '1 ProbablyNo'"
     all.join_statuses.where(sql)
   end
 
   def self.sold
-    all_sold.join_statuses.where("statuses.name = 'sold'")
+    all_sold.join_statuses.where("statuses.name = '10 Sold'")
   end
 
   def self.declined
-    all.join_statuses.where("statuses.name = 'declined'")
+    all.join_statuses.where("statuses.name = '0 Declined' OR statuses.name = '1 ProbablyNo'")
   end
 
   def self.DEFAULT_COLUMNS
@@ -71,11 +71,16 @@ class Sale < Table
     result[:user_id]   = entities_params(User.seller)
     result[:source_id] = entities_params(Source.all_sale)
     result[:status_id] = entities_params(Status.all_sale)
-    result[:lead]      = [1,2,3,4,5,6,7,8,9,10]
     result.to_json.html_safe
   end
 
   def self.entities_params(entitys)
     entitys.collect { |e| [e.name.to_sym, e.id] }
+  end
+
+  def set_date_status_1
+    if self.changes[:status_id]
+      self.date_status_1 = Time.current if self.status.name == '1 ProbablyNo'
+    end
   end
 end
