@@ -6,7 +6,7 @@ class Candidate < Table
                     :email, :skype,      :source_id,
                     :date,  :user_id,    :status_id,
                     :type,  :created_at, :updated_at,
-                    :specialization_id]
+                    :phone, :specialization_id]
 
   # fields for Candidate scope with status 'contact_later'
   ADVANCED_FIELDS = DEFAULT_FIELDS + [:reminder_date]
@@ -15,7 +15,7 @@ class Candidate < Table
   DEFAULT_COLUMNS = [:id,    :name,   :level,
                      :email, :skype,  :source,
                      :date,  :status, :comments,
-                     :links, :specialization]
+                     :phone, :links,  :specialization]
 
   # default fields for building Candidate table with status 'contact_later'
   ADVANCED_COLUMNS = DEFAULT_COLUMNS + [:reminder]
