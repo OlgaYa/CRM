@@ -1,6 +1,6 @@
 class GridsController < ApplicationController
   protected
-
+  
     def q_sort
       case params[:type]
       when 'CANDIDATE'

@@ -36,7 +36,9 @@ class Statistic < ActiveRecord::Base
 
   def self.destroy(object)
     Statistic.change_count(object, object.status_id)
-    Statistic.change_count(object, Status.default_status(object.type.upcase)) if object.status_id != Status.default_status(object.type.upcase)
+    if object.status_id != Status.default_status(object.type.upcase)
+      Statistic.change_count(object, Status.default_status(object.type.upcase))
+    end
   end
 
   def self.change_count(object, status_id)
