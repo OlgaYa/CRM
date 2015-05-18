@@ -1,0 +1,50 @@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Assigned Meeting</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row" id="meeting_dialog">
+          <%= form_for :@meeting, :url => meetings_path(@meeting, :type => @type) do |f| %>
+            <%= f.hidden_field :table_id, class: "form-control" %>
+            <div class="control-field">
+              <%= f.text_field :title, class: 'form-control', placeholder: 'Title'%>
+            </div>
+            <div class="control-field">
+              <%= f.text_area :description, class: 'form-control', value: "#{@value_for_description}", placeholder: 'Description' %>
+            </div>
+            <div class="container" id="container">
+              <div class='col-md-5' id='col-md-5' >
+               <div class="form-group">
+                  <div class='input-group date' id='datetimepicker6'>
+                    <%= f.text_field :start_time, placeholder: 'Start time', class: "form-control" %>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                  </div>
+                </div>
+              </div>
+              <div class='col-md-5' id='col-md-5' >
+                <div class="form-group">
+                  <div class='input-group date' id='datetimepicker7'>
+                    <%= f.text_field :end_time, placeholder: 'End time', class: "form-control" %>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="control-field" id="meeting-email">
+              <%= f.text_field :email,  class: 'form-control', placeholder: 'Add email'%>
+            </div>
+            <div class="side-by-side clearfix", id="chosen">
+              <%= select_tag "User", options_for_select(User.all_except(current_user).collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]} + Table.where(type: @type.capitalize).collect {|p| [ p.name , p.id.to_s + "task" ]}),multiple: true, style:"width:100% !important;", class: "chosen-select", name: 'users[]', id: 'user', "data-placeholder" => 'Select User ...' %>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <%= f.submit "Create", class: "btn btn-large btn-primary btn-block" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
