@@ -9,6 +9,43 @@ module TablesHelper
                          skype: :skype,
                          user: :user_id }
 
+  # method returns location part for title
+  def location
+    result = params[:type].downcase.capitalize
+    return result unless params[:only]
+    result << ' - '
+    result << params[:only].downcase.capitalize
+    result
+  end
+
+  # method generates link for per_page pagination
+  def per_page_link(per_page_count)
+    link_to(per_page_count,
+            tables_path(type: params[:type],
+                        only: params[:only],
+                        lid_count: per_page_count,
+                        q: params[:q]), class: active_link(per_page_count))
+  end
+
+  def active_link(count)
+    return unless cookies[:lid_count] == count
+    'active-link-per-page'
+  end
+
+  # method generates <li><a></a></li>
+  def sub_menu_link(type, only, default)
+    class_name = 'active' if active?(only, default)
+    name = only.sub('_', ' ').capitalize
+    content_tag(:li, '', class: class_name) do
+      link_to(name, tables_path(type: type, only: only))
+    end
+  end
+
+  # help method for method sub_menu_link
+  def active?(only, default)
+    return true if only == params[:only] || (only == default && !params[:only])
+  end
+
   def export_field
     case params[:type]
     when 'SALE'
@@ -325,12 +362,6 @@ module TablesHelper
            collenction, { include_blank: "Not selected", selected: selected_field },
            class: class_names + 'selectable-field btn btn-default',
            fieldname: field_name_2)
-  end
-
-  def active_link(count)
-    return 'active-link-per-page' if cookies[:lid_count] == count.to_s && cookies[:lid_count] == 'all'
-    return unless cookies[:lid_count].to_i == count.to_i
-    'active-link-per-page'
   end
 
   def generate_filters
