@@ -1,0 +1,19 @@
+<div id='table-settings-dialog'>
+  <div id='invisible'>
+    <label>Invisible</label>
+    <ul id='invisible-fields' class='connectedSortable'>
+    </ul>
+  </div>
+  <div id='visible'>
+    <label>Visible</label>
+    <ul id='visible-fields' class='connectedSortable'>
+    </ul>
+  </div>
+</div>
+
+<script>
+  //<![CDATA[
+    var fParams = JSON.parse('<%= current_entity.filter_params %>');
+    var fdata = '<%= params[:q].to_json.html_safe %>';       
+  //]]>
+</script>

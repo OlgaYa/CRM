@@ -212,7 +212,7 @@ $(document).ready(function(){
     inputGroup.appendChild(removeSpanInner);
     inputGroup.appendChild(selectComands);
     formGroup.appendChild(inputGroup);
-    $(formGroup).insertBefore('.filters-params hr');
+    $(formGroup).insertBefore('.filters-params input[type=submit]');
     return formGroup;
   }
 
@@ -257,7 +257,7 @@ $(document).ready(function(){
   function removeFilter(event){
     $('#' + this.value).remove();
     $('#filter-select option[value="'+ this.value +'"]').attr('disabled', false);
-    if($('.filters-params').children().size() < 6) {
+    if($('.filters-params').children().size() < 5) {
       $('.filters-params').css('display', 'none');
     }
   }

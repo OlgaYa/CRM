@@ -3,170 +3,51 @@
   <%= javascript_include_tag 'filters' %>
   <%= javascript_include_tag 'chosen.jquery.min' %>
 <% end %>
+
 <%= content_for(:left_sub_menu) do %>
   <%= render 'tables/sub_menu' %>
 <% end %>
+
+<%= content_for(:title) do %>
+  <%= site_title(location) %>
+<% end %>
+
+
 <div class="row content">
   <div class="container-fluid">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-    <%= render 'shared/notifier' %>
-      <div class='controll-panel'>
-        <%= form_for(Table.new)  do |f| %>
-          <div class="btn-group">
-            <button class="btn btn-sm btn-danger delete"> 
-            <i class="glyphicon glyphicon-trash"></i> Delete</button>
-            <button class="add-new btn btn-sm btn-info" type="submit"> 
-            <i class="glyphicon glyphicon-plus"></i> Add new</button>
-          </div>
-          <%= f.text_field(:name, hidden: true, name: 'table[name]') %>
-          <%= f.text_field(:type, hidden: true, name: 'type', value: params[:type]) %>
-          <%= f.text_field(:user_id, hidden: true, value: current_user.id) %>
-          <%= f.text_field(:status_id, hidden: true,  value: Status.default_status(params[:type])) %>
-        <% end %>
-        <button id='table-settings' class='btn btn-sm btn-success inline-block'>
-          <i class='glyphicon glyphicon-cog'> </i>
-        </button>
-      </div>
-
-      <%= generate_filters %>
-      
-      <%= link_to(content_tag(:i, '', class: 'glyphicon glyphicon-refresh') + ' Show all',
-                              tables_path(type: params[:type], only: params[:only]),
-                              class: 'btn btn-sm btn-primary') %>
-
-      <%= search_form_for @q, url: tables_path, class: 'filters-params' do |f| %>       
-        <%= hidden_field :type, '', name: 'type', id: 'type', value: params[:type] %>
-        <%= hidden_field :type, '', name: 'only', id: 'only', value: params[:only] %>
-        <hr>
-        <%= f.submit 'Filter',  class: 'filter-submit btn btn-sm btn-primary' %>        
-      <% end %>
-
+      <%= render 'shared/notifier' %>   
+      <%= render 'table_controls' %>         
+      <%= render 'table_filter' %>
       <%= render 'table_search' %>
-      <div class='clear'></div>     
+      
+      <div class='clear'></div>
+
       <% unless @table.empty? %>
         <table class="table table-bordered table-condensed table-responsive data-table">
           <%= render 'table_head' %>
           <%= render 'table_body' %>
         </table>
       <% else %>
-
-       <div class='text-center no-data'> <label> No data to display </label> </div>
+        <div class='text-center no-data'> <label> No data to display </label> </div>     
       <% end %>
+
       <%= render 'per_page' %>
-      <div class='text-center'>
-        <% unless cookies[:lid_count] == 'all' %>
-          <%= will_paginate @table, renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id='editable-field'>
-  <textarea id='editable-field-textarea' ></textarea>
-</div>
-<div id='activity-dialog'>
-  <textarea id="activity-body"></textarea>
-  <button id='activity-add' class="btn btn-primary btn-lg pull-right", type="button">Add</button>
-</div>
-<div id="declined-comment">
-  <textarea id="declined_comment_body" class="comment_body"></textarea>
-</div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="remainderDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" >Reminder date-time</h4>
-      </div>
-      <div class="modal-body">
-        <div class='input-group date' id='datetimepicker_reminder'>
-          <input id='remainder-date-time' type='text' class="form-control" />
-          <span class="input-group-addon" >
-            <span class="glyphicon glyphicon-calendar"></span>
-          </span>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" id='remainder-dialog-save-button' class="btn btn-primary">Save</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Assigned Meeting</h4>
-      </div>
-      <div class="modal-body">
-        <div class="row" id="meeting_dialog">
-          <%= form_for :@meeting, :url => meetings_path(@meeting, :type => @type) do |f| %>
-            <%= f.hidden_field :table_id, class: "form-control" %>
-            <div class="control-field">
-              <%= f.text_field :title, class: 'form-control', placeholder: 'Title'%>
-            </div>
-            <div class="control-field">
-              <%= f.text_area :description, class: 'form-control', value: "#{@value_for_description}", placeholder: 'Description' %>
-            </div>
-            <div class="container" id="container">
-              <div class='col-md-5' id='col-md-5' >
-               <div class="form-group">
-                  <div class='input-group date' id='datetimepicker6'>
-                    <%= f.text_field :start_time, placeholder: 'Start time', class: "form-control" %>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                  </div>
-                </div>
-              </div>
-              <div class='col-md-5' id='col-md-5' >
-                <div class="form-group">
-                  <div class='input-group date' id='datetimepicker7'>
-                    <%= f.text_field :end_time, placeholder: 'End time', class: "form-control" %>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="control-field" id="meeting-email">
-              <%= f.text_field :email,  class: 'form-control', placeholder: 'Add email'%>
-            </div>
-            <div class="side-by-side clearfix", id="chosen">
-              <%= select_tag "User", options_for_select(User.all_except(current_user).collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]} + Table.where(type: @type.capitalize).collect {|p| [ p.name , p.id.to_s + "task" ]}),multiple: true, style:"width:100% !important;", class: "chosen-select", name: 'users[]', id: 'user', "data-placeholder" => 'Select User ...' %>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <%= f.submit "Create", class: "btn btn-large btn-primary btn-block" %>
+      
+      <% unless cookies[:lid_count] == 'all' %>
+        <div class='text-center'>
+          <%= will_paginate @table, renderer: BootstrapPagination::Rails,
+                                    previous_label: '<<', next_label: '>>' %>
         </div>
       <% end %>
     </div>
   </div>
 </div>
 
-<div id='table-settings-dialog'>
-  <div id='invisible'>
-    <label>Invisible</label>
-    <ul id='invisible-fields' class='connectedSortable'>
-    </ul>
-  </div>
-  <div id='visible'>
-    <label>Visible</label>
-    <ul id='visible-fields' class='connectedSortable'>
-    </ul>
-  </div>
-</div>
-
-<script>
-  //<![CDATA[
-    var fParams = JSON.parse('<%= current_entity.filter_params %>');
-    var fdata = '<%= params[:q].to_json.html_safe %>';       
-  //]]>
-</script>
+<!-- MODAL -->
+  <%= render 'tables/modals/table_popups' %>
+  <%= render 'tables/modals/reminder_date_popup' %>
+  <%= render 'tables/modals/meeting_popup' %>
+  <%= render 'tables/modals/settings_popup' %>
+<!-- END MODAL -->

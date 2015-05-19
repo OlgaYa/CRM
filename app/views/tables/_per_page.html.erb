@@ -1,7 +1,7 @@
  <div class='lid-count'>
   <%= label_tag 'Per page:' %>
-  <%= link_to '25', tables_path(type: params[:type], only: params[:only], lid_count: 25, q: params[:q]), class: active_link(25) %>
-  <%= link_to '100', tables_path(type: params[:type], only: params[:only], lid_count: 100, q: params[:q]), class: active_link(100) %>
-  <%= link_to '200', tables_path(type: params[:type], only: params[:only], lid_count: 200, q: params[:q]), class: active_link(200) %>
-  <%= link_to 'All', tables_path(type: params[:type], only: params[:only], lid_count: 'all', q: params[:q]), class: active_link('all') %>
+  <%= per_page_link('25') %>
+  <%= per_page_link('100') %>
+  <%= per_page_link('200') %>
+  <%= per_page_link('all') %>
 </div>

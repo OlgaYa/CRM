@@ -1,0 +1,9 @@
+<%= generate_filters %>      
+<%= link_to(content_tag(:i, '', class: 'glyphicon glyphicon-refresh') + ' Show all',
+                        tables_path(type: params[:type], only: params[:only]),
+                        class: 'btn btn-sm btn-primary') %>
+<%= search_form_for @q, url: tables_path, class: 'filters-params' do |f| %>       
+  <%= hidden_field :type, '', name: 'type', id: 'type', value: params[:type] %>
+  <%= hidden_field :type, '', name: 'only', id: 'only', value: params[:only] %>
+  <%= f.submit 'Filter',  class: 'filter-submit btn btn-sm btn-primary' %>        
+<% end %>
