@@ -1,5 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe TablesController, type: :controller do
+describe TablesController, type: :controller do
 
+  describe 'GET #index' do
+    let(:user) { create :user }
+
+  end
 end
