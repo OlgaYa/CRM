@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe StaticPagesController, type: :controller do
   describe 'GET #home' do
-    let(:user) { FactoryGirl.create :user }
+    let(:user) { create :user }
     
     it 'when logged out' do
       get :home

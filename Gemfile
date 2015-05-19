@@ -50,4 +50,5 @@ group :test do
   gem 'simplecov', :require => false
   gem "factory_girl_rails", "~> 4.0"
   gem 'database_cleaner'
+  gem 'faker', '~> 1.4.3'
 end
