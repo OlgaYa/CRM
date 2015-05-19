@@ -1,40 +1,22 @@
 class UsersController < GridsController
-	skip_before_action :authenticate_user!, only: [:update]
-	before_action :correct_user,   only: [:edit, :update, :update_info, :update_pass]
+  skip_before_action :authenticate_user!, only: [:update]
+  before_action :user_by_id, only: [:edit, :show, :update]
   
   def show
-    @user = User.find(params[:id])
+    redirect_to :back unless @user == current_user || current_user.admin?
   end
 
   def edit
-  	@user = User.find(params[:id])
+    redirect_to :back unless @user == current_user || current_user.admin?
   end
 
-  # OPTIMIZE
   def update
-    case params[:update]
-    when 'update-pass'
-      if @user.update_attributes(password: params[:user][:password], 
-                                 password_confirmation: params[:user][:password_confirmation])
-        user_successful_updatetd('pass')
-      else
-        render 'show'
-      end
-    when 'update-info'
-      if @user.update_attributes(first_name: params[:user][:first_name], 
-                                 last_name: params[:user][:last_name], 
-                                 email: params[:user][:email])
-        @user.update_attributes(avatar: params[:user][:avatar]) if params[:user][:avatar]
-        user_successful_updatetd('info')
-      else
-        render 'show'
-      end
+    if @user.update_attributes(user_params)
+      flash[:success] = params[:update]
+      sign_in @user, bypass: true
+      redirect_to @user
     else
-      if @user.update_attributes(user_params)
-        user_successful_updatetd
-      else
-        render 'show'
-      end      
+      render 'show'
     end
   end
 
@@ -43,37 +25,27 @@ class UsersController < GridsController
     user = User.find(params[:id])
     if user.sign_in_count == 0
       user.destroy
-      flash[:success] = "User was successfully removed."
+      flash[:success] = 'User was successfully removed.'
     else
       flash[:error] = "You can't remove this user"
     end
     redirect_to admin_show_users_path
   end
 
-  def user_params
-    params.require(:user).permit(:first_name, 
-                                 :last_name, 
-                                 :email, 
-                                 :password,
-                                 :password_confirmation, 
-                                 :reseive_mails, 
-                                 :receive_micropost_mails, 
-                                 :avatar)
-  end
-
-  def correct_user
-    user = User.find(params[:id])
-    unless current_user == user
-      redirect_to(root_url)
-    else
-      @user = user
-    end
-  end
-
   private
-    def user_successful_updatetd(mess = "success")
-      flash[:success] = mess
-      sign_in @user, :bypass => true
-      redirect_to @user
+
+    def user_by_id
+      @user = User.find(params[:id])
+    end
+
+    def user_params
+      params.require(:user).permit(:first_name,
+                                   :last_name,
+                                   :email,
+                                   :password,
+                                   :password_confirmation,
+                                   :reseive_mails,
+                                   :receive_micropost_mails,
+                                   :avatar)
     end
 end

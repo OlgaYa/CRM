@@ -39,7 +39,7 @@
           <div class="text-center"> <h2>Settings</h2> </div>
           <div class="first-form">
             <%= form_for(@user, method: :put)  do |f| %> 
-              <input hidden='true' value="update-info" name="update" >
+              <input hidden='true' value="info" name="update" >
                 <table>
                   <tr>
                     <td class="first-td">
@@ -81,7 +81,7 @@
           <hr>
           <div class="second-form">
             <%= form_tag(@user, method: :put)  do %>
-              <input hidden='true' value="update-pass" name="update" >
+              <input hidden='true' value="pass" name="update" >
               <table>
                 <tr>
                   <td class="first-td"></td>
