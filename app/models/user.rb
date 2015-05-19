@@ -36,8 +36,7 @@ class User < ActiveRecord::Base
   end
 
   def self.reminder
-    date = 2.days
-    date += 2.days if Date.yesterday.saturday?
+    date = Date.yesterday.saturday? ? 4.days : 2.days
     tables = Table.where('updated_at < ?', Date.today - date)
     hash = {}
     tables.each do |t|

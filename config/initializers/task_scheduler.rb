@@ -1,13 +1,13 @@
 require 'rubygems'
 require 'rufus/scheduler' 
 
-scheduler = Rufus::Scheduler.start_new
+scheduler = Rufus::Scheduler.new
 
 scheduler.cron '0 9 * * 1-5' do
-# every day of the week at 9:00 
+# every day of the week at 9:00
 	User.reminder
-end 
+end
 
 scheduler.cron '30 00 * * *' do
   User.contact_later_reminder
-end 
+end
