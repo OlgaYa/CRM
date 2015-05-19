@@ -8,7 +8,6 @@ class History < ActiveRecord::Base
                           user_id:  object.user_id,
                           for_type: object.type)
     history.save
-    # binding.pry
   end
 
   def self.create_history_for_update_object(object, params)

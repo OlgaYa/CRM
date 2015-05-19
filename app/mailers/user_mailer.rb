@@ -21,7 +21,7 @@ class UserMailer < ActionMailer::Base
   def reminder_instructions(user_id, table_name)
   	@user = User.find_by_id(user_id)
     @table_name = table_name
-    subject = "Reminder TASK"
+    subject = "[info] Reminder TASK"
   	mail(:to => @user.email, :subject => subject )
   end
 
