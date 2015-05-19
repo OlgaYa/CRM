@@ -6,7 +6,8 @@ FactoryGirl.define do
     email      Faker::Internet.email
     role       'seller'
     password   'asdfasdf'
-    password_confirmation 'asdfasdf'   
+    password_confirmation 'asdfasdf'
+  end   
 end
 
 
