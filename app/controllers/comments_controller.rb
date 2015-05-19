@@ -11,6 +11,7 @@ class CommentsController < GridsController
                                     body: params[:body],
                                     datetime: time)
     ubdate_table_date table
+    History.create_history_for_update_object(table, {"Comment"=>comment.id})
     render json: { comment: generate_comment(comment, time).html_safe,
                    table: @table_page }.to_json 
   end

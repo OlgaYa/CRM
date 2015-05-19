@@ -1,7 +1,7 @@
 $(function () {
 	debugger;
 	var
-		data_for_series = JSON.parse(<%= raw @hash.to_json.html_safe %>);
+		data_for_series = JSON.parse('<%= raw @hash.html_safe %>');
 	$('.graphics').highcharts({
 	  chart: {
 		  type: 'column'

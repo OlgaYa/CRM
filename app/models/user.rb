@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :options_for_plan, as: :option
+  has_many :options_for_history, as: :history_option
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :last_name, presence: true, length: { maximum: 50 }
 

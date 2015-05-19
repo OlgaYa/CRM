@@ -190,6 +190,11 @@ module ApplicationHelper
         "item two" => {'name' => 'Statistics HH', 'path' => menu['roles']['hh']['path_statistics'] }
         }]
       buffer << get_dropdown(sub_menu_stat, nil, 'sub_menu_stat')
+      sub_menu_stat = [ 'sub_menu', {'name' => 'Overview',
+        "item one" => {'name' => 'Overview seller', 'path' => menu['roles']['seller']['path_history'] },
+        "item two" => {'name' => 'Overview HH', 'path' => menu['roles']['hh']['path_history'] }
+        }]
+      buffer << get_dropdown(sub_menu_stat, nil, 'sub_menu_stat')
     else
       menu['roles'].each do |role|
         if current_user && (current_user.role == role[0])
@@ -198,6 +203,9 @@ module ApplicationHelper
           end
           buffer << content_tag(:li) do
             link_to('Statistics', role[1]['path_statistics'])
+          end
+          buffer << content_tag(:li) do
+            link_to('Overview', role[1]['path_history'])
           end
         end
       end

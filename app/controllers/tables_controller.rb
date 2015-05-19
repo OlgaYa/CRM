@@ -37,6 +37,7 @@ class TablesController < GridsController
     end
     object.update_attribute(:date, object.created_at)
     Statistic.update_statistics(object)
+    History.create_history_for_new_object(object)
   end
 
   def update
@@ -50,6 +51,7 @@ class TablesController < GridsController
                                               params[:table][:user_id].to_i)
         .deliver
     end
+    History.create_history_for_update_object(table, params[:table])
     render json: 'success'.to_json
   end
 
@@ -122,7 +124,7 @@ class TablesController < GridsController
                                     :topic, :skype,
                                     :user_id, :price,
                                     :date_end, :date_start,
-                                    :reminder_date, :lead, :phone)
+                                    :reminder_date, :phone)
     end  
 
     def nil_if_blank
