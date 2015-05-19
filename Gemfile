@@ -41,3 +41,11 @@ group :development do
   gem 'capistrano', '~> 2.13.0'
   gem 'rvm-capistrano',  require: false
 end
+
+group :development, :test do
+  gem 'rspec-rails', '~> 3.0'
+end
+
+group :test do
+  gem 'simplecov', :require => false
+end

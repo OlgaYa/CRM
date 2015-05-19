@@ -88,6 +88,8 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    diff-lcs (1.2.5)
+    docile (1.1.5)
     enumerize (0.10.0)
       activesupport (>= 3.2)
     erubis (2.7.0)
@@ -214,6 +216,23 @@ GEM
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
     retriable (1.4.1)
+    rspec-core (3.2.3)
+      rspec-support (~> 3.2.0)
+    rspec-expectations (3.2.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-mocks (3.2.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-rails (3.2.1)
+      actionpack (>= 3.0, < 4.3)
+      activesupport (>= 3.0, < 4.3)
+      railties (>= 3.0, < 4.3)
+      rspec-core (~> 3.2.0)
+      rspec-expectations (~> 3.2.0)
+      rspec-mocks (~> 3.2.0)
+      rspec-support (~> 3.2.0)
+    rspec-support (3.2.2)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     rvm-capistrano (1.4.1)
@@ -242,6 +261,11 @@ GEM
     simple_form (3.1.0)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
+    simplecov (0.10.0)
+      docile (~> 1.1.0)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     sinatra (1.4.6)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -308,12 +332,14 @@ DEPENDENCIES
   rails (~> 4.2.0)
   rails_autolink
   ransack
+  rspec-rails (~> 3.0)
   rufus-scheduler (~> 2.0.24)
   rvm-capistrano
   sass-rails (~> 5.0)
   sidekiq (~> 2.17.7)
   sidekiq-limit_fetch
   simple_form
+  simplecov
   sinatra
   spring
   twitter-bootstrap-rails
