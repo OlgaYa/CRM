@@ -13,14 +13,12 @@ set :scm, :git
 set :use_sudo, false
 set :rails_env, "production"
 
-
 set :deploy_via, :remote_cache
 set :keep_releases, 5
 set :normalize_asset_timestamps, false
 set(:pid) { "#{shared_path}/pids/unicorn.pid" }
 ssh_options[:forward_agent] = true
 
-default_run_options[:shell] = '/bin/bash'
 default_run_options[:pty] = true
 unicorn_options = '-c config/unicorn.rb -D'
 
@@ -30,6 +28,10 @@ set :default_stage, "staging"
 set(:releases_path)     { File.join(deploy_to, version_dir) }
 set(:current_release)      { File.join(releases_path, release_name) }
 set(:release_path)      { File.join(releases_path, release_name) }
+
+set :rvm_type, :system
+set :rvm_ruby_string, 'ruby-2.0.0-p576@crm_staging'
+set :rvm_ruby_version, '2.0.0-p576'
 
 before "deploy:assets:symlink" do
   run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
@@ -57,7 +59,31 @@ namespace :db do
       run "cd #{deploy_to}/current && bundle exec rake db:migrate RAILS_ENV=production"
     end
 
+end
+
+namespace :deploy do
+  remote_file_exists = lambda {|fn| capture("if [ -e #{fn} ]; then echo 1; fi") =~ /1/ }
+
+  desc "Start the application server"
+  task :start, roles: :app do
+    run "ln -nfs #{shared_path}/config/unicorn_staging.rb #{release_path}/config/unicorn.rb"
   end
+
+  desc "Stop the application server"
+  task :stop, roles: :app do
+    run "kill -s QUIT `cat #{pid}`"
+  end
+
+  desc "Restart the application server"
+  task :restart, roles: :app do
+    if remote_file_exists.call(pid)
+      deploy.stop
+      deploy.start
+    else
+      deploy.start
+    end
+  end
+end
 
 
 require './config/boot'
