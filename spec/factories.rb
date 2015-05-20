@@ -7,7 +7,7 @@ FactoryGirl.define do
     role       'seller'
     password   'asdfasdf'
     password_confirmation 'asdfasdf'
-  end   
+  end
 end
 
 
