@@ -1,7 +1,7 @@
 <p><%= @user.first_name %> <%= @user.last_name %>,</p>
 <p> вы не вносили изменнения в течении 2 дней в следующие задачи: </p>
 <ul> 
-<% @task_name.each do |name| -%>
+<% @table_name.each do |name| -%>
     <li>
         <%= link_to name, tables_url %> 
     </li>

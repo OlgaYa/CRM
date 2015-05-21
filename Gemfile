@@ -14,7 +14,7 @@ gem 'simple_form'
 
 gem 'enumerize'
 gem 'jquery-ui-rails'
-gem 'rufus-scheduler', '~> 2.0.24'
+gem 'rufus-scheduler', '~> 3.0.9'
 gem 'google-api-client', :require => 'google/api_client'
 gem 'google_calendar', :git => 'https://github.com/Anastasiya09/google_calendar'
 gem 'momentjs-rails', '>= 2.9.0'
@@ -52,4 +52,6 @@ end
 group :test do
   gem 'simplecov', :require => false
   gem 'database_cleaner'
+  gem 'faker', '~> 1.4.3'
 end
+
