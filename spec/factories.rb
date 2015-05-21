@@ -56,15 +56,15 @@ FactoryGirl.define do
     table
   end
 
-  factory :comment do
-    body Faker::Lorem.sentence
-    user
-  end
+  # factory :comment do
+  #   body Faker::Lorem.sentence
+  #   user
+  # end
 
-  factory :table_comment do
-    user
-    table
-  end
+  # factory :table_comment do
+  #   user
+  #   table
+  # end
 
   factory :status do
     sequence(:name) { Faker::Lorem.word }
@@ -96,5 +96,13 @@ FactoryGirl.define do
 
   factory :specialization do
     name Faker::Lorem.word
+  end
+
+  factory :report do
+    user
+    project Faker::Lorem.sentence
+    task    Faker::Lorem.sentence
+    date    DateTime.current
+    hours   5
   end
 end
