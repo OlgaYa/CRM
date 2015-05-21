@@ -91,6 +91,8 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
     docile (1.1.5)
+    domain_name (0.5.24)
+      unf (>= 0.0.5, < 1.0.0)
     enumerize (0.10.0)
       activesupport (>= 3.2)
     erubis (2.7.0)
@@ -122,6 +124,8 @@ GEM
       signet (~> 0.6)
     highline (1.7.1)
     hike (1.2.3)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     httparty (0.13.3)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
@@ -157,6 +161,7 @@ GEM
     net-ssh (2.9.2)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
+    netrc (0.10.3)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     orm_adapter (0.5.0)
@@ -223,6 +228,10 @@ GEM
       redis (~> 3.0, >= 3.0.4)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
+    rest-client (1.8.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 3.0)
+      netrc (~> 0.7)
     retriable (1.4.1)
     rspec-core (3.2.3)
       rspec-support (~> 3.2.0)
@@ -303,6 +312,9 @@ GEM
     uglifier (2.7.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.1)
     unicorn (4.8.3)
       kgio (~> 2.6)
       rack
@@ -343,6 +355,7 @@ DEPENDENCIES
   rails (~> 4.2.0)
   rails_autolink
   ransack
+  rest-client
   rspec-rails (~> 3.0)
   rufus-scheduler (~> 2.0.24)
   rvm-capistrano

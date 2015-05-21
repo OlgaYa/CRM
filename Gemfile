@@ -30,6 +30,7 @@ gem 'ransack'
 gem 'capistrano-sidekiq', '0.3.0'
 gem 'rails_autolink'
 gem 'gibbon'
+gem 'rest-client'
 
 group :development do
   gem 'spring'
@@ -44,11 +45,11 @@ end
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0'
+  gem "factory_girl_rails", "~> 4.0"
+  gem 'faker', '~> 1.4.3'
 end
 
 group :test do
   gem 'simplecov', :require => false
-  gem "factory_girl_rails", "~> 4.0"
   gem 'database_cleaner'
-  gem 'faker', '~> 1.4.3'
 end
