@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :registration
   end
+  resources :reports
 
   # COMMON NAVIGATION AND ACTIONS
   get    'home',       to: 'static_pages#home'
