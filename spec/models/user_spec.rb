@@ -54,10 +54,6 @@ describe User do
 			ActionMailer::Base.delivery_method = :test
 			ActionMailer::Base.deliveries = []
 		end
-		# ...
-		# Производим действия...
-		# ...
-		# Проверяем кол-во писем в очереди:
 
 		it 'send mail' do
       User.reminder

@@ -1,4 +1,9 @@
 FactoryGirl.define do
+  factory :holiday do
+    name "MyString"
+    date "2015-05-22"
+  end
+
   factory :user do
     sequence(:first_name) { Faker::Name.first_name }
     sequence(:last_name)  { Faker::Name.last_name }
