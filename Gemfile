@@ -31,6 +31,7 @@ gem 'capistrano-sidekiq', '0.3.0'
 gem 'rails_autolink'
 gem 'gibbon'
 gem 'rest-client'
+gem 'fullcalendar-rails'
 
 group :development do
   gem 'spring'
