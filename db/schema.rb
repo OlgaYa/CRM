@@ -34,6 +34,13 @@ ActiveRecord::Schema.define(version: 20150525085549) do
     t.datetime "updated_at",                   null: false
   end
 
+  create_table "holidays", force: :cascade do |t|
+    t.string   "title"
+    t.date     "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "levels", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -105,6 +112,16 @@ ActiveRecord::Schema.define(version: 20150525085549) do
 
   add_index "projects_users", ["project_id"], name: "index_projects_users_on_project_id", using: :btree
   add_index "projects_users", ["user_id"], name: "index_projects_users_on_user_id", using: :btree
+
+  create_table "reports", force: :cascade do |t|
+    t.string   "project"
+    t.string   "task"
+    t.integer  "user_id"
+    t.integer  "hours"
+    t.date     "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "simple_texts", force: :cascade do |t|
     t.string   "name"
