@@ -9,4 +9,9 @@ module MeetingsHelper
       end
     end
 	end
+
+  def get_remove_link_meeting(path, id, field)
+    link_to(image_tag('remove.png'), path,
+            method: :delete)
+  end
 end

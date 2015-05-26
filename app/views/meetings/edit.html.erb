@@ -27,7 +27,7 @@
               <div class='col-md-5' id='col-md-5' >
                 <div class="form-group">
                   <div class='input-group date' id='datetimepicker7'>
-                    <%= f.text_field :end_time, value: "#{@meeting.start_time.strftime("%d/%m/%Y %H:%M")}", placeholder: 'End time', class: "form-control" %>
+                    <%= f.text_field :end_time, value: "#{@meeting.end_time.strftime("%d/%m/%Y %H:%M")}", placeholder: 'End time', class: "form-control" %>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                   </div>
                 </div>
@@ -42,7 +42,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <%= f.submit "Create", class: "btn btn-large btn-primary btn-block" %>
+          <%= f.submit "Update", class: "btn btn-large btn-primary btn-block" %>
         </div>
       <% end %>
     </div>
