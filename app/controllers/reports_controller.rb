@@ -11,11 +11,8 @@ class ReportsController < ApplicationController
   def create
     report = Report.new(report_params)
     report.user = current_user
-    if report.save
-      redirect_to action: :index
-    else
-      redirect_to action: :index
-    end
+    report.save
+    redirect_to action: :index
   end
 
   def edit

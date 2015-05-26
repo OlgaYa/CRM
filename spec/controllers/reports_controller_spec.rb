@@ -9,7 +9,9 @@ RSpec.describe ReportsController, type: :controller do
   describe 'GET #index' do
     let!(:first_report){ create(:report, user: user) }
     let!(:second_report){ create(:report, user: user) }
-    before { get :index }
+    before :each do
+      get :index
+    end
     
     it 'populate an array of all reports @reports' do
       expect(assigns(:reports)).to match_array([second_report, first_report])
@@ -32,12 +34,14 @@ RSpec.describe ReportsController, type: :controller do
   describe 'PUT #update' do
     let!(:report) { create(:report, user: user) }
     let (:task) { 'New task' }
-    before { put :update,
-          id: report,
-          report: attributes_for(:report, task: task)}
+    before do
+      put :update,
+      id: report,
+      report: attributes_for(:report, task: task)
+    end
     it 'update a new Report in the database' do
       report.reload
-      expect(report.task).to eq('New task')
+      expect(report.task).to eq(task)
     end
  
     it 'redirects to reports#index' do
