@@ -2,6 +2,8 @@
   var $allStatuses = $('#All_statuses');
   var $allFields = $('#All_fields');
   var $allUsers = $('#All_users');
+  var $allLevels = $('#All_levels');
+  var $allSpecializations = $('#All_specializations');
 
   $( ".from" ).datepicker({
     defaultDate: "+1w",
@@ -32,6 +34,13 @@
 
   $allUsers.on('change', function(){
     check(this, $('#users'));
+  });
+  $allLevels.on('change', function(){
+    check(this, $('#levels'));
+  });
+
+  $allSpecializations.on('change', function(){
+    check(this, $('#specializations'));
   });
 
   function check(checkBox, selector){
