@@ -2,9 +2,7 @@
 require 'rubygems'
 require 'rufus/scheduler'
 
-scheduler_option = Rails.env.production? ? {:lockfile => '.rufus-scheduler.lock'} : {}
-scheduler =  Rufus::Scheduler.new(scheduler_option)
-
+scheduler =  Rufus::Scheduler.new
 
 FILE_NAME = "log/rufus_scheduler.log"
 
