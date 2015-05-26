@@ -73,6 +73,8 @@ class TablesController < GridsController
     link = Link.create(table_id: params[:table_id],
                        alt: params[:alt],
                        href: params[:href])
+    table = Table.find_by_id(params[:table_id])
+    History.create_history_for_update_object(table, {"Link"=>link.id})
     render html: generate_link(link).html_safe
   end
 

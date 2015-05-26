@@ -1,5 +1,5 @@
 class History < ActiveRecord::Base
-  has_many    :options_for_history, dependent: :destroy
+  has_many    :options_for_history
   belongs_to  :table
   belongs_to  :user
 

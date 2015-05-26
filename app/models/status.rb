@@ -1,7 +1,7 @@
 class Status < ActiveRecord::Base
   has_many :tables
-  has_many :options_for_plan, as: :option
-  has_many :options_for_history, as: :history_option
+  has_many :options_for_plan, as: :option, dependent: :destroy
+  has_many :options_for_history, as: :history_option, dependent: :destroy
   validates :name, presence: true, uniqueness: { scope: [:name, :for_type] }
 
   UNCHANGEABLESTATUS = %w(sold declined
