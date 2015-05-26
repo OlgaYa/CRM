@@ -1,7 +1,7 @@
 class Status < ActiveRecord::Base
   has_many :tables
-  has_many :options_for_plan, as: :option
-  has_many :options_for_history, as: :history_option
+  has_many :options_for_plan, as: :option, dependent: :destroy
+  has_many :options_for_history, as: :history_option, dependent: :destroy
   validates :name, presence: true, uniqueness: { scope: [:name, :for_type] }
 
   UNCHANGEABLESTATUS = %w(sold declined
@@ -12,11 +12,11 @@ class Status < ActiveRecord::Base
                           hired
                           contact_later)
 
-  NOT_REMIND_WITH_STATUSES = ["10 Sold", "0 Declined",
-                                "we_declined",
-                                "he_declined",
-                                "hired",
-                                "contact_later"]
+  NOT_REMIND_WITH_STATUSES = ['10 Sold', '0 Declined',
+                                'we_declined',
+                                'he_declined',
+                                'hired',
+                                'contact_later']
 
   def self.all_sale
     all.where(for_type: 'sale')

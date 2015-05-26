@@ -3,8 +3,7 @@ class ReportsController < ApplicationController
   def index
     @date = params[:date_report] ? Date.strptime(params[:date_report], "%m/%Y") : Date.today
 
-    @q = Report.where(user: current_user,
-                            :date => @date.beginning_of_month..@date.end_of_month).ransack(params[:q])
+    @q = Report.all_in_this_month(@date, params[:q], current_user)
     @reports = @q.result.order('date DESC')
     @report = Report.new
   end

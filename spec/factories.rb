@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :user do
-    sequence(:first_name) { Faker::Name.first_name }
-    sequence(:last_name)  { Faker::Name.last_name }
-    sequence(:email)      { Faker::Internet.email } 
+    first_name { Faker::Name.first_name }
+    last_name  { Faker::Name.last_name }
+    email      { Faker::Internet.email }
     role       'seller'
     password   'asdfasdf'
     password_confirmation 'asdfasdf'
@@ -56,18 +56,8 @@ FactoryGirl.define do
     table
   end
 
-  # factory :comment do
-  #   body Faker::Lorem.sentence
-  #   user
-  # end
-
-  # factory :table_comment do
-  #   user
-  #   table
-  # end
-
   factory :status do
-    sequence(:name) { Faker::Lorem.word }
+    name { Faker::Lorem.word }
 
     trait :candidate do
       for_type 'candidate'
