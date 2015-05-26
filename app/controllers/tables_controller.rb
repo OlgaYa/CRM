@@ -46,9 +46,9 @@ class TablesController < GridsController
 
   def update
     table = Table.find(params[:id])
-    Statistic.find_record_with_same_information(table, params[:table])
+    Statistic.find_record_with_same_information(table, params[:table]) unless not_update_statistic(params[:table].keys.first)
     table.update_attributes(table_params)
-    Statistic.update_statistics(table)
+    Statistic.update_statistics(table) unless not_update_statistic(params[:table].keys.first)
     if not_itself_id?(params[:table][:user_id])
       UserMailer.new_assign_user_instructions(table,
                                               current_user,
@@ -162,6 +162,13 @@ class TablesController < GridsController
 
     # NEED WRITE
     def scoped_candidate_data
+    end
+
+    def not_update_statistic(params)
+      array_params_not_add_to_statistic = ["name", "email", "skype",
+                                           "topic", "phone", "reminder_date",
+                                           "price", "date_end", "date_start", "date"]
+      array_params_not_add_to_statistic.include? (params)
     end
 
     # NEED OPIMIZE
