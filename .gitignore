@@ -98,3 +98,4 @@ config/mailchimp.yml
 config/desktime.yml
 .ruby-gemset
 .ruby-version
+.rufus-scheduler.lock
