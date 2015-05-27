@@ -2,6 +2,7 @@ module ApplicationHelper
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::AssetTagHelper
   include ActionView::Helpers::UrlHelper
+  attr_accessor :output_buffer
 
   MENU = YAML.load_file("#{Rails.root}/config/menu.yml")
 
