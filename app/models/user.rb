@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :tables
+  has_many :reports
   has_many :comments, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :options_for_plan, as: :option, dependent: :destroy
@@ -115,5 +116,9 @@ class User < ActiveRecord::Base
 
   def hr?
     role == 'hr'
+  end
+
+  def current_user?(user)
+    user == current_user
   end
 end

@@ -12,11 +12,11 @@ class Status < ActiveRecord::Base
                           hired
                           contact_later)
 
-  NOT_REMIND_WITH_STATUSES = ["10 Sold", "0 Declined",
-                                "we_declined",
-                                "he_declined",
-                                "hired",
-                                "contact_later"]
+  NOT_REMIND_WITH_STATUSES = ['10 Sold', '0 Declined',
+                              'we_declined',
+                              'he_declined',
+                              'hired',
+                              'contact_later']
 
   def self.all_sale
     all.where(for_type: 'sale')
