@@ -21,4 +21,8 @@ class History < ActiveRecord::Base
                                    history_option_id:   params.values.first.to_i)
     option.save
   end
+
+  def self.history_for_entity(type, order)
+    where(for_type: type.capitalize).order(created_at: order)
+  end
 end
