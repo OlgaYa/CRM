@@ -95,5 +95,7 @@ config/secrets.yml
 config/imap.yml
 config/calendar.yml
 config/mailchimp.yml
+config/desktime.yml
 .ruby-gemset
 .ruby-version
+.rufus-scheduler.lock

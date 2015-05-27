@@ -11,6 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 20150520125009) do
 
   # These are extensions that must be enabled in order to support this database
@@ -31,6 +32,13 @@ ActiveRecord::Schema.define(version: 20150520125009) do
     t.string   "description"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+  end
+
+  create_table "holidays", force: :cascade do |t|
+    t.string   "title"
+    t.date     "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "levels", force: :cascade do |t|
@@ -91,6 +99,23 @@ ActiveRecord::Schema.define(version: 20150520125009) do
     t.integer "percentage", default: 0
   end
 
+<<<<<<< HEAD
+=======
+  create_table "projects", force: :cascade do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "projects_users", id: false, force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "user_id"
+  end
+
+  add_index "projects_users", ["project_id"], name: "index_projects_users_on_project_id", using: :btree
+  add_index "projects_users", ["user_id"], name: "index_projects_users_on_user_id", using: :btree
+
+>>>>>>> master
   create_table "reports", force: :cascade do |t|
     t.string   "project"
     t.string   "task"

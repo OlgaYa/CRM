@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   resources :tables, only: [:create, :update, :destroy, :index]
   resources :users
   resources :comments, only: [:create, :destroy]
-  resources :meetings, only: [:index, :create, :edit, :update]
+  resources :meetings
   resources :statistics, only: :index do
     collection do
       post :change_information

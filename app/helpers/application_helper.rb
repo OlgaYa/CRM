@@ -177,44 +177,33 @@ module ApplicationHelper
   def generate_right_sub_sub_menu
     buffer = ActiveSupport::SafeBuffer.new
     menu = YAML.load_file("#{Rails.root.to_s}/config/menu.yml")
-    if current_user.admin || current_user.role == 'hh'
-          buffer << content_tag(:li) do
-            link_to('Text for interview', '/admin/email_texts/interview_text')
-          end
+
+    case params[:type]
+    when "SALE"
+      if current_user.admin || current_user.role == 'seller'
+        buffer << content_tag(:li) do
+          link_to('Export', '/export?type=SALE')
+        end
+        menu_role = 'seller'
+      end
+    when "CANDIDATE"
+      if current_user.admin || current_user.role == 'hh'
+        buffer << content_tag(:li) do
+          link_to('Text for interview', '/admin/email_texts/interview_text')
+        end
+        menu_role = 'hh'
+      end
     end
-    if current_user.admin || current_user.role == 'seller'
-          buffer << content_tag(:li) do
-            link_to('Export', '/export?type=SALE')
-          end
-    end
-    if current_user.admin
-      sub_menu_meeting = [ 'sub_menu', {'name' => 'Meeting',
-        "item one" => {'name' => 'Meeting seller', 'path' => menu['roles']['seller']['path_meeting']},
-        "item two" => {'name' => 'Meeting HH', 'path' => menu['roles']['hh']['path_meeting']}
-        }]
-      buffer << get_dropdown(sub_menu_meeting, nil, 'sub_menu_meeting')
-      sub_menu_stat = [ 'sub_menu', {'name' => 'Statistics',
-        "item one" => {'name' => 'Statistics seller', 'path' => menu['roles']['seller']['path_statistics'] },
-        "item two" => {'name' => 'Statistics HH', 'path' => menu['roles']['hh']['path_statistics'] }
-        }]
-      buffer << get_dropdown(sub_menu_stat, nil, 'sub_menu_stat')
-      sub_menu_stat = [ 'sub_menu', {'name' => 'Overview',
-        "item one" => {'name' => 'Overview seller', 'path' => menu['roles']['seller']['path_history'] },
-        "item two" => {'name' => 'Overview HH', 'path' => menu['roles']['hh']['path_history'] }
-        }]
-      buffer << get_dropdown(sub_menu_stat, nil, 'sub_menu_stat')
-    else
-      menu['roles'].each do |role|
-        if current_user && (current_user.role == role[0])
-          buffer << content_tag(:li) do
-            link_to('Meeting', role[1]['path_meeting'])
-          end
-          buffer << content_tag(:li) do
-            link_to('Statistics', role[1]['path_statistics'])
-          end
-          buffer << content_tag(:li) do
-            link_to('Overview', role[1]['path_history'])
-          end
+    menu['roles'].each do |role|
+      if role.first == menu_role
+        buffer << content_tag(:li) do
+          link_to('Meeting', role[1]['path_meeting'])
+        end
+        buffer << content_tag(:li) do
+          link_to('Statistics', role[1]['path_statistics'])
+        end
+        buffer << content_tag(:li) do
+          link_to('Overview', role[1]['path_history'])
         end
       end
     end

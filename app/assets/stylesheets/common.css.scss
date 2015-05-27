@@ -745,13 +745,18 @@ body > #wrapper>.room>.content-column {
 }
 
 .calendar{
-  width: 50%;
+  width: 60%;
   float: left;
 }
 
-.meeting_list{
-  width: 50%;
+#meeting_list{
   float: right;
+  width: 35%;
+  margin-right: 5%;
+}
+
+.meeting-name{
+  width: 90%;
 }
 
 #report-btn-group{

@@ -1,5 +1,5 @@
 module HistoriesHelper
-  NOT_MODEL = ["Name", "Lead", "Email", "Skype", "Topic", "Phone", "Reminder"]
+  NOT_MODEL = ["Name", "Lead", "Email", "Skype", "Topic", "Phone", "Reminder_date", "Price", "Date_end", "Date_start", "Date"]
 
   def information_about_change(history)
     options = history.options_for_history.first

@@ -1,6 +1,6 @@
 class Source < ActiveRecord::Base  
   has_many :tables
-  has_many :options_for_history, as: :history_option
+  has_many :options_for_history, as: :history_option, dependent: :destroy
   validates :name, presence: true, uniqueness: { scope: [:name, :for_type] }
 
   def self.all_sale

@@ -10,6 +10,7 @@ class Table < ActiveRecord::Base
   has_many :table_comments, dependent: :destroy
   has_many :comments, through: :table_comments
   has_many :meetings, dependent: :destroy
+  has_many :history, dependent: :destroy
 
   scope :join_statuses,
         -> { joins('INNER JOIN statuses ON tables.status_id = statuses.id') }

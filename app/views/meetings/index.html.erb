@@ -1,38 +1,52 @@
+<%= content_for(:custom_scripts) do %>
+  <%= javascript_include_tag 'chosen.jquery.min' %>
+<% end %>
 <div id="candidate_calendar" class="calendar">
-	<iframe src="https://www.google.com/calendar/embed?src=mtqotfm54sgjsbkok95fumjhi8%40group.calendar.google.com&ctz=Europe/Kiev"  style="margin-left: 5%; margin-rigth: 5%" width="90%" height="500" frameborder="0" scrolling="no"></iframe>
+  <iframe src="https://www.google.com/calendar/embed?src=mtqotfm54sgjsbkok95fumjhi8%40group.calendar.google.com&ctz=Europe/Kiev"  style="margin-left: 5%; margin-rigth: 5%" width="90%" height="500" frameborder="0" scrolling="no"></iframe>
 </div>
 
 <div id="sale_calendar" class="calendar">
-	<iframe src="https://www.google.com/calendar/embed?src=mdi0jpi6q1rb3hluj05ja0uftg%40group.calendar.google.com&ctz=Europe/Kiev" style="margin-left: 5%; margin-rigth: 5%" width="90%" height="500" frameborder="0" scrolling="no"></iframe>
+  <iframe src="https://www.google.com/calendar/embed?src=mdi0jpi6q1rb3hluj05ja0uftg%40group.calendar.google.com&ctz=Europe/Kiev" style="margin-left: 5%; margin-rigth: 5%" width="90%" height="500" frameborder="0" scrolling="no"></iframe>
 </div>
 <div id="modal_meeting">
 </div>
 
 <div id="meeting_list">
-	<% @meetings.each do |meeting|%>
-		<h3> <%= change_date(meeting) %> </h3>
-      <dl class="meeting" id='<%= meeting.id %>'>
-        <dt>
-          <%= meeting.start_time.strftime("%H:%M") %>
-        </dt>
-        <dd>
-          <%= meeting.title %>
-        </dd>
-      </dl>
-	<% end %>
+  <table class="table table-condensed">
+    <tbody  id="meeting_table">
+      <% @meetings.each do |meeting| %>
+        <tr id='<%= "meeting_#{meeting.id}" %>' value="<%=meeting.id %>"  name="meeting">
+          <td class="meeting-name">
+            <h3> <%= change_date(meeting) %> </h3>
+            <dl class="meeting" id='<%= meeting.id %>'>
+              <dt>
+                <%= meeting.start_time.strftime("%H:%M") %>
+              </dt>
+              <dd>
+                <%= meeting.title %>
+              </dd>
+            </dl>
+          </td>
+          <td class="edit" id-object='<%= "#{meeting.id}" %>'> <%= image_tag('edit.png', class: 'edit') %> </td>
+          <td class="delete"> <%= get_remove_link_meeting(meeting_path(meeting, type: @type), meeting.id, 'meeting_id') %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
 <script type="text/javascript">
-	var type = "<%= @type%>";
-	$('.meeting').on( 'click', function(){
-		var id = $(this).attr('id');
-		$('#modal_meeting').load("meetings/" + id + "/edit?type="+type);
+  var type = "<%= @type%>";
+  $('.edit').bind( 'click', function(){
+    var id = $(this).attr('id-object');
+    $('#modal_meeting').load("meetings/" + id + "/edit?type="+type);
   });
-	if(type == "SALE"){
-		$("#candidate_calendar").css( "display", "none");
-		$("#sale_calendar").css( "display", "block");
-	}
-	if(type == "CANDIDATE"){
-		$("#candidate_calendar").css( "display", "block");
-		$("#sale_calendar").css( "display", "none");
-	}
+  if(type == "SALE"){
+    $("#candidate_calendar").css( "display", "none");
+    $("#sale_calendar").css( "display", "block");
+  }
+  if(type == "CANDIDATE"){
+    $("#candidate_calendar").css( "display", "block");
+    $("#sale_calendar").css( "display", "none");
+  }
 </script>
