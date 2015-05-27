@@ -1,4 +1,5 @@
 class StatisticsController < ApplicationController
+  load_and_authorize_resource
   respond_to :json
 
   def index
@@ -43,28 +44,64 @@ class StatisticsController < ApplicationController
     end
   end
 
-  def get_information(name, source, users, status, level, specialization, date_from, date_to)
-    inform = {}
-    inform[:name] = name
-    inform[:data] = find_in_database(source, users, status, level, specialization, date_from, date_to)
-    inform
-  end
+  private
 
-  def find_in_database(source, users, status, level, specialization, date_from, date_to)
-    inform = Statistic.where(source).where(users).where(status).where(level).where(specialization).where(:week => date_from..date_to).group(:week).order(:week).sum(:count)
-    current_week = date_from
-    while current_week < date_to
-      inform[current_week] = 0 unless inform.include? (current_week)
-      current_week += 1.weeks
-    end
-    inform.sort.to_a
-  end
+    def get_information(name,
+                        source,
+                        users,
+                        status,
+                        level,
+                        specialization,
+                        date_from,
+                        date_to)
 
-  def find_name(name, name_class, id)
-    name += if name.empty?
-      id.empty? ? "" : name_class.singularize.capitalize.constantize.find_by_id(id).name
-    else
-      id.empty? ? "" : ": #{name_class.singularize.capitalize.constantize.find_by_id(id).name}"
+      inform = {}
+      inform[:name] = name
+      inform[:data] = find_in_database(source,
+                                       users,
+                                       status,
+                                       level,
+                                       specialization,
+                                       date_from,
+                                       date_to)
+      inform
     end
-  end
+
+    def find_in_database(source,
+                         users,
+                         status,
+                         level,
+                         specialization,
+                         date_from,
+                         date_to)
+
+      inform = Statistic.where(source
+                              ).where(users
+                              ).where(status
+                              ).where(level
+                              ).where(specialization
+                              ).where(week: date_from..date_to
+                              ).group(:week
+                              ).order(:week
+                              ).sum(:count)
+                              
+      current_week = date_from
+      while current_week < date_to
+        inform[current_week] = 0 unless inform.include?(current_week)
+        current_week += 1.weeks
+      end
+      inform.sort.to_a
+    end
+
+    def find_name(name, name_class, id)
+      name += if name.empty?
+        id.empty? ? '' : name(name_class, id)
+      else
+        id.empty? ? '' : ": #{name(name_class, id)}"
+      end
+    end
+
+    def name(name_class, id)
+      name_class.singularize.capitalize.constantize.find_by_id(id).name
+    end
 end

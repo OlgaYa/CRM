@@ -1,13 +1,13 @@
-class UsersController < GridsController
+class UsersController < ApplicationController
+  load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:update]
-  before_action :user_by_id, only: [:edit, :show, :update]
-  
+  before_action :user_by_id, only: [:edit,
+                                    :show,
+                                    :update]
   def show
-    redirect_to :back unless @user == current_user || current_user.admin?
   end
 
   def edit
-    redirect_to :back unless @user == current_user || current_user.admin?
   end
 
   def update
