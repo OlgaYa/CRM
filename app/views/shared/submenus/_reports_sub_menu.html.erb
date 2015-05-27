@@ -1,0 +1,7 @@
+<%= content_for(:reports) { 'open' } %>
+
+<ul id='tables-sub-menu-nav' class="nav navbar-nav">
+    <%= sub_menu_action('Summary reports', '#', 'summary_reports', 'index') if current_user.permissions.have? 'hr_admin' %>
+    <%= sub_menu_action('All reports', '#', '', '') if current_user.permissions.have? 'all_reports' %>
+    <%= sub_menu_action('My reports', '#', '', '') if current_user.permissions.have? 'self_reports' %>
+</ul>

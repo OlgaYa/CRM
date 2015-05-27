@@ -1,34 +1,13 @@
-roles:
-  seller:
-    name: 'Sale'
-    path_table: '/tables?only=open&type=SALE'
-    path_meeting: '/meetings?type=SALE'
-    path_statistics: '/statistics?type=SALE'
-    path_history: '/histories?type=SALE'
-  hh:
-    name: 'HH'
-    path_table: '/tables?only=open&type=CANDIDATE'
-    path_meeting: '/meetings?type=CANDIDATE'
-    path_statistics: '/statistics?type=CANDIDATE'
-    path_history: '/histories?type=CANDIDATE'
-admin:
-  menu:
-    sub menu one:
-      name: 'Admin panel'
-      item one:
-        name: 'Active users'
-        path: '/admin/users?status=unlock'
-      item two:
-        name: 'Bloked users'
-        path: '/admin/users?status=lock'
-      item dev one:
-        divider: true
-      item three:
-        name: 'Sellers controls'
-        path: '/admin/task_controls?type=SALE'
-      item fore:
-        name: 'HH controls'
-        path: '/admin/task_controls?type=CANDIDATE'
-      item five:
-        name: 'Plans'
-        path: '/plans'
+permissions:
+  manage_sales:
+      name: Sale
+      path: '/tables?only=open&type=SALE'
+  manage_candidates:
+      name: HH
+      path: '/tables?only=open&type=CANDIDATE'
+  self_reports:
+      name: Reports
+      path: '/summary_reports'
+  administration_section:
+      name: Admin panel
+      path: '/admin/admin_pointer'

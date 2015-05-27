@@ -1,0 +1,14 @@
+<%= content_for(:hh) { 'open' } %>
+
+<ul id='tables-sub-menu-nav' class="nav navbar-nav">
+  <%= sub_menu_link('CANDIDATE', 'open') %>
+  <%= sub_menu_link('CANDIDATE', 'hired') %>
+  <%= sub_menu_link('CANDIDATE', 'we_declined') %>
+  <%= sub_menu_link('CANDIDATE', 'he_declined') %>
+  <%= sub_menu_link('CANDIDATE', 'contact_later') %>
+</ul>
+<ul id='tables-sub-menu-nav' class="nav navbar-nav navbar-right">
+  <%= sub_menu_action('Meetings', meetings_path(type: 'CANDIDATE'), 'meetings', 'index') %>
+  <%= sub_menu_action('Statistics', statistics_path(type: 'CANDIDATE'), 'statistics', 'index') %>
+  <%= sub_menu_action('Histories', histories_path(type: 'CANDIDATE'), 'histories', 'index') %>
+</ul>
