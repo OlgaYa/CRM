@@ -1,0 +1,13 @@
+<%= content_for(:sale) { 'open' } %>
+
+<ul id='tables-sub-menu-nav' class="nav navbar-nav">
+  <%= sub_menu_link('SALE', 'open') %>
+  <%= sub_menu_link('SALE', 'sold') %>
+  <%= sub_menu_link('SALE', 'declined') %>
+</ul>
+<ul id='tables-sub-menu-nav' class="nav navbar-nav navbar-right">
+  <%= sub_menu_action('Export', export_path(type: 'SALE'), 'tables', 'export') %>
+  <%= sub_menu_action('Meetings', meetings_path(type: 'SALE'), 'meetings', 'index') %>
+  <%= sub_menu_action('Statistics', statistics_path(type: 'SALE'), 'statistics', 'index') %>
+  <%= sub_menu_action('Histories', histories_path(type: 'SALE'), 'histories', 'index') %>
+</ul>

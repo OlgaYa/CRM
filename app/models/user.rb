@@ -5,9 +5,14 @@ class User < ActiveRecord::Base
   has_many :tables
   has_many :comments, dependent: :destroy
   has_many :messages, dependent: :destroy
+
   has_many :options_for_plan, as: :option, dependent: :destroy
   has_many :options_for_history, as: :history_option, dependent: :destroy
   has_and_belongs_to_many :projects
+
+  has_many :user_permissions, dependent: :destroy
+  has_many :permissions, through: :user_permissions
+
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :last_name, presence: true, length: { maximum: 50 }
 
@@ -21,7 +26,6 @@ class User < ActiveRecord::Base
   extend Enumerize
 
   enumerize :status, in: [:observer, :lock, :unlock]
-  enumerize :role,   in: [:hh, :hr, :seller]
 
   def generate_token(column)
     begin
@@ -69,6 +73,19 @@ class User < ActiveRecord::Base
     full_name
   end
 
+  # method check does user has Permission with name = 'permission_name'
+  def permission?(permission_name)
+    permissions.have?(permission_name)
+  end
+
+  # method used when menu is generated
+  def admin_permission?
+    %i(manage_hh_controls
+       manage_seller_controls
+       hr_admin
+       crm_controls_admin).any? { |sym| permissions.have? sym }
+  end
+
   def self.all_except(user)
     where.not(id: user)
   end
@@ -82,38 +99,27 @@ class User < ActiveRecord::Base
   end
 
   def self.hh
-    where(role: 'hh')
+    Permission.get('manage_candidates').users
   end
 
   def self.seller
-    where(role: 'seller')
+    Permission.get('manage_sales').users
   end
 
   def self.all_candidate
-    self.hh
+    hh
   end
 
   def self.all_sale
-    self.seller
+    seller
   end
 
   def full_name
     "#{first_name.capitalize} #{last_name.capitalize}"
   end
 
-  def locked?
-    status == 'lock'
-  end
-
-  def seller?
-    role == 'seller'
-  end
-
-  def hh?
-    role == 'hh'
-  end
-
-  def hr?
-    role == 'hr'
+  def self.reports_oblige_users
+    where('id IN (?)',
+          Permission.get('self_reports').users.pluck(:id))
   end
 end

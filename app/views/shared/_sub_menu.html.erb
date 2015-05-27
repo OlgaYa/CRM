@@ -1,10 +1,7 @@
-<nav class="navbar navbar-inverse nav-down" id='navbar-submenu' role="navigation">
+<nav class="navbar navbar-inverse nav-down" id='navbar-submenu' permission="navigation">
  <div class="container-fluid">
     <div class="collapse navbar-collapse" id='tables-sub-menu'>
-      <%= yield(:left_sub_menu) %>
-      <ul id='tables-sub-menu-nav' class="nav navbar-nav navbar-right">
-        <%= generate_right_sub_sub_menu %>
-      </ul>
+      <%= yield(:sub_menu) %>
     </div>
   </div>
 </nav>

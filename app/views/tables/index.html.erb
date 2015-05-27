@@ -4,14 +4,13 @@
   <%= javascript_include_tag 'chosen.jquery.min' %>
 <% end %>
 
-<%= content_for(:left_sub_menu) do %>
-  <%= render 'tables/sub_menu' %>
-<% end %>
-
 <%= content_for(:title) do %>
   <%= site_title(location) %>
 <% end %>
 
+<%= content_for(:sub_menu) do %>
+  <%= render "shared/submenus/#{sub_menu_type}" %>
+<% end %>
 
 <div class="row content">
   <div class="container-fluid">

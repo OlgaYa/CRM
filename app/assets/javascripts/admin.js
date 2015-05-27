@@ -42,12 +42,11 @@ $(document).ready(function(){
               path  = $(this).data('path'),
               entity  = $(this).data('entity'),
               value = $editInp.val();
-
           dataForSend = { 'field':field, 'value':value }
           if(value){
             $.when($.ajax({
               type: 'PUT',
-              url: path,
+              url: path + location.search,
               data: dataForSend
             })).always(function(data, textStatus, jqXHR){
               if(textStatus === 'success'){
@@ -77,7 +76,7 @@ $(document).ready(function(){
       var valuesToSubmit = $(this).serialize();
       $.ajax({
         type: "POST",
-        url: $(this).attr('action'), 
+        url: $(this).attr('action') + location.search, 
         data: valuesToSubmit,
         success: function(data){
           if(typeof data !== 'object'){
@@ -138,7 +137,7 @@ $(document).ready(function(){
     dataForSend = { 'field':field, 'value':value }
     return  $.ajax({
               type: 'PUT',
-              url: path,
+              url: path + location.search,
               data: dataForSend
             });
   }

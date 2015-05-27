@@ -2,11 +2,15 @@
   <%= javascript_include_tag 'admin' %>
 <% end %>
 
+<%= content_for(:sub_menu) do %>
+  <%= render "shared/submenus/admin_panel_sub_menu" %>
+<% end %>
+
 <div class='row content'>
   <div class='col-lg-8, col-md-8 col-lg-offset-2 col-md-offset-2'>
 
     <%= render 'shared/notifier' %>
-    <% if params[:type]== 'SALE' %>
+    <% if params[:type] == 'SALE' %>
       <div class="row">
         <div class="col-md-6 col-lg-6">
           <div class="col-md-12 col-lg-10">
@@ -31,6 +35,7 @@
           <%= form_tag(statuses_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
             <%= text_field_tag(:name, '' ,class: 'new new-status') %>
             <%= text_field_tag(:for_type, '' , value: 'sale', hidden: true) %>
+            <%= text_field_tag(:type, '' , value: params[:type], hidden: true) %>
             <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
           <% end %>
           </div>
@@ -59,6 +64,7 @@
           <%= form_tag(sources_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
             <%= text_field_tag(:name, '' , class: 'new new-source') %>
             <%= text_field_tag(:for_type, '' , value: 'sale', hidden: true) %>
+            <%= text_field_tag(:type, '' , value: params[:type], hidden: true) %>
             <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
           <% end %>
           </div>
@@ -89,6 +95,7 @@
           <%= form_tag(statuses_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
             <%= text_field_tag(:name, '' ,class: 'new new-status') %>
             <%= text_field_tag(:for_type, '' , value: 'candidate', hidden: true) %>
+            <%= text_field_tag(:type, '' , value: params[:type], hidden: true) %>
             <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
           <% end %>
           </div>
@@ -117,6 +124,7 @@
           <%= form_tag(sources_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
             <%= text_field_tag(:name, '' , class: 'new new-source') %>
             <%= text_field_tag(:for_type, '' , value: 'candidate', hidden: true) %>
+            <%= text_field_tag(:type, '' , value: params[:type], hidden: true) %>
             <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
           <% end %>
           </div>
@@ -146,6 +154,7 @@
           <%= form_tag(specializations_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
             <%= text_field_tag(:name, '' ,class: 'new new-specialization') %>
             <%= text_field_tag(:for_type, '' , value: 'candidate', hidden: true) %>
+            <%= text_field_tag(:type, '' , value: params[:type], hidden: true) %>
             <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
           <% end %>
           </div>
@@ -174,6 +183,7 @@
           <%= form_tag(levels_path, method: :post, authenticity_token: false, remote: true, class: 'task-control') do %>
             <%= text_field_tag(:name, '' , class: 'new new-level') %>
             <%= text_field_tag(:for_type, '' , value: 'candidate', hidden: true) %>
+            <%= text_field_tag(:type, '' , value: params[:type], hidden: true) %>
             <%= submit_tag 'Add new', class: 'btn btn-sm btn-primary' %>
           <% end %>
           </div>

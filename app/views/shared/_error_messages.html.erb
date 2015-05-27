@@ -1,9 +1,9 @@
 <% if @user.errors.any? %>
-    <div id="error_explanation">
-        <% @user.errors.full_messages.each do |msg| %>
-          <div>
-            <span><%= msg %></span>
-          </div>
-        <% end %>
-    </div>
+  <div id="error_explanation">
+    <% @user.errors.full_messages.each do |msg| %>
+      <div>
+        <span><%= msg %></span>
+      </div>
+    <% end %>
+  </div>
 <% end %>

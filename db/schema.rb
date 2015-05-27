@@ -11,6 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 20150525085549) do
 
   # These are extensions that must be enabled in order to support this database
@@ -50,7 +51,6 @@ ActiveRecord::Schema.define(version: 20150525085549) do
   create_table "links", force: :cascade do |t|
     t.string   "alt"
     t.string   "href"
-    t.integer  "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "table_id"
@@ -74,7 +74,6 @@ ActiveRecord::Schema.define(version: 20150525085549) do
     t.text     "body"
     t.datetime "datetime"
     t.integer  "user_id"
-    t.integer  "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -89,6 +88,13 @@ ActiveRecord::Schema.define(version: 20150525085549) do
     t.integer "plan_id"
     t.integer "option_id"
     t.string  "option_type"
+  end
+
+  create_table "permissions", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "plans", force: :cascade do |t|
@@ -128,16 +134,6 @@ ActiveRecord::Schema.define(version: 20150525085549) do
     t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "sold_tasks", force: :cascade do |t|
-    t.integer  "task_id"
-    t.integer  "price"
-    t.date     "date_start"
-    t.date     "date_end"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "sources", force: :cascade do |t|
@@ -201,25 +197,11 @@ ActiveRecord::Schema.define(version: 20150525085549) do
     t.date     "date_status_1"
   end
 
-  create_table "task_comments", force: :cascade do |t|
-    t.integer  "task_id"
-    t.integer  "comment_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "tasks", force: :cascade do |t|
-    t.string   "name"
-    t.string   "skype"
-    t.string   "email"
-    t.text     "links"
-    t.date     "date"
+  create_table "user_permissions", id: false, force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "source_id"
-    t.string   "topic"
-    t.integer  "status_id"
+    t.integer  "permission_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -243,7 +225,6 @@ ActiveRecord::Schema.define(version: 20150525085549) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string   "role"
     t.string   "table_settings"
   end
 

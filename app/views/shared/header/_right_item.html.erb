@@ -1,0 +1,19 @@
+<% if current_user %>
+  <%= link_to('#', class: 'dropdown-toggle',
+              data: { toggle: 'dropdown' }) do %>
+    <%= current_user.first_name %>
+    <%= image_tag(current_user.avatar.url, class: 'avatar-small') %>
+  <% end %>
+  <ul class="dropdown-menu">
+    <li>
+      <%= link_to 'Profile', user_path(current_user.id) %>
+    </li>
+    <li class="divider"></li>
+    <li>
+      <%= link_to 'Sign out', destroy_user_session_path,
+                  rel: 'nofollow', data: { method: 'delete' } %>
+    </li>
+  </ul>   
+<% else %>
+  <%= link_to("Log in", new_user_session_path) %>
+<% end %>
