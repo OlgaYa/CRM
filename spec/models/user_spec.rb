@@ -50,16 +50,16 @@ describe User do
       FactoryGirl.create(:table, user: user_2, updated_at: 1.hour.ago)
     end
 
-		before do
-			ActionMailer::Base.delivery_method = :test
-			ActionMailer::Base.deliveries = []
-		end
+    before do
+      ActionMailer::Base.delivery_method = :test
+      ActionMailer::Base.deliveries = []
+    end
 
-		it 'send mail' do
+    it 'send mail' do
       User.reminder
-			expect(ActionMailer::Base.deliveries.count).to eq(1)
-		end
-		# Чистим очередь:
-		ActionMailer::Base.deliveries.clear
-	end
+      expect(ActionMailer::Base.deliveries.count).to eq(1)
+    end
+    # Чистим очередь:
+    ActionMailer::Base.deliveries.clear
+  end
 end

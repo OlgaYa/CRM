@@ -1,13 +1,14 @@
 FactoryGirl.define do
+
   factory :holiday do
-    name "MyString"
-    date "2015-05-22"
+    title Faker::Name.name
+    date  DateTime.current
   end
 
   factory :user do
-    sequence(:first_name) { Faker::Name.first_name }
-    sequence(:last_name)  { Faker::Name.last_name }
-    sequence(:email)      { Faker::Internet.email } 
+    first_name  Faker::Name.first_name 
+    last_name   Faker::Name.last_name 
+    email       Faker::Internet.email
     role       'seller'
     password   'asdfasdf'
     password_confirmation 'asdfasdf'
@@ -58,16 +59,6 @@ FactoryGirl.define do
   factory :link do
     alt  Faker::Lorem.word
     href Faker::Internet.url
-    table
-  end
-
-  factory :comment do
-    body Faker::Lorem.sentence
-    user
-  end
-
-  factory :table_comment do
-    user
     table
   end
 

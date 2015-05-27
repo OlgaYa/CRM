@@ -2,11 +2,15 @@ require 'rails_helper'
 
 RSpec.describe HolidaysController, type: :controller do
 
-  describe "GET #index" do
-    it "returns http success" do
-      get :index
-      expect(response).to have_http_status(:success)
-    end
+  let(:user){ create :user }
+  before :each do
+    sign_in user
   end
 
+  describe 'GET #index' do
+    before :each do
+      get :index
+    end
+    it { expect(response.status).to eq(200) }
+  end
 end
