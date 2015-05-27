@@ -1,7 +1,14 @@
-<div class='lid-count pull-left'>
-  <%= label_tag 'Per page:' %>
-  <%= per_page_link('25') %>
-  <%= per_page_link('100') %>
-  <%= per_page_link('200') %>
-  <%= per_page_link('all') %>
+<div>
+  <div class='lid-count pull-left'>
+    <%= label_tag 'Per page:' %>
+    <%= per_page_link('25') %>
+    <%= per_page_link('100') %>
+    <%= per_page_link('200') %>
+    <%= per_page_link('all') %>
+  </div>
+
+  <div class='record-count pull-right'>
+    <%= label_tag "#{@table.size} of #{@table_full_size} now is shown." %>
+  </div>
 </div>
+

@@ -26,6 +26,7 @@ class TablesController < GridsController
     end
     @q = q_sort
     @table = @q.result.oder_date_nulls_first
+    @table_full_size = @table.size
     paginate_table if need_paginate?
     @type = params[:type]
   end
