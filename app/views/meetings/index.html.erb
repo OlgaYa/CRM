@@ -1,3 +1,7 @@
+<%= content_for(:sub_menu) do %>
+  <%= render "shared/submenus/#{sub_menu_type}" %>
+<% end %>
+
 <div id="candidate_calendar" class="calendar">
 	<iframe src="https://www.google.com/calendar/embed?src=mtqotfm54sgjsbkok95fumjhi8%40group.calendar.google.com&ctz=Europe/Kiev"  style="margin-left: 5%; margin-rigth: 5%" width="90%" height="500" frameborder="0" scrolling="no"></iframe>
 </div>
