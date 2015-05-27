@@ -117,7 +117,7 @@ class GridsController < ApplicationController
 
     def lid_count_conf
       return if params[:lid_count].nil?
-      current_user.user_setting = UserSetting.new
+      current_user.user_setting = UserSetting.new if current_user.user_setting.nil?
       current_user.user_setting[paginate_setting] = params[:lid_count]
       current_user.user_setting.save!
     end
