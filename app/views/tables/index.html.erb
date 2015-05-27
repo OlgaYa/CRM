@@ -35,7 +35,7 @@
 
       <%= render 'per_page' %>
       
-      <% unless current_user.user_setting[paginate_setting] == 'all' %>
+      <% if current_user.user_setting && current_user.user_setting[paginate_setting] != 'all' %>
         <div class='text-center'>
           <%= will_paginate @table, renderer: BootstrapPagination::Rails,
                                     previous_label: '<<', next_label: '>>' %>
