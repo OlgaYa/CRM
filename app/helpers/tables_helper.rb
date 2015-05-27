@@ -33,8 +33,8 @@ module TablesHelper
   end
 
   # method generates <li><a></a></li>
-  def sub_menu_link(type, only, default)
-    class_name = 'active' if active?(only, default)
+  def sub_menu_link(type, only)
+    class_name = 'active' if active?(only)
     name = only.sub('_', ' ').capitalize
     content_tag(:li, '', class: class_name) do
       link_to(name, tables_path(type: type, only: only))
@@ -42,8 +42,8 @@ module TablesHelper
   end
 
   # help method for method sub_menu_link
-  def active?(only, default)
-    return true if only == params[:only] || (only == default && !params[:only])
+  def active?(only)
+    only == params[:only]
   end
 
   def export_field
@@ -71,6 +71,7 @@ module TablesHelper
   def export_field_candidate
   end
 
+  # NEED BE MOVED TO APLICATION HELPER
   def export_users_fields
     case params[:type]
     when 'SALE'
@@ -80,6 +81,7 @@ module TablesHelper
     end
   end
 
+  # NEED REWRITE
   def generate_head(entity)
     return if entity.empty?
     content_tag(:thead) do
@@ -118,6 +120,7 @@ module TablesHelper
     end
   end
 
+  # NEED REWRITE
   def generate_table_body(table)
     return if table.empty?
     content_tag(:tbody, class: 'table-body') do
@@ -127,6 +130,7 @@ module TablesHelper
     end
   end
   
+  # NEED REWRITE
   def generate_body(entity)
     content_tag(:tr, id: entity.id, class: generate_class_tr(entity.user_id)) do
       concat table_control        entity.id
@@ -241,6 +245,7 @@ module TablesHelper
     end
   end
 
+  # NEED REWRITE
   def users
     case params[:type]
     when 'SALE'
@@ -250,6 +255,7 @@ module TablesHelper
     end
   end
 
+  # NEED REWRITE
   def table_period(date_start, date_end)
     content_tag(:td, '', class: 'td-period') do
       concat content_tag(:label, 'Start:')
@@ -265,6 +271,7 @@ module TablesHelper
     end
   end
 
+  # NEED REWRITE
   def table_links(links)
     content_tag(:td, '', class: 'editable-activity td-links', value: 'links') do
       content_tag(:div, class: 'link_list') do
@@ -287,6 +294,7 @@ module TablesHelper
     end
   end
 
+  # NEED REWRITE
   def table_comments(comments)
     content_tag(:td,
                 class: 'editable-activity td-comments',
@@ -299,6 +307,7 @@ module TablesHelper
     end
   end
 
+  # NEED REWRITE
   def generate_comment(comment)
     content_tag(:div, class: "comment c_#{comment.id}") do
       concat comment_topic(comment)
@@ -308,6 +317,7 @@ module TablesHelper
     end
   end
 
+  # NEED REWRITE
   def comment_topic(comment)
     buffer = ActiveSupport::SafeBuffer.new
     buffer << img_field(comment.user.avatar.url(:small),
@@ -318,21 +328,25 @@ module TablesHelper
     buffer
   end
 
+  # NEED REWRITE
   def link_remove_comment(comment)
     return unless current_user == comment.user
     link_to(img_field('remove-red.png'),
-            comment_path(comment),
+            comment_path(comment, type: params[:type]),
             class: 'pull-right', method: :delete, remote: true)
   end
 
+  # NEED REWRITE
   def span_field(value, class_names = '')
     content_tag(:span, value, class: class_names)
   end
 
+  # NEED REWRITE
   def img_field(url, class_names = '')
     image_tag(url, class: class_names)
   end
 
+  # NEED REWRITE
   def select_field(field_name_1,
                    field_name_2,
                    collenction,
@@ -344,6 +358,7 @@ module TablesHelper
            fieldname: field_name_2)
   end
 
+  # NEED REWRITE
   def select_field_with_no_selected(field_name_1,
                                     field_name_2,
                                     collenction,

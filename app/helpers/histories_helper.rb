@@ -1,5 +1,6 @@
 module HistoriesHelper
-  NOT_MODEL = ["Name", "Lead", "Email", "Skype", "Topic", "Phone", "Reminder"]
+
+  NOT_MODEL = %w(Name Lead Email Skype Topic Phone Reminder)
 
   def information_about_change(history)
     options = history.options_for_history.first
@@ -9,11 +10,11 @@ module HistoriesHelper
                 history.description
               else
                 case key
-                when "Name"
+                when 'Name'
                   options.history_option.full_name
-                when "Comment"
+                when 'Comment'
                   options.history_option.body
-                when "Link"
+                when 'Link'
                   options.history_option.href
                 else
                   options.history_option.name
@@ -21,7 +22,7 @@ module HistoriesHelper
               end
       "#{key}: #{value}"
     else
-      "Create a new task"
+      'Create a new task'
     end
   end
 
@@ -29,7 +30,7 @@ module HistoriesHelper
     if @current_day != history.created_at.to_date
       @current_day = history.created_at.to_date
       if @current_day == Date.today
-        "Today"
+        'Today'
       else
         @current_day
       end
