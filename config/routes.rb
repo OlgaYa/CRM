@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   root to: 'static_pages#home'
 
   require 'sidekiq/web'
-  authenticate :user, lambda { |u| u.admin? } do
+  authenticate :user, lambda { |u| u.role?('admin') } do
     mount Sidekiq::Web => '/sidekiq'
   end
   
@@ -71,6 +71,12 @@ Rails.application.routes.draw do
 
   # ACTION FOR CHECK DUPLICATE DATA IN TABLE
   get   'tables/check_duplicate_data', to: 'tables#check_duplicate_data'
+
+  # ACTIONS FOR MAIN MENU DIRETIONS
+  get   'admin/admin_pointer', to: 'admin#admin_pointer'
+
+  # ACTIONS FOR SUMMARY REPORTS
+  get   'summary_reports',     to: 'summary_reports#index'
   
   match 'admin/email_texts/:action(/:id)' => 'admin/email_texts', via: :all
 end
