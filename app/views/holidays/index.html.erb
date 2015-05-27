@@ -2,13 +2,11 @@
   <%= javascript_include_tag 'fullcalendar.min.js' %>
 <% end %>
 <div class="row content">
-  <div class="container-fluid">
+  <div class="container-fluidc">
     <div id="calendar_holiday">
     </div>
     <div id="list-month">
-      <% @hash_holidays["month"].each_with_index do |item, i| %>
-        <%= Date::MONTHNAMES[i] %> <%= item %> <br/>
-      <% end %>
+      <%= render 'list_month_hours' %>
     </div>
   </div>
 </div>
@@ -20,6 +18,21 @@
     $('#calendar_holiday').fullCalendar({
       firstDay: 1,
       events: data_for_events,
+      eventClick: function (calEvent, jsEvent, view) {
+        var myEvent = {
+          title:"Holiday",
+          allDay: true,
+          start: calEvent._start.format()
+        };
+        $( "#list-month" ).load( "holidays/update_list_events",
+          {
+            date: myEvent.start,
+            title: myEvent.title,
+            status: "destroy"
+          }
+        );
+        $('#calendar_holiday').fullCalendar('removeEvents', calEvent._id);
+      },
       dayClick: function(date, allDay, jsEvent, view) {
         var myEvent = {
           title:"Holiday",
@@ -30,7 +43,8 @@
         $( "#list-month" ).load( "holidays/update_list_events",
           {
             date: myEvent.start,
-            title: myEvent.title
+            title: myEvent.title,
+            status: "add"
           }
         );
       },
