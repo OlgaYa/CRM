@@ -30,7 +30,7 @@ class Ability
       end
 
       if perm.include?('manage_seller_controls') ||
-         perm.include?('manage_hh_controls') 
+         perm.include?('manage_hh_controls')
         can :admin_pointer, :admin
       end
 
@@ -59,6 +59,8 @@ class Ability
 
         can [:table_settings,
              :update_table_settings], :table
+
+        can [:destroy_link, :create_link], :table
 
         can [:export,
              :download_selective_xls,

@@ -5,8 +5,8 @@ class Table < ActiveRecord::Base
   belongs_to :specialization
   belongs_to :level
   belongs_to :user
+  
   has_many :links
-
   has_many :table_comments, dependent: :destroy
   has_many :comments, through: :table_comments
   has_many :meetings, dependent: :destroy
@@ -17,8 +17,8 @@ class Table < ActiveRecord::Base
   after_save :add_email_to_mailchimp
 
   def self.in_time_period(from, to)
-    from = DateTime.now - 365.day unless from
-    to = DateTime.now unless to
+    from = DateTime.now - 365.day unless nil_if_blank(from)
+    to = DateTime.now unless nil_if_blank(to)
     where(created_at: (from)..to)
   end
 
@@ -37,7 +37,14 @@ class Table < ActiveRecord::Base
   end
 
   def self.export(from, to, users, statuses)
-    in_time_period(from, to).belongs_to_users(users).with_statuses(statuses)
+    in_time_period(nil_if_blank(from), nil_if_blank(to)
+                   ).belongs_to_users(users
+                   ).with_statuses(statuses)
+  end
+
+
+  def self.nil_if_blank(value)
+    nil if value.blank?
   end
 
   def self.to_csv(options = {}, fields)
@@ -93,5 +100,4 @@ class Table < ActiveRecord::Base
       'name' => self.name
     })
   end
-
 end
