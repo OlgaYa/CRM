@@ -233,4 +233,14 @@ module ApplicationHelper
       image_tag(current_user.avatar.url, class: 'avatar-small')
     # end
   end
+
+  def paginate_setting
+    case params[:type]
+    when 'CANDIDATE'
+      'hh_record_per_page'
+    when 'SALE'
+      'sale_record_per_page'
+    end
+  end
+
 end

@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :messages, dependent: :destroy
   has_many :options_for_plan, as: :option, dependent: :destroy
   has_many :options_for_history, as: :history_option, dependent: :destroy
+  has_one :user_setting
   has_and_belongs_to_many :projects
   validates :first_name, presence: true, length: { maximum: 50 }
   validates :last_name, presence: true, length: { maximum: 50 }

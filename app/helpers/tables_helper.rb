@@ -28,7 +28,7 @@ module TablesHelper
   end
 
   def active_link(count)
-    return unless cookies[:lid_count] == count
+    return unless current_user.user_setting[paginate_setting] == count
     'active-link-per-page'
   end
 

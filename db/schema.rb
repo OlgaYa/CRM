@@ -11,11 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20150520125009) do
+ActiveRecord::Schema.define(version: 20150527123621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
@@ -32,13 +32,6 @@ ActiveRecord::Schema.define(version: 20150520125009) do
     t.string   "description"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-  end
-
-  create_table "holidays", force: :cascade do |t|
-    t.string   "title"
-    t.date     "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "levels", force: :cascade do |t|
@@ -99,8 +92,6 @@ ActiveRecord::Schema.define(version: 20150520125009) do
     t.integer "percentage", default: 0
   end
 
-<<<<<<< HEAD
-=======
   create_table "projects", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
@@ -115,7 +106,6 @@ ActiveRecord::Schema.define(version: 20150520125009) do
   add_index "projects_users", ["project_id"], name: "index_projects_users_on_project_id", using: :btree
   add_index "projects_users", ["user_id"], name: "index_projects_users_on_user_id", using: :btree
 
->>>>>>> master
   create_table "reports", force: :cascade do |t|
     t.string   "project"
     t.string   "task"
@@ -223,6 +213,14 @@ ActiveRecord::Schema.define(version: 20150520125009) do
     t.integer  "source_id"
     t.string   "topic"
     t.integer  "status_id"
+  end
+
+  create_table "user_settings", force: :cascade do |t|
+    t.string   "hh_record_per_page"
+    t.string   "sale_record_per_page"
+    t.integer  "user_id"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "users", force: :cascade do |t|

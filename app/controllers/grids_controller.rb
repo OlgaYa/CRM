@@ -108,16 +108,17 @@ class GridsController < ApplicationController
 
     def paginate_table
       @table = @table.oder_date_nulls_first.paginate(page: params[:page],
-                               per_page: cookies[:lid_count] || 25)
+                               per_page: current_user.user_setting[paginate_setting] || 25)
     end
 
     def need_paginate?
-      cookies[:lid_count] != 'all'      
+      current_user.user_setting[paginate_setting] != 'all'
     end
 
     def lid_count_conf
-      return unless params[:lid_count]
-      cookies[:lid_count] = params[:lid_count]
+      return if params[:lid_count].nil?
+      current_user.user_setting[paginate_setting] = params[:lid_count]
+      current_user.user_setting.save!
     end
 
     def not_itself_id?(id)
