@@ -1,9 +1,10 @@
 FactoryGirl.define do
   factory :user do
-    first_name       { Faker::Name.first_name              }
-    last_name        { Faker::Name.last_name               }
-    sequence(:email) { |n| "#{Faker::Internet.email}#{n}"  }
-    password         { Faker::Internet.password(8, 20)     }
+    first_name { Faker::Name.first_name }
+    last_name  { Faker::Name.last_name }
+    email      { Faker::Internet.email }
+    password   'asdfasdf'
+    password_confirmation 'asdfasdf'
 
     trait :admin do
       admin true
@@ -63,7 +64,6 @@ FactoryGirl.define do
 
   factory :status do
     sequence(:name) { |n| "#{Faker::Lorem.word}#{n}" }
-
     trait :candidate do
       for_type 'candidate'
     end
@@ -89,5 +89,13 @@ FactoryGirl.define do
 
   factory :specialization do
     sequence(:name) { |n| "#{Faker::Lorem.word}#{n}" }
+  end
+
+  factory :report do
+    user
+    project Faker::Lorem.sentence
+    task    Faker::Lorem.sentence
+    date    DateTime.current
+    hours   5
   end
 end

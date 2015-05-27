@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :tables
+  has_many :reports
   has_many :comments, dependent: :destroy
   has_many :messages, dependent: :destroy
 
@@ -121,5 +122,9 @@ class User < ActiveRecord::Base
   def self.reports_oblige_users
     where('id IN (?)',
           Permission.get('self_reports').users.pluck(:id))
+  end
+
+  def current_user?(user)
+    user == current_user
   end
 end
