@@ -1,0 +1,39 @@
+<%= content_for(:title) do %>
+  <%= site_title('Summary reports') %>
+<% end %>
+
+<%= content_for(:sub_menu) do %>
+  <%= render 'shared/submenus/reports_sub_menu' %>
+<% end %>
+
+
+<div class='row content'>
+  <div class='container-fluid'>
+    <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+
+      <%= render 'reports_search' %>
+      <table class='table'>
+        <thead>
+          <th><%= sort_link(@q, 'first_name', 'Full name') %></th>
+          <th>Reports time</th>
+          <th>Desctime name</th>
+          <th>% Reports</th>
+          <th>% Desctime</th>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td><%= link_to user.name, user_path(user) %></td>
+              <td><%=  %></td>
+              <td><%=  %></td>
+              <td><%=  %></td>
+              <td><%=  %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+

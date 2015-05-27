@@ -1,0 +1,8 @@
+<div class='table-search pull-right'>
+  <%= search_form_for @q, url: summary_reports_path do |f| %>
+    <%= f.search_field :first_name_or_last_name_cont, placeholder: 'Search', class: 'form-control form-control-search' %>
+    <%= button_tag '' , type: :submit, class: 'btn btn-sm btn-primary' do %>
+      <%= content_tag(:i, '', class: 'glyphicon glyphicon-search') %>
+    <% end %>
+  <% end %>
+</div>
