@@ -7,7 +7,7 @@ class HistoriesController < ApplicationController
     @current_day = Date.today - 1.days
     paginate_history
   end
-
+  
   private
 
     def paginate_history

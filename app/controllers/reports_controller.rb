@@ -1,8 +1,18 @@
 class ReportsController < ApplicationController
+  load_and_authorize_resource except: :reports_pointer
+
+  def reports_pointer
+    if can? :index, :summary_report
+      redirect_to summary_reports_path
+    elsif can? :all_reports, :reports
+      redirect_to all_reports_path
+    elsif can? :index, Report
+      redirect_to reports_path
+    end
+  end
 
   def index
     @date = params[:date_report] ? Date.strptime(params[:date_report], "%m/%Y") : Date.today
-
     @q = Report.all_in_this_month(@date, params[:q], current_user)
     @reports = @q.result.order('date DESC')
     @report = Report.new

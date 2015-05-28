@@ -7,9 +7,9 @@ class StaticPagesController < ApplicationController
     elsif permissions.include? 'manage_candidates'
       redirect_to tables_path(type: 'CANDIDATE', only: 'open')
     elsif permissions.include? 'hr_admin'
-      redirect_to admin_admin_pointer_path
-    elsif permissions.include? 'self_reports'
       redirect_to summary_reports_path
+    elsif permissions.include? 'self_reports'
+      redirect_to reports_path
     end
   end
 

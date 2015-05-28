@@ -3,9 +3,7 @@ class AdminController < ApplicationController
   
   def admin_pointer
     permissions = current_user.permissions.pluck(:name)
-    if permissions.include? 'hr_admin'
-      redirect_to admin_show_users_path(status: 'unlock')
-    elsif permissions.include? 'crm_controls_admin'
+    if can? :show_users, :admin
       redirect_to admin_show_users_path(status: 'unlock')
     elsif permissions.include? 'manage_hh_controls'
       redirect_to admin_task_controls_path(type: 'CANDIDATE')
