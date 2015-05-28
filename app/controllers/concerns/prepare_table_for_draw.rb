@@ -67,7 +67,7 @@ module PrepareTableForDraw
 
   def sale_table
     only = params[:only].to_sym
-    if [:sold, :decline].include? only
+    if [:sold, :declined].include? only
       Sale.public_send only
     else
       Sale.open
