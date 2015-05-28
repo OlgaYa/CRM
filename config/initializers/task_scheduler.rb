@@ -12,18 +12,29 @@ require 'rufus/scheduler'
       File.open(FILE_NAME, 'a') { |file| file.write(s) }
     end
 
-
 begin
 
   scheduler =  Rufus::Scheduler.new(:lockfile => '.rufus-scheduler.lock')
 
   scheduler.cron '0 9 * * 1-5' do
-  # every day of the week at 9:00
+    # every day of the week at 9:00
     User.reminder
   end
 
   scheduler.cron '30 00 * * *' do
     User.contact_later_reminder
+  end
+
+  scheduler.cron '00 01 * * *' do
+    DtReport.refresh_day(1.day.ago)
+  end
+
+  scheduler.cron('00 02 * * sun') do
+    DtReport.refresh_week(1.day.ago)
+  end
+
+  scheduler.cron('00 03 1 * *') do
+    DtReport.refresh_month(1.day.ago)
   end
 
   scheduler.cron '0 1 * * *' do
