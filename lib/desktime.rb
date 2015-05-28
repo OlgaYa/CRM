@@ -33,17 +33,15 @@ class DeskTime
   def users_time(desktime_employees)
     h = {}
     desktime_employees['employees'].each do |employee|
-      h[employee.last['email']] = employee.last['d_working']
+      h[employee.last['email'].downcase] = employee.last['d_working']
     end
-    return h
+    h
   end
 
   def user_time(desktime_employees, user_email)
-    return users_time(desktime_employees)[user_email]
+    users_time(desktime_employees)[user_email.downcase]
   end
-
 end
-
 
 =begin
 
@@ -52,7 +50,8 @@ desktime = DeskTime.new
 # получаем данные за какое-то число
 desktime_employees = desktime.employees('2015-05-21')
 user_email = 'zavyalov79@ukr.net'
-user_time = desktime.user_time(desktime_employees, user_email) # время в секундах
+
+# время в секундах
+user_time = desktime.user_time(desktime_employees, user_email)
 
 =end
-

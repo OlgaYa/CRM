@@ -1,4 +1,5 @@
 class MeetingsController < ApplicationController
+  load_and_authorize_resource
   require 'rubygems'
   require 'google_calendar'
 
@@ -86,10 +87,13 @@ class MeetingsController < ApplicationController
                                :refresh_token => config['refresh_token'])
   end
 
-  def meeting_params
-    params.require(:@meeting).permit(:title, :description, :start_time, :end_time, :email)
-  end
-  def meeting_update_params
-    params.require(:meeting).permit(:title, :description, :start_time, :end_time)
-  end
+  private
+
+    def meeting_params
+      params.require(:@meeting).permit(:title, :description, :start_time, :end_time, :email)
+    end
+    
+    def meeting_update_params
+      params.require(:meeting).permit(:title, :description, :start_time, :end_time)
+    end
 end

@@ -1,14 +1,25 @@
 class AdminController < ApplicationController
-  load_and_authorize_resource :thread
+  authorize_resource class: false
+  
+  def admin_pointer
+    permissions = current_user.permissions.pluck(:name)
+    if can? :show_users, :admin
+      redirect_to admin_show_users_path(status: 'unlock')
+    elsif permissions.include? 'manage_hh_controls'
+      redirect_to admin_task_controls_path(type: 'CANDIDATE')
+    elsif permissions.include? 'manage_seller_controls'
+      redirect_to admin_task_controls_path(type: 'SALE')
+    end
+  end
 
-	def show_users
+  def show_users
     case params[:status]
     when 'lock'
       @users = User.all_lock.order(:created_at)
     else
       @users = User.all_unlock.order(:created_at)
     end
-	end
+  end
 
   def task_controls
     @statuses = Status.all.order('created_at')
@@ -21,7 +32,7 @@ class AdminController < ApplicationController
     user = User.find(params[:id])
     if user == current_user
       resp = "You can't ban yourself!".to_json
-    else 
+    else
       user.update_attribute(params[:field], params[:value])
       resp = "success".to_json
     end
@@ -39,7 +50,7 @@ class AdminController < ApplicationController
   def update_source
     Source.find(params[:id]).update_attribute(params[:field].to_s,
                                               params[:value])
-    render json: "success".to_json
+    render json: 'success'.to_json
   end
 
   def destroy_source
@@ -62,9 +73,9 @@ class AdminController < ApplicationController
       resp = "Sorry but you can't destroy this status".to_json
     else
       status.update_attribute(params[:field].to_s, params[:value])
-      resp = "Success".to_json
+      resp = 'Success'.to_json
     end
-    render :json => resp  
+    render json: resp
   end
 
   def destroy_status
@@ -85,8 +96,8 @@ class AdminController < ApplicationController
 
   def update_specialization
     Specialization.find(params[:id]).update_attribute(params[:field].to_s,
-                                              params[:value])
-    render json: "success".to_json
+                                                      params[:value])
+    render json: 'success'.to_json
   end
 
   def destroy_specialization
@@ -104,7 +115,7 @@ class AdminController < ApplicationController
 
   def update_level
     Level.find(params[:id]).update_attribute(params[:field].to_s,
-                                              params[:value])
+                                             params[:value])
     render json: "success".to_json
   end
 

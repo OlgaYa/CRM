@@ -1,8 +1,9 @@
 module UsersHelper
-
   def info_errors(user)
     return false if user.errors.messages.blank?
-    if user.errors.messages[:first_name] || user.errors.messages[:last_name] || user.errors.messages[:email]
+    if user.errors.messages[:first_name] ||
+       user.errors.messages[:last_name] ||
+       user.errors.messages[:email]
       true
     else
       false
@@ -11,7 +12,8 @@ module UsersHelper
 
   def pass_errors(user)
     return false if user.errors.messages.blank?
-    if user.errors.messages[:password] || user.errors.messages[:password_confirmation]
+    if user.errors.messages[:password] ||
+       user.errors.messages[:password_confirmation]
       true
     else
       false

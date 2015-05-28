@@ -1,28 +1,27 @@
 # Main controller for work with tables
-class TablesController < GridsController
-
-  # OPTIMIZE (NEED CHANGE WORK OF CANCANCAN)
-  # load_and_authorize_resource
-
-  before_action :nil_if_blank, only: [:download_selective_xls,
-                                      :download_scoped_xls]
-  before_action :current_entity, only: [:download_selective_xls,
-                                        :download_scoped_xls,
-                                        :table_settings,
-                                        :index]
-  before_action :lid_count_conf, only: :index
+class TablesController < ApplicationController
+  load_and_authorize_resource only: [:index,
+                                     :create,
+                                     :update,
+                                     :destroy]
+  before_action :current_entity,         only: [:download_selective_xls,
+                                                :download_scoped_xls,
+                                                :table_settings,
+                                                :index]
+  before_action :lid_count_conf,         only: :index
   before_action :current_table_settings, only: [:index, :table_settings]
-  after_action :send_remind_today, only: :update
-  before_action :check_duplicate_data, only: :update
+  after_action :send_remind_today,       only: :update
+  before_action :check_duplicate_data,   only: :update
 
   include ApplicationHelper
+  include PrepareTableForDraw
 
   def index
     case params[:type]
     when 'CANDIDATE'
       @value_for_description = SimpleText.text_for_candidate
     when 'SALE'
-      @value_for_description = "" # NEED WRITE
+      @value_for_description = ""
     end
     @q = q_sort
     @table = @q.result.oder_date_nulls_first
@@ -58,7 +57,9 @@ class TablesController < GridsController
     end
     History.create_history_for_update_object(table, params[:table])
     if @candidates
-      render json: { pseudo_uniq: 'exist', candidates: @candidates, id: params[:id] }.to_json
+      render json: { pseudo_uniq: 'exist',
+                     candidates: @candidates,
+                     id: params[:id] }.to_json
     else
       render json: 'success'.to_json
     end
@@ -84,9 +85,11 @@ class TablesController < GridsController
   end
 
   def export
+    authorize!(:export, :table)
   end
 
   def download_selective_xls
+    authorize!(:download_selective_xls, :table)
     tables = @entity.export(params[:period][:from],
                             params[:period][:to],
                             params[:users],
@@ -95,6 +98,7 @@ class TablesController < GridsController
   end
 
   def download_scoped_xls
+    authorize!(:download_scoped_xls, :table)
     tables = case params[:type]
              when 'SALE'
                scoped_sale_data
@@ -105,16 +109,13 @@ class TablesController < GridsController
                                         params[:period][:to])
   end
 
-  def send_for_user(tables)
-    send_data(tables.to_csv({ col_sep: "\t" }, params[:fields]),
-              filename: 'data.xls')
-  end
-
   def table_settings
+    authorize!(:table_settings, :table)
     render json: @settings.to_json
   end
 
   def update_table_settings
+    authorize!(:update_table_settings, :table)
     if current_user.table_settings
       settings_hash = JSON.parse(current_user.table_settings)
     else
@@ -127,6 +128,11 @@ class TablesController < GridsController
   end
 
   private
+
+    def send_for_user(tables)
+      send_data(tables.to_csv({ col_sep: "\t" }, params[:fields]),
+                filename: 'data.xls')
+    end
 
     def table_params
       params.require(:table).permit(:type, :name, :level_id,
@@ -141,11 +147,6 @@ class TablesController < GridsController
 
     def pseudo_uniq_params
       params.require(:table).permit(:skype, :phone, :email)
-    end
-
-    def nil_if_blank
-      params[:period][:from] = nil if params[:period][:from].blank?
-      params[:period][:to] = nil if params[:period][:to].blank?
     end
 
     def scoped_sale_data

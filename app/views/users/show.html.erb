@@ -9,7 +9,7 @@
         <% get_user_info(@user.id) %>
         <li> <%= "#{@first_name} #{@last_name}" %></li>
         <li> <%= "#{@email}" %></li>
-        <li> <%= user_status(@user) if @user.admin? %> </li>      
+        <li> <%= user_status(@user) if @user.permission?('can_manage_all') %> </li>      
       </ul>
       <div class="circleBase circle-activity">
         <span> <%= @user.tables.count %> </span>
@@ -19,8 +19,8 @@
       <!-- Nav tabs -->
       <ul class="nav nav-tabs user-room-tabs">
         <li><a href="#contacts" data-toggle="tab">Contact info</a></li>
-        <li class="<%= 'active' unless current_user?(@user) or current_user.admin?%>"><a href="#statistic" data-toggle="tab">Statistic</a></li>
-        <% if current_user?(@user) or current_user.admin? %>
+        <li class="<%= 'active' unless current_user?(@user) or current_user.permission?('can_manage_all')%>"><a href="#statistic" data-toggle="tab">Statistic</a></li>
+        <% if current_user?(@user) or current_user.permission?('can_manage_all') %>
           <li class="active"><a href="#settings" data-toggle="tab">Settings</a></li>
         <% end %>
       </ul>
@@ -34,7 +34,7 @@
         <div class="helper">
         </div>
       </div>
-      <% if current_user?(@user) or current_user.admin? %>
+      <% if current_user?(@user) or current_user.permission?('can_manage_all') %>
           <div class="tab-pane active" id="settings">
           <div class="text-center"> <h2>Settings</h2> </div>
           <div class="first-form">
@@ -111,7 +111,7 @@
           </div>
         </div>      
       <% end %>
-      <div class="tab-pane <%= 'active' unless current_user?(@user) or current_user.admin? %>" id="statistic">
+      <div class="tab-pane <%= 'active' unless current_user?(@user) or current_user.permission?('can_manage_all') %>" id="statistic">
         <h1>Here can be statistic</h1>
       </div>
       <div class="tab-pane" id="contacts">
