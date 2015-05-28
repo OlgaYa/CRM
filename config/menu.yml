@@ -7,7 +7,7 @@ permissions:
       path: '/tables?only=open&type=CANDIDATE'
   self_reports:
       name: Reports
-      path: '/summary_reports'
+      path: '/reports/reports_pointer'
   administration_section:
       name: Admin panel
       path: '/admin/admin_pointer'

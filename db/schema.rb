@@ -11,15 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150525085549) do
+ActiveRecord::Schema.define(version: 20150527211738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
     t.integer  "user_id"
     t.datetime "datetime"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "dt_reports", force: :cascade do |t|
+    t.date     "date"
+    t.integer  "time"
+    t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -31,13 +40,6 @@ ActiveRecord::Schema.define(version: 20150525085549) do
     t.string   "description"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-  end
-
-  create_table "holidays", force: :cascade do |t|
-    t.string   "title"
-    t.date     "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "levels", force: :cascade do |t|
@@ -121,7 +123,7 @@ ActiveRecord::Schema.define(version: 20150525085549) do
     t.string   "project"
     t.string   "task"
     t.integer  "user_id"
-    t.integer  "hours"
+    t.float    "hours"
     t.date     "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -12,7 +12,7 @@ namespace :permissions do
     create_permission(:hr_admin,                'User can manage hr admin room')
     create_permission(:crm_controls_admin,      'User can manage other crm controls')
     create_permission(:all_reports,             'User can view all reports')
-    create_permission(:can_manage_all,     'User has all rights')
+    create_permission(:administrate_all,        'User has all rights')
     puts '======== FINISH TASK ========='
     puts '************************************'
   end

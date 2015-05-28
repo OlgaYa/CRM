@@ -83,6 +83,15 @@ class Ability
         can :show_users, :admin
         can :update_user_status, :admin
       end
+
+      if perm.include?('summary_table_reports')
+        can :manage, :summary_report
+      end
+
+      if perm.include?('self_reports')
+        can :index, Report
+        can [:edit, :update, :create, :destroy], Report, user_id: user.id
+      end
     end
   end
 end
