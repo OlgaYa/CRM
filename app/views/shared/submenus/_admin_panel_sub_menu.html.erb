@@ -6,7 +6,7 @@
                         'admin', 'show_users', :status, 'unlock') %>
     <%= sub_menu_action('Bloked users', admin_show_users_path(status: 'lock'),
                         'admin', 'show_users', :status, 'lock')  %>
-    <%= sub_menu_action('Plans', plans_path, 'plans', 'index') %>
+    <%= sub_menu_action('Plans', plans_path, 'plans') %>
       <%= sub_menu_action('Text for interview', root_url + 'admin/email_texts/interview_text',
                       'admin/email_texts', 'interview_text') %>
   <% end %>

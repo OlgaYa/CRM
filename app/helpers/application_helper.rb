@@ -15,7 +15,8 @@ module ApplicationHelper
   end
 
   def sub_menu_action(name, path, controller,
-                      action, param_name = :some, param_value = nil)
+                      action = params[:action],
+                      param_name = :some, param_value = nil)
     if active_action?(controller, action, param_name, param_value)
       class_name = 'active'
     end

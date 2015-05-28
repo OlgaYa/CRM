@@ -37,7 +37,7 @@ class TablesController < ApplicationController
       redirect_to tables_path(only: 'open', type: 'SALE')
     when 'CANDIDATE'
       object = Candidate.create(table_params)
-      redirect_to tables_path(type: 'CANDIDATE')
+      redirect_to tables_path(only: 'open', type: 'CANDIDATE')
     end
     object.update_attribute(:date, object.created_at)
     Statistic.update_statistics(object)
