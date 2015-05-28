@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     resources :registration
   end
   resources :reports
+  resources :projects
 
   # COMMON NAVIGATION AND ACTIONS
   get    'home',       to: 'static_pages#home'
