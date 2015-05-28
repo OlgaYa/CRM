@@ -1,6 +1,15 @@
 <%= content_for(:custom_scripts) do %>
   <%= javascript_include_tag 'reports' %>
 <% end %>
+
+<%= content_for(:title) do %>
+  <%= site_title('My reports') %>
+<% end %>
+
+<%= content_for(:sub_menu) do %>
+  <%= render 'shared/submenus/reports_sub_menu' %>
+<% end %>
+
 <div class="row content">
 	<div class="col-lg-6 col-md-8 col-lg-offset-3 col-md-offset-2" id="report"> 
 		<%= render partial: "myModal_new" %>

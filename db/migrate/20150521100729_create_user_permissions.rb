@@ -1,6 +1,6 @@
 class CreateUserPermissions < ActiveRecord::Migration
   def up
-    create_table :user_permissions, id: false do |t|
+    create_table :user_permissions do |t|
       t.integer :user_id
       t.integer :permission_id
 

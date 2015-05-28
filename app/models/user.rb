@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
 
   has_many :tables
   has_many :reports
+  has_many :dt_reports
   has_many :comments, dependent: :destroy
   has_many :messages, dependent: :destroy
 
@@ -25,7 +26,6 @@ class User < ActiveRecord::Base
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
   extend Enumerize
-
   enumerize :status, in: [:observer, :lock, :unlock]
 
   def generate_token(column)
@@ -126,5 +126,20 @@ class User < ActiveRecord::Base
 
   def current_user?(user)
     user == current_user
+  end
+
+  def dt_month_time(date)
+    seconds_to_time(dt_reports.where(date: date.beginning_of_month..date.end_of_month).sum :time)
+  end
+
+  def reports_month_time(date)
+    time = reports.where(date: date.beginning_of_month..date.end_of_month).sum :hours
+    seconds_to_time((time * 3600).to_i)
+  end
+
+  def seconds_to_time(seconds)
+    [seconds / 3600, seconds / 60 % 60].map do |time|
+      time.to_s.rjust(2, '0')
+    end.join(':')
   end
 end
