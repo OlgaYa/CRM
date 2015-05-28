@@ -82,10 +82,10 @@ class User < ActiveRecord::Base
 
   # method used when menu is generated
   def admin_permission?
-    %i(manage_hh_controls
-       manage_seller_controls
-       hr_admin
-       crm_controls_admin).any? { |sym| permissions.have? sym }
+    [:manage_hh_controls,
+     :manage_seller_controls,
+     :hr_admin,
+     :crm_controls_admin].any? { |sym| permissions.have? sym }
   end
 
   def self.all_except(user)
