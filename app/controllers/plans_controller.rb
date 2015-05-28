@@ -22,7 +22,7 @@ class PlansController < ApplicationController
                     count: params[:count],
                     for_type: params[:type])
     if plan.save
-      %i(users statuses levels specializations).each do |p|
+      [:users, :statuses, :levels, :specializations].each do |p|
         create_option(p, plan)
       end
       redirect_to action: :index

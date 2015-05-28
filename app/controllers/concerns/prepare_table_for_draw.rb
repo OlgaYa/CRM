@@ -67,7 +67,7 @@ module PrepareTableForDraw
 
   def sale_table
     only = params[:only].to_sym
-    if %i(sold decline).include? only
+    if [:sold, :decline].include? only
       Sale.public_send only
     else
       Sale.open
@@ -76,7 +76,7 @@ module PrepareTableForDraw
 
   def candidate_table
     only = params[:only].to_sym
-    if %i(hired we_declined he_declined contact_later).include? only
+    if [:hired, :we_declined, :he_declined, :contact_later].include? only
       Candidate.public_send only
     else
       Candidate.open
