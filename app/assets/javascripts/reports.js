@@ -15,7 +15,10 @@ $(document).ready(function(){
   });
   $('#add').bind( 'click', function(){
     $('#myModal').modal();
+    $('#report_date').prop('readonly', true);
+    $('#report_date').val($.datepicker.formatDate('dd-mm-yy', new Date()));
     $('#report_date').datepicker( {dateFormat: 'dd-mm-yy'});
+    $(this).datepicker('setDate', new Date());
   });
   $('.report').bind( 'click', function(){
     var id = $(this).attr('id');
