@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  after_create :set_user_settings
+
   has_many :tables
   has_many :reports
   has_many :dt_reports
@@ -143,4 +145,11 @@ class User < ActiveRecord::Base
       time.to_s.rjust(2, '0')
     end.join(':')
   end
+
+  def set_user_settings
+    return unless user_setting.nil?
+    self.user_setting = UserSetting.new(:hh_record_per_page => 'all', :sale_record_per_page => 'all')
+    self.user_setting.save!
+  end
+
 end
