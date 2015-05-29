@@ -14,7 +14,7 @@
         <%= select_month(@date) %>
         <%= submit_tag 'Go', class: 'btn btn-sm btn-success' %>
       <% end %>
-      <%= form_tag refresh_path, method: 'post', class: 'refresh-dt-data' do %>
+      <%= form_tag refresh_path, method: 'post', remote: true, class: 'refresh-dt-data' do %>
         <%= hidden_field 'date', 'year', value: @date.year %>
         <%= hidden_field 'date', 'month', value: @date.month %>
         <%= button_tag(content_tag(:i, '', class: 'glyphicon glyphicon-refresh') + ' DT', type: 'submit', class: 'btn btn-sm btn-success' ) %>

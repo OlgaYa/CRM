@@ -10,8 +10,8 @@ class SummaryReportsController < ApplicationController
   end
 
   def refresh_dt
-    DtReport.refresh_month(@date)
-    redirect_to :back
+    DesktimeWorker.perform_async(@date)
+    render json: 'success'.to_json
   end
 
   private

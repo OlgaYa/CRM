@@ -26,15 +26,21 @@ begin
   end
 
   scheduler.cron '00 01 * * *' do
-    DtReport.refresh_day(1.day.ago)
+    write_log("Start #{Time.now.strftime("%H:%M:%S")} (start refresh DtReports - one day)\n")
+    DtReport.refresh_day((1.day.ago).strftime('%Y-%m-%d'))
+    write_log("Start #{Time.now.strftime("%H:%M:%S")} (finish refresh DtReports - one day)\n")
   end
 
   scheduler.cron('00 02 * * sun') do
-    DtReport.refresh_week(1.day.ago)
+    write_log("Start #{Time.now.strftime("%H:%M:%S")} (start refresh DtReports - one week)\n")
+    DtReport.refresh_week((1.day.ago).strftime('%Y-%m-%d'))
+    write_log("Start #{Time.now.strftime("%H:%M:%S")} (finish refresh DtReports - one week)\n")
   end
 
   scheduler.cron('00 03 1 * *') do
-    DtReport.refresh_month(1.day.ago)
+    write_log("Start #{Time.now.strftime("%H:%M:%S")} (start refresh DtReports - one month)\n")
+    DtReport.refresh_month((1.day.ago).strftime('%Y-%m-%d'))
+    write_log("Start #{Time.now.strftime("%H:%M:%S")} (finish refresh DtReports - one month)\n")
   end
 
   scheduler.cron '0 1 * * *' do

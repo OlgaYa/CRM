@@ -46,7 +46,7 @@ class Ability
 
         # Meetings controller
         can :index, Meeting
-        can [:create, :edit, :update], Meeting
+        can [:create, :edit, :update, :destroy], Meeting
 
         # Statistics controller
         can [:index, :change_information], Statistic
