@@ -34,4 +34,11 @@ class UserMailer < ActionMailer::Base
     subject = "[info] CRM-Reminder"
     mail(:to => @user.email, :subject => subject)
   end
+
+  def reminder_report(user_id)
+    @user = User.find_by_id(user_id)
+    subject = "[info] Отчет за вчера не заполнен"
+    mail(:to => @user.email, :subject => subject )
+  end
+
 end
