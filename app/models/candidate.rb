@@ -1,4 +1,4 @@
-# This class defines the essence of which users will be working with the role HH
+# This class defines the essence of which users will be working with the permission HH
 class Candidate < Table
   
   # fields for Candidate scope

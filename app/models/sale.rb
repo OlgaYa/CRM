@@ -1,4 +1,4 @@
-# This class defines essence of which users will be working with the role seller
+# This class defines essence of which users will be working with the permission seller
 class Sale < Table
   # fields for Sale default scope
   DEFAULT_FIELDS = [:id,        :name,       :skype,

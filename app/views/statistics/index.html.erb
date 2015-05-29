@@ -2,6 +2,10 @@
   <%= javascript_include_tag 'chosen.jquery.min' %>
 <% end %>
 
+<%= content_for(:sub_menu) do %>
+  <%= render "shared/submenus/#{sub_menu_type}" %>
+<% end %>
+
 <div class="row content">
   <div class="container-fluid">
     <div class="statistics">

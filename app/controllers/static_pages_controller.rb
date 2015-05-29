@@ -1,13 +1,15 @@
 class StaticPagesController < ApplicationController
-	def home
-    if current_user
-      case current_user.role
-      when 'seller'
-    	  redirect_to tables_path(type: 'SALE')
-      when 'hh'
-        redirect_to tables_path(type: 'CANDIDATE')
-      when 'hr'
-      end
+  def home
+    user = current_user ? current_user : User.new
+    permissions = user.permissions.pluck(:name)
+    if permissions.include? 'manage_sales'
+      redirect_to tables_path(type: 'SALE', only: 'open')
+    elsif permissions.include? 'manage_candidates'
+      redirect_to tables_path(type: 'CANDIDATE', only: 'open')
+    elsif permissions.include? 'hr_admin'
+      redirect_to summary_reports_path
+    elsif permissions.include? 'self_reports'
+      redirect_to reports_path
     end
   end
 
