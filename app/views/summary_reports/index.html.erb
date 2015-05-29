@@ -16,7 +16,6 @@
       <%= form_tag summary_reports_path, method: 'get', class: 'select-year-and-month' do %>
         <%= select_year(@date, start_year: 2015) %>
         <%= select_month(@date) %>
-        <%= submit_tag 'Go', class: 'btn btn-sm btn-success' %>
       <% end %>
       <%= form_tag refresh_path, method: 'post', remote: true, class: 'refresh-dt-data' do %>
         <%= hidden_field 'date', 'year', value: @date.year %>
