@@ -1,0 +1,18 @@
+<%= form_for(@report) do |f| %>
+  <div class="modal-body">
+    <div class="control-field">
+      <%= f.text_field :date, class: 'form-control control-small report-datepicker', value: @report.date %>
+      <%= f.number_field :hours, value: @report.hours,class: 'form-control control-small pull-right', step: 'any', placeholder: 'Hours'%>
+    </div>
+    <div class="control-field">
+      <%= f.text_field :project, class: 'form-control', placeholder: 'Project', value: @report.project%>
+    </div>
+    <div class="control-field">
+      <%= f.text_field :task, value: @report.task, class: 'form-control', placeholder: 'Task'%>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Save", class: "btn btn-large btn-primary btn-block" %>
+  </div>
+<% end %>
+ 

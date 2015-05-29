@@ -1,5 +1,6 @@
 class ReportsController < ApplicationController
   load_and_authorize_resource except: :reports_pointer
+  before_action :date, only: :index
 
   def reports_pointer
     if can? :index, :summary_report
@@ -11,10 +12,15 @@ class ReportsController < ApplicationController
     end
   end
 
+
   def index
-    @date = params[:date_report] ? Date.strptime(params[:date_report], "%m/%Y") : Date.today
     @q = Report.all_in_this_month(@date, params[:q], current_user)
-    @reports = @q.result.order('date DESC')
+    @q.sorts = ['date desc'] if @q.sorts.empty?
+    @reports = @q.result
+    @report = Report.new
+  end
+
+  def new
     @report = Report.new
   end
 
@@ -22,18 +28,17 @@ class ReportsController < ApplicationController
     report = Report.new(report_params)
     report.user = current_user
     report.save
-    redirect_to action: :index
+    redirect_to :back
   end
 
   def edit
     @report = Report.find_by_id(params[:id])
-    render layout: false
   end
 
   def update
     report = Report.find_by_id(params[:id])
     report.update_attributes(report_params)
-    redirect_to action: :index
+    redirect_to :back
   end
 
   def delete
@@ -43,5 +48,13 @@ class ReportsController < ApplicationController
 
     def report_params
       params.require(:report).permit(:hours, :date, :project, :task)
+    end
+
+    def date
+      if params[:date]
+        @date = Date.new(params[:date][:year].to_i, params[:date][:month].to_i)
+      else
+        @date = Date.current
+      end
     end
 end
