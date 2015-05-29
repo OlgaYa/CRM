@@ -11,16 +11,14 @@
         <%= form_for(@report, url: report_path) do |f| %>
           <div class="modal-body">
             <div class="control-field">
-              <%= f.text_field :date, class: 'form-control', value: @report.date, id:"dpd2" %>
+              <%= f.text_field :date, class: 'form-control control-small', value: @report.date, id:"dpd2" %>
+              <%= f.number_field :hours, value: @report.hours,class: 'form-control control-small pull-right', step: 'any', placeholder: 'Hours'%>
             </div>
             <div class="control-field">
               <%= f.text_field :project, class: 'form-control', placeholder: 'Project', value: @report.project%>
             </div>
             <div class="control-field">
               <%= f.text_field :task, value: @report.task, class: 'form-control', placeholder: 'Task'%>
-            </div>
-            <div class="control-field">
-              <%= f.number_field :hours, value: @report.hours,class: 'form-control', step: 'any', placeholder: 'Hours'%>
             </div>
           </div>
           <div class="modal-footer">
