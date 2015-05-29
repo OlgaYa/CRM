@@ -1,3 +1,4 @@
+# encoding: utf-8
 # TODO clear log
 require 'rubygems'
 require 'rufus/scheduler'
