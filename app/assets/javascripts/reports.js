@@ -10,7 +10,7 @@ $(document).ready(function(){
     },
     onChangeMonthYear: function(y, m){
       var date =  m + "/" + y;
-      document.location.href = "http://localhost:3000/reports?date_report="+ date;
+      document.location.href = "reports?date_report="+ date;
     }
   });
   $('#add').bind( 'click', function(){
