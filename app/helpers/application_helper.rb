@@ -111,5 +111,4 @@ module ApplicationHelper
       'sale_record_per_page'
     end
   end
-
 end
