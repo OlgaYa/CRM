@@ -79,7 +79,7 @@ module ApplicationHelper
       buffer << content_tag(:span, ' ' + comment.user.first_name, class: 'comment_time')
       if current_user == comment.user
         buffer << link_to(image_tag(ActionController::Base.helpers.asset_path('remove-red.png')),
-                          comment_path(comment), class: 'pull-right',
+                          comment_path(comment, type: params[:type]), class: 'pull-right',
                           method: :delete, remote: true)
       end
       buffer << content_tag(:p, comment.body)
