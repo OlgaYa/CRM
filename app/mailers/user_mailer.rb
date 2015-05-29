@@ -1,3 +1,4 @@
+# encoding: utf-8
 class UserMailer < ActionMailer::Base
 	include ActionView::Helpers::SanitizeHelper
   # include Sidekiq::Mailer
