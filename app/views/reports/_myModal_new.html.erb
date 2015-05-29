@@ -8,16 +8,14 @@
         <%= form_for @report do |f| %>
           <div class="modal-body">
             <div class="control-field">
-              <%= f.text_field :date, class: 'form-control', placeholder: 'Date' %>
+              <%= f.text_field :date, class: 'form-control control-small', placeholder: 'Date' %>
+              <%= f.number_field :hours, class: 'form-control control-small pull-right', step: 'any', placeholder: 'Hours'%>
             </div>
             <div class="control-field">
               <%= f.text_field :project, class: 'form-control', placeholder: 'Project'%>
             </div>
             <div class="control-field">
               <%= f.text_field :task, class: 'form-control', placeholder: 'Task'%>
-            </div>
-            <div class="control-field">
-              <%= f.number_field :hours, class: 'form-control', step: 'any', placeholder: 'Hours'%>
             </div>
           </div>
           <div class="modal-footer">
