@@ -1,3 +1,4 @@
+# encoding: utf-8
 # TODO clear log
 require 'rubygems'
 require 'rufus/scheduler'
@@ -50,6 +51,22 @@ begin
     rows = Table.where('status_id = ? AND date_status_1 <= ?', status_old.id, 2.week.ago.to_date).update_all(status_id: status_new.id, date_status_1: nil)
     write_log("\tRow count = #{rows}\n")
     write_log("Finish #{Time.now.strftime("%H:%M:%S")} (check status '1 ProbablyNo')\n\n")
+  end
+
+  # напоминалка об отчетах за прошлый день
+  scheduler.cron '0 14 * * 2-6' do
+    write_log("Start #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} (report reminder)\n")
+    users = User.reports_oblige_users
+    users.each do |user|
+      write_log("\tUser: #{user.name} | email: #{user.email}\n")
+      if user.reports.where('date = ?', Date.today - 1).empty?
+        write_log("\t\tОтчетов за вчера нет. Отправляем уведомление.\n")
+        UserMailer.reminder_report(user.id).deliver
+      else
+        write_log("\t\tОтчеты за вчера есть. Не отправляем уведомление.\n")
+      end
+    end
+    write_log("Finish #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} (report reminder)\n\n")
   end
 
 rescue Rufus::Scheduler::NotRunningError
