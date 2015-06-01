@@ -1,5 +1,3 @@
-$(document).ready(function(){
-  $('.select-year-and-month').on('change',function(){
-    this.submit();
-  })
+$(document).on('change', '.select-year-and-month',function(){
+  this.submit();
 })

@@ -27,7 +27,20 @@
   margin-left: 190px;
 }
 
-.report-edit {
+.report-edit, .report-delete {
   width: 30px;
   text-align: right;
+}
+
+.task-description {
+  resize: none;
+}
+
+.errors {
+  color: #d9534f;
+}
+
+.form-control[readonly]{
+  cursor: pointer;
+  background-color: #fff;
 }

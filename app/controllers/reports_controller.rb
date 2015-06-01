@@ -1,6 +1,5 @@
 class ReportsController < ApplicationController
-  load_and_authorize_resource except: :reports_pointer
-  before_action :date, only: :index
+  authorize_resource except: :reports_pointer
 
   def reports_pointer
     if can? :index, :summary_report
@@ -12,23 +11,20 @@ class ReportsController < ApplicationController
     end
   end
 
-
   def index
-    @q = Report.all_in_this_month(@date, params[:q], current_user)
-    @q.sorts = ['date desc'] if @q.sorts.empty?
-    @reports = @q.result
-    @report = Report.new
+    @reports = neddfull_reports(date).result
   end
 
   def new
     @report = Report.new
+    @report.date = Date.current
   end
 
   def create
-    report = Report.new(report_params)
-    report.user = current_user
-    report.save
-    redirect_to :back
+    @report = Report.new(report_params)
+    @report.user = current_user
+    @report.save
+    @reports = neddfull_reports(@report.date).result
   end
 
   def edit
@@ -36,12 +32,13 @@ class ReportsController < ApplicationController
   end
 
   def update
-    report = Report.find_by_id(params[:id])
-    report.update_attributes(report_params)
-    redirect_to :back
+    @report = Report.find_by_id(params[:id])
+    @report.update_attributes(report_params)
+    @reports = neddfull_reports(@report.date).result
   end
 
-  def delete
+  def destroy
+    Report.find(params[:id]).destroy
   end
 
   private
@@ -52,9 +49,16 @@ class ReportsController < ApplicationController
 
     def date
       if params[:date]
-        @date = Date.new(params[:date][:year].to_i, params[:date][:month].to_i)
+        Date.new(params[:date][:year].to_i, params[:date][:month].to_i)
       else
-        @date = Date.current
+        Date.current
       end
+    end
+
+    def neddfull_reports(date)
+      @date = date
+      @q = Report.all_in_this_month(date, current_user).ransack(params[:q])
+      @q.sorts = ['date desc'] if @q.sorts.empty?
+      @q
     end
 end
