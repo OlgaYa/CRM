@@ -8,10 +8,10 @@
         <%= form_for @report do |f| %>
           <div class="modal-body">
             <div class="control-field">
-              <%= f.text_field :date, class: 'form-control', placeholder: 'Date' %>
+              <%= f.text_field :date, id: "report_date", class: 'form-control', placeholder: 'Date' %>
             </div>
-            <div class="control-field">
-              <%= f.text_field :project, class: 'form-control', placeholder: 'Project'%>
+            <div class="side-by-side clearfix">
+              <%= f.select :project_id, options_for_select(@user.projects.all_active.collect {|p| [ p.name, p.id ]}), style:"width:100% !important;", class: "chosen-select", name: 'project_id', id: 'project_id', "data-placeholder" => 'Select Project ...' %>
             </div>
             <div class="control-field">
               <%= f.text_field :task, class: 'form-control', placeholder: 'Task'%>
@@ -27,3 +27,8 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $('#myModal').modal();
+  $("#report_project_id").chosen();
+  $('#report_date').datepicker( {dateFormat: 'dd-mm-yy'});
+</script>

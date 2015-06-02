@@ -1,6 +1,3 @@
-<%= content_for(:custom_scripts) do %>
-  <%= javascript_include_tag 'reports' %>
-<% end %>
 <div class="modal fade" id="myModal_edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -14,7 +11,7 @@
               <%= f.text_field :date, class: 'form-control', value: @report.date, id:"dpd2" %>
             </div>
             <div class="control-field">
-              <%= f.text_field :project, class: 'form-control', placeholder: 'Project', value: @report.project%>
+              <%= f.select :project_id, @user.projects.all_active.collect {|p| [ p.name, p.id ]}, class: "chosen-select", name: 'project_id', id: 'project_id', "data-placeholder" => 'Select Project ...' %>
             </div>
             <div class="control-field">
               <%= f.text_field :task, value: @report.task, class: 'form-control', placeholder: 'Task'%>
@@ -30,3 +27,8 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $('#myModal').modal();
+  $("#report_project_id").chosen();
+  $('#report_date').datepicker( {dateFormat: 'dd-mm-yy'});
+</script>
