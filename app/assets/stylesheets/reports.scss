@@ -1,3 +1,46 @@
 // Place all the styles related to the Reports controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.form-control.control-small{
+	width: 48%;
+	display: inline-block;
+}
+
+.report-date {
+  width: 100px;
+}
+
+.report-project {
+  width: 150px;    
+}
+
+.report-description {
+
+}
+
+.report-time{
+  width: 50px;
+}
+
+.self-reports {
+  margin-left: 190px;
+}
+
+.report-edit, .report-delete {
+  width: 30px;
+  text-align: right;
+}
+
+.task-description {
+  resize: none;
+}
+
+.errors {
+  color: #d9534f;
+}
+
+.form-control[readonly]{
+  cursor: pointer !important;
+  background-color: #fff !important;
+}

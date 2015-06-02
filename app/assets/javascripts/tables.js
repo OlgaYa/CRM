@@ -57,7 +57,7 @@ $(document).ready(function(){
           click: function(){
             $.ajax({
               type: 'DELETE',
-              url: '/tables/' + $pseudoUniqDialog.data('id'),
+              url: '/tables/' + $pseudoUniqDialog.data('id') + location.search,
               success: function(){
                 location.reload(true);
               }
@@ -150,7 +150,7 @@ $(document).ready(function(){
     if(inputData.length > 0){
       switch(activityName){
       case 'links': {
-        path = '/tables/links'
+        path = '/tables/links' + location.search;
         var alt = inputData.match(/[a-z0-9]*(\.?[a-z0-9]+)\.[a-z]{2,10}(:[0-9]{1,10})?(.\/)?/)[0]
         dataForSend = { table_id: rowId, alt: alt, href: inputData };
       }
@@ -430,7 +430,7 @@ $(document).ready(function(){
           var id = this.value;
           $.ajax({
             type: 'DELETE',
-            url: '/tables/' + id
+            url: '/tables/' + id + location.search
           });
         });
       }
@@ -442,7 +442,7 @@ $(document).ready(function(){
     var table_type = getParameterByName('type');
     return $.ajax({
         type: 'PUT',
-        url: path + '?type=' + table_type,
+        url: path + location.search,
         data: dataForSend
       })
   }
@@ -521,7 +521,7 @@ $(document).ready(function(){
     var path = 'tables/table_settings' + location.search;
     $.ajax({
       type: 'GET',
-      url: path,
+      url: path + location.search,
       success: function(data){
         settings = data;
 

@@ -5,9 +5,7 @@ Rails.application.routes.draw do
   root to: 'static_pages#home'
 
   require 'sidekiq/web'
-  authenticate :user, lambda { |u| u.admin? } do
-    mount Sidekiq::Web => '/sidekiq'
-  end
+  mount Sidekiq::Web => '/sidekiq'
   
   resources :tables, only: [:create, :update, :destroy, :index]
   resources :users
@@ -24,7 +22,12 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :registration
   end
-  resources :reports
+  
+  resources :reports do
+    collection do
+      get :reports_pointer
+    end
+  end
 
   # COMMON NAVIGATION AND ACTIONS
   get    'home',       to: 'static_pages#home'
@@ -72,6 +75,13 @@ Rails.application.routes.draw do
 
   # ACTION FOR CHECK DUPLICATE DATA IN TABLE
   get   'tables/check_duplicate_data', to: 'tables#check_duplicate_data'
+
+  # ACTIONS FOR MAIN MENU DIRETIONS
+  get   'admin/admin_pointer', to: 'admin#admin_pointer'
+
+  # ACTIONS FOR SUMMARY REPORTS
+  get   'summary_reports',     to: 'summary_reports#index'
+  post  'summary_reports',     to: 'summary_reports#refresh_dt', as: :refresh
   
   match 'admin/email_texts/:action(/:id)' => 'admin/email_texts', via: :all
 end

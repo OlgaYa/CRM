@@ -1,0 +1,54 @@
+<%= form_tag reports_path, method: 'get', class: 'select-year-and-month inline' do %>
+  <%= select_year(@date, start_year: 2015) %>
+  <%= select_month(@date) %>
+<% end %>
+<%= link_to new_report_path, remote: true, class: 'btn btn-sm btn-success self-reports' do %>
+  <%= content_tag(:i, '', class: 'glyphicon glyphicon-plus') %>
+  <%=  'New report' %>
+<% end %>
+<h3 class='text-center'> <%= @date.strftime("%B") %> </h3>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>
+        <%= sort_link(@q, :date,
+                      'Date', default_order: :desc,
+                      class: 'sort context') %>
+      </th>
+      <th> Project </th>
+      <th> Task description </th> 
+      <th> Hours </th>
+      <th> Edit </th>
+      <th> Delete </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @reports.each do |report|%>
+      <tr class='report' id='report_<%= report.id %>'>
+        <td class='report-date'>
+          <%= report.date %>
+        </td>
+        <td class='report-project'>
+          <%= report.project %>
+        </td>
+        <td class='report-description'>
+          <%= report.task %>
+        </td>
+        <td class='report-time'>
+          <%= report.hours %>
+        </td>
+        <td class='report-edit'>
+          <%= link_to edit_report_path(report), remote: true do %>
+            <%= content_tag(:i, '', class: 'glyphicon glyphicon-edit') %>
+          <% end %>
+        </td>
+        <td class='report-delete'>
+          <%= link_to report_path(report), remote: true, data: { 
+            confirm: "Are you sure to remove #{report.date} report?", method: :delete } do %>
+            <%= content_tag(:i, '', class: 'glyphicon glyphicon-remove') %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

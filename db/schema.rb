@@ -11,16 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150527123621) do
+ActiveRecord::Schema.define(version: 20150528150045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "uuid-ossp"
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
     t.integer  "user_id"
     t.datetime "datetime"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "dt_reports", force: :cascade do |t|
+    t.date     "date"
+    t.integer  "time"
+    t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -34,6 +41,13 @@ ActiveRecord::Schema.define(version: 20150527123621) do
     t.datetime "updated_at",                   null: false
   end
 
+  create_table "holidays", force: :cascade do |t|
+    t.string   "title"
+    t.date     "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "levels", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -43,7 +57,6 @@ ActiveRecord::Schema.define(version: 20150527123621) do
   create_table "links", force: :cascade do |t|
     t.string   "alt"
     t.string   "href"
-    t.integer  "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "table_id"
@@ -67,7 +80,6 @@ ActiveRecord::Schema.define(version: 20150527123621) do
     t.text     "body"
     t.datetime "datetime"
     t.integer  "user_id"
-    t.integer  "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -84,6 +96,13 @@ ActiveRecord::Schema.define(version: 20150527123621) do
     t.string  "option_type"
   end
 
+  create_table "permissions", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
   create_table "plans", force: :cascade do |t|
     t.date    "date_from"
     t.date    "date_to"
@@ -93,9 +112,11 @@ ActiveRecord::Schema.define(version: 20150527123621) do
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",                          null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "status",     default: "active"
+    t.string   "kind"
   end
 
   create_table "projects_users", id: false, force: :cascade do |t|
@@ -107,13 +128,13 @@ ActiveRecord::Schema.define(version: 20150527123621) do
   add_index "projects_users", ["user_id"], name: "index_projects_users_on_user_id", using: :btree
 
   create_table "reports", force: :cascade do |t|
-    t.string   "project"
     t.string   "task"
     t.integer  "user_id"
-    t.integer  "hours"
+    t.float    "hours"
     t.date     "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "project_id"
   end
 
   create_table "simple_texts", force: :cascade do |t|
@@ -121,16 +142,6 @@ ActiveRecord::Schema.define(version: 20150527123621) do
     t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "sold_tasks", force: :cascade do |t|
-    t.integer  "task_id"
-    t.integer  "price"
-    t.date     "date_start"
-    t.date     "date_end"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "sources", force: :cascade do |t|
@@ -194,25 +205,11 @@ ActiveRecord::Schema.define(version: 20150527123621) do
     t.date     "date_status_1"
   end
 
-  create_table "task_comments", force: :cascade do |t|
-    t.integer  "task_id"
-    t.integer  "comment_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "tasks", force: :cascade do |t|
-    t.string   "name"
-    t.string   "skype"
-    t.string   "email"
-    t.text     "links"
-    t.date     "date"
+  create_table "user_permissions", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "source_id"
-    t.string   "topic"
-    t.integer  "status_id"
+    t.integer  "permission_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "user_settings", force: :cascade do |t|
@@ -244,7 +241,6 @@ ActiveRecord::Schema.define(version: 20150527123621) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
-    t.string   "role"
     t.string   "table_settings"
   end
 

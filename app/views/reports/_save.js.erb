@@ -1,0 +1,9 @@
+$("ul.errors").html("");
+<% if @report.errors.any? %>
+  <% @report.errors.full_messages.each do |message| %>
+    $("ul.errors").append($("<li />").html("<%= message.html_safe %>"));
+  <% end %>
+<% else %>
+  $('.month-reports').html("<%= escape_javascript(render 'index') %>");
+  $("#report-modal").modal("hide");
+<% end %>

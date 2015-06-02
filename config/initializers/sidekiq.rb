@@ -7,3 +7,4 @@ Sidekiq.configure_client do |config|
 end
 
 Sidekiq::Queue['mailchimp'].limit = 1
+Sidekiq::Queue['desktime'].limit = 1

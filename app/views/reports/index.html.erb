@@ -1,46 +1,33 @@
 <%= content_for(:custom_scripts) do %>
   <%= javascript_include_tag 'reports' %>
 <% end %>
-<div class="row content">
-	<div class="col-lg-6 col-md-8 col-lg-offset-3 col-md-offset-2" id="report"> 
-		<%= render partial: "myModal_new" %>
-		<div id="modal_report">
-		</div>
-		<div class="btn-group" id="report-btn-group">
-      <button class="add-new btn btn-sm btn-info" id="add"> 
-      <i class="glyphicon glyphicon-plus"></i> Add new</button>
-    	<input id="date-picker-month" name="startDate" id="startDate" class="date-picker" value='<%= @date.strftime("%b/%Y") %>' />
-    	<label id="label-month" for="startDate">Month :</label>
-    </div>
 
-		<!-- Tab panes -->
-		<div class="tab-content">
-		  <div class="tab-pane active">
-        <table class="table">
-					<thead>
-						<tr>
-							<%= generate_sortable_th_desc('sort context','Date',:date) %>
-							<th> Project </th>
-							<th> Task </th> 
-							<th> Hours </th>
-						</tr>
-					</thead>
-					<tbody>
-						<% @reports.each do |report|%>
-							<tr class="report" id='<%= report.id %>'>
-								<td> <%= report.date %>
-								</td>
-								<td> <%= report.project %>
-								</td>
-								<td> <%= report.task %>
-								</td>
-								<td> <%= report.hours %>
-								</td>
-							</tr>
-						<% end %>
-					</tbody>
-      	</table>
-		  </div>
-		</div>
-	</div>
+<%= content_for(:title) do %>
+  <%= site_title('My reports') %>
+<% end %>
+
+<%= content_for(:sub_menu) do %>
+  <%= render 'shared/submenus/reports_sub_menu' %>
+<% end %>
+
+<div class='row content'>
+  <div class='container-fluid'>
+    <div class='col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1'>
+      
+      <div class='month-reports'>
+        <%= render 'index' %>
+      </div>
+  	
+    </div><!-- col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1 -->
+  </div><!-- /container-fluid -->
+</div><!-- /row content' -->
+
+<!-- MODAL -->
+<div class='modal fade' 
+     id='report-modal'
+     tabindex='-1'
+     role='dialog' 
+     aria-labelledby='myModalLabel'
+     aria-hidden='true'>
 </div>
+<!-- END MODAL -->
