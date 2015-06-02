@@ -14,7 +14,9 @@ def write_log (s)
 end
 
 
-scheduler =  Rufus::Scheduler.new(:lockfile => true)
+scheduler =  Rufus::Scheduler.new(:lockfile => ".rufus-scheduler.lock")
+
+
 
 unless scheduler.down?
 
