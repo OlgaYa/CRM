@@ -1,5 +1,6 @@
 class Report < ActiveRecord::Base
-	belongs_to :user
+  belongs_to :user
+  belongs_to :project
 
   def self.all_in_this_month(date, q, current_user)
     where(user: current_user,

@@ -122,4 +122,22 @@ class User < ActiveRecord::Base
   def current_user?(user)
     user == current_user
   end
+
+  def self.all_users_for_project
+    all.pluck(:first_name, :id).select do|p| 
+      p
+    end
+  end
+
+  def self.all_users_not_for_current_project project_id
+    all.pluck(:first_name, :id).select do|p| 
+      p unless User.find(p[1]).projects.include? Project.find(project_id)
+    end
+  end
+
+  def self.all_users_for_current_project project_id
+    all.pluck(:first_name, :id).select do|p| 
+      p if User.find(p[1]).projects.include? Project.find(project_id)
+    end
+  end
 end
