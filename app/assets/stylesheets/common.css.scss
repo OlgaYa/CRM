@@ -770,3 +770,28 @@ body > #wrapper>.room>.content-column {
 #label-month{
   float: right;
 }
+
+.project-name{
+  width: 90%;
+  font-size: 15pt;
+}
+
+#add{
+  margin-right: 5px;
+}
+
+.circle {
+    width: 20px;
+    height: 20px;
+    background: #ffffff;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    float: right;
+    border: 1px;
+    border: 1px solid black;
+}
+
+#project_kind{
+  width: 70%;
+}
