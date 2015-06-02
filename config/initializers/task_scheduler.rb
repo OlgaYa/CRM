@@ -18,8 +18,6 @@ scheduler =  Rufus::Scheduler.new(:lockfile => true)
 
 unless scheduler.down?
 
-  write_log ("*** START SCHEDULER #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} ***\n")
-
   scheduler.cron '0 9 * * 1-5' do
     # every day of the week at 9:00
     User.reminder
@@ -71,5 +69,5 @@ unless scheduler.down?
     end
     write_log("Finish #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} (report reminder)\n\n")
   end
-
+  
 end
