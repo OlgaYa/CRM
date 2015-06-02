@@ -1,5 +1,6 @@
 class Report < ActiveRecord::Base
   belongs_to :user
+  belongs_to :project
 
   validates :date, presence: true
   validates :hours, presence: true

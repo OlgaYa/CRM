@@ -1,5 +1,6 @@
 <%= content_for(:custom_scripts) do %>
   <%= javascript_include_tag 'reports' %>
+  <%= javascript_include_tag 'chosen.jquery.min' %>
 <% end %>
 
 <%= content_for(:title) do %>
@@ -29,5 +30,18 @@
      role='dialog' 
      aria-labelledby='myModalLabel'
      aria-hidden='true'>
+</div>
+
+<div id='table-settings-dialog'>
+  <div id='invisible'>
+    <label>Not my Project</label>
+    <ul id='invisible-fields' class='connectedSortable'>
+    </ul>
+  </div>
+  <div id='visible'>
+    <label>My Project</label>
+    <ul id='visible-fields' class='connectedSortable'>
+    </ul>
+  </div>
 </div>
 <!-- END MODAL -->

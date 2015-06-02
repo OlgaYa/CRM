@@ -18,6 +18,7 @@ class ReportsController < ApplicationController
   def new
     @report = Report.new
     @report.date = Date.current
+    @user = current_user
   end
 
   def create
@@ -29,6 +30,8 @@ class ReportsController < ApplicationController
 
   def edit
     @report = Report.find_by_id(params[:id])
+    @user = current_user
+    render layout: false
   end
 
   def update
@@ -41,10 +44,23 @@ class ReportsController < ApplicationController
     Report.find(params[:id]).destroy
   end
 
+  def reports_settings
+    @settings = {}
+    @settings[:visible] = Project.all_exsept_project_current_user (current_user)
+    @settings[:invisible] = Project.all_project_current_user (current_user)
+    render json: @settings.to_json
+  end
+
+  def update_report_settings
+    array = params[:invisible].collect{|p| Project.find(p)}
+    current_user.projects = array
+    redirect_to action: :index
+  end
+
   private
 
     def report_params
-      params.require(:report).permit(:hours, :date, :project, :task)
+      params.require(:report).permit(:hours, :date, :project_id, :task)
     end
 
     def date

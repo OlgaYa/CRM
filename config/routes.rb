@@ -22,10 +22,18 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :registration
   end
-  
+
   resources :reports do
     collection do
-      get :reports_pointer
+      get  :reports_settings
+      post :update_report_settings
+      get  :reports_pointer
+    end
+  end
+
+  resources :projects do
+    collection do
+      get  :users_for_project
     end
   end
 
