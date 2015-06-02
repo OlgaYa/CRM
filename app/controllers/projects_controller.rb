@@ -26,7 +26,6 @@ class ProjectsController < ApplicationController
   def update
     project = Project.find(params[:id])
     project.update_attributes(project_params)
-    binding.pry
     array_user = params[:user_ids].split(",").map{|u| User.find(u.to_i)}
     project.users = array_user
     redirect_to action: :index
@@ -41,10 +40,10 @@ class ProjectsController < ApplicationController
   def users_for_project
    @settings = {}
    unless params[:project_id]
-    @settings[:visible] = User.all_users_for_project
+    @settings[:not_assign] = User.all_users_for_project
    else
-    @settings[:visible] = User.all_users_not_for_current_project (params[:project_id].to_i)
-    @settings[:invisible] = User.all_users_for_current_project (params[:project_id].to_i)
+    @settings[:not_assign] = User.all_users_not_for_current_project (params[:project_id].to_i)
+    @settings[:assign] = User.all_users_for_current_project (params[:project_id].to_i)
    end
     render json: @settings.to_json
   end

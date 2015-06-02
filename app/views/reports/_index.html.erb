@@ -6,6 +6,8 @@
   <%= content_tag(:i, '', class: 'glyphicon glyphicon-plus') %>
   <%=  'New report' %>
 <% end %>
+<button id='table-settings' class='btn btn-sm btn-success inline-block'>
+  <i class='glyphicon glyphicon-cog'> </i> </button>
 <h3 class='text-center'> <%= @date.strftime("%B") %> </h3>
 <table class="table table-hover">
   <thead>
@@ -29,7 +31,7 @@
           <%= report.date %>
         </td>
         <td class='report-project'>
-          <%= report.project %>
+          <%= report.project.name %>
         </td>
         <td class='report-description'>
           <%= report.task %>

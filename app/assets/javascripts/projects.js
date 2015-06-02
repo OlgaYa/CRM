@@ -9,14 +9,14 @@ $.fn.listVars = function(){
   return result;
 }
 
-function appendVisibleFields($selector){
-  for(var i = 0; i < settings.visible.length; i = i+1){
-    $selector.append("<li id='"+settings.visible[i][1] + "'>" + settings.visible[i][0] +"</li>");
+function appendNotAssignFields($selector){
+  for(var i = 0; i < settings.not_assign.length; i = i+1){
+    $selector.append("<li id='"+settings.not_assign[i][1] + "'>" + settings.not_assign[i][0] +"</li>");
   }
 }
 
-function appendInvisibleFields($selector){
-  for(var i = 0; i < settings.invisible.length; i = i+1){
-    $selector.append("<li id='" + settings.invisible[i][1] + "'>"+ settings.invisible[i][0] +'</li>');
+function appendAssignFields($selector){
+  for(var i = 0; i < settings.assign.length; i = i+1){
+    $selector.append("<li id='" + settings.assign[i][1] + "'>"+ settings.assign[i][0] +'</li>');
   }
 }

@@ -9,15 +9,15 @@
           <div class="row" id="meeting_dialog">
             <%= f.text_field :name, class: 'form-control', placeholder: 'Title'%>
           </div>
-          <div id='invisible'>
+          <div id='assign'>
             <label>Assing</label>
             <%= hidden_field_tag :user_ids %>
-            <ul id='invisible-fields' class='connectedSortable'>
+            <ul id='assign-fields' class='connectedSortable'>
             </ul>
           </div>
-          <div id='visible'>
+          <div id='not_assign'>
             <label>Not Assing</label>
-            <ul id='visible-fields' class='connectedSortable'>
+            <ul id='not_assign-fields' class='connectedSortable'>
             </ul>
           </div>
           <div class="side-by-side clearfix">
@@ -52,22 +52,22 @@
       url: path,
       success: function(data){
         settings = data;
-        if(data.visible){
-          appendVisibleFields($('#visible-fields'));
+        if(data.not_assign){
+          appendNotAssignFields($('#not_assign-fields'));
         }
 
-        if(data.invisible){
-          appendInvisibleFields($('#invisible-fields'));
+        if(data.assign){
+          appendAssignFields($('#assign-fields'));
         }
       }
     });
   })();
 
-  $( "#invisible-fields, #visible-fields" ).sortable({
+  $( "#assign-fields, #not_assign-fields" ).sortable({
     connectWith: ".connectedSortable"
   }).disableSelection();
 
    $(".new_project").submit(function(){
-    $("#user_ids").val($('#invisible-fields').listVars());
+    $("#user_ids").val($('#assign-fields').listVars());
   });
 </script>

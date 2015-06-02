@@ -1,3 +1,41 @@
-// Place all the styles related to the Projects controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+#assign-fields {
+  border: 1px solid #ddd;
+  width: 180px;
+  min-height: 20px;
+  padding: 5px;
+}
+
+#assign-fields li, #not_assign-fields li {
+  border: 1px solid gray;
+  list-style: none;
+  width: 100%;
+  margin-bottom: 5px;
+  padding-left: 5px;
+}
+
+#assign-fields li {
+  background-color: #5cb85c;
+}
+
+#not_assign-fields li {
+  background-color: #d9534f;
+}
+
+#assign-fields li:hover, #not_assign-fields li:hover{
+  cursor: pointer;
+}
+
+#assign-fields li:active, #not_assign-fields li:active{
+  cursor: move;
+}
+
+#not_assign-fields {
+  border: 1px solid #ddd;
+  width: 180px;
+  min-height: 20px;
+  padding: 5px;
+}
+
+#assign {
+  float: right;
+}
