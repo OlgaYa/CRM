@@ -39,7 +39,7 @@ class UserMailer < ActionMailer::Base
   def reminder_report(user_id)
     @user = User.find_by_id(user_id)
     subject = "[info] Отчет за вчера не заполнен"
-    mail(:to => @user.email, :subject => subject )
+    mail(:to => @user.email, :subject => subject ) if Rails.env.production?
   end
 
 end
