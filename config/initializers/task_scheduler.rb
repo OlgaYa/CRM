@@ -17,7 +17,7 @@ begin
 
   scheduler =  Rufus::Scheduler.new(:lockfile => '.rufus-scheduler.lock')
 
-  write_log ('*** START SCHEDULER #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} ***')
+  write_log ("*** START SCHEDULER #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} ***\n")
 
   scheduler.cron '0 9 * * 1-5' do
     # every day of the week at 9:00
