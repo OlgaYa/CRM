@@ -1,0 +1,79 @@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Assigned Meeting</h4>
+      </div>
+      <%= form_for(@project, url: project_path) do |f| %>
+        <div class="modal-body">
+          <div class="row">
+            <%= f.text_field :name, class: 'form-control', placeholder: 'Title'%>
+          </div>
+          <div id='invisible'>
+            <label>Assign</label>
+            <%= hidden_field_tag :user_ids %>
+            <ul id='invisible-fields' class='connectedSortable'>
+            </ul>
+          </div>
+          <div id='visible'>
+            <label>Not Assign</label>
+            <ul id='visible-fields' class='connectedSortable'>
+            </ul>
+          </div>
+          <div class="side-by-side clearfix">
+            <%= f.select :kind, JSON.parse(@colors).keys, name: 'user', id: "chosen-kind", class: "chosen-select", value: @project.kind, placeholder: 'Title'%>
+            <div class="circle" id=""></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <%= f.submit "Save", class: "btn btn-large btn-primary btn-block" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#myModal').modal();
+  $(".chosen-select").chosen();
+   var value = $("#project_kind").val(),
+        colors = JSON.parse('<%= raw @colors.html_safe %>'),
+        color = colors[value];
+  $(".circle").css('backgroundColor', color);
+
+  var settings;
+
+  (function(){
+    $("#project_kind").chosen().change(function(){
+    var value = $("#project_kind").val(),
+        colors = JSON.parse('<%= raw @colors.html_safe %>'),
+        color = colors[value];
+    $(".circle").css('backgroundColor', color);
+  });
+    var project_id = '<%= @project_id %>', 
+        path = 'projects/users_for_project?project_id=' + project_id;
+    $.ajax({
+      type: 'GET',
+      url: path,
+      success: function(data){
+        settings = data;
+        if(data.visible){
+          appendVisibleFields($('#visible-fields'));
+        }
+
+        if(data.invisible){
+          appendInvisibleFields($('#invisible-fields'));
+        }
+      }
+    });
+  })();
+
+  $( "#invisible-fields, #visible-fields" ).sortable({
+    connectWith: ".connectedSortable"
+  }).disableSelection();
+
+  $(".edit_project").submit(function(){
+    $("#user_ids").val($('#invisible-fields').listVars());
+  });
+</script>
