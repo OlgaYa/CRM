@@ -3,19 +3,21 @@
 require 'rubygems'
 require 'rufus/scheduler'
 
-    FILE_NAME = "log/rufus_scheduler.log"
+FILE_NAME = "log/rufus_scheduler.log"
 
-    unless File.exist?(FILE_NAME)
-      File.new(FILE_NAME, "w+")
-    end
+unless File.exist?(FILE_NAME)
+  File.new(FILE_NAME, "w+")
+end
 
-    def write_log (s)
-      File.open(FILE_NAME, 'a') { |file| file.write(s) }
-    end
+def write_log (s)
+  File.open(FILE_NAME, 'a') { |file| file.write(s) }
+end
 
 begin
 
   scheduler =  Rufus::Scheduler.new(:lockfile => '.rufus-scheduler.lock')
+
+  write_log ('*** START SCHEDULER #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} ***')
 
   scheduler.cron '0 9 * * 1-5' do
     # every day of the week at 9:00
