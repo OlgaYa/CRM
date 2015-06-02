@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: dt_reports
+#
+#  id         :integer          not null, primary key
+#  date       :date
+#  time       :integer
+#  user_id    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 class DtReport < ActiveRecord::Base
   belongs_to :user
 

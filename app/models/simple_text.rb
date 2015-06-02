@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: simple_texts
+#
+#  id         :integer          not null, primary key
+#  name       :string
+#  text       :text
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class SimpleText < ActiveRecord::Base
 
   def self.find_or_create(name)

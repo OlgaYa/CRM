@@ -15,7 +15,7 @@ CRMProject::Application.configure do
     :password             => "Sloboda123",
     :authentication       => "plain",
     #:enable_starttls_auto => true
-}
+  }
   config.action_mailer.default_url_options = { host: 'crm.sloboda-studio.com' }
   # config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
   config.assets.js_compressor = :uglifier

@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: statuses
+#
+#  id         :integer          not null, primary key
+#  name       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  for_type   :string           default("sale")
+#
+
 class Status < ActiveRecord::Base
   has_many :tables
   has_many :options_for_plan, as: :option, dependent: :destroy

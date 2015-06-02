@@ -1,3 +1,16 @@
+# == Schema Information
+#
+# Table name: histories
+#
+#  id          :integer          not null, primary key
+#  table_id    :integer
+#  user_id     :integer
+#  for_type    :string           default("sale")
+#  description :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
 class History < ActiveRecord::Base
   has_many    :options_for_history
   belongs_to  :table

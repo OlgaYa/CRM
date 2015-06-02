@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: sources
+#
+#  id         :integer          not null, primary key
+#  name       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  for_type   :string           default("sale")
+#
+
 class Source < ActiveRecord::Base  
   has_many :tables
   has_many :options_for_history, as: :history_option, dependent: :destroy

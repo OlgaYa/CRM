@@ -12,7 +12,7 @@ RSpec.describe StaticPagesController, type: :controller do
     it 'when logged in' do
       sign_in user
       get :home
-      expect(response.status).to eq(302)
+      expect(response.status).to eq(200)
     end
   end
 end

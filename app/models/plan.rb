@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: plans
+#
+#  id         :integer          not null, primary key
+#  date_from  :date
+#  date_to    :date
+#  for_type   :string           default("sale")
+#  count      :integer          default(0)
+#  percentage :integer          default(0)
+#
+
 class Plan < ActiveRecord::Base
   has_many :options_for_plan, dependent: :destroy
 
