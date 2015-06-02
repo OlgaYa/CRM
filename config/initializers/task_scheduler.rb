@@ -13,9 +13,10 @@ def write_log (s)
   File.open(FILE_NAME, 'a') { |file| file.write(s) }
 end
 
-begin
 
-  scheduler =  Rufus::Scheduler.new(:lockfile => '.rufus-scheduler.lock')
+scheduler =  Rufus::Scheduler.new(:lockfile => true)
+
+unless scheduler.down?
 
   write_log ("*** START SCHEDULER #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} ***\n")
 
@@ -70,7 +71,5 @@ begin
     end
     write_log("Finish #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} (report reminder)\n\n")
   end
-
-rescue Rufus::Scheduler::NotRunningError
 
 end
