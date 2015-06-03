@@ -9,6 +9,7 @@
           <div class="row" id="meeting_dialog">
             <%= f.text_field :name, class: 'form-control', placeholder: 'Title'%>
           </div>
+          <%= text_field_tag :search, "", class: 'form-control', id: "filterinput", placeholder: 'Search'%>
           <div id='assign'>
             <label>Assing</label>
             <%= hidden_field_tag :user_ids %>
@@ -37,6 +38,12 @@
 <script type="text/javascript">
   $('#myModal').modal();
 
+  $('#myModal').on('hide.bs.modal', function () {
+    if(confirm('Are you want to save your changes?')){
+      $('form').submit();
+    }
+  });
+
   var settings;
 
   (function(){
@@ -59,6 +66,11 @@
         if(data.assign){
           appendAssignFields($('#assign-fields'));
         }
+
+        jQuery.expr[':'].Contains = function(a,i,m){
+          return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
+        };
+        listFilter($("#header"), $("#not_assign-fields"));
       }
     });
   })();
@@ -67,7 +79,7 @@
     connectWith: ".connectedSortable"
   }).disableSelection();
 
-   $(".new_project").submit(function(){
+  $(".new_project").submit(function(){
     $("#user_ids").val($('#assign-fields').listVars());
   });
 </script>

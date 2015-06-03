@@ -1,6 +1,6 @@
 #assign-fields {
   border: 1px solid #ddd;
-  width: 180px;
+  width: 100%;
   min-height: 20px;
   padding: 5px;
 }
@@ -31,11 +31,21 @@
 
 #not_assign-fields {
   border: 1px solid #ddd;
-  width: 180px;
+  width: 100%;
   min-height: 20px;
   padding: 5px;
 }
 
 #assign {
   float: right;
+  width: 40%;
+}
+
+#not_assign {
+  width: 40%;
+}
+
+#filterinput{
+ width: 40%;
+ margin-top: 3%;
 }
