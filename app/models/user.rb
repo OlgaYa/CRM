@@ -160,13 +160,13 @@ class User < ActiveRecord::Base
 
   def self.all_users_not_for_current_project project_id
     all.pluck(:first_name, :last_name, :id).select do|p|
-      p unless User.find(p[1]).projects.include? Project.find(project_id)
+      p unless User.find(p[2]).projects.include? Project.find(project_id)
     end
   end
 
   def self.all_users_for_current_project project_id
     all.pluck(:first_name, :last_name, :id).select do|p|
-      p if User.find(p[1]).projects.include? Project.find(project_id)
+      p if User.find(p[2]).projects.include? Project.find(project_id)
     end
   end
 end
