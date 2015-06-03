@@ -41,6 +41,13 @@ ActiveRecord::Schema.define(version: 20150528150045) do
     t.datetime "updated_at",                   null: false
   end
 
+  create_table "holidays", force: :cascade do |t|
+    t.string   "title"
+    t.date     "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "levels", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false

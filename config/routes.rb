@@ -18,6 +18,11 @@ Rails.application.routes.draw do
   end
   resources :plans
   resources :histories, only: [:index]
+  resources :holidays,  only: [:index] do
+    collection do
+      post  :update_list_events
+    end
+  end
   
   namespace :admin do
     resources :registration
