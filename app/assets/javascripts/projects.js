@@ -30,12 +30,12 @@ function listFilter(header, list) {
 
 function appendNotAssignFields($selector){
   for(var i = 0; i < settings.not_assign.length; i = i+1){
-    $selector.append("<li id='"+settings.not_assign[i][1] + "'> <p>" + settings.not_assign[i][0] +"</p> </li>");
+    $selector.append("<li id='"+settings.not_assign[i][2] + "'> <p>" + settings.not_assign[i][0] + " " + settings.not_assign[i][1] +"</p> </li>");
   }
 }
 
 function appendAssignFields($selector){
   for(var i = 0; i < settings.assign.length; i = i+1){
-    $selector.append("<li id='" + settings.assign[i][1] + "'> <p>"+ settings.assign[i][0] +'</p></li>');
+    $selector.append("<li id='" + settings.assign[i][2] + "'> <p>"+ settings.assign[i][0] + " " + settings.assign[i][1] +'</p></li>');
   }
 }
