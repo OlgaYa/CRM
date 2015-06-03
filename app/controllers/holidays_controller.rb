@@ -11,7 +11,6 @@ class HolidaysController < ApplicationController
       @hash_holidays[:holidays] << item
     end
     @hash_holidays.to_json
-    # binding.pry
   end
 
   def update_list_events

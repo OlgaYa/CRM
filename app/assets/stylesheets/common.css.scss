@@ -744,8 +744,24 @@ body > #wrapper>.room>.content-column {
 }
 
 .calendar{
-  width: 60%;
+  width: 50%;
   float: left;
+}
+
+.meeting_list{
+  width: 50%;
+  float: right;
+}
+
+#calendar_holiday{
+  width: 50%;
+  margin-left: 5%;
+  float: left;
+}
+
+#list-month{
+  float: right;
+  width: 40%;
 }
 
 #meeting_list{
