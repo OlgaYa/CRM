@@ -3,7 +3,7 @@ class HolidaysController < ApplicationController
     holidays = Holiday.all.pluck(:date, :title)
     @hash_holidays = {}
     @hash_holidays[:holidays] = []
-    @hash_holidays["month"] = find_all_hours_in_months
+    @hash_holidays["month"] = Holiday.find_all_hours_in_months
     holidays.each do |holiday|
       item = {}
       item["title"] = holiday[1]
@@ -23,25 +23,7 @@ class HolidaysController < ApplicationController
       Holiday.delete(holiday)
     end
     @hash_holidays = {}
-    @hash_holidays["month"] = find_all_hours_in_months
+    @hash_holidays["month"] = Holiday.find_all_hours_in_months
     render layout: false
-  end
-
-  COMMON_YEAR_DAYS_IN_MONTH = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-  def find_all_hours_in_months
-    months = []
-    array_holiday = Holiday.all.pluck(:date)
-    1.upto(12) do |i|
-      count_days = days_in_month(i)
-      count_days -= array_holiday.select{|item| item.month == i}.count
-      months[i] = count_days*8
-    end
-    months
-  end
-
-  def days_in_month(month, year = Time.now.year)
-     return 29 if month == 2 && Date.gregorian_leap?(year)
-     COMMON_YEAR_DAYS_IN_MONTH[month]
   end
 end
