@@ -125,6 +125,7 @@ module TablesHelper
     return if table.empty?
     content_tag(:tbody, class: 'table-body') do
       table.each do |entity|
+        @entity = entity
         concat generate_body entity
       end
     end
@@ -175,9 +176,23 @@ module TablesHelper
   end
 
   def editable_field(value, field_name)
+    buffer = ActiveSupport::SafeBuffer.new
     content_tag(:td, value,
                 class: 'editable-field td-' + field_name,
-                name: "table[#{field_name}]", value: field_name)
+                name: "table[#{field_name}]", value: field_name) do
+      buffer << value
+      if field_name == 'topic'
+        if @entity.details && @entity.details.present?
+          button_title = 'Details'
+        else
+          button_title = 'Add details'
+        end
+        buffer << content_tag(:div, class: 'topic-details') do
+          link_to button_title, table_details_path(@entity.id), class: "btn btn-details", id: "btn-details-#{@entity.id}", remote: true
+        end
+      end
+      buffer
+    end
   end
 
   def table_control(id)

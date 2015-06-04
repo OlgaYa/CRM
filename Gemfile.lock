@@ -302,6 +302,10 @@ GEM
     thread_safe (0.3.5)
     tilt (1.4.1)
     timers (1.1.0)
+    tinymce-rails (4.1.6)
+      railties (>= 3.1.1)
+    tinymce-rails-langs (4.20140129)
+      tinymce-rails (~> 4.0)
     twitter-bootstrap-rails (3.2.0)
       actionpack (~> 4.1)
       execjs (~> 2.2)
@@ -366,6 +370,8 @@ DEPENDENCIES
   simplecov
   sinatra
   spring
+  tinymce-rails
+  tinymce-rails-langs
   twitter-bootstrap-rails
   uglifier (>= 1.3.0)
   unicorn
