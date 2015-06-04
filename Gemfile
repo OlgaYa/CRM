@@ -54,6 +54,5 @@ end
 group :test do
   gem 'simplecov', :require => false
   gem 'database_cleaner'
-  gem 'faker', '~> 1.4.3'
 end
 
