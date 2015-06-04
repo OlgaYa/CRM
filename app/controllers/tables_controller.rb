@@ -127,6 +127,18 @@ class TablesController < ApplicationController
     render json: 'success'.to_json
   end
 
+  def details
+    @table_details = Table.find(params[:id])
+    @details = @table_details.details
+  end
+
+  def details_update
+    id = params[:id]
+    @table_details = Table.find(params[:id])
+    @table_details.details = params[:details]
+    @table_details.save!
+  end
+
   private
 
     def send_for_user(tables)

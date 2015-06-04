@@ -1,0 +1,8 @@
+<% if @table_details.details.present? && !params[:edit] %>
+  <%= link_to table_details_path(@table_details.id, edit: true), class: "btn pull-right", remote: true do %>
+    <i class="glyphicon glyphicon-pencil"> </i>
+  <% end %>
+  <%== @table_details.details %>
+<% else %>
+  <%= render 'form_details' %>
+<% end %>
