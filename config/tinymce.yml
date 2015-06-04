@@ -1,0 +1,28 @@
+language: en
+theme_advanced_toolbar_location: top
+theme_advanced_toolbar_align: left
+theme_advanced_statusbar_location: bottom
+theme_advanced_buttons3_add:
+autosave_ask_before_unload: false
+max_height: 200
+min_height: 160
+height: 330
+width: 650
+plugins:
+  - advlist
+  - autolink
+  - lists
+  - link
+  - image
+  - charmap
+  - print
+  - preview
+  - anchor
+  - searchreplace
+  - visualblocks
+  - code
+  - insertdatetime
+  - media
+  - table
+  - contextmenu
+  - paste

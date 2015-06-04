@@ -1,0 +1,7 @@
+$('#div-topic-details').dialog('close');
+var id = "<%= @table_details.id %>"
+<% if @table_details.details.present? %>
+  $("#btn-details-"+id).html('Details');
+<% else %>
+  $("#btn-details-"+id).html('Add details');
+<% end %>

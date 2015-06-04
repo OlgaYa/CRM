@@ -1,0 +1,9 @@
+<%= form_for(table_details_update_path, remote: true) do |f| %>
+  <div class="control-field">
+  	<%= tinymce %>
+    <%= f.text_area :details, value: @table_details.details, name: 'details', class: 'tinymce' %>
+  </div>
+  <div class="modal-footer">
+    <%= f.submit "Save", class: "btn btn-large btn-primary btn-block", id: 'topic-dialog' %>
+  </div>
+<% end %>

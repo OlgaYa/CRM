@@ -97,4 +97,8 @@ Rails.application.routes.draw do
   post  'summary_reports',     to: 'summary_reports#refresh_dt', as: :refresh
   
   match 'admin/email_texts/:action(/:id)' => 'admin/email_texts', via: :all
+
+  get 'table_details/:id', to: 'tables#details', as: :table_details
+  post 'table_details/:id', to: 'tables#details_update', as: :table_details_update
+
 end

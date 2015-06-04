@@ -16,8 +16,9 @@
 //= require jquery-ui
 //= require moment
 //= require bootstrap-datetimepicker
+//= require tinymce-jquery
 
-var notifierTimer  
+var notifierTimer
 
 function notifie(message, $notifier){
   clearTimeout(notifierTimer);

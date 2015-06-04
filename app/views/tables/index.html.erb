@@ -49,4 +49,18 @@
   <%= render 'tables/modals/reminder_date_popup' %>
   <%= render 'tables/modals/meeting_popup' %>
   <%= render 'tables/modals/settings_popup' %>
+  <%= render 'tables/modals/topic_details' %>
 <!-- END MODAL -->
+
+<script>
+$(document).ready(function(){
+  var dialogTopic = $('#div-topic-details');
+  dialogTopic.dialog({
+    width: 700,
+    height: 600,
+    resizable: false,
+    title: 'Topic details',
+    autoOpen: false,
+  });
+});
+</script>
