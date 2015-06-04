@@ -11,11 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150527211738) do
+ActiveRecord::Schema.define(version: 20150528150045) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "uuid-ossp"
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
@@ -40,6 +39,13 @@ ActiveRecord::Schema.define(version: 20150527211738) do
     t.string   "description"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+  end
+
+  create_table "holidays", force: :cascade do |t|
+    t.string   "title"
+    t.date     "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "levels", force: :cascade do |t|
@@ -106,9 +112,11 @@ ActiveRecord::Schema.define(version: 20150527211738) do
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",                          null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "status",     default: "active"
+    t.string   "kind"
   end
 
   create_table "projects_users", id: false, force: :cascade do |t|
@@ -120,13 +128,13 @@ ActiveRecord::Schema.define(version: 20150527211738) do
   add_index "projects_users", ["user_id"], name: "index_projects_users_on_user_id", using: :btree
 
   create_table "reports", force: :cascade do |t|
-    t.string   "project"
     t.string   "task"
     t.integer  "user_id"
     t.float    "hours"
     t.date     "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "project_id"
   end
 
   create_table "simple_texts", force: :cascade do |t|
@@ -197,7 +205,7 @@ ActiveRecord::Schema.define(version: 20150527211738) do
     t.date     "date_status_1"
   end
 
-  create_table "user_permissions", id: false, force: :cascade do |t|
+  create_table "user_permissions", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "permission_id"
     t.datetime "created_at",    null: false

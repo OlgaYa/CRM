@@ -524,7 +524,7 @@ $(document).ready(function(){
       url: path + location.search,
       success: function(data){
         settings = data;
-       
+
         if(data.visible){
           appendVisibleFields($('#visible-fields'))
         }

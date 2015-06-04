@@ -13,6 +13,7 @@ class Status < ActiveRecord::Base
                           contact_later)
 
   NOT_REMIND_WITH_STATUSES = ['10 Sold', '0 Declined',
+                              '1 ProbablyNo',
                               'we_declined',
                               'he_declined',
                               'hired',

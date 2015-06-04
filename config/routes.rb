@@ -5,9 +5,7 @@ Rails.application.routes.draw do
   root to: 'static_pages#home'
 
   require 'sidekiq/web'
-  authenticate :user, lambda { |u| u.role?('admin') } do
-    mount Sidekiq::Web => '/sidekiq'
-  end
+  mount Sidekiq::Web => '/sidekiq'
   
   resources :tables, only: [:create, :update, :destroy, :index]
   resources :users
@@ -20,14 +18,27 @@ Rails.application.routes.draw do
   end
   resources :plans
   resources :histories, only: [:index]
+  resources :holidays,  only: [:index] do
+    collection do
+      post  :update_list_events
+    end
+  end
   
   namespace :admin do
     resources :registration
   end
-  
+
   resources :reports do
     collection do
-      get :reports_pointer
+      get  :reports_settings
+      post :update_report_settings
+      get  :reports_pointer
+    end
+  end
+
+  resources :projects do
+    collection do
+      get  :users_for_project
     end
   end
 

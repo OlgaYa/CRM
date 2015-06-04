@@ -408,7 +408,6 @@ footer {
   color: #555;
   background-color: #FFF;
   background-image: none;
-  border: 1px solid #CCC;
   border-radius: 4px;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
@@ -745,8 +744,24 @@ body > #wrapper>.room>.content-column {
 }
 
 .calendar{
-  width: 60%;
+  width: 50%;
   float: left;
+}
+
+.meeting_list{
+  width: 50%;
+  float: right;
+}
+
+#calendar_holiday{
+  width: 50%;
+  margin-left: 5%;
+  float: left;
+}
+
+#list-month{
+  float: right;
+  width: 40%;
 }
 
 #meeting_list{
@@ -769,4 +784,29 @@ body > #wrapper>.room>.content-column {
 
 #label-month{
   float: right;
+}
+
+.project-name{
+  width: 90%;
+  font-size: 12pt;
+}
+
+#add{
+  margin-right: 5px;
+}
+
+.circle {
+    width: 20px;
+    height: 20px;
+    background: #ffffff;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    float: right;
+    border: 1px;
+    border: 1px solid black;
+}
+
+#project_kind{
+  width: 70%;
 }

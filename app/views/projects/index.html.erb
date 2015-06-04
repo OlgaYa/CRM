@@ -1,0 +1,56 @@
+<%= content_for(:custom_scripts) do %>
+  <%= javascript_include_tag 'chosen.jquery.min' %>
+  <%= javascript_include_tag 'projects' %>
+<% end %>
+<%= content_for(:sub_menu) do %>
+  <%= render 'shared/submenus/reports_sub_menu' %>
+<% end %>
+
+<div class='row content'>
+  <div class='container-fluid'>
+    <div class='col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1'>
+
+      <div id="modal_project">
+      </div>
+      <div class="btn-group" id="project-btn-group">
+        <button class="add-new btn btn-sm btn-info" id='add'>
+        <i class="glyphicon glyphicon-plus"></i> Add new</button>
+      </div>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane active">
+          <table class="table">
+            <thead>
+              <tr>
+                <th> Name </th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @projects.each do |project|%>
+                <tr class="project" id='<%= project.id %>'>
+                  <td class="project-name"> <%= link_to "#{project.name}", "#" %>
+                  </td>
+                  <td class="edit" id-object='<%= "#{project.id}" %>'> <%= image_tag('edit.png', class: 'edit') %> </td>
+                  <td> <%= link_to(image_tag('remove.png'), project_path(project), method: :delete) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('.edit').bind( 'click', function(){
+    var id = $(this).attr('id-object');
+    $('#modal_project').load("projects/" + id + "/edit");
+  });
+  $('#add').bind( 'click', function(){
+    $('#modal_project').load("projects/new");
+  });
+</script>

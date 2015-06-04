@@ -14,12 +14,14 @@ class DtReport < ActiveRecord::Base
   end
 
   def self.refresh_week(date)
+    date = date.to_date
     (date.at_beginning_of_week..date.end_of_week).each do |d|
       refresh_day(d)
     end
   end
 
   def self.refresh_month(date)
+    date = date.to_date
     (date.at_beginning_of_month..date.end_of_month).each do |d|
       refresh_day(d)
     end

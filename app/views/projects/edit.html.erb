@@ -1,0 +1,91 @@
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Edit project</h4>
+      </div>
+      <%= form_for(@project, url: project_path) do |f| %>
+        <div class="modal-body">
+          <div class="row">
+            <%= f.text_field :name, class: 'form-control', placeholder: 'Title'%>
+          </div>
+          <%= text_field_tag :search, "", class: 'form-control', id: "filterinput", placeholder: 'Search'%>
+          <div id='assign'>
+            <label>Assign</label>
+            <%= hidden_field_tag :user_ids %>
+            <ul id='assign-fields' class='connectedSortable'>
+            </ul>
+          </div>
+          <div id='not_assign'>
+            <label>Not Assign</label>
+            <ul id='not_assign-fields' class='connectedSortable'>
+            </ul>
+          </div>
+          <div class="side-by-side clearfix">
+            <%= f.select :kind, JSON.parse(@colors).keys, name: 'user', id: "chosen-kind", class: "chosen-select", value: @project.kind, placeholder: 'Title'%>
+            <div class="circle" id=""></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <%= f.submit "Save", class: "btn btn-large btn-primary btn-block" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $('#myModal').modal();
+  $('#myModal').on('hide.bs.modal', function () {
+    if(confirm('Are you want to save your changes?')){
+      $('form').submit();
+    }
+  });
+
+  $(".chosen-select").chosen();
+    var value = $("#project_kind").val(),
+        colors = JSON.parse('<%= raw @colors.html_safe %>'),
+        color = colors[value];
+  $(".circle").css('backgroundColor', color);
+
+  var settings;
+
+  (function(){
+    $("#project_kind").chosen().change(function(){
+      var value = $("#project_kind").val(),
+        colors = JSON.parse('<%= raw @colors.html_safe %>'),
+        color = colors[value];
+      $(".circle").css('backgroundColor', color);
+    });
+    var project_id = '<%= @project_id %>', 
+        path = 'projects/users_for_project?project_id=' + project_id;
+    $.ajax({
+      type: 'GET',
+      url: path,
+      success: function(data){
+        settings = data;
+        if(data.not_assign){
+          appendNotAssignFields($('#not_assign-fields'));
+        }
+
+        if(data.assign){
+          appendAssignFields($('#assign-fields'));
+        }
+        jQuery.expr[':'].Contains = function(a,i,m){
+          return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
+        };
+        listFilter($("#header"), $("#not_assign-fields"));
+      }
+    });
+
+  })();
+
+  $( "#assign-fields, #not_assign-fields" ).sortable({
+    connectWith: ".connectedSortable"
+  }).disableSelection();
+
+  $(".edit_project").submit(function(){
+    $("#user_ids").val($('#assign-fields').listVars());
+  });
+</script>

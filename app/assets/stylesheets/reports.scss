@@ -6,3 +6,41 @@
 	width: 48%;
 	display: inline-block;
 }
+
+.report-date {
+  width: 100px;
+}
+
+.report-project {
+  width: 150px;    
+}
+
+.report-description {
+
+}
+
+.report-time{
+  width: 50px;
+}
+
+.self-reports {
+  margin-left: 190px;
+}
+
+.report-edit, .report-delete {
+  width: 30px;
+  text-align: right;
+}
+
+.task-description {
+  resize: none;
+}
+
+.errors {
+  color: #d9534f;
+}
+
+.form-control[readonly]{
+  cursor: pointer !important;
+  background-color: #fff !important;
+}

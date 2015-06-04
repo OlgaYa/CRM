@@ -39,14 +39,14 @@ class Ability
          (perm.include?('manage_candidates') && params[:type] == 'CANDIDATE')
         # Comment controller
         can :create, Comment
-        can :destroy, Comment, user_id: user.id
+        can :destroy, Comment
 
         # Histories controller
         can :index, History
 
         # Meetings controller
         can :index, Meeting
-        can [:create, :edit, :update], Meeting
+        can [:create, :edit, :update, :destroy], Meeting
 
         # Statistics controller
         can [:index, :change_information], Statistic
@@ -89,8 +89,7 @@ class Ability
       end
 
       if perm.include?('self_reports')
-        can :index, Report
-        can [:edit, :update, :create, :destroy], Report, user_id: user.id
+        can :manage, Report
       end
     end
   end

@@ -1,3 +1,7 @@
+<%= content_for(:custom_scripts) do %>
+  <%= javascript_include_tag 'summary_reports' %>
+<% end %>
+
 <%= content_for(:title) do %>
   <%= site_title('Summary reports') %>
 <% end %>
@@ -12,9 +16,8 @@
       <%= form_tag summary_reports_path, method: 'get', class: 'select-year-and-month' do %>
         <%= select_year(@date, start_year: 2015) %>
         <%= select_month(@date) %>
-        <%= submit_tag 'Go', class: 'btn btn-sm btn-success' %>
       <% end %>
-      <%= form_tag refresh_path, method: 'post', class: 'refresh-dt-data' do %>
+      <%= form_tag refresh_path, method: 'post', remote: true, class: 'refresh-dt-data' do %>
         <%= hidden_field 'date', 'year', value: @date.year %>
         <%= hidden_field 'date', 'month', value: @date.month %>
         <%= button_tag(content_tag(:i, '', class: 'glyphicon glyphicon-refresh') + ' DT', type: 'submit', class: 'btn btn-sm btn-success' ) %>
@@ -45,3 +48,7 @@
     </div>
   </div>
 </div>
+
+<!-- MODALS -->
+  <%= render 'shared/popups/notificate' %>
+<!-- END OF MODALS -->
