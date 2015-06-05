@@ -1,4 +1,4 @@
-коммерческий: "#ffffff"
-внутренний:   "#FFFF00"
-проблемный:   "#BA55D3"
-Org:          "#ffffff"
+commercial: "#d3d3d3"
+problem:    "#FFFF00"
+internal:   "#BA55D3"
+org:        "#000000"

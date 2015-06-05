@@ -20,10 +20,15 @@
       <!-- Tab panes -->
       <div class="tab-content">
         <div class="tab-pane active">
+          <span class="label label-org">Org</span>
+          <span class="label label-problem">Problem</span>
+          <span class="label label-internal">Internal</span>
+          <span class="label label-commercial">Commercial</span>
           <table class="table">
             <thead>
               <tr>
                 <th> Name </th>
+                <th></th>
                 <th></th>
                 <th></th>
               </tr>
@@ -31,8 +36,8 @@
             <tbody>
               <% @projects.each do |project|%>
                 <tr class="project" id='<%= project.id %>'>
-                  <td class="project-name"> <%= link_to "#{project.name}", "#" %>
-                  </td>
+                  <td class="project-name"> <%= link_to "#{project.name}", "#" %></td>
+                  <td class="project-color"> <span class='label <%= "label-#{project.kind}" %>'> </span></td>
                   <td class="edit" id-object='<%= "#{project.id}" %>'> <%= image_tag('edit.png', class: 'edit') %> </td>
                   <td> <%= link_to(image_tag('remove.png'), project_path(project), method: :delete) %></td>
                 </tr>

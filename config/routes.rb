@@ -95,10 +95,15 @@ Rails.application.routes.draw do
   # ACTIONS FOR SUMMARY REPORTS
   get   'summary_reports',     to: 'summary_reports#index'
   post  'summary_reports',     to: 'summary_reports#refresh_dt', as: :refresh
-  
+
+  # ACTIONS FOR SUMMARY JOBS
+  get   'summary_jobs',     to: 'summary_jobs#index'
+
   match 'admin/email_texts/:action(/:id)' => 'admin/email_texts', via: :all
 
   get 'table_details/:id', to: 'tables#details', as: :table_details
   post 'table_details/:id', to: 'tables#details_update', as: :table_details_update
+
+  post 'remove_project_user', to: 'users#remove_project'
 
 end

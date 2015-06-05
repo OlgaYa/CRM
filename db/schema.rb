@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150602131148) do
+ActiveRecord::Schema.define(version: 20150605064746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,11 +106,11 @@ ActiveRecord::Schema.define(version: 20150602131148) do
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string   "name",                          null: false
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.string   "status",     default: "active"
-    t.string   "kind"
+    t.string   "name",                   null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "kind",       default: 0
+    t.integer  "status",     default: 0
   end
 
   create_table "projects_users", id: false, force: :cascade do |t|
@@ -268,6 +268,7 @@ ActiveRecord::Schema.define(version: 20150602131148) do
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.string   "table_settings"
+    t.integer  "group"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

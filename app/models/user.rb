@@ -2,6 +2,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  enum group: [ :developer, :qa, :manager, :customer, :sale, :hh, :hr ]
+  scope :summary_job, -> { [User.developer, User.qa, User.manager, User.customer].sum }
+
   after_create :set_user_settings
 
   has_many :tables
@@ -13,7 +16,7 @@ class User < ActiveRecord::Base
   has_many :options_for_plan, as: :option, dependent: :destroy
   has_many :options_for_history, as: :history_option, dependent: :destroy
   has_one :user_setting
-  has_and_belongs_to_many :projects
+  has_and_belongs_to_many :projects, dependent: :destroy
 
   has_many :user_permissions, dependent: :destroy
   has_many :permissions, through: :user_permissions

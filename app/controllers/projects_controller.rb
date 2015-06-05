@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   def index
-    @projects = Project.all_active
+    @projects = Project.all_active.order(:name)
   end
 
   def new

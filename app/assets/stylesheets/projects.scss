@@ -1,3 +1,31 @@
+.remove-project{
+  font-size: 75%;
+}
+
+span.label-project{
+  margin-left: 2px;
+}
+
+span.label-org{
+  background-color: #5cb85c !important;
+  color: #000000 !important;
+}
+
+span.label-problem{
+  background-color: #FFFF00 !important;
+  color: #000000 !important;
+}
+
+span.label-internal{
+  background-color: #BA55D3 !important;
+  color: #000000 !important;
+}
+
+span.label-commercial{
+  background-color: #d3d3d3 !important;
+  color: #000000 !important;
+}
+
 #assign-fields {
   border: 1px solid #ddd;
   width: 100%;

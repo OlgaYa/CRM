@@ -32,6 +32,17 @@ class UsersController < ApplicationController
     redirect_to admin_show_users_path
   end
 
+  def remove_project
+    begin
+      user = User.find(params[:user_id])
+      project = user.projects.find(params[:project_id])
+      user.projects.delete(project)
+    rescue
+    ensure
+      render json: 'success'.to_json
+    end
+  end
+
   private
 
     def user_by_id

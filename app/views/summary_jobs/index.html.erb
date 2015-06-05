@@ -1,0 +1,51 @@
+<%= content_for(:title) do %>
+  <%= site_title('Summary jobs') %>
+<% end %>
+
+<%= content_for(:sub_menu) do %>
+  <%= render 'shared/submenus/reports_sub_menu' %>
+<% end %>
+
+<div class='row content'>
+  <div class='container-fluid'>
+    <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+    <h3 class='text-center'> Summary Jobs </h3>
+      <span class="label label-problem">Problem</span>
+      <span class="label label-internal">Internal</span>
+      <span class="label label-commercial">Commercial</span>
+      <table class='table table-hover'>
+        <thead>
+          <th><h4>Full name</h4></th>
+          <th><h4>Group</h4></th>
+          <th><h4>Projects</h4></th>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td><%= link_to user.name, user_path(user) %></td>
+              <td><%= user.group %></td>
+              <td>
+                <% user.projects.summary_job.each do |project| %>
+                  <span class='label-project label <%= "label-#{project.kind}" %>' >
+                    <%= project.name %>
+                    <%= link_to 'X', remove_project_user_path(user_id: user.id, project_id: project.id), class: 'remove-project', remote: true, method: :post %>
+                  </span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $(".remove-project").click(function() {
+    $(this).parent().remove();
+  });
+});
+</script>
