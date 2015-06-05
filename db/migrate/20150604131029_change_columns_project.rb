@@ -1,9 +1,9 @@
 class ChangeColumnsProject < ActiveRecord::Migration
   def up
-  	Project.connection.execute("update projects set status='0'")
-  	Project.connection.execute("update projects set kind='0'")
-  	change_column :projects, :status, 'integer USING CAST(status AS integer)', default: 0
-  	change_column :projects, :kind, 'integer USING CAST(kind AS integer)', default: 0
+  	remove_column :projects, :status
+  	remove_column :projects, :kind
+  	add_column :projects, :status, :integer, default: 0
+  	add_column :projects, :kind, :integer, default: 0
   end
 
   def down

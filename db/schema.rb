@@ -109,8 +109,8 @@ ActiveRecord::Schema.define(version: 20150605064746) do
     t.string   "name",                   null: false
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
-    t.integer  "kind",       default: 0
     t.integer  "status",     default: 0
+    t.integer  "kind",       default: 0
   end
 
   create_table "projects_users", id: false, force: :cascade do |t|
