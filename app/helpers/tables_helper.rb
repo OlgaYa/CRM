@@ -189,7 +189,7 @@ module TablesHelper
           button_title = 'Add details'
         end
         buffer << content_tag(:div, class: 'topic-details pull-right') do
-          link_to button_title, table_details_path(@entity.id), class: "btn btn-details pull-right pull", id: "btn-details-#{@entity.id}", remote: true
+          link_to button_title, table_details_path(@entity.id), class: "btn btn-details pull-right", id: "btn-details-#{@entity.id}", remote: true
         end
       end
       buffer
