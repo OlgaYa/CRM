@@ -182,13 +182,14 @@ module TablesHelper
                 name: "table[#{field_name}]", value: field_name) do
       buffer << value
       if field_name == 'topic'
+        buffer << content_tag(:br)
         if @entity.details && @entity.details.present?
           button_title = 'Details'
         else
           button_title = 'Add details'
         end
         buffer << content_tag(:div, class: 'topic-details pull-right') do
-          link_to button_title, table_details_path(@entity.id), class: "btn btn-details pull-right", id: "btn-details-#{@entity.id}", remote: true
+          link_to button_title, table_details_path(@entity.id), class: "btn btn-details pull-right pull", id: "btn-details-#{@entity.id}", remote: true
         end
       end
       buffer

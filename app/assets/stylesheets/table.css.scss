@@ -2,6 +2,17 @@
   color: #428bca  !important;
 }
 
+.editable-field{
+  position: relative;
+}
+
+.topic-details{
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  margin-left: 2px;
+}
+
 .btn-details{
   font-size: 75% !important;
 }
@@ -73,7 +84,7 @@
 }
 
 #tables-sub-menu-nav{
-  height: 30px; 
+  height: 30px;
 }
 
 #tables-sub-menu-nav li {
@@ -85,7 +96,7 @@
   font-size: 10pt;
 }
 
-#navbar-submenu {  
+#navbar-submenu {
   position: fixed;
   right: 0;
   left: 0;
