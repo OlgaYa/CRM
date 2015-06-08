@@ -214,9 +214,12 @@ $(document).ready(function(){
               flag = false;
           $editableFieldTextArea.val('');
           $editableFieldDialog.dialog('close');
-          html_details = '<br><br>' + $('.topic-details', $td).wrap('<div>').parent().html();
+          html_details =  $('.topic-details', $td).wrap('<div>').parent().html();
+
           $td.text(newValue);
-          $td.append(html_details);
+          if (html_details != undefined) {
+            $td.append('<br><br>' + html_details);
+          }
           notifie(capitalize($td.attr('value')) + ' was successfully updated', $notifier);
           updateDate(rowId, d, $td.attr('value'));
           if(data.pseudo_uniq){
