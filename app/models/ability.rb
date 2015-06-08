@@ -86,6 +86,7 @@ class Ability
 
       if perm.include?('summary_table_reports')
         can :manage, :summary_report
+        can :manage, :summary_job
       end
 
       if perm.include?('self_reports')
