@@ -185,7 +185,9 @@ $(document).ready(function(){
   }
 
   $(document).on('dblclick', '.editable-field', function(){
-    var currentData = $(this).text();
+    var currentData = $(this).contents().filter(function() {
+      return this.nodeType == 3;
+    }).text()
     $editableFieldDialog.dialog('option', 'position', { my: 'left top', at: 'left bottom',  of: $(this) });
     $editableFieldDialog.dialog('option', 'title', capitalize($(this).attr('value')));
     $editableFieldDialog.data('$td', $(this));
@@ -212,7 +214,9 @@ $(document).ready(function(){
               flag = false;
           $editableFieldTextArea.val('');
           $editableFieldDialog.dialog('close');
+          html_details = $('.topic-details', $td).wrap('<div>').parent().html();
           $td.text(newValue);
+          $td.append(html_details);
           notifie(capitalize($td.attr('value')) + ' was successfully updated', $notifier);
           updateDate(rowId, d, $td.attr('value'));
           if(data.pseudo_uniq){
