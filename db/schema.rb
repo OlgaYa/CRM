@@ -11,11 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150605064746) do
+ActiveRecord::Schema.define(version: 20150607094137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "uuid-ossp"
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
@@ -40,6 +39,13 @@ ActiveRecord::Schema.define(version: 20150605064746) do
     t.string   "description"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+  end
+
+  create_table "holidays", force: :cascade do |t|
+    t.string   "title"
+    t.date     "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "levels", force: :cascade do |t|
@@ -88,6 +94,7 @@ ActiveRecord::Schema.define(version: 20150605064746) do
     t.integer "plan_id"
     t.integer "option_id"
     t.string  "option_type"
+    t.string  "status",      default: "active"
   end
 
   create_table "permissions", force: :cascade do |t|
@@ -98,11 +105,10 @@ ActiveRecord::Schema.define(version: 20150605064746) do
   end
 
   create_table "plans", force: :cascade do |t|
-    t.date    "date_from"
-    t.date    "date_to"
-    t.string  "for_type",   default: "sale"
-    t.integer "count",      default: 0
-    t.integer "percentage", default: 0
+    t.string  "for_type",           default: "sale"
+    t.integer "count",              default: 0
+    t.integer "percentage",         default: 0
+    t.date    "first_day_in_month"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -136,16 +142,6 @@ ActiveRecord::Schema.define(version: 20150605064746) do
     t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "sold_tasks", force: :cascade do |t|
-    t.integer  "task_id"
-    t.integer  "price"
-    t.date     "date_start"
-    t.date     "date_end"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "sources", force: :cascade do |t|
@@ -208,27 +204,6 @@ ActiveRecord::Schema.define(version: 20150605064746) do
     t.string   "phone"
     t.date     "date_status_1"
     t.text     "details"
-  end
-
-  create_table "task_comments", force: :cascade do |t|
-    t.integer  "task_id"
-    t.integer  "comment_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "tasks", force: :cascade do |t|
-    t.string   "name"
-    t.string   "skype"
-    t.string   "email"
-    t.text     "links"
-    t.date     "date"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "source_id"
-    t.string   "topic"
-    t.integer  "status_id"
   end
 
   create_table "user_permissions", force: :cascade do |t|
