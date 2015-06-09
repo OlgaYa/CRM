@@ -15,7 +15,8 @@ class Plan < ActiveRecord::Base
   def find_percentage
     statuses, levels, specializations  = ["Status", "Level", "Specialization"].collect do|k|
       options_for_plan.where(option_type: k).blank? ? all_resourse(k) :
-                                          options_for_plan.where(option_type: k).pluck(:option_id)
+                                          options_for_plan.where(option_type: k,
+                                                                status: "active").pluck(:option_id)
     end
     inform_count = Table.where(:updated_at => first_day_in_month..first_day_in_month.end_of_month)
                   .where(status_id: statuses)
@@ -33,7 +34,8 @@ class Plan < ActiveRecord::Base
   def count_in_current_day(date)
     statuses, levels, specializations  = ["Status", "Level", "Specialization"].collect do|k|
       options_for_plan.where(option_type: k).blank? ? all_resourse(k) :
-                                          options_for_plan.where(option_type: k).pluck(:option_id)
+                                          options_for_plan.where(option_type: k,
+                                                                status: "active").pluck(:option_id)
     end
     inform_count = Table.where(["updated_at >= ? AND updated_at <= ?", date.beginning_of_day, date.end_of_day])
                   .where(status_id: statuses)
