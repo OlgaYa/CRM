@@ -16,7 +16,7 @@ class Sale < Table
   DEFAULT_COLUMNS = [:id,     :name,     :skype,
                      :email,  :date,     :user,
                      :source, :topic,    :status,
-                     :comments, :links,  :phone]
+                     :comments, :links,  :phone, :graphics]
 
   # default fields for building Sale table with status 'sold'
   ADVANCED_COLUMNS = DEFAULT_COLUMNS + [:price, :terms]
