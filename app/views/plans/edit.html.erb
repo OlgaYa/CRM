@@ -1,0 +1,28 @@
+<%= content_for(:custom_scripts) do %>
+  <%= javascript_include_tag 'export' %>
+<% end %>
+
+<%= content_for(:sub_menu) do %>
+  <%= render "shared/submenus/admin_panel_sub_menu" %>
+<% end %>
+
+<div class="row content">
+  <div class="col-lg-6 col-md-8 col-lg-offset-3 col-md-offset-2">
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <%if @type == @sale %>
+        <%= render partial: "edit_sale_plan" %>
+      <% else %>
+        <%= render partial: "edit_candidate_plan" %>
+      <% end %>
+    </div>  
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    var checkin = $('#dpd1').datepicker( {dateFormat: 'dd-mm-yy'});
+    var checkout = $('#dpd2').datepicker({ dateFormat: 'dd-mm-yy'});
+  });
+</script>>

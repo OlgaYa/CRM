@@ -7,8 +7,9 @@
     <%= sub_menu_action('Bloked users', admin_show_users_path(status: 'lock'),
                         'admin', 'show_users', :status, 'lock')  %>
     <%= sub_menu_action('Plans', plans_path, 'plans') %>
-      <%= sub_menu_action('Text for interview', root_url + 'admin/email_texts/interview_text',
+    <%= sub_menu_action('Text for interview', root_url + 'admin/email_texts/interview_text',
                       'admin/email_texts', 'interview_text') %>
+    <%= sub_menu_action('Holidays', holidays_path, 'holiday') %>
   <% end %>
   <%= sub_menu_action('Seller controls', admin_task_controls_path(type: 'CANDIDATE'),
                       'admin', 'task_controls',:type, 'CANDIDATE') if current_user.permissions.have? 'manage_hh_controls' %>

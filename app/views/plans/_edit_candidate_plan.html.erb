@@ -1,5 +1,5 @@
-<div id = "candidate">
-  <%= form_tag plans_path(type: 'CANDIDATE') do %>
+<div id = "sale">
+  <%= form_tag plan_path(type: 'CANDIDATE', id: @plan.id), method: :put do %>
     <%= render partial: "table_for_candidate" %>
     <%= submit_tag  "Create", class: "brn btn-primary pull-right" %>
   <% end %> <!--/form_tag -->

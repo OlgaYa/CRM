@@ -1,0 +1,33 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th> Statuses </th>
+      <th> Settings </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id="statuses">
+        <% Status.all_sale.each do |status| %>
+          <%= check_box_tag "statuses[]", "#{status.id}", @options.include?(status), id: "s_#{status.id}" %>
+          <%= label_tag status.name %>
+          <br>          
+        <% end %>  
+      </td>
+      <td id="users">
+
+      <td class="settings">
+        <%= check_box_tag "All statuses", "All statuses" %>
+        <%= label_tag "All statuses" %>
+        <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<hr>
+<%= select_year(@date, start_year: 2015) %>
+<%= select_month(@date) %>
+<hr>
+<label for="from">The number of tasks for the plan</label>
+<%= text_field_tag :count, @plan.count if @plan %>
+<hr>

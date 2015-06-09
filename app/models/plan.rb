@@ -1,8 +1,7 @@
 class Plan < ActiveRecord::Base
   has_many :options_for_plan, dependent: :destroy
 
-  validates :date_from, presence: true
-  validates :date_to, presence: true
+  validates :first_day_in_month, presence: true,  :uniqueness => { :scope => :for_type }
   validates :count, presence: true
 
   def self.all_sale
@@ -14,13 +13,12 @@ class Plan < ActiveRecord::Base
   end
 
   def find_percentage
-    date_start = date_from.at_beginning_of_week
-    date_end = date_to.at_end_of_week
-    users, statuses, levels, specializations  = ["User", "Status", "Level", "Specialization"].collect do|k|
-     options_for_plan.where(option_type: k).blank? ? all_resourse(k) : options_for_plan.where(option_type: k).pluck(:option_id)
+    statuses, levels, specializations  = ["Status", "Level", "Specialization"].collect do|k|
+      options_for_plan.where(option_type: k).blank? ? all_resourse(k) :
+                                          options_for_plan.where(option_type: k,
+                                                                status: "active").pluck(:option_id)
     end
-    inform_count = Table.where(:updated_at => date_start..date_end)
-                  .where(user_id: users)
+    inform_count = Table.where(:updated_at => first_day_in_month..first_day_in_month.end_of_month)
                   .where(status_id: statuses)
                   .where(level_id: levels)
                   .where(specialization_id: specializations).count
@@ -31,5 +29,17 @@ class Plan < ActiveRecord::Base
 
   def all_resourse(resours)
     resours.constantize.all.pluck(:id) << nil
+  end
+
+  def count_in_current_day(date)
+    statuses, levels, specializations  = ["Status", "Level", "Specialization"].collect do|k|
+      options_for_plan.where(option_type: k).blank? ? all_resourse(k) :
+                                          options_for_plan.where(option_type: k,
+                                                                status: "active").pluck(:option_id)
+    end
+    inform_count = Table.where(["updated_at >= ? AND updated_at <= ?", date.beginning_of_day, date.end_of_day])
+                  .where(status_id: statuses)
+                  .where(level_id: levels)
+                  .where(specialization_id: specializations).count
   end
 end

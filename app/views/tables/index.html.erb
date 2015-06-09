@@ -19,6 +19,7 @@
       <%= render 'shared/notifier' %>   
       <%= render 'table_controls' %>         
       <%= render 'table_filter' %>
+      <%= render partial: 'plans/graphics', locals: {type: @type} if present?(:graphics)%>
       <%= render 'table_search' %>
       
       <div class='clear'></div>
