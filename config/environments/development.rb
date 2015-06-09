@@ -39,10 +39,11 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  config.action_mailer.delivery_method = :sendmail
   # config.active_job.queue_adapter = :sucker_punch
   config.active_job.queue_adapter = :sidekiq
   config.action_mailer.default_url_options = { :host => "localhost:3000" }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
   config.time_zone = 'Europe/Kiev'
   config.assets.precompile << "*.js"
 end
