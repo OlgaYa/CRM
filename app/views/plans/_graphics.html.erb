@@ -1,0 +1,31 @@
+<div class="graphics_plan">
+</div>
+<script type="text/javascript">
+var
+    data_for_series = JSON.parse('<%= raw find_plan(type).html_safe %>');
+  $('.graphics_plan').highcharts({
+    title: {
+      text: 'Plan'
+    },
+    xAxis: {
+    tickInterval:  24 * 3600 * 1000,
+    type: 'datetime',
+    labels: {
+      format: '{value: %d-%m-%Y}',
+      align: 'center'
+    }
+  },
+  plotOptions: {
+      series: {
+        pointStart: <%= Date.today.at_beginning_of_month.to_datetime.to_i * 1000 %>,
+        pointInterval: 24 * 3600 * 1000
+      }
+    },
+    yAxis: {
+      title: {
+        text: 'Count tasks'
+      },
+    },
+    series: data_for_series
+  });
+</script>
