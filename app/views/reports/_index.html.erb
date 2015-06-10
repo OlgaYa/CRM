@@ -1,5 +1,5 @@
 <%= form_tag reports_path, method: 'get', class: 'select-year-and-month inline' do %>
-  <%= select_year(@date, start_year: 2015) %>
+  <%= select_year(@date.year, start_year: (Date.today - 1.years).year, end_year: (Date.today + 1.years).year) %>
   <%= select_month(@date) %>
 <% end %>
 <%= link_to new_report_path, remote: true, class: 'btn btn-sm btn-success self-reports' do %>
