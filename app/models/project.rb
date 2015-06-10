@@ -7,6 +7,7 @@ class Project < ActiveRecord::Base
   validates :name, presence: true
 
   has_and_belongs_to_many :users, dependent: :destroy
+  has_many :reports, dependent: :destroy
 
   def self.all_active
     where(status: "active")

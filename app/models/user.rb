@@ -8,8 +8,8 @@ class User < ActiveRecord::Base
   after_create :set_user_settings
 
   has_many :tables
-  has_many :reports,  dependent: :destroy
-  has_many :dt_reports
+  has_many :reports, dependent: :destroy
+  has_many :dt_reports, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :messages, dependent: :destroy
 
@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   has_attached_file :avatar, styles: { medium: '128x128>',
                                        small: '36x36' },
                              default_url: 'avatar-default.jpg'
-  
+
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 
   extend Enumerize
