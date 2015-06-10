@@ -106,4 +106,7 @@ Rails.application.routes.draw do
 
   post 'remove_project_user', to: 'users#remove_project'
 
+  get 'project_reports', to: 'project_reports#index'
+  get 'project_reports/:id', to: 'project_reports#show'
+
 end
