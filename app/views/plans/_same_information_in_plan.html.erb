@@ -1,8 +1,5 @@
-<td >
-	<%= label_tag plan.date_from %>
-</td>
 <td>
-	<%= label_tag plan.date_to %>
+  <%= label_tag plan.first_day_in_month.strftime("%B %Y")%>
 </td>
 <td>
 	<%= label_tag plan.count %>
@@ -10,3 +7,5 @@
 <td>
 	<%= label_tag plan.percentage %>
 </td>
+<td> <%= link_to(image_tag('edit.png'), edit_plan_path(plan, type: plan.for_type)) %></td>
+<td> <%= link_to(image_tag('remove.png'), plan_path(plan), method: :delete) %></td>

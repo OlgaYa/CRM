@@ -15,7 +15,7 @@ class Candidate < Table
   DEFAULT_COLUMNS = [:id,    :name,   :level,
                      :email, :skype,  :source,
                      :date,  :status, :comments,
-                     :phone, :links,  :specialization]
+                     :phone, :links,  :specialization, :graphics]
 
   # default fields for building Candidate table with status 'contact_later'
   ADVANCED_COLUMNS = DEFAULT_COLUMNS + [:reminder]

@@ -14,21 +14,48 @@ class PlansController < ApplicationController
   def new
     @sale = 'SALE'
     @type = params[:type]
+    @options = []
+    @date = Date.today
   end
 
   def create
-    plan = Plan.new(date_from: params[:dateFrom],
-                    date_to: params[:dateTo],
+    date=Date.new(params[:date]['year'].to_i, params[:date]['month'].to_i, 1)
+    plan = Plan.new(first_day_in_month: date,
                     count: params[:count],
                     for_type: params[:type])
     if plan.save
-      [:users, :statuses, :levels, :specializations].each do |p|
+      [:statuses, :levels, :specializations].each do |p|
         create_option(p, plan)
       end
       redirect_to action: :index
     else
-      render 'new'
+      redirect_to action: :new, :type => params[:type]
     end
+  end
+
+  def edit
+    @sale = 'SALE'
+    @type = params[:type]
+    @plan = Plan.find(params[:id])
+    @options = @plan.options_for_plan.where(status: "active").map{ |o| o.option }
+    @date = @plan.first_day_in_month
+  end
+
+  def update
+    date=Date.new(params[:date]['year'].to_i, params[:date]['month'].to_i, 1)
+    plan = Plan.find(params[:id])
+    plan.update_attributes(first_day_in_month: date,
+                           count: params[:count],
+                           for_type: params[:type])
+    [:statuses, :levels, :specializations].each do |p|
+      update_option(params[p], p, plan)
+    end
+    redirect_to action: :index
+  end
+
+  def destroy
+    Plan.find(params[:id]).destroy
+    redirect_to action: :index
   end
 
   private
@@ -39,6 +66,24 @@ class PlansController < ApplicationController
         entity = to_entity(parameter)
         option = entity.find(value).options_for_plan.new(plan_id: plan.id)
         option.save
+      end
+    end
+
+    def update_option(array, parameter, plan)
+      return unless array
+      type = parameter.to_s.singularize.capitalize
+      plan.options_for_plan.where(option_type: type).each do |value|
+        unless array.include? (value.option_id.to_s)
+          value.update_attribute(:status, "inactive")
+        else
+          value.update_attribute(:status, "active")
+          array.delete(value.option_id.to_s)
+        end
+      end
+      array.each do |value|
+        OptionsForPlan.create(plan_id: plan.id,
+                              option_type: type,
+                              option_id: value.to_i)
       end
     end
 
