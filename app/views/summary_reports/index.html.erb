@@ -14,8 +14,8 @@
   <div class='container-fluid'>
     <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
       <%= form_tag summary_reports_path, method: 'get', class: 'select-year-and-month' do %>
-        <%= select_year(@date, start_year: 2015) %>
         <%= select_month(@date) %>
+        <%= select_year(@date, start_year: 2015) %>
       <% end %>
       <%= form_tag refresh_path, method: 'post', remote: true, class: 'refresh-dt-data' do %>
         <%= hidden_field 'date', 'year', value: @date.year %>

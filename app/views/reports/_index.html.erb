@@ -1,6 +1,6 @@
 <%= form_tag reports_path, method: 'get', class: 'select-year-and-month inline' do %>
-  <%= select_year(@date, start_year: 2015) %>
   <%= select_month(@date) %>
+  <%= select_year(@date, start_year: 2015) %>
 <% end %>
 <%= link_to new_report_path, remote: true, class: 'btn btn-sm btn-success self-reports' do %>
   <%= content_tag(:i, '', class: 'glyphicon glyphicon-plus') %>
@@ -28,7 +28,7 @@
     <% @reports.each do |report|%>
       <tr class='report' id='report_<%= report.id %>'>
         <td class='report-date'>
-          <%= report.date %>
+          <%= report.date.strftime("%d.%m.%Y") %>
         </td>
         <td class='report-project'>
           <%= report.project.name %>

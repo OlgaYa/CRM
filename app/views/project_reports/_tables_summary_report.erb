@@ -9,13 +9,13 @@
 <div class='row content'>
   <div class='container-fluid'>
     <%= form_tag project_reports_path + "/#{params[:id]}", method: 'get', class: 'select-year-and-month' do %>
-      <%= select_year(@start_date, :field_name => 'start_year') %>
-      <%= select_month(@start_date, :field_name => 'start_month') %>
       <%= select_day(@start_date, :field_name => 'start_day') %>
+      <%= select_month(@start_date, :field_name => 'start_month') %>
+      <%= select_year(@start_date, :field_name => 'start_year') %>
       <%= content_tag(:i, '', class: 'glyphicon glyphicon-minus') %>
-      <%= select_year(@finish_date, :field_name => 'finish_year') %>
-      <%= select_month(@finish_date,  :field_name => 'finish_month') %>
       <%= select_day(@finish_date,  :field_name => 'finish_day') %>
+      <%= select_month(@finish_date,  :field_name => 'finish_month') %>
+      <%= select_year(@finish_date, :field_name => 'finish_year') %>
 
       <%= button_tag controller: "project_reports", action: params[:action], class: 'btn btn-primary' do %>
         <%= content_tag(:i, '', class: 'glyphicon glyphicon-ok') %>
@@ -56,7 +56,7 @@
 
         <% @project_reports.each do |pr| %>
           <tr>
-            <td><%= pr.date %></td>
+            <td><%= pr.date.strftime("%d.%m.%Y") %></td>
             <td><%= link_to pr.user.name, user_path(pr.user) %></td>
             <% if params[:action]=='index' %>
               <td><span class='label <%= "label-#{pr.project.kind}" %>'> </span></td>

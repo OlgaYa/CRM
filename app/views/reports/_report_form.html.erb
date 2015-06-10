@@ -2,7 +2,7 @@
   <div class="modal-body">
     <ul class='errors'></ul>
     <div class="control-field">
-      <%= f.text_field :date, readonly: true, class: 'form-control control-small report-datepicker', value: @report.date %>
+      <%= f.text_field :date, readonly: true, class: 'form-control control-small report-datepicker', value: @report.date.strftime("%d.%m.%Y") %>
       <%= f.number_field :hours, value: @report.hours,class: 'form-control control-small pull-right', step: 'any', placeholder: 'Hours'%>
     </div>
     <div class="side-by-side clearfix">
