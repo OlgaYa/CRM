@@ -3,6 +3,6 @@
 <ul id='tables-sub-menu-nav' class="nav navbar-nav">
   <%= sub_menu_action('Summary reports', summary_reports_path, 'summary_reports', 'index') if can? :index, :summary_report %>
   <%= sub_menu_action('Summary jobs', summary_jobs_path, 'summary_jobs', 'index') if can? :index, :summary_job %>
-  <%= sub_menu_action('Manage reports', projects_path, 'project', 'index') %>
+  <%= sub_menu_action('Manage projects', projects_path, 'project', 'index') %>
   <%= sub_menu_action('My reports', reports_path, 'reports', 'index') if can? :index, Report %>
 </ul>

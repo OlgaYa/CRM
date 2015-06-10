@@ -12,13 +12,13 @@
           </div>
           <%= text_field_tag :search, "", class: 'form-control', id: "filterinput", placeholder: 'Search'%>
           <div id='assign'>
-            <label>Assign</label>
+            <label>Assigned to</label>
             <%= hidden_field_tag :user_ids %>
             <ul id='assign-fields' class='connectedSortable'>
             </ul>
           </div>
           <div id='not_assign'>
-            <label>Not Assign</label>
+            <label>Available</label>
             <ul id='not_assign-fields' class='connectedSortable'>
             </ul>
           </div>
