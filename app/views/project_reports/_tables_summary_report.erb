@@ -8,7 +8,7 @@
 
 <div class='row content'>
   <div class='container-fluid'>
-    <%= form_tag project_reports_path, method: 'get', class: 'select-year-and-month ' do %>
+    <%= form_tag project_reports_path + "/#{params[:id]}", method: 'get', class: 'select-year-and-month' do %>
       <%= select_year(@start_date, :field_name => 'start_year') %>
       <%= select_month(@start_date, :field_name => 'start_month') %>
       <%= select_day(@start_date, :field_name => 'start_day') %>

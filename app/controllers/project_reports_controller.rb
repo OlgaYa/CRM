@@ -10,7 +10,7 @@ class ProjectReportsController < ApplicationController
   def show
     set_period
     @project = Project.find(params[:id])
-    @project_reports = Report.where(project: @project).where('date in (?)', @start_date..@finish_date).order(date: :desc, user_id: :asc).paginate(:page => 1, :per_page => 100)
+    @project_reports = Report.where(project: @project).where('date in (?)', @start_date..@finish_date).order(date: :desc, user_id: :asc)
     @summary  = summary
     paginate_project_reports
   end
