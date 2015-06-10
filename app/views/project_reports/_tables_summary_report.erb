@@ -29,20 +29,28 @@
       <h3 class='text-center'> Project reports
         <% if params[:action]=='show' %>
           <%= "(#{@project.name})" %>
+          <span class='label <%= "label-#{@project.kind}" %>'> </span>
         <% end %>
       </h3>
 
       <%= link_to 'Back to all projects', projects_path(start_year: :start_year), class: 'pull-right' %>
 
+      <span class="label label-org">Org</span>
+      <span class="label label-problem">Problem</span>
+      <span class="label label-internal">Internal</span>
+      <span class="label label-commercial">Commercial</span>
+
+
       <table class='table table-hover'>
         <thead>
-          <th><h4>Date</h4></th>
-          <th><h4>User</h4></th>
+          <th>Date</th>
+          <th>User</th>
           <% if params[:action]=='index' %>
-            <th><h4>Project</h4></th>
+            <th></th>
+            <th>Project</th>
           <% end %>
-          <th><h4>Task</h4></th>
-          <th><h4>Hours</h4></th>
+          <th>Task</th>
+          <th>Hours</th>
         </thead>
         <tbody>
 
@@ -51,9 +59,8 @@
             <td><%= pr.date %></td>
             <td><%= link_to pr.user.name, user_path(pr.user) %></td>
             <% if params[:action]=='index' %>
-              <td>
-                <%= link_to "#{pr.project.name}", controller: "project_reports", action: "show", id: pr.project.id %>
-              </td>
+              <td><span class='label <%= "label-#{pr.project.kind}" %>'> </span></td>
+              <td><%= link_to "#{pr.project.name}", controller: "project_reports", action: "show", id: pr.project.id %></td>
             <% end %>
             <td><%= pr.task %></td>
             <td><%= pr.hours %></td>
