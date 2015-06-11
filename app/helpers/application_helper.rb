@@ -27,7 +27,7 @@ module ApplicationHelper
 
   def active_action?(controller, action, param_name, param_value)
     return false if params[param_name] != param_value
-    params[:controller] == controller && params[:action] == action
+    params[:controller] == controller && (params[:action] == action || action.nil?)
   end
 
   # OPTIMIZE

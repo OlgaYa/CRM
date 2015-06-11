@@ -1,0 +1,102 @@
+<%= content_for(:title) do %>
+  <%= site_title('Project reports') %>
+<% end %>
+
+<%= content_for(:sub_menu) do %>
+  <%= render 'shared/submenus/reports_sub_menu' %>
+<% end %>
+
+<div class='row content'>
+  <div class='container-fluid'>
+    <%= form_tag project_reports_path + "/#{params[:id]}", method: 'get', class: 'select-year-and-month' do %>
+      <%= select_day(@start_date, :field_name => 'start_day') %>
+      <%= select_month(@start_date, :field_name => 'start_month') %>
+      <%= select_year(@start_date, :field_name => 'start_year') %>
+      <%= content_tag(:i, '', class: 'glyphicon glyphicon-minus') %>
+      <%= select_day(@finish_date,  :field_name => 'finish_day') %>
+      <%= select_month(@finish_date,  :field_name => 'finish_month') %>
+      <%= select_year(@finish_date, :field_name => 'finish_year') %>
+
+      <%= button_tag controller: "project_reports", action: params[:action], class: 'btn btn-primary' do %>
+        <%= content_tag(:i, '', class: 'glyphicon glyphicon-ok') %>
+        <%= 'Submit' %>
+      <% end %>
+    <% end %>
+
+    <br>
+
+    <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+      <h3 class='text-center'> Project reports
+        <% if params[:action]=='show' %>
+          <%= "(#{@project.name})" %>
+          <span class='label <%= "label-#{@project.kind}" %>'> </span>
+        <% end %>
+      </h3>
+
+      <%= link_to 'Back to all projects', projects_path(start_year: :start_year), class: 'pull-right' %>
+
+      <span class="label label-org">Org</span>
+      <span class="label label-problem">Problem</span>
+      <span class="label label-internal">Internal</span>
+      <span class="label label-commercial">Commercial</span>
+
+
+      <table class='table table-hover'>
+        <thead>
+          <th>Date</th>
+          <th>User</th>
+          <% if params[:action]=='index' %>
+            <th></th>
+            <th>Project</th>
+          <% end %>
+          <th>Task</th>
+          <th>Hours</th>
+        </thead>
+        <tbody>
+
+        <% @project_reports.each do |pr| %>
+          <tr>
+            <td><%= pr.date.strftime("%d.%m.%Y") %></td>
+            <td><%= link_to pr.user.name, user_path(pr.user) %></td>
+            <% if params[:action]=='index' %>
+              <td><span class='label <%= "label-#{pr.project.kind}" %>'> </span></td>
+              <td><%= link_to "#{pr.project.name}", controller: "project_reports", action: "show", id: pr.project.id %></td>
+            <% end %>
+            <td><%= pr.task %></td>
+            <td><%= pr.hours %></td>
+          </tr>
+        <% end %>
+
+        </tbody>
+      </table>
+      <div class='project-report-period pull-right'>
+        <h4><%= "Period: #{@start_date}..#{@finish_date}" %> </h4>
+      </div>
+
+      <%= will_paginate @project_reports, class: 'pull_left',renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
+      <br>
+      <div class='project-report-summary pull-left'>
+        <table class='table  table-hover'>
+          <thead>
+            <th>Summary:</th>
+            <th>Username</th>
+            <th>Time</th>
+          </thead>
+          <tbody>
+            <% @summary.each do |s| %>
+              <tr>
+              <% user = User.find(s[:user_id]) %>
+              <td></td>
+              <td><%= user.name %></td>
+              <td><%= user.seconds_to_time((s[:hours]*3600).to_i) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+

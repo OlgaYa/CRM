@@ -46,4 +46,5 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
   config.time_zone = 'Europe/Kiev'
   config.assets.precompile << "*.js"
+  BetterErrors::Middleware.allow_ip! ENV['TRUSTED_IP'] if ENV['TRUSTED_IP']
 end
