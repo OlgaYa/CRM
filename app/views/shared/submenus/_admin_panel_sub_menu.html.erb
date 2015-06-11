@@ -11,8 +11,8 @@
                       'admin/email_texts', 'interview_text') %>
     <%= sub_menu_action('Holidays', holidays_path, 'holiday') %>
   <% end %>
-  <%= sub_menu_action('Seller controls', admin_task_controls_path(type: 'CANDIDATE'),
-                      'admin', 'task_controls',:type, 'CANDIDATE') if current_user.permissions.have? 'manage_hh_controls' %>
-  <%= sub_menu_action('HH controls', admin_task_controls_path(type: 'SALE'),
-                      'admin', 'task_controls', :type, 'SALE') if current_user.permissions.have? 'manage_seller_controls' %>
+  <%= sub_menu_action('Seller controls', admin_task_controls_path(type: 'SALE'),
+                      'admin', 'task_controls',:type, 'SALE') if current_user.permissions.have? 'manage_seller_controls' %>
+  <%= sub_menu_action('HH controls', admin_task_controls_path(type: 'CANDIDATE'),
+                      'admin', 'task_controls', :type, 'CANDIDATE') if current_user.permissions.have? 'manage_hh_controls' %>
 </ul>
