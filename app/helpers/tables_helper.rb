@@ -130,10 +130,10 @@ module TablesHelper
       end
     end
   end
-  
+
   # NEED REWRITE
   def generate_body(entity)
-    content_tag(:tr, id: entity.id, class: generate_class_tr(entity.user_id)) do
+    content_tag(:tr, id: entity.id, class: generate_class_tr) do
       concat table_control        entity.id
       concat table_id             entity.id                if present? :id
       concat editable_field       entity.name, 'name'      if present? :name
@@ -159,7 +159,7 @@ module TablesHelper
   def present?(column)
     @settings[:visible].include? column
   end
-  
+
   def generate_head_item(name,
                          class_names = '')
     content_tag(:th, name,
@@ -170,9 +170,11 @@ module TablesHelper
     content_tag(:th, sort_link(@q, value, name),  class: class_names)
   end
 
-  def generate_class_tr(user_id)
+  def generate_class_tr
     return if params[:type] == 'CANDIDATE'
-    user_id == current_user.id ? 'user_owner' : nil
+    user_owner = @entity.user_id == current_user.id ? 'user_owner' : nil
+    not_refresh_today = @entity.date.to_date < Date.today.to_date ? 'not_refresh_today' :nil if @entity.open?
+    [user_owner, not_refresh_today].compact.join(' ')
   end
 
   def editable_field(value, field_name)
@@ -242,7 +244,7 @@ module TablesHelper
     content_tag(:td, '', class: 'td-date') do
       content_tag(:input, '',
                   name: 'table[date]',
-                  value: date.strftime("%Y-%m-%d"), class: 'date-input')
+                  value: date.strftime("%d.%m.%Y"), class: 'date-input')
     end
   end
 

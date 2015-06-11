@@ -41,6 +41,10 @@ class Sale < Table
     select(ADVANCED_FIELDS)
   end
 
+  def open?
+    !['10 Sold', '10 Sold', '1 ProbablyNo'].include?(status.name)
+  end
+
   def self.open
     sql = "statuses.name <> '10 Sold' AND statuses.name <> '0 Declined' AND statuses.name <> '1 ProbablyNo'"
     all.join_statuses.where(sql)
