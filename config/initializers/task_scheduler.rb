@@ -25,6 +25,11 @@ unless scheduler.down?
     User.reminder
   end
 
+  scheduler.cron '30 00 * * 0' do
+    write_log("Start #{Time.now.strftime("%H:%M:%S")} (start delete Report more 1 years)\n")
+    Report.destroy_reports
+  end
+
   scheduler.cron '30 00 * * *' do
     User.contact_later_reminder
   end

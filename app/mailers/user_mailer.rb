@@ -1,6 +1,6 @@
 # encoding: utf-8
 class UserMailer < ActionMailer::Base
-	include ActionView::Helpers::SanitizeHelper
+  include ActionView::Helpers::SanitizeHelper
   # include Sidekiq::Mailer
 
   default :from => "crm.sloboda.studio@gmail.com"
@@ -16,14 +16,14 @@ class UserMailer < ActionMailer::Base
     @table_name = table.name
     @current_user = current_user
     subject = "TASK #{table.id}"
-  	mail(:to => @user.email, :subject => subject )
+    mail(:to => @user.email, :subject => subject )
   end
 
   def reminder_instructions(user_id, table_name)
-  	@user = User.find_by_id(user_id)
+    @user = User.find_by_id(user_id)
     @table_name = table_name
     subject = "[info] Reminder TASK"
-  	mail(:to => @user.email, :subject => subject )
+    mail(:to => @user.email, :subject => subject ) if Rails.env.production?
   end
 
   def remind_today(table_id)

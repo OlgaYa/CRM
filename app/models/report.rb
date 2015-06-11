@@ -15,4 +15,8 @@ class Report < ActiveRecord::Base
   def self.month_repors_time(date, current_user)
     all_in_this_month(date, current_user).sum :hours
   end
+
+  def self.destroy_reports
+    destroy_all(["date < ?", Date.today - 1.years])
+  end
 end
