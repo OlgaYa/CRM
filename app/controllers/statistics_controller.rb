@@ -4,7 +4,6 @@ class StatisticsController < ApplicationController
 
   def index
     @type = params[:type]
-    binding.pry
     @option_for_select = {}
     [:user, :status, :source, :level, :specialization].each do |k|
       @option_for_select[k] = JSON.parse(cookies[k]) if cookies[k] != "null"
