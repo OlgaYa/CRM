@@ -8,6 +8,7 @@
 
 <div class='row content'>
   <div class='container-fluid'>
+
     <%= form_tag project_reports_path + "/#{params[:id]}", method: 'get', class: 'select-year-and-month' do %>
       <%= select_day(@start_date, :field_name => 'start_day') %>
       <%= select_month(@start_date, :field_name => 'start_month') %>
@@ -17,7 +18,7 @@
       <%= select_month(@finish_date,  :field_name => 'finish_month') %>
       <%= select_year(@finish_date, :field_name => 'finish_year') %>
 
-      <%= button_tag controller: "project_reports", action: params[:action], class: 'btn btn-primary' do %>
+      <%= button_tag class: 'btn btn-primary' do %>
         <%= content_tag(:i, '', class: 'glyphicon glyphicon-ok') %>
         <%= 'Submit' %>
       <% end %>
@@ -60,7 +61,7 @@
             <td><%= link_to pr.user.name, user_path(pr.user) %></td>
             <% if params[:action]=='index' %>
               <td><span class='label <%= "label-#{pr.project.kind}" %>'> </span></td>
-              <td><%= link_to "#{pr.project.name}", controller: "project_reports", action: "show", id: pr.project.id %></td>
+              <td><%= link_to "#{pr.project.name}", controller: "project_reports", action: "show", id: pr.project.id, date: params[:date] %></td>
             <% end %>
             <td><%= pr.task %></td>
             <td><%= pr.hours %></td>
