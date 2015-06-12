@@ -19,7 +19,7 @@ class ProjectReportsController < ApplicationController
 
     def set_period
       @finish_date = Date.today
-      @start_date = @finish_date - 7
+      @start_date = @finish_date.beginning_of_month
       unless params[:date].nil?
         begin
           @finish_date = @finish_date.change(year: params[:date][:finish_year].to_i, month: params[:date][:finish_month].to_i, day: params[:date][:finish_day].to_i)
