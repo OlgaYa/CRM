@@ -11,11 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150607094137) do
+ActiveRecord::Schema.define(version: 20150612112159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "uuid-ossp"
 
   create_table "comments", force: :cascade do |t|
     t.text     "body"
@@ -145,16 +144,6 @@ ActiveRecord::Schema.define(version: 20150607094137) do
     t.datetime "updated_at"
   end
 
-  create_table "sold_tasks", force: :cascade do |t|
-    t.integer  "task_id"
-    t.integer  "price"
-    t.date     "date_start"
-    t.date     "date_end"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "sources", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at",                  null: false
@@ -217,27 +206,6 @@ ActiveRecord::Schema.define(version: 20150607094137) do
     t.text     "details"
   end
 
-  create_table "task_comments", force: :cascade do |t|
-    t.integer  "task_id"
-    t.integer  "comment_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "tasks", force: :cascade do |t|
-    t.string   "name"
-    t.string   "skype"
-    t.string   "email"
-    t.text     "links"
-    t.date     "date"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "source_id"
-    t.string   "topic"
-    t.integer  "status_id"
-  end
-
   create_table "user_permissions", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "permission_id"
@@ -276,6 +244,7 @@ ActiveRecord::Schema.define(version: 20150607094137) do
     t.datetime "avatar_updated_at"
     t.string   "table_settings"
     t.integer  "group"
+    t.string   "comment_for_project",    default: ""
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

@@ -20,6 +20,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def update_comment
+    @user = User.find(params[:id].to_i)
+    @user.update_attribute(:comment_for_project, params[:value])
+    render layout: false
+  end
+
   # OPTIMIZE
   def destroy
     user = User.find(params[:id])

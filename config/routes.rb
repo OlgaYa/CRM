@@ -8,7 +8,11 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
   
   resources :tables, only: [:create, :update, :destroy, :index]
-  resources :users
+  resources :users do
+    collection do
+      put :update_comment
+    end
+  end
   resources :comments, only: [:create, :destroy]
   resources :meetings
   resources :statistics, only: :index do

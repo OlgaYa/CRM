@@ -1,3 +1,7 @@
+<%= content_for(:custom_scripts) do %>
+  <%= javascript_include_tag 'summary_jobs' %>
+<% end %>
+
 <%= content_for(:title) do %>
   <%= site_title('Summary jobs') %>
 <% end %>
@@ -18,6 +22,7 @@
           <th><h4>Full name</h4></th>
           <th><h4>Group</h4></th>
           <th><h4>Projects</h4></th>
+          <th><h4>Comment</h4></th>
         </thead>
         <tbody>
           <% @users.each do |user| %>
@@ -32,6 +37,7 @@
                   </span>
                 <% end %>
               </td>
+              <%= comment_field (user) %>
             </tr>
           <% end %>
         </tbody>
@@ -40,6 +46,10 @@
 
     </div>
   </div>
+</div>
+
+<div id='editable-field'>
+  <textarea id='editable-field-textarea' ></textarea>
 </div>
 
 <script>
