@@ -21,7 +21,7 @@
         <span> Assign: </span><br/>
         <div class="datestatistic">
           <div class="side-by-side clearfix">
-            <%= select_tag("User", options_for_select(find_collect_for_select(@type, "user").collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-user", name: 'user[]', id: 'user', "data-placeholder" => 'Select User ...') %>         
+            <%= select_tag("User", options_for_select(find_collect_for_select(@type, "user").collect {|p| [ p.first_name + ' ' + p.last_name , p.id ]}, selected: @option_for_select[:user]),multiple: true, style:"width:100% !important;", class: "chosen-select-user", name: 'user[]', id: 'user', "data-placeholder" => 'Select User ...') %>         
           </div>
         </div>
         <% array_select_field(@type).each do |name|%>
@@ -37,6 +37,7 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
+    $('form').submit();
     $('form :input').on('change', function(e){
       $('form').submit();
     })

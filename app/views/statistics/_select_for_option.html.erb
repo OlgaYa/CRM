@@ -1,6 +1,6 @@
 <span> <%= name.capitalize %>: </span><br/>
 <div class="datestatistic">
 	<div class="side-by-side clearfix">
-    <%= select_tag name, options_for_select(find_collect_for_select(@type, name).collect {|p| [ p.name, p.id ]}),multiple: true, style:"width:100% !important;", class: "chosen-select-status", name: name + '[]', id: name, "data-placeholder" => 'Select ' + name + '...' %>
+    <%= select_tag name, options_for_select(find_collect_for_select(@type, name).collect {|p| [ p.name, p.id ]}, selected: @option_for_select[:"#{name}"]),multiple: true, style:"width:100% !important;", class: "chosen-select-status", name: name + '[]', id: name, "data-placeholder" => 'Select ' + name + '...' %>
   </div>
 </div>

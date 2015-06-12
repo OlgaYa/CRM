@@ -4,14 +4,23 @@ class StatisticsController < ApplicationController
 
   def index
     @type = params[:type]
+    binding.pry
+    @option_for_select = {}
+    [:user, :status, :source, :level, :specialization].each do |k|
+      @option_for_select[k] = JSON.parse(cookies[k]) if cookies[k] != "null"
+    end
+    @date_from = cookies[:data_from].to_date
+    @date_to = cookies[:date_to].to_date
   end
 
   def change_information
     @hash = []
     date_from = params[:dateFrom].to_date.at_beginning_of_week
     date_to = params[:dateTo].to_date.at_end_of_week
-    allusers, allstatus, allsources, alllevels, allspecializations  = [:user, :status, :source, :level, :specialization].collect{|k| params[k].blank? ? [""] : params[k]}
-
+    allusers, allstatus, allsources, alllevels, allspecializations  = [:user, :status, :source, :level, :specialization].collect do |k|
+     cookies[k] = params[k].to_json
+     params[k].blank? ? [""] : params[k]
+   end
     allsources.each do |source|
         allusers.each do |user|
           allstatus.each do |status|
