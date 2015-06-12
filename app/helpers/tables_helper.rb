@@ -183,7 +183,7 @@ module TablesHelper
                 class: 'editable-field td-' + field_name,
                 name: "table[#{field_name}]", value: field_name) do
       buffer << value
-      if field_name == 'topic'
+      if (field_name == 'topic' && @entity.type == 'Sale') || (field_name == 'name' && @entity.type == 'Candidate')
         buffer << content_tag(:br)
         if @entity.details && @entity.details.present?
           button_title = 'Details'

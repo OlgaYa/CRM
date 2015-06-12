@@ -1,12 +1,12 @@
 # This class defines the essence of which users will be working with the permission HH
 class Candidate < Table
-  
+
   # fields for Candidate scope
-  DEFAULT_FIELDS = [:id,    :name,       :level_id,
-                    :email, :skype,      :source_id,
-                    :date,  :user_id,    :status_id,
-                    :type,  :created_at, :updated_at,
-                    :phone, :specialization_id]
+  DEFAULT_FIELDS = [:id,         :name,  :details,
+                    :level_id,   :email, :skype,
+                    :source_id,  :date,  :user_id,
+                    :status_id,  :type,  :created_at,
+                    :updated_at, :phone, :specialization_id]
 
   # fields for Candidate scope with status 'contact_later'
   ADVANCED_FIELDS = DEFAULT_FIELDS + [:reminder_date]
