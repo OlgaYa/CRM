@@ -2,6 +2,26 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+li.org{
+  background-color: #5cb85c !important;
+  color: #000000 !important;
+}
+
+li.problem{
+  background-color: #FFFF00 !important;
+  color: #000000 !important;
+}
+
+li.internal{
+  background-color: #BA55D3 !important;
+  color: #000000 !important;
+}
+
+li.commercial{
+  background-color: #d3d3d3 !important;
+  color: #000000 !important;
+}
+
 .form-control.control-small{
 	width: 48%;
 	display: inline-block;

@@ -43,6 +43,8 @@ group :development do
   gem 'binding_of_caller'
   gem 'capistrano', '~> 2.13.0'
   gem 'rvm-capistrano',  require: false
+  gem 'interactive_editor'
+  gem 'mailcatcher'
 end
 
 group :development, :test do

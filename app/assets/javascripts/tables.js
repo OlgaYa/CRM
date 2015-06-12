@@ -69,7 +69,7 @@ $(document).ready(function(){
           click: function(){
             $pseudoUniqDialog.dialog('close');
             $pseudoUniqDialogContent.empty();
-          }         
+          }
         }
       ]
   });
@@ -91,7 +91,7 @@ $(document).ready(function(){
           text: 'Close',
           click: function(){
             $(this).dialog('close');
-            location.reload(true);            
+            location.reload(true);
           }
         },
         {
@@ -399,7 +399,7 @@ $(document).ready(function(){
   var flag = false;
   function dateInputInit(){
     $('.date-input').datepicker({
-      dateFormat: 'yy-mm-dd',
+      dateFormat: 'dd.mm.yy',
       onSelect: function(date, obj){
         flag = true;
       },
@@ -456,15 +456,15 @@ $(document).ready(function(){
 
   function updateDate(row_id, d, fieldName) {
     if(fieldName == 'comments'){
-      $('#'+row_id).children('.td-date').children('.date-input').val(d.yyyymmdd());
+      $('#'+row_id).children('.td-date').children('.date-input').val(d.ddmmyyyy());
     }
   }
 
-  Date.prototype.yyyymmdd = function() {
+  Date.prototype.dddmmyyyy = function() {
     var yyyy = this.getFullYear().toString();
     var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
     var dd  = this.getDate().toString();
-    return yyyy +'-'+(mm[1]?mm:"0"+mm[0]) +'-'+ (dd[1]?dd:"0"+dd[0]); // padding
+    return (dd[1]?dd:"0"+dd[0])+ '.' + (mm[1]?mm:"0"+mm[0]) + '.' + yyyy;
   }
 
   $.fn.name = function(){
@@ -476,7 +476,7 @@ $(document).ready(function(){
   }
 
   $('.date-input-filter').datepicker({
-    dateFormat: 'yy-mm-dd',
+    dateFormat: 'dd.mm.yy',
   });
 
   /* ====================== Hiding columns ========================= */
@@ -549,7 +549,7 @@ $(document).ready(function(){
       $selector.append('<li>'+ settings.visible[i] +'</li>')
     }
   }
-  
+
   function appendInvisibleFields($selector){
     var i = 0;
     for(i; i < settings.invisible.length; i = i+1){

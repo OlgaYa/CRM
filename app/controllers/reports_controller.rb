@@ -52,7 +52,11 @@ class ReportsController < ApplicationController
   end
 
   def update_report_settings
-    array = params[:invisible].collect{|p| Project.find(p)}
+    if params[:invisible]
+      array = params[:invisible].collect{|p| Project.find(p)}
+    else
+      array = []
+    end
     current_user.projects = array
     redirect_to action: :index
   end

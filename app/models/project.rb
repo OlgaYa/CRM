@@ -14,14 +14,14 @@ class Project < ActiveRecord::Base
   end
 
   def self.all_exsept_project_current_user user
-    all_active.pluck(:name, :id).select do|p|
-      p unless Project.find(p[1]).users.include? user
+    all_active.map{|project| [project.name, project.id, project.kind]}.select do |project|
+      project unless Project.find(project[1]).users.include? user
     end
   end
 
   def self.all_project_current_user user
-    all_active.pluck(:name, :id).select do|p|
-      p if Project.find(p[1]).users.include? user
+    all_active.map{|project| [project.name, project.id, project.kind]}.select do |project|
+      project if Project.find(project[1]).users.include? user
     end
   end
 end
