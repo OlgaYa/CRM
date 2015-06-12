@@ -6,16 +6,19 @@ class StatisticsController < ApplicationController
     @type = params[:type]
     @option_for_select = {}
     [:user, :status, :source, :level, :specialization].each do |k|
-      @option_for_select[k] = JSON.parse(cookies[k]) if cookies[k] != "null"
+      @option_for_select[k] = JSON.parse(cookies[k]) if cookies[k] != "null" && cookies[k]
     end
-    @date_from = cookies[:data_from].to_date
-    @date_to = cookies[:date_to].to_date
+    @date_from = (cookies[:date_from] != "null" && cookies[:date_from]) ? cookies[:date_from].to_date
+                                                                        : Date.today.at_beginning_of_week
+    @date_to =   (cookies[:date_to] != "null" && cookies[:date_to])     ? cookies[:date_to].to_date
+                                                                        : Date.today.at_end_of_week
   end
 
   def change_information
     @hash = []
     date_from = params[:dateFrom].to_date.at_beginning_of_week
     date_to = params[:dateTo].to_date.at_end_of_week
+    cookies[:date_from], cookies[:date_to] = date_from, date_to
     allusers, allstatus, allsources, alllevels, allspecializations  = [:user, :status, :source, :level, :specialization].collect do |k|
      cookies[k] = params[k].to_json
      params[k].blank? ? [""] : params[k]

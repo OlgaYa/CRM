@@ -12,11 +12,11 @@
       <%= form_tag change_information_statistics_path(type: @type), remote: true do %>
         <span> From: </span>
         <div class="date">
-          <%= text_field_tag :dateFrom, Date.today.at_beginning_of_week.strftime("%d-%m-%Y"), id:"dpd1" %><br />
+          <%= text_field_tag :dateFrom, @date_from.strftime("%d-%m-%Y"), id:"dpd1" %><br />
         </div>
         <span> to: </span>
         <div class="date">
-          <%= text_field_tag :dateTo, Date.today.at_end_of_week.strftime("%d-%m-%Y"), id:"dpd2" %><br />
+          <%= text_field_tag :dateTo, @date_to.strftime("%d-%m-%Y"), id:"dpd2" %><br />
         </div>
         <span> Assign: </span><br/>
         <div class="datestatistic">
