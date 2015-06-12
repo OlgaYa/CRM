@@ -18,7 +18,7 @@
       <%= select_month(@finish_date,  :field_name => 'finish_month') %>
       <%= select_year(@finish_date, :field_name => 'finish_year') %>
 
-      <%= button_tag class: 'btn btn-primary' do %>
+      <%= button_tag class: 'btn btn-primary', style: "height: 30px;   vertical-align: bottom;" do %>
         <%= content_tag(:i, '', class: 'glyphicon glyphicon-ok') %>
         <%= 'Submit' %>
       <% end %>
@@ -35,12 +35,6 @@
       </h3>
 
       <%= link_to 'Back to all projects', projects_path(start_year: :start_year), class: 'pull-right' %>
-
-      <span class="label label-org">Org</span>
-      <span class="label label-problem">Problem</span>
-      <span class="label label-internal">Internal</span>
-      <span class="label label-commercial">Commercial</span>
-
 
       <table class='table table-hover'>
         <thead>
@@ -71,7 +65,7 @@
         </tbody>
       </table>
       <div class='project-report-period pull-right'>
-        <h4><%= "Period: #{@start_date}..#{@finish_date}" %> </h4>
+        <%= "Period: #{@start_date.strftime("%d.%m.%Y")}..#{@finish_date.strftime("%d.%m.%Y")}" %>
       </div>
 
       <%= will_paginate @project_reports, class: 'pull_left',renderer: BootstrapPagination::Rails, previous_label: '<<', next_label: '>>' %>
@@ -81,15 +75,14 @@
           <thead>
             <th>Summary:</th>
             <th>Username</th>
-            <th>Time</th>
+            <th>Hours</th>
           </thead>
           <tbody>
             <% @summary.each do |s| %>
               <tr>
-              <% user = User.find(s[:user_id]) %>
               <td></td>
-              <td><%= user.name %></td>
-              <td><%= user.seconds_to_time((s[:hours]*3600).to_i) %></td>
+              <td><%= User.find(s[:user_id]).name %></td>
+              <td><%= s[:hours] %></td>
               </tr>
             <% end %>
           </tbody>
