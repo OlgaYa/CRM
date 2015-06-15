@@ -41,10 +41,6 @@ $(document).ready(function(){
     }
   });
 
-  $('#table-settings').on('click', function(){
-    $('#table-settings-dialog').dialog('open');
-  });
-
   $.fn.listVars = function(){
     var result = [];
     $(this).children('li').each(function(){
