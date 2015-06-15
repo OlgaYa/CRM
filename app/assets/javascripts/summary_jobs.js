@@ -34,7 +34,7 @@ $(document).ready(function(){
           id: rowId,
           value: newValue},
         success: function(data) {
-          $('.editable-field').html(data);
+          $("#" + rowId).html(data);
           $editableFieldTextArea.val('');
           $editableFieldDialog.dialog('close');
         }
