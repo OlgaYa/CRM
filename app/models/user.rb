@@ -133,6 +133,14 @@ class User < ActiveRecord::Base
     user == current_user
   end
 
+  def dt_month_time_sec(date)
+    (dt_reports.where(date: date.beginning_of_month..date.end_of_month).sum :time)/3600.0
+  end
+
+  def reports_month_time_sec(date)
+    reports.where(date: date.beginning_of_month..date.end_of_month).sum :hours
+  end
+
   def dt_month_time(date)
     seconds_to_time(dt_reports.where(date: date.beginning_of_month..date.end_of_month).sum :time)
   end
