@@ -21,4 +21,11 @@ class ApplicationController < ActionController::Base
                :remember_me)
     end
   end
+
+  unless Rails.env.development?
+    rescue_from Exception do |exception|
+      redirect_to root_path
+    end
+  end
+
 end

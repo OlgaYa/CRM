@@ -113,4 +113,5 @@ Rails.application.routes.draw do
   get 'project_reports', to: 'project_reports#index'
   get 'project_reports/:id', to: 'project_reports#show'
 
+  match '*path' => redirect('/'), via: :get unless Rails.env.development?
 end
