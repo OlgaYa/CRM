@@ -23,14 +23,15 @@
         <%= button_tag(content_tag(:i, '', class: 'glyphicon glyphicon-refresh') + ' DT', type: 'submit', class: 'btn btn-sm btn-success' ) %>
       <% end %>
       <%= render 'reports_search' %>
-      <h3 class='text-center'> <%= @date.strftime("%B") %> </h3>
+      <h3 class='text-center'> <%= @date.strftime("%B %Y") %> </h3>
+      <h4 class='pull-right'> <%= "Working hours: #{@working_hours}" %> </h4>
       <table class='table table-hover'>
         <thead>
           <th><h4><%= sort_link(@q, 'first_name', 'Full name') %></h4></th>
           <th><h4>Reports time</h4></th>
-          <th><h4>Desktime time</h4></th>
+          <th><h4>DeskTime time</h4></th>
           <th><h4>% Reports</h4></th>
-          <th><h4>% Desktime</h4></th>
+          <th><h4>% DeskTime</h4></th>
         </thead>
         <tbody>
           <% @users.each do |user| %>
@@ -38,8 +39,8 @@
               <td><%= link_to user.name, user_path(user) %></td>
               <td><%= user.reports_month_time(@date) %></td>
               <td><%= user.dt_month_time(@date) %></td>
-              <td><%=  %></td>
-              <td><%=  %></td>
+              <td><%= percent_time user.reports_month_time_sec(@date) %></td>
+              <td><%= percent_time user.dt_month_time_sec(@date) %></td>
             </tr>
           <% end %>
         </tbody>
