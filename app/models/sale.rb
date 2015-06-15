@@ -42,7 +42,7 @@ class Sale < Table
   end
 
   def open?
-    !['10 Sold', '10 Sold', '1 ProbablyNo'].include?(status.name)
+    !['10 Sold', '0 Declined', '1 ProbablyNo'].include?(status.name)
   end
 
   def self.open
