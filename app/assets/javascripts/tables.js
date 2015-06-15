@@ -158,6 +158,7 @@ $(document).ready(function(){
       case 'comments': {
         path = '/comments' + location.search;
         dataForSend = { table_id: rowId, body: inputData };
+        $('#activity-body').val('');
       }
       break;
       }
