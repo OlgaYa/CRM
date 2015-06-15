@@ -66,20 +66,24 @@ module PrepareTableForDraw
   end
 
   def sale_table
-    only = params[:only].to_sym
+    only = params[:only] ? params[:only].to_sym : nil
     if [:sold, :declined].include? only
       Sale.public_send only
-    else
+    elsif [:open].include? only
       Sale.open
+    else
+      Sale.all
     end
   end
 
   def candidate_table
-    only = params[:only].to_sym
+    only = params[:only] ? params[:only].to_sym : nil
     if [:hired, :we_declined, :he_declined, :contact_later].include? only
       Candidate.public_send only
-    else
+    elsif [:open].include? only
       Candidate.open
+    else
+      Candidate.all
     end
   end
 
