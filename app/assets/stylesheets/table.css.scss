@@ -17,8 +17,12 @@
   font-size: 75% !important;
 }
 
-.user_owner.not_refresh_today{
+.user_owner{
   background-color: #D0FFDF;
+}
+
+.user_owner.not_refresh_today{
+  background-color: #197A3A;
 }
 
 #editable-field-textarea {
