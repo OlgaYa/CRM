@@ -39,7 +39,7 @@ class MeetingsController < ApplicationController
       e.attendees = attendees
     end
     @meeting.update(event_id: event.raw["id"])
-    redirect_to root_url
+    redirect_to tables_path(:type => params[:type])
   end
 
   def edit
