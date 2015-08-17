@@ -27,7 +27,7 @@ class PlansController < ApplicationController
       [:statuses, :levels, :specializations].each do |p|
         create_option(p, plan)
       end
-      redirect_to action: :index
+      redirect_to action: :index, type: params[:type]
     else
       redirect_to action: :new, :type => params[:type]
     end
@@ -50,12 +50,12 @@ class PlansController < ApplicationController
     [:statuses, :levels, :specializations].each do |p|
       update_option(params[p], p, plan)
     end
-    redirect_to action: :index
+    redirect_to action: :index, type: params[:type]
   end
 
   def destroy
-    Plan.find(params[:id]).destroy
-    redirect_to action: :index
+    plan = Plan.find(params[:id]).destroy
+    redirect_to action: :index, type: plan.for_type
   end
 
   private
