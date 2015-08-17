@@ -7,8 +7,8 @@
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
-      <li class="active"><a href="#sale" data-toggle="tab">Sale</a></li>
-      <li><a href="#candidate" data-toggle="tab">Candidate</a></li>
+      <li class="active"><a href="#sale" class='sale_tab_link' data-toggle="tab">Sale</a></li>
+      <li><a href="#candidate" class='candidate_tab_link' data-toggle="tab">Candidate</a></li>
     </ul>
 
     <!-- Tab panes -->
@@ -75,6 +75,15 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
-    $("a[href=#" + (location.search.split('type=')[1]||'').split('&')[0].toLowerCase() + "]")[0].click();
+    if ((location.search.split('type=')[1]||'').split('&')[0].toLowerCase() != ''){
+      $("a[href=#" + (location.search.split('type=')[1]||'').split('&')[0].toLowerCase() + "]")[0].click();
+    }
 	});
+  $('.sale_tab_link').click(function(){
+    window.history.pushState('sale', 'CRM Plans', 'plans?type=SALE');
+  });
+
+  $('.candidate_tab_link').click(function(){
+    window.history.pushState('candidate', 'CRM Plans', 'plans?type=CANDIDATE');
+  })
 </script>
