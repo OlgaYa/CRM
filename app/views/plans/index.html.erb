@@ -81,9 +81,19 @@
 	});
   $('.sale_tab_link').click(function(){
     window.history.pushState('sale', 'CRM Plans', 'plans?type=SALE');
+    changePaginateUrlParams()
   });
 
   $('.candidate_tab_link').click(function(){
     window.history.pushState('candidate', 'CRM Plans', 'plans?type=CANDIDATE');
+    changePaginateUrlParams()
   })
+  
+  function changePaginateUrlParams(){
+    $('.pagination.pagination').children().each(function(){
+      if ($(this).find('a').attr('href') != undefined){
+        $(this).find('a').attr('href', $(this).find('a').attr('href') + '&type=' + (location.search.split('type=')[1]||'').split('&')[0])
+      }
+    });
+  }
 </script>
