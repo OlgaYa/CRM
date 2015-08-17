@@ -18,7 +18,7 @@ class Plan < ActiveRecord::Base
                                           options_for_plan.where(option_type: k,
                                                                 status: "active").pluck(:option_id)
     end
-    inform_count = Table.where(:updated_at => first_day_in_month..first_day_in_month.end_of_month)
+    inform_count = Table.where(:updated_at => first_day_in_month..first_day_in_month.try(:end_of_month))
                   .where(status_id: statuses)
                   .where(level_id: levels)
                   .where(specialization_id: specializations).count
@@ -31,7 +31,7 @@ class Plan < ActiveRecord::Base
     resours.constantize.all.pluck(:id) << nil
   end
 
-  def count_in_current_day(date)
+  def count_in_current_day(date, type = nil)
     statuses, levels, specializations  = ["Status", "Level", "Specialization"].collect do|k|
       options_for_plan.where(option_type: k).blank? ? all_resourse(k) :
                                           options_for_plan.where(option_type: k,
@@ -41,5 +41,9 @@ class Plan < ActiveRecord::Base
                   .where(status_id: statuses)
                   .where(level_id: levels)
                   .where(specialization_id: specializations).count
+
+    inform_count = Table.where(["updated_at >= ? AND updated_at <= ?", date.beginning_of_day, date.end_of_day])
+                        .where(type: type.to_s.downcase.capitalize).count if type.present?
+    inform_count
   end
 end

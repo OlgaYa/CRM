@@ -6,7 +6,7 @@ require 'capistrano/sidekiq'
 set :bundle_flags,    "--deployment --quiet --local"
 
 set :application, "crm"
-set :repository, 'git@github.com:Anastasiya09/CRM.git'
+set :repository, 'git@github.com:OlgaYa/CRM.git'
 
 set :scm, :git
 
@@ -30,8 +30,8 @@ set(:current_release)      { File.join(releases_path, release_name) }
 set(:release_path)      { File.join(releases_path, release_name) }
 
 set :rvm_type, :system
-set :rvm_ruby_string, 'ruby-2.0.0-p576@crm_staging'
-set :rvm_ruby_version, '2.0.0-p576'
+set :rvm_ruby_string, 'ruby-2.2.0@crm_staging'
+set :rvm_ruby_version, '2.2.0'
 
 before "deploy:assets:symlink" do
   run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"

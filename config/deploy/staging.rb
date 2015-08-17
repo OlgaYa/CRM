@@ -1,8 +1,8 @@
 set :branch, "staging"
-set :user, "deployer"
-set :domain, "deployer@lxc.sloboda-studio.com"
-set :deploy_to, "/home/deployer/crmuser_app/"
-set :port, 25002
+set :user, "crm"
+set :domain, "crmstage.sloboda-studio.com"
+set :deploy_to, "/home/crm/crm_app/"
+set :port, 3333
 
 role :web, domain
 role :app, domain

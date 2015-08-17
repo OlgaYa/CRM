@@ -1,5 +1,5 @@
 <td>
-  <%= label_tag plan.first_day_in_month.strftime("%B %Y")%>
+  <%= label_tag plan.first_day_in_month.try(:strftime, "%B %Y")%>
 </td>
 <td>
 	<%= label_tag plan.count %>
