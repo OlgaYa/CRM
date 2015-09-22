@@ -31,6 +31,8 @@ gem 'capistrano-sidekiq', '0.3.0'
 gem 'rails_autolink'
 gem 'gibbon'
 gem 'rest-client'
+gem 'tinymce-rails'
+gem 'tinymce-rails-langs'
 
 group :development do
   gem 'spring'
@@ -52,6 +54,5 @@ end
 group :test do
   gem 'simplecov', :require => false
   gem 'database_cleaner'
-  gem 'faker', '~> 1.4.3'
 end
 

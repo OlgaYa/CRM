@@ -1,11 +1,11 @@
 # This class defines essence of which users will be working with the permission seller
 class Sale < Table
   # fields for Sale default scope
-  DEFAULT_FIELDS = [:id,        :name,       :skype,
-                    :email,     :date,       :user_id,
-                    :source_id, :topic,      :status_id,
-                    :type,      :created_at, :updated_at,
-                    :phone]
+  DEFAULT_FIELDS = [:id,         :name,       :skype,
+                    :email,      :date,       :user_id,
+                    :source_id,  :topic,      :details,
+                    :status_id,  :type,      :created_at,
+                    :updated_at, :phone]
 
   # fields for Sale scope with status 'sold'
   ADVANCED_FIELDS = DEFAULT_FIELDS + [:price,

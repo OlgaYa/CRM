@@ -37,8 +37,8 @@ class Admin::RegistrationController < ApplicationController
                                   :email,
                                   :password,
                                   :password_confirmation,
-                                  :admin,
-                                  :permission)
+                                  :admin
+                                  )
   end
 
   def user_params_update

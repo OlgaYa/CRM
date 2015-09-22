@@ -59,7 +59,7 @@ module ApplicationHelper
       buffer << content_tag(:td, user.first_name)
       buffer << content_tag(:td, user.last_name)
       buffer << content_tag(:td, user.email)
-      buffer << content_tag(:td, user_status(user))
+      #buffer << content_tag(:td, user_status(user))
       buffer << content_tag(:td, user.current_sign_in_at)
       buffer << content_tag(:td) do
         link_to(image_tag(ActionController::Base.helpers.asset_path("remove.png")), user_path(user), data: {

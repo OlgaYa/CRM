@@ -99,6 +99,7 @@ config/imap.yml
 config/calendar.yml
 config/mailchimp.yml
 config/desktime.yml
+config/smtp.yml
 .ruby-gemset
 .ruby-version
 .rufus-scheduler.lock
