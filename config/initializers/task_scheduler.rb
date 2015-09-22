@@ -20,10 +20,10 @@ scheduler =  Rufus::Scheduler.new(:lockfile => ".rufus-scheduler.lock")
 
 unless scheduler.down?
 
-  scheduler.cron '0 9 * * 1-5' do
+  # scheduler.cron '0 9 * * 1-5' do
     # every day of the week at 9:00
-    User.reminder
-  end
+  #  User.reminder
+  # end
 
   scheduler.cron '30 00 * * *' do
     User.contact_later_reminder
@@ -57,19 +57,19 @@ unless scheduler.down?
   end
 
   # напоминалка об отчетах за прошлый день
-  scheduler.cron '0 14 * * 2-6' do
-    write_log("Start #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} (report reminder)\n")
-    users = User.reports_oblige_users
-    users.each do |user|
-      write_log("\tUser: #{user.name} | email: #{user.email}\n")
-      if user.reports.where('date = ?', Date.today - 1).empty?
-        write_log("\t\tОтчетов за вчера нет. Отправляем уведомление.\n")
-        UserMailer.reminder_report(user.id).deliver
-      else
-        write_log("\t\tОтчеты за вчера есть. Не отправляем уведомление.\n")
-      end
-    end
-    write_log("Finish #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} (report reminder)\n\n")
-  end
+  # scheduler.cron '0 14 * * 2-6' do
+  #   write_log("Start #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} (report reminder)\n")
+  #   users = User.reports_oblige_users
+  #   users.each do |user|
+  #     write_log("\tUser: #{user.name} | email: #{user.email}\n")
+  #     if user.reports.where('date = ?', Date.today - 1).empty?
+  #       write_log("\t\tОтчетов за вчера нет. Отправляем уведомление.\n")
+  #       UserMailer.reminder_report(user.id).deliver
+  #     else
+  #       write_log("\t\tОтчеты за вчера есть. Не отправляем уведомление.\n")
+  #     end
+  #   end
+  #   write_log("Finish #{Time.now.strftime("%Y/%m/%d %a %H:%M:%S")} (report reminder)\n\n")
+  # end
   
 end
